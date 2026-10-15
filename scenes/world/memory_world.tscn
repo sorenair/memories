@@ -63,7 +63,7 @@ target = NodePath("../Explorer")
 transform = Transform3D(0.707107, -0.478533, 0.520583, 0, 0.736215, 0.676748, -0.707107, -0.478533, 0.520583, 10, 13, 10)
 projection = 1
 current = true
-size = 10.0
+size = 5.0
 near = 0.1
 far = 160.0
 

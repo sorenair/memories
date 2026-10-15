@@ -49,3 +49,5 @@ Checks cover one closed manifold stone after welding hard-normal shading splits,
 `docs/boulder-demo.png` shows the playable composition; `docs/boulder-detail.png` shows the stone more closely.
 
 `tests/boulder_variations.gd` checks 36 combinations spanning all six automatic families, corner rounding, and cut roughness for closed topology and nondegenerate faces. It also verifies substantial differences in seed height/aspect ratio and explicit profile selection. `docs/boulder-variations.png` is a labeled render comparison; the playable demo retains one boulder.
+
+For a group of smaller stones, use the [inherited rock cluster component](../rock_clusters/README.md). It shares this generator and palette system while merging the group into two draw surfaces.

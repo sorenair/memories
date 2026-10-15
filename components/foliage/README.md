@@ -51,3 +51,5 @@ The grass check covers repeatable generation, seed variation, the geometry budge
 Each component exposes **Foliage Colors → Palette Preset** in the Inspector. Choose seasonal or dreamlike colors, or edit a custom four-color mix. Palette changes preserve geometry and the painterly color distribution. See [the palette guide](PALETTES.md).
 
 Ground pigment for grass and bushes uses the palette’s shade/leaf mid-tones, with a small root tint and painted highlights. This keeps the transparent wash colorful over the cream dream surface instead of resembling a dark contact shadow. For accurate color preview, open the full `memory_world.tscn`; the standalone memory has no ground surface, so its wash blends against the editor background.
+
+Grass patches expose **Ground Exclusions**: relative node paths to components implementing `excludes_ground_point(world_point)`. The [water component](../scenery/water/README.md) uses this to clear foliage from pond and stream footprints, and signals linked grass to rebuild when its shape or transform changes. Empty exclusions preserve the original seeded scatter.

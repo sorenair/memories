@@ -69,6 +69,11 @@ const PALETTES = preload("res://components/foliage/shared/foliage_palettes.gd")
 	set(value):
 		visibility_distance = value
 		_request_rebuild()
+## Paths relative to this patch. Components must implement excludes_ground_point().
+@export var ground_exclusions: Array[NodePath] = []:
+	set(value):
+		ground_exclusions = value
+		_request_rebuild()
 @export_tool_button("Regenerate patch") var regenerate = rebuild
 
 static var _shared_tuft: ArrayMesh
@@ -76,6 +81,7 @@ static var _shared_leaves: ArrayMesh
 
 var _applying_preset: bool = false
 var _palette_materials: Array[ShaderMaterial] = []
+var _exclusion_regions: Array[Node] = []
 var _queued: bool = false
 var _foliage_material: ShaderMaterial
 var _explorer: Node3D
@@ -112,6 +118,16 @@ func rebuild() -> void:
 	_queued = false
 	if not is_inside_tree():
 		return
+	for region in _exclusion_regions:
+		if is_instance_valid(region) and region.has_signal("ground_exclusion_changed") and region.ground_exclusion_changed.is_connected(_request_rebuild):
+			region.ground_exclusion_changed.disconnect(_request_rebuild)
+	_exclusion_regions.clear()
+	for path in ground_exclusions:
+		var region := get_node_or_null(path)
+		if region and region.has_method("excludes_ground_point"):
+			_exclusion_regions.append(region)
+			if region.has_signal("ground_exclusion_changed") and not region.ground_exclusion_changed.is_connected(_request_rebuild):
+				region.ground_exclusion_changed.connect(_request_rebuild)
 	_palette_materials.clear()
 	for child in get_children(true):
 		if child.get_meta(&"generated_grass", false):
@@ -186,8 +202,16 @@ func _add_batch(batch_name: String, mesh: ArrayMesh, density: float, rng: Random
 			basis = basis.scaled(Vector3.ONE * scale_factor * lerpf(0.7, 1.2, meadow))
 		else:
 			basis = basis.scaled(Vector3(scale_factor, height * scale_factor, scale_factor))
+		var tint := Color(clampf((meadow - 0.5) * 1.8 + 0.5 + rng.randf_range(-0.12, 0.12), 0.0, 1.0), rng.randf(), rng.randf(), edge)
+		var excluded := false
+		for region in _exclusion_regions:
+			if region.excludes_ground_point(to_global(Vector3(point.x, 0, point.y))):
+				excluded = true
+				break
+		if excluded:
+			continue
 		transforms.append(Transform3D(basis, Vector3(point.x, 0.012, point.y)))
-		colors.append(Color(clampf((meadow - 0.5) * 1.8 + 0.5 + rng.randf_range(-0.12, 0.12), 0.0, 1.0), rng.randf(), rng.randf(), edge))
+		colors.append(tint)
 	var multimesh := MultiMesh.new()
 	multimesh.transform_format = MultiMesh.TRANSFORM_3D
 	multimesh.use_custom_data = true

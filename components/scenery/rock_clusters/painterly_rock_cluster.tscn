@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm2sxgwwapscy"]
+
+[ext_resource type="PackedScene" uid="uid://xih5rwxndq63" path="res://components/scenery/boulders/painterly_boulder.tscn" id="1"]
+[ext_resource type="Script" uid="uid://btujpq1psp1sa" path="res://components/scenery/rock_clusters/painterly_rock_cluster.gd" id="2"]
+
+[node name="PainterlyRockCluster" instance=ExtResource("1")]
+script = ExtResource("2")
+rock_count = 6
+cluster_footprint = Vector2(2.1, 1.5)
+rock_scale = 0.35
+size_variation = 0.7
+boulder_seed = 72
+roundness = 0.73

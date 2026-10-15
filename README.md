@@ -1,6 +1,6 @@
 # memories
 
-A shared relationship timeline told through small, dreamlike 3D memories. The first demo memory is a painterly forest clearing with nine procedural trees, grass, bushes, and boulders in a white dreamscape.
+A shared relationship timeline told through small, dreamlike 3D memories. The first demo memory is a painterly forest clearing with eleven procedural trees, grass, bushes, and boulders in a white dreamscape.
 
 ## Play
 
@@ -26,7 +26,7 @@ Use **Foliage Colors → Palette Preset** on any grass, tree, or bush instance f
 
 ## Scenery components
 
-Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, painterly stone with six varied shape profiles, stone palettes, and convex collision. See [the boulder guide](components/scenery/boulders/README.md). The demo contains one boulder; rock clusters are a later component.
+Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, painterly stone with six varied shape profiles, stone palettes, and convex collision. See [the boulder guide](components/scenery/boulders/README.md). The demo contains boulders and a reusable rock cluster beside the pond.
 
 ## Create another memory
 
@@ -45,7 +45,7 @@ Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, pa
 - `WorldEnvironment` and `Sun`: palette, haze, and lighting.
 - `shaders/dream_surface.gdshader`: faint surface pigment.
 
-The Mobile renderer is preserved. The scene uses no volumetric fog, external textures, particles, or real-time shadow maps. The soft contact shadow is a single transparent quad. iOS export, device performance, multiplayer, persistence, memory transitions, discovery effects, and interactions are future work; the named containers do not implement those systems yet.
+The Mobile renderer is preserved. The scene uses no volumetric fog, particles, or real-time shadow maps; water uses one shared procedural paint-mask texture. The soft contact shadow is a single transparent quad. iOS export, device performance, multiplayer, persistence, memory transitions, discovery effects, and interactions are future work; the named containers do not implement those systems yet.
 
 ## Validate
 
@@ -70,3 +70,9 @@ For a rendered movement timing check, run `godot --path . --script tests/movemen
 `docs/bush-demo.png` shows the current meadow with a tree and three reusable bushes.
 
 `docs/forest-clearing-overview.png` shows the current clearing: an irregular horseshoe of autumn broadleaf, oak, and birch trees, with taller crowns at the back and an open entrance facing the player. Tree seeds, rotations, proportions, and density are authored on individual instances in `scenes/memories/foliage_demo.tscn`. The expanded meadow uses shorter grass and reduced per-area density to connect the tree bases.
+
+Instance `components/scenery/water/painterly_water.tscn` for painterly ponds and modular stream sections. Shape, seed, painted depth, caustic light, flow, and seasonal/dream palettes have live Inspector controls. The demo pond integrates with grass exclusions and optional shoreline collision. See [the water authoring guide](components/scenery/water/README.md).
+
+The pond is framed by low shoreline shrubs, a willow and side trees, with short groundcover extending the meadow around it. The player’s approach stays open and the foreground shrubs stay low to preserve water visibility. `docs/pond-clearing.png` shows the current gameplay composition.
+
+Instance `components/scenery/rock_clusters/painterly_rock_cluster.tscn` for smaller clustered stones inheriting the boulder generator. **Cluster → Rock Count, Rock Scale, Size Variation, and Cluster Footprint** control the group. See [the rock cluster guide](components/scenery/rock_clusters/README.md).

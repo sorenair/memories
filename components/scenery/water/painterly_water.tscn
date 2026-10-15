@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxegd0ga2n24p"]
+
+[ext_resource type="Script" uid="uid://bbm0lw7hhq0ap" path="res://components/scenery/water/painterly_water.gd" id="1"]
+
+[node name="PainterlyWater" type="Node3D"]
+script = ExtResource("1")
+foam_cell_size = 3.75

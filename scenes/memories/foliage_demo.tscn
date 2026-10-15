@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://1bv5ujx506r3"]
+[gd_scene load_steps=8 format=3 uid="uid://1bv5ujx506r3"]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://1t6fd5lxbf2u" path="res://components/foliage/painterly_tree.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://xih5rwxndq63" path="res://components/scenery/boulders/painterly_boulder.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://cxegd0ga2n24p" path="res://components/scenery/water/painterly_water.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://bm2sxgwwapscy" path="res://components/scenery/rock_clusters/painterly_rock_cluster.tscn" id="7"]
 
 [node name="Memory" instance=ExtResource("1")]
 memory_id = &"foliage_demo"
@@ -23,6 +25,7 @@ patch_seed = 28
 tufts_per_square_meter = 12.0
 leaves_per_square_meter = 26.0
 grass_height = 0.24
+ground_exclusions = Array[NodePath]([NodePath("../ClearingPond")])
 
 [node name="MeadowTree" parent="Environment" index="1" instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 0, 0.6)
@@ -107,7 +110,7 @@ branch_count = 5
 leaf_sprays_per_cluster = 78
 
 [node name="EastBirch" parent="Environment" index="13" instance=ExtResource("3")]
-transform = Transform3D(0.877583, 0, 0.479426, 0, 1, 0, -0.479426, 0, 0.877583, 5.3, 0, 0.6)
+transform = Transform3D(0.877583, 0, 0.479426, 0, 1, 0, -0.479426, 0, 0.877583, 7.06667, 0, 2.03333)
 tree_type = 2
 tree_seed = 229
 tree_height = 3.7
@@ -122,3 +125,127 @@ tree_height = 3.2
 crown_width = 2.7
 branch_count = 4
 leaf_sprays_per_cluster = 80
+
+[node name="ClearingPond" parent="Environment" index="15" instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 3.6)
+footprint = Vector2(6.4, 4.7)
+foam_width = 0.44
+
+[node name="PondShoreStone" parent="Environment" index="16" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.78667, 0.035, 3.74242)
+boulder_seed = 142
+shape_profile = 2
+dimensions = Vector3(0.85, 0.45, 0.65)
+
+[node name="PondSmallStone" parent="Environment" index="17" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.737778, 0.035, 5.45152)
+boulder_seed = 161
+shape_profile = 6
+dimensions = Vector3(0.55, 0.32, 0.5)
+
+[node name="PondGroundcover" parent="Environment" index="18" instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 3.6)
+patch_size = Vector2(9.8, 8.2)
+patch_seed = 98
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 14.0
+grass_height = 0.17
+ground_exclusions = Array[NodePath]([NodePath("../ClearingPond")])
+
+[node name="PondWestTree" parent="Environment" index="19" instance=ExtResource("3")]
+transform = Transform3D(0.731689, 0, 0.681639, 0, 1, 0, -0.681639, 0, 0.731689, -1.53778, 0, 3.74242)
+tree_seed = 307
+tree_height = 3.35
+crown_width = 2.4
+trunk_radius = 0.12
+branch_count = 4
+leaf_sprays_per_cluster = 78
+
+[node name="PondWillow" parent="Environment" index="20" instance=ExtResource("3")]
+transform = Transform3D(0.825336, 0, -0.564642, 0, 1, 0, 0.564642, 0, 0.825336, 3.65333, 0, -0.0318182)
+palette_preset = 1
+tree_type = 3
+tree_seed = 321
+tree_height = 3.3
+crown_width = 2.35
+trunk_radius = 0.12
+branch_count = 4
+leaf_sprays_per_cluster = 84
+
+[node name="PondWestBush" parent="Environment" index="21" instance=ExtResource("4")]
+transform = Transform3D(0.955337, 0, 0.29552, 0, 1, 0, -0.29552, 0, 0.955337, -0.897778, 0, 4.31212)
+bush_seed = 341
+footprint = Vector2(1.438, 1.15)
+bush_height = 0.65
+sprays_per_mass = 42
+
+[node name="PondStoneBush" parent="Environment" index="22" instance=ExtResource("4")]
+transform = Transform3D(0.921061, 0, -0.389418, 0, 1, 0, 0.389418, 0, 0.921061, -0.471111, 0, 5.66515)
+bush_seed = 357
+footprint = Vector2(1.322, 0.9775)
+bush_height = 0.45
+sprays_per_mass = 36
+
+[node name="PondNearShore" parent="Environment" index="23" instance=ExtResource("4")]
+transform = Transform3D(0.995004, 0, 0.0998334, 0, 1, 0, -0.0998334, 0, 0.995004, 2.8, 0, 6.5197)
+bush_seed = 373
+footprint = Vector2(1.84, 0.92)
+bush_height = 0.35
+sprays_per_mass = 38
+
+[node name="PondSouthEastBush" parent="Environment" index="24" instance=ExtResource("4")]
+transform = Transform3D(0.877583, 0, -0.479426, 0, 1, 0, 0.479426, 0, 0.877583, 5.43111, 0, 5.66515)
+bush_seed = 389
+footprint = Vector2(1.667, 1.15)
+bush_height = 0.55
+sprays_per_mass = 42
+
+[node name="PondEastBush" parent="Environment" index="25" instance=ExtResource("4")]
+transform = Transform3D(0.921061, 0, 0.389418, 0, 1, 0, -0.389418, 0, 0.921061, 6.42667, 0, 4.38333)
+bush_seed = 407
+footprint = Vector2(1.265, 1.552)
+bush_height = 0.75
+sprays_per_mass = 42
+
+[node name="PondBirchBush" parent="Environment" index="26" instance=ExtResource("4")]
+transform = Transform3D(0.955337, 0, -0.29552, 0, 1, 0, 0.29552, 0, 0.955337, 5.92889, 0, 1.53485)
+bush_seed = 421
+footprint = Vector2(1.38, 1.035)
+bush_height = 0.6
+sprays_per_mass = 40
+
+[node name="PondBackShore" parent="Environment" index="27" instance=ExtResource("4")]
+transform = Transform3D(0.980067, 0, 0.198669, 0, 1, 0, -0.198669, 0, 0.980067, 2.72889, 0, 0.822727)
+bush_seed = 439
+footprint = Vector2(1.495, 0.9775)
+bush_height = 0.5
+sprays_per_mass = 40
+
+[node name="PondWestReeds" parent="Environment" index="28" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 0, 2.25)
+bush_seed = 457
+footprint = Vector2(1.1, 1)
+bush_height = 0.4
+sprays_per_mass = 36
+
+[node name="PondSouthLowBush" parent="Environment" index="29" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.45, 0, 6.05)
+bush_seed = 473
+footprint = Vector2(1.45, 0.9)
+bush_height = 0.35
+sprays_per_mass = 38
+
+[node name="PondNorthEastBush" parent="Environment" index="30" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.65, 0, 1.65)
+bush_seed = 487
+footprint = Vector2(1.2, 0.85)
+bush_height = 0.5
+sprays_per_mass = 38
+
+[node name="PondRockCluster" parent="Environment" index="31" instance=ExtResource("7")]
+transform = Transform3D(0.921061, 0, 0.389418, 0, 1, 0, -0.389418, 0, 0.921061, 0.15, 0.02, 4.8)
+rock_count = 8
+cluster_footprint = Vector2(1.8, 1.2)
+rock_scale = 0.38
+size_variation = 0.8
+boulder_seed = 193
