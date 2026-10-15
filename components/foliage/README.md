@@ -37,3 +37,11 @@ godot --headless --path . --script tests/scene_smoke.gd
 ```
 
 The grass check covers repeatable generation, seed variation, the geometry budget, independent palette materials, zero-density layers, and disabled interaction processing. The scene check covers the existing player controls and camera.
+
+## Trees
+
+`painterly_tree.tscn` adds a reusable single-tree generator using the same foliage palettes. See [the tree authoring guide](TREES.md).
+
+## Bushes
+
+`painterly_bush.tscn` creates low, spreading shrubs using the same leaf geometry, palette resources, and wind shader as trees. See [the bush authoring guide](BUSHES.md).

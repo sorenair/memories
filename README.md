@@ -1,6 +1,6 @@
 # memories
 
-A shared relationship timeline told through small, dreamlike 3D memories. The first demo memory is a small painterly meadow in a white dreamscape.
+A shared relationship timeline told through small, dreamlike 3D memories. The first demo memory is a small painterly meadow with a procedural tree and bushes in a white dreamscape.
 
 ## Play
 
@@ -10,13 +10,17 @@ Open `project.godot` in Godot 4.4 or newer and press **F6** with `scenes/world/m
 - **Controller left stick:** analog movement.
 - **Touch and drag:** a floating movement stick appears beneath your finger; release to stop.
 
-The current scene contains a simple character, seamless ground, and a reusable procedural foliage patch. It has gentle acceleration, deceleration, turning, a small walking motion, an elevated orthographic follow camera, warm ambient lighting, distance fog, and a soft contact shadow. The grass is present from startup, with gentle wind and local player bending; it has no recollection or transition effects. The surface follows the player over an infinite collision plane, so long walks do not expose an edge.
+The current scene contains a simple character, seamless ground, a reusable procedural foliage patch, and a procedural tree. It has gentle acceleration, deceleration, turning, a small walking motion, an elevated orthographic follow camera, warm ambient lighting, distance fog, and a soft contact shadow. The grass is present from startup, with gentle wind and local player bending; it has no recollection or transition effects. The surface follows the player over an infinite collision plane, so long walks do not expose an edge.
 
 The game launches fullscreen at a fixed landscape phone aspect ratio (1920 × 886). Extra screen area is letterboxed in black, preserving proportions. A small black FPS counter appears at the top right of the game area. Rendering is uncapped with VSync disabled for performance testing. Movement stays on fixed physics ticks; physics interpolation smooths the character between them. The render-frame camera and grass sample the same interpolated player position. Reset player physics interpolation when teleporting or spawning after entering the scene tree.
 
 ## Foliage components
 
 Instance `components/foliage/painterly_grass_patch.tscn` in a memory to add grass. Size, seed, density, height, palette, wind, and culling distance are editable in the Inspector with live editor previews. See [the foliage authoring guide](components/foliage/README.md) for controls and rendering budgets. The demo is `scenes/memories/foliage_demo.tscn`.
+
+Instance `components/foliage/painterly_tree.tscn` to add a single tree. Seeds, proportions, branches, canopy detail, bark, wind, and trunk collision are editable with live previews. Trees share the grass palette resources. See [the tree authoring guide](components/foliage/TREES.md).
+
+Instance `components/foliage/painterly_bush.tscn` to add a low, spreading shrub. Seed, footprint, height, density, palette, wind, and culling distance are editable with live previews. See [the bush authoring guide](components/foliage/BUSHES.md).
 
 ## Create another memory
 
@@ -43,6 +47,8 @@ The Mobile renderer is preserved. The scene uses no volumetric fog, external tex
 godot --headless --path . --editor --quit
 godot --headless --path . --script tests/scene_smoke.gd
 godot --headless --path . --script tests/grass_patch_smoke.gd
+godot --path . --script tests/tree_smoke.gd
+godot --path . --script tests/bush_smoke.gd
 ```
 
 The smoke check exercises scene loading, grounded movement, camera-relative direction, diagonal speed, stopping, camera follow, touch normalization/release, and walking beyond the initial surface. It exits nonzero on failure.
@@ -52,3 +58,7 @@ The smoke check exercises scene loading, grounded movement, camera-relative dire
 `docs/foliage-demo.png` shows the current grass demo rendered with the Mobile renderer.
 
 For a rendered movement timing check, run `godot --path . --script tests/movement_render_smoke.gd`. It compares physics movement updates with interpolated player updates at the actual render rate.
+
+`docs/tree-demo.png` shows the current meadow and tree demo.
+
+`docs/bush-demo.png` shows the current meadow with a tree and three reusable bushes.

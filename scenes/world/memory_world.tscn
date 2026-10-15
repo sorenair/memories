@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dol7foyhx3gxg" path="res://scripts/memory_world.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://xkovxofvhuc5" path="res://scenes/player/explorer.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/memories/foliage_demo.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://1bv5ujx506r3" path="res://scenes/memories/foliage_demo.tscn" id="3"]
 [ext_resource type="Script" uid="uid://bgkkymfopoihu" path="res://scripts/follow_camera.gd" id="4"]
 [ext_resource type="Script" uid="uid://dfv70ixt0xorv" path="res://scripts/exploration_input.gd" id="5"]
 [ext_resource type="Shader" uid="uid://cx2lu7n4a7173" path="res://shaders/dream_surface.gdshader" id="6"]

@@ -1,10 +1,43 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://1bv5ujx506r3"]
+
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="3"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="4"]
+
 [node name="Memory" instance=ExtResource("1")]
 memory_id = &"foliage_demo"
 display_name = "A little meadow"
+
 [node name="Entry" parent="." index="0"]
-position = Vector3(0.8, 0, 1.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 1.1)
+
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+
 [node name="Meadow" parent="Environment" index="0" instance=ExtResource("2")]
-position = Vector3(-0.4, 0, -1.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, -1.1)
+
+[node name="MeadowTree" parent="Environment" index="1" instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, 0.6)
+tree_height = 3.7
+crown_width = 3.1
+branch_count = 4
+
+[node name="MeadowBush" parent="Environment" index="2" instance=ExtResource("4")]
+position = Vector3(1.9, 0, -0.9)
+
+[node name="SmallBush" parent="Environment" index="3" instance=ExtResource("4")]
+position = Vector3(1.15, 0, -2.8)
+bush_seed = 57
+footprint = Vector2(1.3, 1.0)
+bush_height = 0.7
+sprays_per_mass = 42
+
+[node name="TreeBaseBush" parent="Environment" index="4" instance=ExtResource("4")]
+position = Vector3(-2.35, 0, 0.1)
+bush_seed = 289
+footprint = Vector2(1.1, 0.9)
+bush_height = 0.65
+sprays_per_mass = 42
