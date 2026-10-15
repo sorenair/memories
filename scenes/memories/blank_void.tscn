@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="1"]
+
+[node name="Memory" instance=ExtResource("1")]
+memory_id = &"blank_void"
+display_name = "Before the first memory"

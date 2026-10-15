@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="GrassPalette" load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/foliage/grass_palette.gd" id="1"]
+[resource]
+script = ExtResource("1")
+root_color = Color(0.22, 0.30, 0.16, 1)
+shade_color = Color(0.28, 0.42, 0.19, 1)
+leaf_color = Color(0.53, 0.67, 0.31, 1)
+sun_color = Color(0.83, 0.87, 0.51, 1)

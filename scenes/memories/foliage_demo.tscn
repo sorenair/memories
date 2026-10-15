@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="2"]
+[node name="Memory" instance=ExtResource("1")]
+memory_id = &"foliage_demo"
+display_name = "A little meadow"
+[node name="Entry" parent="." index="0"]
+position = Vector3(0.8, 0, 1.1)
+[node name="Meadow" parent="Environment" index="0" instance=ExtResource("2")]
+position = Vector3(-0.4, 0, -1.1)
