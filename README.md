@@ -24,6 +24,10 @@ Instance `components/foliage/painterly_bush.tscn` to add a low, spreading shrub.
 
 Use **Foliage Colors → Palette Preset** on any grass, tree, or bush instance for seasonal and dreamlike color schemes. See [the palette guide](components/foliage/PALETTES.md).
 
+## Scenery components
+
+Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, painterly stone with six varied shape profiles, stone palettes, and convex collision. See [the boulder guide](components/scenery/boulders/README.md). The demo contains one boulder; rock clusters are a later component.
+
 ## Create another memory
 
 1. In Godot, create an **inherited scene** from `scenes/memories/memory_base.tscn` and save it under `scenes/memories/`.

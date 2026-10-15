@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://xih5rwxndq63"]
+
+[ext_resource type="Script" uid="uid://cxe2ouqf1vpub" path="res://components/scenery/boulders/painterly_boulder.gd" id="1"]
+
+[node name="PainterlyBoulder" type="Node3D"]
+script = ExtResource("1")
+shape_profile = null
+variability = null
+roundness = 0.76
+roughness = 0.27
+burial = 0.15
+plane_variation = 0.05

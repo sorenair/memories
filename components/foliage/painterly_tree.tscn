@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3]
-[ext_resource type="Script" path="res://components/foliage/painterly_tree.gd" id="1"]
-[ext_resource type="Resource" path="res://components/foliage/palettes/meadow.tres" id="2"]
+[gd_scene load_steps=2 format=3 uid="uid://1t6fd5lxbf2u"]
+
+[ext_resource type="Script" uid="uid://bgktxx2hdj7d8" path="res://components/foliage/painterly_tree.gd" id="1"]
+
 [node name="PainterlyTree" type="Node3D"]
 script = ExtResource("1")
-palette = ExtResource("2")
-palette_preset = 1
