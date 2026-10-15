@@ -182,8 +182,9 @@ func rebuild() -> void:
 	var trunk_points: Array[Vector3] = []
 	var trunk_radii: Array[float] = []
 	for fraction in [0.0, 0.12, 0.26, 0.42, 0.60, 0.75, 0.88]:
-		trunk_points.append(_trunk_center(fraction * float(_variant.stem) / 0.88, lean, bend_direction))
-		trunk_radii.append(trunk_radius * float(_variant.trunk) * (1.75 if fraction == 0.0 else lerpf(1.10, 0.12, fraction / 0.88)))
+		var stem_fraction: float = fraction * float(_variant.stem) / 0.88
+		trunk_points.append(_trunk_center(stem_fraction, lean, bend_direction))
+		trunk_radii.append(trunk_radius * float(_variant.trunk) * (2.05 if fraction == 0.0 else lerpf(1.28, 0.12, fraction / 0.88)))
 	# Keep wood color randomness separate too, preserving existing canopy placement.
 	_tube(bark, trunk_points, trunk_radii, shape_rng)
 	for draw in range(29):
@@ -191,7 +192,8 @@ func rebuild() -> void:
 	for root in range(5):
 		var angle := float(root) * TAU / 5.0 + rng.randf_range(-0.2, 0.2)
 		var out := Vector3(cos(angle), 0, sin(angle))
-		_tube(bark, [Vector3.UP * 0.28, out * trunk_radius * 1.8 + Vector3.UP * 0.075, out * trunk_radius * rng.randf_range(2.8, 3.8) + Vector3.UP * 0.012], [trunk_radius * 0.55, trunk_radius * 0.30, 0.006], rng)
+		_tube(bark, [Vector3.UP * 0.28, out * trunk_radius * 1.8 + Vector3.UP * 0.075, out * trunk_radius * rng.randf_range(2.8, 3.8) + Vector3.UP * 0.012], [trunk_radius * 0.55, trunk_radius * 0.30, 0.006], rng, false)
+	_grow_roots(bark, lean, bend_direction)
 	if tree_type == VARIANTS.Kind.PINE or tree_type == VARIANTS.Kind.CYPRESS:
 		_grow_conifer(bark, rng, transforms, tints, lean, bend_direction)
 	else:
@@ -234,7 +236,8 @@ func rebuild() -> void:
 		_add_generated(body)
 
 func _grow_deciduous(bark: SurfaceTool, rng: RandomNumberGenerator, transforms: Array[Transform3D], tints: Array[Color], lean: Vector3, bend_direction: Vector3) -> void:
-	# Staggered branch-tip leaf masses preserve gaps and a readable fork silhouette.
+	# Canopy placement uses its original stream; wood grows from a separate skeleton.
+	var crown_centers: Array[Vector3] = []
 	for branch in range(branch_count):
 		var angle := float(branch) * 2.39996 + rng.randf_range(-0.22, 0.22)
 		var out := Vector3(cos(angle), 0, sin(angle))
@@ -251,7 +254,8 @@ func _grow_deciduous(bark: SurfaceTool, rng: RandomNumberGenerator, transforms: 
 		var start_fraction := rng.randf_range(0.32, 0.53)
 		var start := _trunk_center(start_fraction, lean, bend_direction)
 		var elbow := start.lerp(center, 0.52) - Vector3.UP * tree_height * 0.08
-		_tube(bark, [start, elbow, center], [trunk_radius * 0.53, trunk_radius * 0.31, 0.018], rng)
+		_tube(bark, [start, elbow, center], [trunk_radius * 0.53, trunk_radius * 0.31, 0.018], rng, false)
+		crown_centers.append(center)
 		if tree_type == VARIANTS.Kind.WILLOW:
 			elbow.y += tree_height * 0.14
 		var radii := Vector3(crown_width * rng.randf_range(0.17, 0.22), tree_height * rng.randf_range(0.10, 0.14), crown_width * rng.randf_range(0.17, 0.23))
@@ -265,18 +269,98 @@ func _grow_deciduous(bark: SurfaceTool, rng: RandomNumberGenerator, transforms: 
 		# Two finer forks connect into each leaf mass and remain visible through gaps.
 		for fork in range(2):
 			var tip := center + Vector3(rng.randf_range(-0.35, 0.35), rng.randf_range(0.03, 0.25), rng.randf_range(-0.35, 0.35))
-			_tube(bark, [elbow, elbow.lerp(tip, 0.65), tip], [trunk_radius * 0.22, trunk_radius * 0.10, 0.006], rng)
+			_tube(bark, [elbow, elbow.lerp(tip, 0.65), tip], [trunk_radius * 0.22, trunk_radius * 0.10, 0.006], rng, false)
 		if tree_type == VARIANTS.Kind.WILLOW:
 			_leaf_mass(center, radii, rng, transforms, tints, leaf_sprays_per_cluster / 3)
 			_hanging_foliage(center, radii, rng, transforms, tints)
 		else:
 			_leaf_mass(center, radii, rng, transforms, tints)
 	_leaf_mass(Vector3(-0.1, tree_height * 0.89, -0.05), Vector3(crown_width * float(_variant.width) * 0.23, tree_height * 0.12, crown_width * float(_variant.width) * 0.23), rng, transforms, tints)
+	_grow_scaffold(bark, crown_centers, lean, bend_direction)
 
-func _trunk_center(fraction: float, lean: Vector3, bend_direction: Vector3) -> Vector3:
+func _grow_roots(bark: SurfaceTool, lean: Vector3, bend_direction: Vector3) -> void:
+	# Three broad buttress roots share the limbs' taper and irregular sections.
+	# Their ends disappear below the floor instead of terminating in visible spikes.
+	var root_rng := RandomNumberGenerator.new()
+	root_rng.seed = tree_seed ^ 0x703B
+	var rotation := root_rng.randf() * TAU
+	var stem_radius := trunk_radius * float(_variant.trunk)
+	for root in range(3):
+		var angle := rotation + float(root) * TAU / 3.0 + root_rng.randf_range(-0.22, 0.22)
+		var outward := Vector3(cos(angle), 0, sin(angle))
+		var sideways := Vector3(-outward.z, 0, outward.x)
+		var start := _trunk_center(0.055, lean, bend_direction) + outward * stem_radius * 0.35
+		var reach := stem_radius * root_rng.randf_range(3.8, 5.2)
+		var bend := root_rng.randf_range(-0.22, 0.22) * reach
+		var thickness := stem_radius * root_rng.randf_range(0.85, 1.05)
+		var points: Array[Vector3] = []
+		var radii: Array[float] = []
+		for index in range(6):
+			var t := float(index) / 5.0
+			var point := start + outward * reach * t + sideways * sin(t * PI) * bend
+			point.y = lerpf(start.y, -thickness * 0.45, sin(t * PI * 0.5))
+			points.append(point)
+			radii.append(thickness * lerpf(1.0, 0.12, t))
+		_tube(bark, points, radii, root_rng)
+
+func _grow_scaffold(bark: SurfaceTool, centers: Array[Vector3], lean: Vector3, bend_direction: Vector3) -> void:
+	# Three unequal leaders replace the radial hub of twigs. Each leader supports
+	# a sector of the existing crown, sharing its lower limb with secondary growth.
+	var wood_rng := RandomNumberGenerator.new()
+	wood_rng.seed = tree_seed ^ 0xBA49
+	var rotation := wood_rng.randf() * TAU
+	var groups: Array = [[], [], []]
+	for center in centers:
+		var angle := fposmod(atan2(center.z, center.x) - rotation, TAU)
+		groups[mini(2, int(angle / (TAU / 3.0)))].append(center)
+	for leader in range(3):
+		var group: Array = groups[leader]
+		if group.is_empty():
+			continue
+		var average := Vector3.ZERO
+		for center in group:
+			average += Vector3(center)
+		average /= float(group.size())
+		var fraction := 0.34 + float(leader) * 0.075 + wood_rng.randf_range(-0.025, 0.025)
+		var start := _trunk_center(fraction, lean, bend_direction)
+		var joint := start.lerp(average, 0.58)
+		joint.y += tree_height * (0.07 if tree_type == VARIANTS.Kind.WILLOW else 0.015)
+		var radius := trunk_radius * float(_variant.trunk) * wood_rng.randf_range(0.78, 1.02)
+		# A single flowing path carries the thick leader into the crown.
+		var destination := Vector3(group[0])
+		_organic_limb(bark, start, destination, radius, wood_rng, joint)
+		for index in range(1, group.size()):
+			var fork_start := start.lerp(joint, 0.88)
+			_organic_limb(bark, fork_start, Vector3(group[index]), radius * 0.60, wood_rng)
+
+func _organic_limb(bark: SurfaceTool, start: Vector3, tip: Vector3, radius: float, rng: RandomNumberGenerator, joint: Vector3 = Vector3.INF) -> void:
+	var reach := tip - start
+	var sideways := Vector3(-reach.z, 0, reach.x).normalized()
+	var bend := sideways * reach.length() * rng.randf_range(-0.13, 0.13)
+	var control_a := start + reach * 0.24 + Vector3.UP * tree_height * 0.065 + bend
+	var control_b := start + reach * 0.66 - bend * 0.6
+	if joint.is_finite():
+		control_a = start.lerp(joint, 0.8) + bend
+		control_b = joint.lerp(tip, 0.38) - bend * 0.4
+	var points: Array[Vector3] = []
+	var radii: Array[float] = []
+	for index in range(6):
+		var t := float(index) / 5.0
+		var u := 1.0 - t
+		points.append(start * u * u * u + control_a * 3.0 * u * u * t + control_b * 3.0 * u * t * t + tip * t * t * t)
+		radii.append(radius * lerpf(1.0, 0.15, t) * (1.0 + sin(t * PI) * 0.10))
+	_tube(bark, points, radii, rng)
+
+func _canopy_anchor(fraction: float, lean: Vector3, bend_direction: Vector3) -> Vector3:
+	# Preserve the approved evergreen placement independently of wood curvature.
 	var sideways := Vector3(-bend_direction.z, 0, bend_direction.x)
 	var curve := bend_direction * sin(fraction * PI) + sideways * sin(fraction * TAU) * 0.30
 	return Vector3.UP * fraction * tree_height + curve * trunk_bend * tree_height + lean * fraction * fraction * 1.8
+
+func _trunk_center(fraction: float, lean: Vector3, bend_direction: Vector3) -> Vector3:
+	var sideways := Vector3(-bend_direction.z, 0, bend_direction.x)
+	var curve := bend_direction * sin(fraction * PI) + sideways * (sin(fraction * TAU) * 0.48 + sin(fraction * PI * 3.0) * 0.16)
+	return Vector3.UP * fraction * tree_height + curve * trunk_bend * tree_height * (0.65 if tree_type >= VARIANTS.Kind.PINE else 1.35) + lean * fraction * fraction * 1.8
 
 func _add_generated(node: Node) -> void:
 	node.set_meta(&"generated_tree", true)
@@ -307,7 +391,7 @@ func _add_shadow() -> void:
 	shadow.position = Vector3(0.15, 0.016, 0.15)
 	_add_generated(shadow)
 
-func _tube(surface: SurfaceTool, points: Array[Vector3], radii: Array, rng: RandomNumberGenerator) -> void:
+func _tube(surface: SurfaceTool, points: Array[Vector3], radii: Array, rng: RandomNumberGenerator, emit_geometry: bool = true) -> void:
 	var rings: Array[PackedVector3Array] = []
 	var twist := rng.randf() * TAU
 	for index in range(points.size()):
@@ -320,12 +404,16 @@ func _tube(surface: SurfaceTool, points: Array[Vector3], radii: Array, rng: Rand
 		var ring := PackedVector3Array()
 		for segment in range(7):
 			var angle := float(segment) * TAU / 7.0 + twist
-			ring.append(points[index] + (side * cos(angle) + up * sin(angle)) * float(radii[index]))
+			# Uneven oval sections give painted ridges without noisy bark textures.
+			var ridge := 1.0 + sin(angle * 3.0 + twist) * 0.065
+			ring.append(points[index] + (side * cos(angle) * 1.08 + up * sin(angle) * 0.94) * float(radii[index]) * ridge)
 		rings.append(ring)
 	for index in range(rings.size() - 1):
 		for segment in range(7):
 			var next := (segment + 1) % 7
 			var tint := rng.randf_range(0.0, 0.12)
+			if not emit_geometry:
+				continue
 			_bark_face(surface, rings[index][segment], rings[index + 1][segment], rings[index + 1][next], tint)
 			_bark_face(surface, rings[index][segment], rings[index + 1][next], rings[index][next], tint)
 
@@ -391,7 +479,7 @@ func _grow_conifer(bark: SurfaceTool, rng: RandomNumberGenerator, transforms: Ar
 		var radius := width * 0.43 * pow(1.0 - progress, 0.85)
 		if cypress:
 			radius = width * (0.30 + sin(progress * PI) * 0.10) * (1.0 - smoothstep(0.65, 1.1, progress))
-		var start := _trunk_center(height, lean, bend_direction)
+		var start := _canopy_anchor(height, lean, bend_direction)
 		var tier_density := leaf_sprays_per_cluster
 		if cypress:
 			tier_density = leaf_sprays_per_cluster / 2 + (1 if level % 2 < leaf_sprays_per_cluster % 2 else 0)
@@ -403,12 +491,17 @@ func _grow_conifer(bark: SurfaceTool, rng: RandomNumberGenerator, transforms: Ar
 			var out := Vector3(cos(angle), 0, sin(angle))
 			var center := start + out * radius * 0.70 - Vector3.UP * tree_height * 0.025
 			var elbow := start.lerp(center, 0.55) + Vector3.UP * tree_height * 0.025
-			_tube(bark, [start, elbow, center], [trunk_radius * 0.30 * (1.0 - progress * 0.6), 0.018, 0.005], rng)
+			_tube(bark, [start, elbow, center], [trunk_radius * 0.30 * (1.0 - progress * 0.6), 0.018, 0.005], rng, false)
+			# Only a few substantial boughs are visible beneath the evergreen masses.
+			if level % (4 if cypress else 2) == 0 and bough % 2 == 0:
+				var wood_rng := RandomNumberGenerator.new()
+				wood_rng.seed = tree_seed ^ (level * 137 + bough * 31 + 0xA27)
+				_organic_limb(bark, _trunk_center(height, lean, bend_direction), center, trunk_radius * float(_variant.trunk) * (0.65 - progress * 0.35), wood_rng)
 			var radii := Vector3(radius * 0.34, tree_height * (0.055 if cypress else 0.045), radius * 0.34)
 			var count := outer_density / 4 + (1 if bough < outer_density % 4 else 0)
 			_leaf_mass(center, radii, rng, transforms, tints, count)
 	for tip_layer in range(3):
-		var tip := _trunk_center(0.84 + float(tip_layer) * 0.07, lean, bend_direction)
+		var tip := _canopy_anchor(0.84 + float(tip_layer) * 0.07, lean, bend_direction)
 		var taper := 1.0 - float(tip_layer) * 0.32
 		var count := leaf_sprays_per_cluster / 3 + (1 if tip_layer < leaf_sprays_per_cluster % 3 else 0)
 		_leaf_mass(tip, Vector3(width * 0.10 * taper, tree_height * 0.04, width * 0.10 * taper), rng, transforms, tints, count, taper)

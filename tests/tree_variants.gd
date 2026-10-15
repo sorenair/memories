@@ -13,6 +13,8 @@ func run() -> void:
 		quit(1)
 		return
 	var tree: PainterlyTree = load("res://components/foliage/painterly_tree.tscn").instantiate()
+	# Fix the comparison seed independently of authoring edits to the component scene.
+	tree.tree_seed = 84
 	root.add_child(tree)
 	var signatures: Array[Vector3] = []
 	for kind in range(6):
@@ -23,6 +25,10 @@ func run() -> void:
 		var original := multimesh.buffer.duplicate()
 		var foliage: PackedVector3Array = multimesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 		var bark: PackedVector3Array = tree.get_node("TrunkAndBranches").mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+		var valid_wood := true
+		for point in bark:
+			valid_wood = valid_wood and point.is_finite()
+		check(valid_wood, "Organic limbs must have finite geometry")
 		var triangles := multimesh.instance_count * foliage.size() / 3 + bark.size() / 3
 		check(triangles < 30000, "Default variant must remain below 30k triangles")
 		check(multimesh.instance_count == (tree.branch_count + 1) * tree.leaf_sprays_per_cluster, "Variants must preserve the leaf-density budget")

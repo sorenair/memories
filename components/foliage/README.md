@@ -49,3 +49,5 @@ The grass check covers repeatable generation, seed variation, the geometry budge
 ## Palette selector
 
 Each component exposes **Foliage Colors → Palette Preset** in the Inspector. Choose seasonal or dreamlike colors, or edit a custom four-color mix. Palette changes preserve geometry and the painterly color distribution. See [the palette guide](PALETTES.md).
+
+Ground pigment for grass and bushes uses the palette’s shade/leaf mid-tones, with a small root tint and painted highlights. This keeps the transparent wash colorful over the cream dream surface instead of resembling a dark contact shadow. For accurate color preview, open the full `memory_world.tscn`; the standalone memory has no ground surface, so its wash blends against the editor background.

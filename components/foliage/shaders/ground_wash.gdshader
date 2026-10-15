@@ -31,8 +31,12 @@ void fragment() {
 	float edge = 1.0 - smoothstep(0.62, 1.09, radius + (mottling - 0.5) * 0.12);
 	float meadow = sin(p.x * 0.9 + shape_phase) * cos(p.y * 1.1 - shape_phase) * 0.5 + 0.5;
 	float brush = floor(noise(p * vec2(9.0, 15.0)) * 4.0) / 3.0;
-	vec3 pigment = mix(root_color.rgb, shade_color.rgb, meadow * 0.65 + mottling * 0.35);
-	pigment = mix(pigment, leaf_color.rgb, brush * 0.13);
+	// Ground pigment is a mid-tone painted surface. Dark root colors belong
+	// to foliage crevices; over cream they made this translucent wash look gray.
+	float ground_mix = 0.48 + meadow * 0.20 + mottling * 0.12;
+	vec3 pigment = mix(shade_color.rgb, leaf_color.rgb, ground_mix);
+	pigment = mix(pigment, root_color.rgb, 0.06);
+	pigment = mix(pigment, sun_color.rgb, brush * 0.08);
 	ALBEDO = pigment;
 	float haze = smoothstep(25.0, 60.0, length((VIEW_MATRIX * vec4(world_position, 1.0)).xyz));
 	ALPHA = edge * mix(0.68, 0.92, mottling) * (1.0 - haze);

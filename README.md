@@ -1,6 +1,6 @@
 # memories
 
-A shared relationship timeline told through small, dreamlike 3D memories. The first demo memory is a small painterly meadow with a procedural tree and bushes in a white dreamscape.
+A shared relationship timeline told through small, dreamlike 3D memories. The first demo memory is a painterly forest clearing with nine procedural trees, grass, bushes, and boulders in a white dreamscape.
 
 ## Play
 
@@ -68,3 +68,5 @@ For a rendered movement timing check, run `godot --path . --script tests/movemen
 `docs/tree-demo.png` shows the current meadow and tree demo.
 
 `docs/bush-demo.png` shows the current meadow with a tree and three reusable bushes.
+
+`docs/forest-clearing-overview.png` shows the current clearing: an irregular horseshoe of autumn broadleaf, oak, and birch trees, with taller crowns at the back and an open entrance facing the player. Tree seeds, rotations, proportions, and density are authored on individual instances in `scenes/memories/foliage_demo.tscn`. The expanded meadow uses shorter grass and reduced per-area density to connect the tree bases.

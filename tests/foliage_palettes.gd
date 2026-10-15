@@ -17,7 +17,8 @@ func run() -> void:
 		for node in nodes:
 			if node is MultiMeshInstance3D:
 				buffers.append(node.multimesh.buffer.duplicate())
-		check(component.palette_preset == 1, component_name + ": default selector must be Summer Meadow")
+		# Component scenes may carry any authored season or custom colors.
+		check(component.palette_preset >= 0 and component.palette_preset <= 9, component_name + ": authored palette selection must be valid")
 		for preset in range(1, 10):
 			component.palette_preset = preset
 			check(component.palette_preset == preset, "Selector must retain selected preset")
