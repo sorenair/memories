@@ -2,17 +2,35 @@
 
 Instance `components/foliage/painterly_tree.tscn` under a memory's `Environment`. Place its origin at ground level. The tree previews in the editor, rebuilds when authoring parameters change, and saves parameters rather than generated geometry nodes. It is present immediately, with no recollection or entrance animation.
 
+## Tree variants
+
+Choose **Tree Shape → Tree Type** on any instance of `painterly_tree.tscn`. All six types share seeds, palettes, wind, curved trunks, ground shadows, and optional trunk collision.
+
+| Type | Silhouette |
+| --- | --- |
+| Broadleaf | Original rounded, irregular crown; existing scenes retain their appearance. |
+| Spreading Oak | Wider, flatter crown with a heavier trunk. |
+| Slender Birch | Airy, vertically staggered foliage and a narrow pale trunk with broken dark markings. |
+| Weeping Willow | Arched limbs with dense, broad, overlapping curtains of hanging foliage. |
+| Layered Pine | Tapered crown built from whorled evergreen boughs. |
+| Columnar Cypress | Dense, narrow evergreen column with closely stacked growth levels. |
+
+Types apply proportion multipliers to your authored dimensions, rather than replacing them. Combine the type with **Tree Seed**, height, width, bend, density, and a seasonal palette for variations within a forest. **Bark → Use Type Bark** enables birch's pale marked bark; disable it to use your own Bark Shadow / Light colors. Other types use those authored colors directly.
+
+![Six tree types at matching authoring dimensions](../../docs/tree-variants.png)
+
 ## Authoring controls
 
 | Inspector field | Effect |
 | --- | --- |
-| Palette | Uses the same `GrassPalette` resources as grass; meadow and dusk are included. |
+| Palette Preset / Palette | Shared seasonal and dreamlike foliage palette choices, or a custom `GrassPalette`. |
+| Tree Type | Selects one of the six growth forms above. |
 | Tree Seed | Repeatable trunk lean, branches, leaf clumps, sprays, and painted colors. |
 | Tree Height / Crown Width | Overall proportions, in meters. |
 | Trunk Radius | Stem thickness and root-flare size. |
 | Trunk Bend | Seeded curve strength as a fraction of tree height; default 0.075. Roots stay fixed. |
-| Branch Count | 4–10 main limbs, with two finer forks each and one upper leaf mass. |
-| Leaf Sprays per Cluster | 0–240 sprays in each branch-tip leaf mass; default 120. Zero removes foliage completely. |
+| Branch Count | 4–10 main deciduous limbs or pine levels. Cypress uses twice as many levels, dividing the same foliage budget between them. |
+| Leaf Sprays per Cluster | 0–240; default 120. Total sprays are `(Branch Count + 1) × density`, distributed by growth form. Zero removes foliage completely. |
 | Bark Shadow / Bark Light | Warm wood palette, separate from foliage colors. |
 | Wind Strength / Speed | World-space canopy sway plus phase-varied leaf flutter; default strength 0.09 m. Zero strength produces a still tree. |
 | Trunk Collision | Four aligned capsules follow the bent lower stem and prevent walking through it; disable for decorative trees. |
@@ -29,9 +47,11 @@ Staggered crown heights, a thinner trunk, and secondary forks produce a readable
 
 The previous **Leaf Dabs per Cluster** surface-detail control has been replaced by **Leaf Sprays per Cluster**, which controls the density of the entire canopy. Custom scenes that used the old property should use the new field.
 
+Evergreens reuse the same volume placement and shader with a cached 24-triangle bough mesh made from two broad, overlapping scalloped brush masses. Pine and cypress use branching tiers with overlapping cores and a continuous tapered tip. Evergreen brush masses overlap and follow coherent clump orientations so the crown reads as painted boughs rather than individual needles. Willow reuses the broadleaf spray with wider hanging placement: two-thirds of each branch’s foliage budget forms six full cascading curtains. All types keep a single foliage MultiMesh rather than adding per-leaf objects.
+
 ## Rendering budget
 
-The default tree has **25,928 triangles**, plus a two-triangle shadow plane, and **three geometry surfaces**: merged wood, one foliage MultiMesh, and shadow. A shared 30-triangle leaf-spray mesh is instanced 840 times at the default settings. The only transparent surface is the ground shadow; foliage is opaque, double-sided geometry with depth writes. There are no alpha cards, per-leaf nodes, shadow-map passes, or per-frame script updates or mesh uploads.
+The default deciduous tree has **25,928 triangles**, plus a two-triangle shadow plane, and **three geometry surfaces**: merged wood, one foliage MultiMesh, and shadow. A shared 30-triangle leaf-spray mesh is instanced 840 times at the default settings. At the same default density, pine has **21,056 triangles** and cypress has **21,728**, using the shared evergreen spray. All variants retain the same three geometry surfaces. The only transparent surface is the ground shadow; foliage is opaque, double-sided geometry with depth writes. There are no alpha cards, per-leaf nodes, shadow-map passes, or per-frame script updates or mesh uploads.
 
 This uses more geometry than the earlier sphere canopy to make leaves form the silhouette and volume. It also removes a separate canopy draw surface. The demo measured **13 total draw calls and about 63,900 primitives**, including grass, player, and world, on Godot 4.4.1's Metal Mobile renderer. These are rendering counts, not an iOS frame-rate guarantee. For many trees, start with 50–80 sprays per cluster and profile on the target phone. Each tree is culled as one component; forest-wide batching and distance LOD are not implemented.
 
@@ -43,6 +63,7 @@ The cheap shadow lies at ground level; it does not dynamically shade grass leave
 
 ```sh
 godot --path . --script tests/tree_smoke.gd
+godot --path . --script tests/tree_variants.gd
 godot --path . --script tests/tree_wind_render.gd
 ```
 
@@ -53,3 +74,5 @@ The wind rendering check isolates the tree and compares frames with strength zer
 ## Palette selector
 
 Each component exposes **Foliage Colors → Palette Preset** in the Inspector. Choose seasonal or dreamlike colors, or edit a custom four-color mix. Palette changes preserve geometry and the painterly color distribution. See [the palette guide](PALETTES.md).
+
+The variant check covers all six growth forms, deterministic rebuilding, shared meshes, geometry bounds, palette independence, type/palette scene persistence, birch markings, wind parameters, odd cypress density, and zero-density evergreen foliage. `docs/tree-variants.png` compares the types in an actual Godot render.

@@ -50,4 +50,3 @@ shape_profile = 3
 [node name="MeadowBoulder2" parent="Environment" index="6" instance=ExtResource("5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.17693, 0, -5.01596)
 shape_profile = 4
-variability = 0.85

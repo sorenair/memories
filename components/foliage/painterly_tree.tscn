@@ -4,3 +4,6 @@
 
 [node name="PainterlyTree" type="Node3D"]
 script = ExtResource("1")
+palette_preset = 3
+tree_type = 1
+tree_seed = 89

@@ -40,7 +40,7 @@ The grass check covers repeatable generation, seed variation, the geometry budge
 
 ## Trees
 
-`painterly_tree.tscn` adds a reusable single-tree generator using the same foliage palettes. See [the tree authoring guide](TREES.md).
+`painterly_tree.tscn` adds a reusable single-tree generator using the same foliage palettes. **Tree Shape → Tree Type** selects Broadleaf, Spreading Oak, Slender Birch, Weeping Willow, Layered Pine, or Columnar Cypress; all reuse the shared wind and painterly foliage systems. See [the tree authoring guide](TREES.md).
 
 ## Bushes
 

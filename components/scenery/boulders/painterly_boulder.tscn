@@ -4,8 +4,6 @@
 
 [node name="PainterlyBoulder" type="Node3D"]
 script = ExtResource("1")
-shape_profile = null
-variability = null
 roundness = 0.76
 roughness = 0.27
 burial = 0.15
