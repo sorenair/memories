@@ -22,6 +22,8 @@ Instance `components/foliage/painterly_tree.tscn` to add a single tree. Seeds, p
 
 Instance `components/foliage/painterly_bush.tscn` to add a low, spreading shrub. Seed, footprint, height, density, palette, wind, and culling distance are editable with live previews. See [the bush authoring guide](components/foliage/BUSHES.md).
 
+Use **Foliage Colors → Palette Preset** on any grass, tree, or bush instance for seasonal and dreamlike color schemes. See [the palette guide](components/foliage/PALETTES.md).
+
 ## Create another memory
 
 1. In Godot, create an **inherited scene** from `scenes/memories/memory_base.tscn` and save it under `scenes/memories/`.

@@ -49,3 +49,7 @@ godot --path . --script tests/tree_wind_render.gd
 The tree check needs a real rendering device because Godot's headless dummy renderer does not retain MultiMesh transform-buffer readback. It validates full seeded placement/color buffers, finite positions, volumetric leaf geometry, culling bounds, triangle budget, shared leaf meshes, independent palette materials, zero-density foliage, and optional collision. The tree has also been visually checked from two camera angles.
 
 The wind rendering check isolates the tree and compares frames with strength zero and with wind enabled. The still tree must remain unchanged while the animated canopy visibly changes. The tree check also verifies that changing trunk bend alters bark geometry without altering the foliage distribution.
+
+## Palette selector
+
+Each component exposes **Foliage Colors → Palette Preset** in the Inspector. Choose seasonal or dreamlike colors, or edit a custom four-color mix. Palette changes preserve geometry and the painterly color distribution. See [the palette guide](PALETTES.md).

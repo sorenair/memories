@@ -45,3 +45,7 @@ The grass check covers repeatable generation, seed variation, the geometry budge
 ## Bushes
 
 `painterly_bush.tscn` creates low, spreading shrubs using the same leaf geometry, palette resources, and wind shader as trees. See [the bush authoring guide](BUSHES.md).
+
+## Palette selector
+
+Each component exposes **Foliage Colors → Palette Preset** in the Inspector. Choose seasonal or dreamlike colors, or edit a custom four-color mix. Palette changes preserve geometry and the painterly color distribution. See [the palette guide](PALETTES.md).

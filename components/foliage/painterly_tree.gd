@@ -9,14 +9,28 @@ const SHADOW_SHADER = preload("res://shaders/contact_shadow.gdshader")
 const DEFAULT_PALETTE = preload("res://components/foliage/palettes/meadow.tres")
 const SUN_DIRECTION = Vector3(-0.45, 0.82, -0.35)
 
+const PALETTES = preload("res://components/foliage/shared/foliage_palettes.gd")
+
+@export_group("Foliage Colors")
+@export_enum("Custom", "Summer Meadow", "Spring", "Autumn Gold", "Autumn Red", "Winter Frost", "Dream Lavender", "Dream Blue", "Dream Rose", "Dusk") var palette_preset: int = 1:
+	set(value):
+		palette_preset = clampi(value, 0, 9)
+		if palette_preset != 0:
+			_applying_preset = true
+			palette = PALETTES.create_preset(palette_preset)
+			_applying_preset = false
+		notify_property_list_changed()
 @export var palette: GrassPalette = DEFAULT_PALETTE:
 	set(value):
-		if palette and palette.changed.is_connected(_request_rebuild):
-			palette.changed.disconnect(_request_rebuild)
+		if palette and palette.changed.is_connected(_on_palette_changed):
+			palette.changed.disconnect(_on_palette_changed)
 		palette = value
 		if palette:
-			palette.changed.connect(_request_rebuild)
-		_request_rebuild()
+			palette.changed.connect(_on_palette_changed)
+		if not _applying_preset:
+			palette_preset = 0
+		_apply_palette()
+@export_group("")
 @export var tree_seed: int = 84:
 	set(value):
 		tree_seed = value
@@ -73,13 +87,30 @@ const SUN_DIRECTION = Vector3(-0.45, 0.82, -0.35)
 @export_tool_button("Regenerate tree") var regenerate = rebuild
 
 const LEAF_GEOMETRY = preload("res://components/foliage/shared/leaf_geometry.gd")
+var _applying_preset: bool = false
+var _palette_materials: Array[ShaderMaterial] = []
 var _queued: bool = false
 var _canopy_material: ShaderMaterial
 
 func _ready() -> void:
-	if palette and not palette.changed.is_connected(_request_rebuild):
-		palette.changed.connect(_request_rebuild)
+	if palette and not palette.changed.is_connected(_on_palette_changed):
+		palette.changed.connect(_on_palette_changed)
 	rebuild()
+
+func _validate_property(property: Dictionary) -> void:
+	# Presets recreate their own local resource on load. Only Custom stores it,
+	# preventing saved property order from overriding the selected preset.
+	if property.name == "palette" and palette_preset != 0:
+		property.usage = property.usage & ~PROPERTY_USAGE_STORAGE
+
+func _on_palette_changed() -> void:
+	palette_preset = 0
+	_apply_palette()
+
+func _apply_palette() -> void:
+	var colors: GrassPalette = palette if palette else DEFAULT_PALETTE
+	for material in _palette_materials:
+		PALETTES.apply(material, colors)
 
 func _request_rebuild() -> void:
 	if is_inside_tree() and not _queued:
@@ -101,12 +132,14 @@ func _material(shader: Shader, colors: GrassPalette) -> ShaderMaterial:
 	if shader == CANOPY_SHADER:
 		material.set_shader_parameter("tree_height", tree_height)
 		material.set_shader_parameter("tree_phase", float(posmod(tree_seed, 1000)) * 0.173)
+	_palette_materials.append(material)
 	return material
 
 func rebuild() -> void:
 	_queued = false
 	if not is_inside_tree():
 		return
+	_palette_materials.clear()
 	for child in get_children(true):
 		if child.get_meta(&"generated_tree", false):
 			remove_child(child)

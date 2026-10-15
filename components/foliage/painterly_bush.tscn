@@ -4,3 +4,4 @@
 [node name="PainterlyBush" type="Node3D"]
 script = ExtResource("1")
 palette = ExtResource("2")
+palette_preset = 1

@@ -46,3 +46,7 @@ A rendering device is required for reliable MultiMesh transform-buffer readback.
 `docs/bush-demo.png` shows the playable scene. `docs/bush-detail.png` shows the bushes more closely.
 
 The interaction checks cover two independent explorers, easing, frame-rate independence, removal, teleports, and disabling the effect without disabling wind. A rendered check isolates a bush and confirms visible disturbance, return to its resting shape, and continued wind. Tree shaders keep disturbance strength at zero, preserving their existing behavior.
+
+## Palette selector
+
+Each component exposes **Foliage Colors → Palette Preset** in the Inspector. Choose seasonal or dreamlike colors, or edit a custom four-color mix. Palette changes preserve geometry and the painterly color distribution. See [the palette guide](PALETTES.md).
