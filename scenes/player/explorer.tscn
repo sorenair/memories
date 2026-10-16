@@ -47,7 +47,7 @@ rings = 4
 [node name="Explorer" type="CharacterBody3D" groups=["explorers"]]
 floor_snap_length = 0.2
 script = ExtResource("1")
-walk_speed = 2.35
+walk_speed = 2.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.675, 0)

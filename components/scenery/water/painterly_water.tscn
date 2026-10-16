@@ -1,7 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://cxegd0ga2n24p"]
+[gd_scene load_steps=4 format=3 uid="uid://cxegd0ga2n24p"]
 
 [ext_resource type="Script" uid="uid://bbm0lw7hhq0ap" path="res://components/scenery/water/painterly_water.gd" id="1"]
+[ext_resource type="Script" path="res://components/scenery/water/water_settings.gd" id="2_2gg77"]
+
+[sub_resource type="Resource" id="Resource_qhn8p"]
+script = ExtResource("2_2gg77")
+flow_speed = 0.16
+ripple_scale = 1.0
+wave_activity = 0.72
+wave_height = 0.015
+paint_contrast = 0.6
+depth_distance = 2.8
+caustic_strength = 0.22
+normal_strength = 0.38
+reflection_strength = 0.38
+highlight_amount = 0.55
+sky_color = Color(0.772549, 0.905882, 0.87451, 1)
+light_direction = Vector3(-0.45, 0.82, -0.35)
 
 [node name="PainterlyWater" type="Node3D"]
 script = ExtResource("1")
+settings = SubResource("Resource_qhn8p")
 foam_cell_size = 3.75

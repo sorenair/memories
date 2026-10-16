@@ -44,22 +44,21 @@ func run() -> void:
 	check(world.get_node("CameraRig").position.distance_to(player.position) < 0.05, "Camera must settle on explorer")
 	var touch := InputEventScreenTouch.new()
 	touch.index = 0
-	touch.position = Vector2(120, 240)
+	touch.position = input._origin
 	touch.pressed = true
 	input._input(touch)
 	var drag := InputEventScreenDrag.new()
 	drag.index = 0
-	drag.position = Vector2(256, 240)
+	drag.position = input._origin + Vector2(input._radius * 2.0, 0)
 	input._input(drag)
 	check(input.get_movement().is_equal_approx(Vector2.RIGHT), "Touch drag must clamp to unit movement")
 	touch.pressed = false
 	input._input(touch)
 	check(input.get_movement() == Vector2.ZERO, "Touch release must stop movement")
-	player.position = Vector3(3000, 0, 3000)
-	player.reset_physics_interpolation()
-	for frame in range(5):
-		await physics_frame
-	check(player.is_on_floor(), "Void ground must remain walkable beyond the original surface")
-	check(world.get_node("DreamSurface").position.distance_to(player.position) < 0.05, "Visual surface must follow explorer")
+	var platform: MemoryPlatform = world.get_node("Memory/Environment/MemoryPlatform")
+	check(platform.contains_ground_point(player.global_position), "Explorer must remain on the finite memory platform")
+	check(not world.get_node("DreamSurface").visible and world.get_node("Ground/CollisionShape3D").disabled, "Bounded memory must replace the infinite surface and collision")
+	var ray := PhysicsRayQueryParameters3D.create(Vector3(3000, 3, 3000), Vector3(3000, -3, 3000))
+	check(world.get_world_3d().direct_space_state.intersect_ray(ray).is_empty(), "Ground must not extend into the void")
 	print("Scene smoke checks: ", "PASS" if failures == 0 else "FAIL")
 	quit(failures)

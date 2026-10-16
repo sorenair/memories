@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://1bv5ujx506r3"]
+[gd_scene load_steps=11 format=3 uid="uid://1bv5ujx506r3"]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="2"]
@@ -7,6 +7,18 @@
 [ext_resource type="PackedScene" uid="uid://xih5rwxndq63" path="res://components/scenery/boulders/painterly_boulder.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://cxegd0ga2n24p" path="res://components/scenery/water/painterly_water.tscn" id="6"]
 [ext_resource type="PackedScene" uid="uid://bm2sxgwwapscy" path="res://components/scenery/rock_clusters/painterly_rock_cluster.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://components/guidance/wisps/dream_wisp_path.tscn" id="8"]
+
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="9"]
+
+[sub_resource type="Curve3D" id="ClearingWispRoute"]
+resource_local_to_scene = true
+bake_interval = 0.1
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, -0.6, 0.8, 0, 1, -0.4, 0, 0.6, 0.4, 0, -0.6, 0.6, 0, -0.4, 0, 0, 0.8, 0, 0, -0.8, 0.8, 0, -2.8, 0.4, 0, 0.7, -0.4, 0, -0.7, 0.2, 0, -5.2, 0.3, 0, 0.6, -0.3, 0, -0.6, -0.6, 0, -6.5),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
 
 [node name="Memory" instance=ExtResource("1")]
 memory_id = &"foliage_demo"
@@ -16,7 +28,7 @@ display_name = "A forest clearing"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 1.1)
 
 [node name="Exit" parent="." index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11.5)
 
 [node name="Meadow" parent="Environment" index="0" instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, -2.1)
@@ -128,7 +140,10 @@ leaf_sprays_per_cluster = 80
 
 [node name="ClearingPond" parent="Environment" index="15" instance=ExtResource("6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 3.6)
+behavior_preset = 1
 footprint = Vector2(6.4, 4.7)
+shore_obstacles = Array[NodePath]([NodePath("../PondShoreStone"), NodePath("../PondSmallStone"), NodePath("../PondRockCluster")])
+shore_field_quality = 1
 foam_width = 0.44
 
 [node name="PondShoreStone" parent="Environment" index="16" instance=ExtResource("5")]
@@ -249,3 +264,14 @@ cluster_footprint = Vector2(1.8, 1.2)
 rock_scale = 0.38
 size_variation = 0.8
 boulder_seed = 193
+
+[node name="ClearingWisps" parent="Environment" index="32" instance=ExtResource("8")]
+visible = false
+curve = SubResource("ClearingWispRoute")
+wisp_count = 7
+float_height = 0.5
+
+[node name="MemoryPlatform" parent="Environment" index="33" instance=ExtResource("9")]
+position = Vector3(0, 0, 1)
+footprint = Vector2(24, 30)
+platform_seed = 139

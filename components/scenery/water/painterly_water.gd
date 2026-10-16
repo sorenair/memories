@@ -5,7 +5,14 @@ extends Node3D
 signal ground_exclusion_changed
 const SHAPES = preload("res://components/scenery/water/water_shapes.gd")
 const WATER_SHADER = preload("res://components/scenery/water/shaders/painted_water.gdshader")
-const PAINT_MASK = preload("res://components/scenery/water/textures/water_paint.png")
+const BODY = preload("res://components/scenery/water/water_body_geometry.gd")
+const SHORE_FIELD = preload("res://components/scenery/water/water_shore_field.gd")
+const SETTINGS_PRESETS = [null, preload("res://components/scenery/water/settings/calm_pond.tres"), preload("res://components/scenery/water/settings/flowing_stream.tres"), preload("res://components/scenery/water/settings/open_lake.tres")]
+const SETTINGS_KEYS = [&"flow_speed", &"ripple_scale", &"wave_activity", &"wave_height", &"caustic_strength", &"highlight_amount", &"paint_contrast", &"depth_distance", &"normal_strength", &"reflection_strength", &"sky_color", &"light_direction"]
+const FOAM_MASK = preload("res://components/scenery/water/textures/water_paint.png")
+const PIGMENT_MASK = preload("res://components/scenery/water/textures/water_pigment.png")
+const NORMAL_MASK = preload("res://components/scenery/water/textures/water_normals.png")
+const CAUSTIC_MASK = preload("res://components/scenery/water/textures/water_caustics.png")
 const COLOR_KEYS = [&"deep_color", &"body_color", &"shallow_color", &"foam_color"]
 const COLORS = [
 	["175273", "2498b0", "59c9ba", "ffffff"],
@@ -16,6 +23,26 @@ const COLORS = [
 	["263e69", "426a91", "80a9b6", "d5e7df"]
 ]
 
+@export_group("Shared Appearance")
+@export_enum("Custom", "Calm Pond", "Flowing Stream", "Open Lake") var behavior_preset: int = 0:
+	set(value):
+		behavior_preset = clampi(value, 0, 3)
+		if behavior_preset > 0:
+			_applying_settings = true
+			settings = SETTINGS_PRESETS[behavior_preset].duplicate() as WaterSettings
+			_applying_settings = false
+		notify_property_list_changed()
+@export var settings: WaterSettings:
+	set(value):
+		if settings and settings.changed.is_connected(_settings_changed):
+			settings.changed.disconnect(_settings_changed)
+		settings = value
+		if settings:
+			settings.changed.connect(_settings_changed)
+		if not _applying_settings:
+			behavior_preset = 0
+		notify_property_list_changed()
+		_update_materials()
 @export_group("Water Shape")
 @export_enum("Pond", "Stream Section") var shape: int = 0:
 	set(value):
@@ -46,10 +73,51 @@ const COLORS = [
 	set(value):
 		outline_detail = clampi(value, 16, 96)
 		_request_rebuild()
+## Optional custom closed outline in local X/Z, represented by a Curve2D.
+@export var pond_outline: Curve2D:
+	set(value):
+		if pond_outline and pond_outline.changed.is_connected(_shape_resource_changed):
+			pond_outline.changed.disconnect(_shape_resource_changed)
+		pond_outline = value
+		if pond_outline:
+			pond_outline.changed.connect(_shape_resource_changed)
+		_shape_resource_changed()
+## Optional flat centerline, edited with a Path3D's Curve resource.
+@export var stream_path: Curve3D:
+	set(value):
+		if stream_path and stream_path.changed.is_connected(_shape_resource_changed):
+			stream_path.changed.disconnect(_shape_resource_changed)
+		stream_path = value
+		if stream_path:
+			stream_path.changed.connect(_shape_resource_changed)
+		_shape_resource_changed()
+## Width multiplier along the stream, sampled from 0 to 1.
+@export var stream_width_profile: Curve:
+	set(value):
+		if stream_width_profile and stream_width_profile.changed.is_connected(_shape_resource_changed):
+			stream_width_profile.changed.disconnect(_shape_resource_changed)
+		stream_width_profile = value
+		if stream_width_profile:
+			stream_width_profile.changed.connect(_shape_resource_changed)
+		_shape_resource_changed()
+## Arc-length phase offset for connecting custom stream segments (meters).
+@export var stream_flow_offset: float = 0.0:
+	set(value):
+		stream_flow_offset = value
+		_update_materials()
 @export_group("Shore")
 @export var block_water_entry: bool = true:
 	set(value):
 		block_water_entry = value
+		_request_rebuild()
+## Paths to boulders / rock clusters; collision or visual sections define water edges.
+@export var shore_obstacles: Array[NodePath] = []:
+	set(value):
+		shore_obstacles = value
+		_request_rebuild()
+@export_enum("Mobile (64)", "Balanced (96)", "Detailed (128)") var shore_field_quality: int = 0:
+	set(value):
+		shore_field_quality = clampi(value, 0, 2)
 		_request_rebuild()
 @export_group("Water Colors")
 @export_enum("Custom", "Turquoise", "Storybook Blue", "Autumn Jade", "Winter Glass", "Dream Lavender", "Moonlit") var palette_preset: int = 1:
@@ -84,7 +152,7 @@ const COLORS = [
 	set(value):
 		ripple_scale = clampf(value, 0.4, 4.0)
 		_update_materials()
-## Directional painted depth for ponds; streams use a shared world field at joins.
+## Legacy serialized value. Depth now uses WaterSettings.depth_distance.
 @export_range(0.0, 1.0, 0.01) var depth_gradient: float = 0.72:
 	set(value):
 		depth_gradient = clampf(value, 0.0, 1.0)
@@ -130,6 +198,12 @@ const COLORS = [
 				child.visibility_range_end = visibility_distance
 @export_tool_button("Regenerate water") var regenerate = rebuild
 var _applying_preset: bool = false
+var _applying_settings: bool = false
+var _shape_data: Dictionary = {}
+var _shore_data: Dictionary = {}
+var _obstacle_regions: Array[PackedVector2Array] = []
+var _obstacle_nodes: Array[Node] = []
+var _fallback_settings: WaterSettings = WaterSettings.new()
 var _queued: bool = false
 var _water_material: ShaderMaterial
 
@@ -146,15 +220,38 @@ func _ready() -> void:
 		_applying_preset = true
 		palette = make_palette(maxi(1, palette_preset))
 		_applying_preset = false
-	rebuild()
+	if shore_obstacles.is_empty():
+		rebuild()
+	else:
+		_request_rebuild()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSFORM_CHANGED and is_inside_tree():
 		ground_exclusion_changed.emit()
+		_update_materials()
+		if not shore_obstacles.is_empty():
+			_request_rebuild()
 
 func _validate_property(property: Dictionary) -> void:
+	if property.name == "depth_gradient":
+		property.usage = property.usage & ~PROPERTY_USAGE_EDITOR
+	if property.name == "settings" and behavior_preset > 0:
+		property.usage = property.usage & ~PROPERTY_USAGE_STORAGE
+	if settings and StringName(property.name) in SETTINGS_KEYS:
+		property.usage = property.usage & ~PROPERTY_USAGE_EDITOR
 	if property.name == "palette" and palette_preset != 0:
 		property.usage = property.usage & ~PROPERTY_USAGE_STORAGE
+
+func _settings_changed() -> void:
+	behavior_preset = 0
+	_update_materials()
+
+func _shape_resource_changed() -> void:
+	_shape_data = {}
+	_request_rebuild()
+
+func _make_shape_data() -> Dictionary:
+	return BODY.make_shape(shape, footprint, water_seed, irregularity, stream_bend, outline_detail, pond_outline, stream_path, stream_width_profile)
 
 func _palette_changed() -> void:
 	palette_preset = 0
@@ -166,21 +263,70 @@ func _request_rebuild() -> void:
 		call_deferred("rebuild")
 
 func _update_materials() -> void:
-	if not palette:
+	if not _water_material:
 		return
-	if _water_material:
-		for key in COLOR_KEYS.slice(0, 4):
-			_water_material.set_shader_parameter(key, palette.get(key))
-		for key in [&"flow_direction", &"flow_speed", &"ripple_scale", &"caustic_strength", &"highlight_amount", &"wave_height", &"wave_activity", &"foam_amount", &"foam_width", &"foam_cell_size"]:
-			_water_material.set_shader_parameter(key, get(key))
-		_water_material.set_shader_parameter("water_size", footprint)
-		_water_material.set_shader_parameter("depth_gradient", depth_gradient if shape == 0 else 0.0)
-		# Global phase keeps matching stream sections visually continuous.
-		_water_material.set_shader_parameter("motion_phase", 0.0 if shape == 1 else SHAPES.phase(water_seed))
-## Grass and other scatter components can query the same analytic shape.
+	var colors: WaterPalette = settings.palette if settings and settings.palette else palette
+	if not colors:
+		colors = make_palette(1)
+	for key in COLOR_KEYS:
+		_water_material.set_shader_parameter(key, colors.get(key))
+	for key in SETTINGS_KEYS:
+		var value: Variant = settings.get(key) if settings else (get(key) if key in [&"flow_speed", &"ripple_scale", &"wave_activity", &"wave_height", &"caustic_strength", &"highlight_amount"] else _fallback_settings.get(key))
+		_water_material.set_shader_parameter(key, value)
+	for key in [&"flow_direction", &"foam_amount", &"foam_width", &"foam_cell_size"]:
+		_water_material.set_shader_parameter(key, get(key))
+	_water_material.set_shader_parameter("stream_body", shape == 1)
+	var offset := stream_flow_offset
+	if shape == 1 and not stream_path:
+		var axis := global_basis.z.normalized()
+		offset += Vector2(global_position.x, global_position.z).dot(Vector2(axis.x, axis.z))
+	_water_material.set_shader_parameter("flow_offset", offset)
+	_water_material.set_shader_parameter("motion_phase", 0.0 if shape == 1 else SHAPES.phase(water_seed))
+	if not _shore_data.is_empty():
+		_water_material.set_shader_parameter("shore_field", _shore_data.texture)
+		_water_material.set_shader_parameter("field_origin", _shore_data.bounds.position)
+		_water_material.set_shader_parameter("field_size", _shore_data.bounds.size)
+
 func excludes_ground_point(world_point: Vector3) -> bool:
 	var local := to_local(world_point)
-	return SHAPES.contains(shape, Vector2(local.x, local.z), footprint, water_seed, irregularity, stream_bend, 0.06)
+	# Build on demand when a sibling grass patch becomes ready before this water.
+	if _shape_data.is_empty():
+		_shape_data = _make_shape_data()
+	var point := Vector2(local.x, local.z)
+	return Geometry2D.is_point_in_polygon(point, _shape_data.outline) or BODY.polygon_distance(point, _shape_data.outline) < 0.06
+
+func _collect_obstacles() -> void:
+	for node in _obstacle_nodes:
+		if is_instance_valid(node) and node.has_signal("scenery_changed") and node.scenery_changed.is_connected(_request_rebuild):
+			node.scenery_changed.disconnect(_request_rebuild)
+	_obstacle_nodes.clear()
+	_obstacle_regions.clear()
+	for path in shore_obstacles:
+		var node := get_node_or_null(path)
+		if node and node is Node3D:
+			_obstacle_nodes.append(node)
+			if node.has_signal("scenery_changed") and not node.scenery_changed.is_connected(_request_rebuild):
+				node.scenery_changed.connect(_request_rebuild)
+			var before := _obstacle_regions.size()
+			_collect_convex_sections(node)
+			if _obstacle_regions.size() == before:
+				_collect_visual_sections(node)
+
+func _collect_convex_sections(node: Node) -> void:
+	if node is CollisionShape3D and node.shape is ConvexPolygonShape3D and not node.disabled:
+		var transform: Transform3D = global_transform.affine_inverse() * node.global_transform
+		var polygon := SHORE_FIELD.convex_slice(node.shape.points, transform)
+		if polygon.size() >= 3:
+			_obstacle_regions.append(polygon)
+	for child in node.get_children(true):
+		_collect_convex_sections(child)
+
+func _collect_visual_sections(node: Node) -> void:
+	if node is MeshInstance3D and node.mesh:
+		var transform: Transform3D = global_transform.affine_inverse() * node.global_transform
+		_obstacle_regions.append_array(SHORE_FIELD.mesh_sections(node.mesh, transform))
+	for child in node.get_children(true):
+		_collect_visual_sections(child)
 
 func _generated(node: Node) -> void:
 	node.set_meta(&"generated_water", true)
@@ -189,11 +335,12 @@ func _generated(node: Node) -> void:
 		node.visibility_range_end = visibility_distance
 	add_child(node, false, Node.INTERNAL_MODE_BACK)
 
-func _triangle(surface: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, depths: Vector3) -> void:
+func _triangle(surface: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, depths: Vector3, uvs: Array[Vector2] = []) -> void:
 	var points := [a, b, c]
 	for index in range(3):
 		surface.set_color(Color(depths[index], 0.0, 0.0, 1.0))
 		surface.set_normal(Vector3.UP)
+		surface.set_uv(uvs[index] if uvs.size() == 3 else Vector2(points[index].x, points[index].z))
 		surface.add_vertex(points[index])
 
 func _surface_point(point: Vector2) -> Vector3:
@@ -209,12 +356,23 @@ func rebuild() -> void:
 			child.queue_free()
 	_water_material = ShaderMaterial.new()
 	_water_material.shader = WATER_SHADER
-	_water_material.set_shader_parameter("paint_mask", PAINT_MASK)
+	_water_material.set_shader_parameter("foam_mask", FOAM_MASK)
+	_water_material.set_shader_parameter("pigment_mask", PIGMENT_MASK)
+	_water_material.set_shader_parameter("normal_mask", NORMAL_MASK)
+	_water_material.set_shader_parameter("caustic_mask", CAUSTIC_MASK)
 	_update_materials()
-	var outline := SHAPES.outline(shape, footprint, water_seed, irregularity, stream_bend, outline_detail)
+	_shape_data = _make_shape_data()
+	_collect_obstacles()
+	_shore_data = SHORE_FIELD.bake(_shape_data, _obstacle_regions, shape == 1, cap_stream_ends, flow_direction, [64, 96, 128][shore_field_quality])
+	_update_materials()
+	var outline: PackedVector2Array = _shape_data.outline
 	var water := SurfaceTool.new()
 	water.begin(Mesh.PRIMITIVE_TRIANGLES)
-	if shape == 0:
+	if shape == 0 and pond_outline and pond_outline.point_count >= 3:
+		var indices := Geometry2D.triangulate_polygon(outline)
+		for index in range(0, indices.size(), 3):
+			_subdivide(water, _surface_point(outline[indices[index]]), _surface_point(outline[indices[index + 1]]), _surface_point(outline[indices[index + 2]]), 2)
+	elif shape == 0:
 		for ring in range(6):
 			var inner := float(ring) / 6.0
 			var outer := float(ring + 1) / 6.0
@@ -232,16 +390,19 @@ func rebuild() -> void:
 			for column in range(8):
 				var points: Array[Vector3] = []
 				var depths: Array[float] = []
+				var uvs: Array[Vector2] = []
 				for corner in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1)]:
 					var t := float(row + corner.y) / float(outline_detail)
 					var u := float(column + corner.x) / 8.0
-					points.append(_surface_point(Vector2(SHAPES.stream_center(t, footprint, stream_bend, water_seed) + (u - 0.5) * footprint.x, (t - 0.5) * footprint.y)))
+					points.append(_surface_point(_shape_data.centers[row + corner.y] + _shape_data.sides[row + corner.y] * (u * 2.0 - 1.0) * _shape_data.widths[row + corner.y]))
+					var along: float = _shape_data.lengths[row + corner.y] if stream_path else (t - 0.5) * footprint.y
+					uvs.append(Vector2((u * 2.0 - 1.0) * _shape_data.widths[row + corner.y], along))
 					var depth := 1.0 - absf(u * 2.0 - 1.0)
 					if cap_stream_ends:
 						depth = minf(depth, minf(t, 1.0 - t) * footprint.y / footprint.x * 2.0)
 					depths.append(depth)
-				_triangle(water, points[0], points[1], points[2], Vector3(depths[0], depths[1], depths[2]))
-				_triangle(water, points[0], points[2], points[3], Vector3(depths[0], depths[2], depths[3]))
+				_triangle(water, points[0], points[1], points[2], Vector3(depths[0], depths[1], depths[2]), [uvs[0], uvs[1], uvs[2]])
+				_triangle(water, points[0], points[2], points[3], Vector3(depths[0], depths[2], depths[3]), [uvs[0], uvs[2], uvs[3]])
 	var surface := MeshInstance3D.new()
 	surface.name = "PaintedWater"
 	surface.mesh = water.commit()
@@ -250,6 +411,19 @@ func rebuild() -> void:
 	_generated(surface)
 	_add_shore(outline)
 	ground_exclusion_changed.emit()
+
+func _subdivide(surface: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, levels: int) -> void:
+	if levels == 0 or (b - a).cross(c - a).length_squared() < 0.000003:
+		# Preserve narrow boundary triangles instead of subdividing into slivers.
+		_triangle(surface, a, b, c, Vector3.ONE)
+		return
+	var ab := (a + b) * 0.5
+	var bc := (b + c) * 0.5
+	var ca := (c + a) * 0.5
+	_subdivide(surface, a, ab, ca, levels - 1)
+	_subdivide(surface, ab, b, bc, levels - 1)
+	_subdivide(surface, ca, bc, c, levels - 1)
+	_subdivide(surface, ab, bc, ca, levels - 1)
 
 func _add_shore(outline: PackedVector2Array) -> void:
 	if not block_water_entry:

@@ -2,6 +2,7 @@
 class_name PainterlyBoulder
 extends Node3D
 ## One contiguous seeded stone with clean painted planes and varied silhouettes.
+signal scenery_changed
 const GEOMETRY = preload("res://components/scenery/boulders/boulder_geometry.gd")
 const STONE_SHADER = preload("res://components/scenery/boulders/shaders/painted_stone.gdshader")
 const SHADOW_SHADER = preload("res://shaders/contact_shadow.gdshader")
@@ -82,9 +83,14 @@ var _queued: bool = false
 var _stone_material: ShaderMaterial
 
 func _ready() -> void:
+	set_notify_transform(true)
 	if palette and not palette.changed.is_connected(_on_palette_changed):
 		palette.changed.connect(_on_palette_changed)
 	rebuild()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSFORM_CHANGED and is_inside_tree():
+		scenery_changed.emit()
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "palette" and palette_preset != 0:
@@ -143,6 +149,8 @@ func rebuild() -> void:
 		collision.shape = mesh.create_convex_shape()
 		body.add_child(collision)
 		_add_generated(body)
+
+	scenery_changed.emit()
 
 func _add_generated(node: Node) -> void:
 	node.set_meta(&"generated_boulder", true)

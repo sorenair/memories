@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=3]
+[ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="1"]
+[ext_resource type="Curve2D" path="res://components/scenery/water/examples/pond_outline.tres" id="2"]
+[ext_resource type="Curve3D" path="res://components/scenery/water/examples/stream_curve.tres" id="3"]
+[ext_resource type="Curve" path="res://components/scenery/water/examples/stream_width.tres" id="4"]
+[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="5"]
+[sub_resource type="Environment" id="Environment"]
+background_mode = 1
+background_color = Color(0.94, 0.935, 0.89, 1)
+[sub_resource type="StandardMaterial3D" id="GroundPaint"]
+shading_mode = 0
+albedo_color = Color(0.94, 0.935, 0.89, 1)
+[sub_resource type="PlaneMesh" id="GroundMesh"]
+material = SubResource("GroundPaint")
+size = Vector2(200, 200)
+[node name="WaterStudy" type="Node3D"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("GroundMesh")
+[node name="CustomPond" parent="." instance=ExtResource("1")]
+position = Vector3(-3.5, 0, 0)
+pond_outline = ExtResource("2")
+behavior_preset = 1
+shore_obstacles = Array[NodePath]([NodePath("../PondStone")])
+foam_width = 0.22
+[node name="PondStone" parent="." instance=ExtResource("5")]
+position = Vector3(-4.1, 0, -0.9)
+dimensions = Vector3(1.0, 0.65, 0.9)
+[node name="CurvedStream" parent="." instance=ExtResource("1")]
+position = Vector3(3.6, 0, 0)
+shape = 1
+footprint = Vector2(1.8, 10)
+stream_path = ExtResource("3")
+stream_width_profile = ExtResource("4")
+behavior_preset = 2
+foam_width = 0.16
+[node name="EditStreamPath" type="Path3D" parent="CurvedStream"]
+curve = ExtResource("3")
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(0, 13, 12)
+rotation_degrees = Vector3(-47.29, 0, 0)
+projection = 1
+size = 15.0
+current = true

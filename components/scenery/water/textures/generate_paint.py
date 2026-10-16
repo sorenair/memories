@@ -32,3 +32,42 @@ def chunk(kind, data):
 raw = b''.join(b'\0' + row.tobytes() for row in rgba)
 png = b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', size, size, 8, 6, 0, 0, 0)) + chunk(b'IDAT', zlib.compress(raw, 9)) + chunk(b'IEND', b'')
 Path(__file__).with_name('water_paint.png').write_bytes(png)
+
+# Independent masks keep pigment, wave slopes, caustic light, and foam from
+# outlining the same repeating cells. These are shared data textures at runtime.
+def write_rgba(name, channels):
+    data = np.clip(np.stack(channels, axis=-1) * 255, 0, 255).astype(np.uint8)
+    raw = b''.join(b'\0' + row.tobytes() for row in data)
+    result = b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', size, size, 8, 6, 0, 0, 0)) + chunk(b'IDAT', zlib.compress(raw, 9)) + chunk(b'IEND', b'')
+    Path(__file__).with_name(name).write_bytes(result)
+
+def smooth(seed, frequency_x, frequency_y=None):
+    source = np.random.default_rng(seed).standard_normal((size, size))
+    kx = np.fft.rfftfreq(size) * size
+    ky = np.fft.fftfreq(size) * size
+    radius = (kx[None, :] / frequency_x) ** 2 + (ky[:, None] / (frequency_y or frequency_x)) ** 2
+    field = np.fft.irfft2(np.fft.rfft2(source) * np.exp(-radius * .5), s=(size,size))
+    return np.clip(.5 + field / field.std() * .17, 0, 1)
+
+broad = smooth(7821, 2.8)
+fine = smooth(9182, 8)
+write_rgba('water_pigment.png', [broad * .50 + pigment * .50, fine, smooth(713, 3.5), smooth(461, 40)])
+height = smooth(241, 8, 3) * .65 + smooth(612, 14, 8) * .35
+dx = np.roll(height, -1, axis=1) - np.roll(height, 1, axis=1)
+dy = np.roll(height, -1, axis=0) - np.roll(height, 1, axis=0)
+write_rgba('water_normals.png', [.5 + dx * 8, .5 + dy * 8, height, smooth(281, 4)])
+
+def caustic(seed, count):
+    local_rng = np.random.default_rng(seed)
+    nearest = np.full((size,size), 100.0)
+    other = nearest.copy()
+    for row in range(count):
+        for col in range(count):
+            cx, cy = (col + local_rng.uniform(.1,.9))/count, (row + local_rng.uniform(.1,.9))/count
+            du, dv = (u-cx+.5)%1-.5, (v-cy+.5)%1-.5
+            distance = np.sqrt(du*du+dv*dv)
+            closest = distance < nearest
+            other = np.where(closest, nearest, np.minimum(other,distance))
+            nearest = np.minimum(nearest,distance)
+    return np.exp(-(other-nearest)*125)
+write_rgba('water_caustics.png', [caustic(901, 11), caustic(347, 7), smooth(814, 3), smooth(577, 9)])

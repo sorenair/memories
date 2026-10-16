@@ -41,6 +41,7 @@ func rebuild() -> void:
 	_rock_bounds.clear()
 	_stone_material = null
 	if rock_count == 0:
+		scenery_changed.emit()
 		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = boulder_seed ^ 0xC175
@@ -92,6 +93,8 @@ func rebuild() -> void:
 		_add_generated(body)
 	else:
 		body.free()
+
+	scenery_changed.emit()
 
 func _shadow_quad(surface: SurfaceTool, bounds: AABB) -> void:
 	var center := bounds.get_center()

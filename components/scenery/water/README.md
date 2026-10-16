@@ -1,72 +1,99 @@
 # Painterly modular water
 
-Instance `painterly_water.tscn` under a memory's `Environment`, with its origin at ground level. **Water Shape → Shape** selects a seeded Pond or a Stream Section. It previews in the editor and is fully present at startup; there are no reveal or transition effects.
+Instance `painterly_water.tscn` at ground level in a memory. The component previews in the editor and appears fully at startup. It uses layered wave normals, broad painted pigment, separate shallow caustics, and a view-dependent sky-light cue. One white shoreline band fades inward and breaks into animated cells; there is no colored bank or secondary foam ribbon.
 
-The component uses overlapping brush-shaped pigment masses, a directional blue-to-turquoise depth gradient, gentle surface motion, and curved, broken light seams. It renders one water surface with an animated white shoreline-foam layer; there is no colored bank or separate border mesh. It shares the scenery's unshaded painterly language. The demo contains a turquoise pond at the clearing entrance, with two existing boulder components framing its shore.
+The demo pond uses Calm Pond settings, with foliage framing the shore and registered rocks contributing foam. Run `scenes/memories/water_study.tscn` with F6 for an uncluttered custom-outline pond and a curved, variable-width stream.
 
-## Authoring
+## Appearance and motion
 
-| Inspector field | Use |
+Choose **Shared Appearance → Behavior Preset**: Calm Pond, Flowing Stream, or Open Lake. Expand **Settings** to tune the result. Editing a preset switches it to Custom and saves the edited resource. Each preset starts with its own settings copy; save/load a `.tres` resource to intentionally share settings across bodies.
+
+| Settings field | Effect |
 | --- | --- |
-| Shape | Irregular closed pond or open-ended stream ribbon. |
-| Footprint | Ground width (X) and length (Y), in meters. Use these instead of scaling the node. |
-| Water Seed | Changes the pond outline or the interior stream bend. |
-| Irregularity | Pond shoreline variation. |
-| Stream Bend | Meander strength for stream sections. Both endpoint positions and tangents stay aligned. |
-| Cap Stream Ends | Closes collision at stream ends and anchors their wave displacement. Leave off when joining modules. |
-| Outline Detail | Shape detail, 16–96; default 48. |
-| Block Water Entry | Adds static shoreline barriers. Disable for purely decorative water or when implementing another traversal system. |
-| Palette Preset | Turquoise, Storybook Blue, Autumn Jade, Winter Glass, Dream Lavender, Moonlit, or Custom. |
-| Palette | Four editable pigment colors. Editing a preset switches to Custom; custom resources can be shared intentionally. |
-| Flow Direction / Speed | World X/Z flow direction and motion speed. Zero speed freezes all animation. |
-| Ripple Scale | Density of painted water features in world meters. |
-| Depth Gradient | Directional shallow-to-deep pigment contrast for ponds. Streams keep a shared world-space field for seamless joins. |
-| Caustic Strength / Highlight Amount | Strength of curved light seams and smaller luminous accents across the surface. |
-| Wave Activity | Strength of crossing waves, paint deformation, and crest lighting. Independent of directional flow. |
-| Wave Height | Physical GPU displacement from the same three swells, anchored at the edges. |
-| Shore Foam → Foam Cell Size | Size multiplier for the evolving openings. 1 keeps the current look; larger values create larger cells. Updates live without rebuilding geometry. |
-| Shore Foam → Foam Amount / Foam Width | Animated white froth, with width in approximate meters inward from the edge. Zero amount disables it. Uses the palette’s Foam Color. |
-| Visibility Distance | Culls the two surfaces beyond the chosen distance. |
+| Palette | Optional shared WaterPalette override. Leave empty to use each body's Water Colors selection. |
+| Flow Speed | Overall animation speed. Zero freezes waves, caustics, and foam. |
+| Ripple Scale | Spatial pattern density; larger values make smaller features. |
+| Wave Activity / Height | Crossing-wave and normal intensity / physical displacement in meters. |
+| Paint Contrast | Variation between broad brush masses, with quieter regions retained. |
+| Depth Distance | Distance inward from shore at which the painted basin reaches its deeper colors. |
+| Caustic Strength | Restrained curved light patterns, strongest in the shallows. |
+| Normal Strength | Surface slope used by the painted lighting and deformation. |
+| Reflection Strength / Sky Color | View-dependent analytic sky cue. |
+| Highlight Amount / Light Direction | Strength and direction of the broad painted highlight. |
 
-Palette and motion edits update materials without rebuilding geometry. Shape and collision edits regenerate the editor preview. Generated meshes and collision nodes are internal; scenes save authoring parameters.
+These edits update materials without rebuilding meshes. Bodies without a Settings resource retain their original motion controls for compatibility. New lighting/depth controls are available by creating a WaterSettings resource or choosing a Behavior Preset. The old directional Depth Gradient value remains serialized for compatibility but is hidden; shore-based Depth Distance replaces it.
 
-## Joining stream sections
+**Water Colors → Palette Preset** retains Turquoise, Storybook Blue, Autumn Jade, Winter Glass, Dream Lavender, Moonlit, and Custom. Colors are Deep, Body, Shallow, and Foam. A palette inside shared Settings overrides these per-body colors.
 
-Streams run along local Z. Give neighboring sections equal widths and matching Y rotation, then place their centers one section length apart along that axis. Different lengths and seeds are supported; each mouth has the same straight cross-section. Leave **Cap Stream Ends** disabled. Use matching palette, flow, ripple scale, and wave height on joined pieces.
+## Shape authoring
 
-The shader uses world-space painting and one common stream phase, so colors, moving highlights, and displacement agree at aligned joins. This first version provides straight-ended sections with seeded internal meanders; it does not provide arbitrary spline junctions, waterfalls, elevation changes, or automatic intersections between water components. Closed pond outlines are separate silhouettes rather than overlap tiles.
+| Body field | Effect |
+| --- | --- |
+| Shape | Closed Pond or Stream Section. |
+| Footprint | Width X and length Y in meters for generated shapes. For a custom stream, X sets base width; the path sets length. |
+| Water Seed / Irregularity | Seeded pond boundary and painting phase / amount of boundary variation. |
+| Stream Bend | Seeded meander when no custom path is assigned. |
+| Outline Detail | Boundary samples, 16–96; default 48. |
+| Pond Outline | Optional Curve2D in local X/Z meters. Overrides generated footprint and irregularity. |
+| Stream Path | Optional Curve3D centerline, projected onto the local X/Z plane. |
+| Stream Width Profile | Curve sampled from 0 to 1 along the path; width multiplier clamped to 0.25–2. |
+| Stream Flow Offset | Along-path phase offset in meters for connecting custom segments. |
+| Cap Stream Ends | Adds barriers and shoreline foam at the mouths. Leave off for joins. |
+| Block Water Entry | Static shoreline barriers. Disable when implementing traversal or decorative water. |
+| Flow Direction | Local X/Z current for ponds; streams derive their direction from the centerline. |
+| Visibility Distance | Distance culling for the water surface. |
+
+For a custom pond, assign a Curve2D with at least three boundary points, ordered around a simple nonintersecting outline. The generator closes it automatically, samples its Bezier curves at meter-scale precision, and triangulates concave shapes. Invalid polygons fall back to the generated pond.
+
+For a custom stream, add a **Path3D** child and assign the same Curve3D resource to its Curve and the water's Stream Path. Keep the Path3D's local transform at identity; edit its handles in the 3D viewport. The study scene demonstrates this setup. Use gentle bends relative to width: very tight curves or self-crossing paths can fold the ribbon. The component is planar; Curve3D height is ignored.
+
+### Stream joins
+
+Seeded sections have straight matching mouths along local Z. Match width and Y rotation, then place centers one section length apart. Custom segments must have matching endpoint positions, tangents, and width-profile endpoints. Set the next segment's Stream Flow Offset to the previous offset plus its path length. Use shared Settings, matching foam controls, and open mouths.
+
+Ripples use along-stream coordinates, so their orientation follows bends. A baked flow field slows motion near banks and deflects flow around registered stones. World-space pigment and swells keep neighboring sections visually related. This is a component framework, not a junction solver: automatic intersections, branching rivers, waterfalls, and seamless overlaps between unrelated bodies are not implemented.
+
+## Shore, rocks, and foam
+
+**Shore Obstacles** contains paths relative to the water node, such as `../PondShoreStone`. Register boulders and rock clusters that intersect the water plane. The component slices their convex collision shapes at water height; decorative stones without collision use their visual meshes instead. Separate cluster stones remain separate obstacles, preserving water between them.
+
+The same baked signed-distance field drives shallow/deep color, shoreline foam, rock cutouts, bank anchoring, and flow speed. Registered procedural stones notify water when moved or regenerated, refreshing the field automatically. Registration is explicit; unrelated scenery does not trigger expensive depth reads.
+
+| Foam field | Effect |
+| --- | --- |
+| Foam Amount | Overall opacity; zero disables foam. |
+| Foam Width | Approximate inward width in meters. |
+| Foam Cell Size | Opening size multiplier; larger values create larger evolving cells. |
+
+The foam stays strongest at the shore and fades inward. Large openings and a lapping motion break the single band. Flow Speed zero freezes it. Open stream mouths do not create artificial foam caps. Dress the outer edge with foliage, stones, and terrain.
 
 ## Grass integration
 
-On a grass patch, add a path to the water instance in **Ground Exclusions**, relative to the grass node—for example `../ClearingPond`. Scatter checks the same analytic water shape used by the mesh and clears the water footprint with a small margin. Water shape and transform changes signal linked grass patches to rebuild automatically. The grass's other seeded placements are preserved when exclusions are toggled.
+Add the water path to a grass patch's **Ground Exclusions**, relative to that patch. Its scatter uses the same sampled polygon as the water mesh, with a small margin. Shape and transform changes refresh linked grass patches while preserving seeded placements elsewhere. Future scatter systems can call `excludes_ground_point(world_point)`.
 
-The water's public `excludes_ground_point(world_point)` method is also available to future scatter components. Existing manually placed bushes, trees, and stones remain under the scene author's control.
+## Mobile rendering budget
 
-## Rendering and gameplay limits
+At detail 48, a generated pond uses **528 triangles**, a stream **768**, and the supplied custom pond fewer than **736** with adaptive subdivision. Every body uses **one opaque surface**. Foam, caustics, lighting, and paint are composited in that pass. There are no screen/depth reads, extra reflection passes, or per-frame script updates and mesh uploads.
 
-At detail 48, a pond uses **528 triangles**, and a stream uses **768**. Each component has **one opaque draw surface** and optional static collision. Shoreline foam is composited in the same opaque pass, with no extra draw surface. No border geometry or transparent bank is generated. The water's edges are intended to be dressed with separate foliage, stone, and terrain components.
+Four shared 512×512 data masks separate pigment, packed normals, caustics, and foam. Mipmaps reduce distant shimmer. Their import settings preserve data channels: no source-color conversion or alpha-border fixing. `textures/generate_paint.py` recreates them using Python/numpy; runtime does not require either.
 
-A shared seamless 512×512 RGBA data texture stores procedural brush regions and light seams. The water body samples it six times, with one additional froth sample inside the narrow shoreline band: two counter-moving noise fields deform the overlapping brush layers, while three swells with different directions, wavelengths, and phase speeds reinforce and cancel. Their slopes bend the painted shapes and their crests gather and release light. Broad depth pigment stays anchored; this avoids running a cellular-noise search per pixel on mobile. Mipmaps soften fine patterns at a distance. The texture is data, not source-color imagery; alpha-border fixing is disabled to preserve its fourth channel. `textures/generate_paint.py` recreates the deterministic mask using Python and numpy; neither is needed at runtime.
+**Shore Field Quality** selects a per-body RGBA half-float field: Mobile 64² (~32 KiB), Balanced 96² (~72 KiB), or Detailed 128² (~128 KiB), excluding engine overhead. Baking occurs when authoring geometry or registered obstacles change. Use smaller water modules or higher quality when a large body needs narrow shore details. These fields are intended for static scenery, not moving obstacles every frame.
 
-There are no screen/depth reads, reflection probes, real-time reflection passes, or per-frame script updates/mesh uploads. Painted shallow colors suggest depth; the surface does not actually refract underwater objects or reflect surrounding trees. Static shoreline collision keeps the current explorer outside ponds; swimming and buoyancy are future mechanics. Open stream mouths have no blocking end walls. Keep player spawns outside the water footprint.
+Depth is an artistic profile derived from distance to shore, not measured terrain depth. Sky reflection is analytic and does not reflect surrounding trees. There is no underwater refraction, swimming, or buoyancy. Translate and rotate around Y; author size with Footprint and curves rather than node scaling. Target-phone performance still needs device profiling, especially for large screen-filling water surfaces.
 
-Translate and rotate around Y freely. Use Footprint rather than node scaling. The surface sits just above the project's flat ground. Profile fragment coverage on the target phone before filling a memory with large water bodies.
-
-## Validation and preview
+## Validation and previews
 
 ```sh
+godot --headless --path . --script tests/water_framework.gd
 godot --path . --script tests/water_component.gd
 godot --path . --script tests/water_motion_render.gd
 godot --headless --path . --script tests/scene_smoke.gd
-godot --path . --script tests/render_water_preview.gd
 ```
 
-The component checks cover finite nondegenerate geometry, animated bounds, budgets, deterministic generation, palettes and custom palette persistence, optional collision and absence of border geometry, matching stream mouths, and grass exclusion updates. A real renderer is needed for grass MultiMesh readback. The motion check compares captured frames: zero speed stays still; disabling directional flow and wave activity also stays still; enabling wave activity with directional flow still zero produces visible motion. This checks actual deformation/interference rather than simple texture scrolling. The scene check verifies player movement and camera behavior with the demo pond in place.
+Framework checks cover custom triangulation, curved width/flow, shared-resource updates and persistence, signed shore distance, moving stones, decorative rock clusters, open mouths, and shape/exclusion agreement. Component checks cover seeded generation, palettes, budgets, collision, and grass updates; grass MultiMesh readback requires a real renderer. Captured-frame checks verify stationary modes and independent wave/foam animation.
 
-![Single borderless painted water component](../../../docs/water-preview.png)
+`docs/water-upgrade-motion.gif` is a six-second actual-engine animation preview.
 
-`docs/water-motion.gif` is an actual-engine motion preview at the default wave settings. Setting Flow Direction to `(0, 0)` removes current advection while preserving swells. Setting Wave Activity to zero removes the interference; Flow Speed zero freezes every animated part. Wave settings update materials without rebuilding meshes.
+![Demo pond](../../../docs/pond-detail.png)
 
-Shore foam uses a single thick band with large evolving cell openings and a slow lapping wave. It is opaque at the shoreline and fades inward into the water; no secondary ribbon is generated. It follows the same shoreline distance used by the geometry, including open stream sides without foaming across their joins. Flow Speed zero freezes foam together with the rest of the surface. The render check isolates foam with wave activity and directional scrolling disabled to verify that the foam itself animates.
-
-The demo pond is 6.4 × 4.7 m, roughly twice its original surface area, with 0.44 m shoreline foam. Its planting and shore stones have been moved outward, and the grass exclusion follows the enlarged footprint. The turquoise preset uses pure white Foam Color for solid cartoon foam.
+![Custom pond and curved stream](../../../docs/water-study.png)
