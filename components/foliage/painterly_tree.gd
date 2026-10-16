@@ -4,6 +4,7 @@ extends Node3D
 ## One seeded tree: merged bark and a canopy made entirely from clustered leaf geometry.
 ## Internal generated nodes keep memory scenes small and editable.
 const CANOPY_SHADER = preload("res://components/foliage/shaders/tree_canopy.gdshader")
+const FALLING_SHADER = preload("res://components/foliage/shaders/falling_leaves.gdshader")
 const BARK_SHADER = preload("res://components/foliage/shaders/tree_bark.gdshader")
 const SHADOW_SHADER = preload("res://shaders/contact_shadow.gdshader")
 const DEFAULT_PALETTE = preload("res://components/foliage/palettes/meadow.tres")
@@ -11,6 +12,25 @@ const VARIANTS = preload("res://components/foliage/shared/tree_variants.gd")
 const SUN_DIRECTION = Vector3(-0.45, 0.82, -0.35)
 
 const PALETTES = preload("res://components/foliage/shared/foliage_palettes.gd")
+
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+
+@export_group("Recall")
+## Hide at runtime and recall this component independently on approach.
+@export var recall_enabled: bool = false:
+	set(value):
+		if recall_enabled == value:
+			return
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint():
+			rebuild()
+var _recall_effect: Node
+
+func get_recall_controller() -> Node:
+	return _recall_effect
+
+func _sync_recall() -> void:
+	_recall_effect = RECALL.configure(self, "res://components/effects/recall/tree_recall.gd", _recall_effect)
 
 @export_group("Foliage Colors")
 @export_enum("Custom", "Summer Meadow", "Spring", "Autumn Gold", "Autumn Red", "Winter Frost", "Dream Lavender", "Dream Blue", "Dream Rose", "Dusk") var palette_preset: int = 1:
@@ -65,6 +85,18 @@ const PALETTES = preload("res://components/foliage/shared/foliage_palettes.gd")
 	set(value):
 		leaf_sprays_per_cluster = clampi(value, 0, 240)
 		_request_rebuild()
+@export_group("Falling Leaves")
+## Maximum simultaneously allocated leaves. Zero disables the effect.
+@export_range(0, 128, 1) var falling_leaf_count: int = 0:
+	set(value):
+		falling_leaf_count = clampi(value, 0, 128)
+		if is_inside_tree():
+			_rebuild_falling_leaves()
+## Target emissions per second, limited by Count and time needed to reach the ground.
+@export_range(0.0, 20.0, 0.05) var falling_leaf_rate: float = 0.8:
+	set(value):
+		falling_leaf_rate = maxf(value, 0.0)
+		_update_falling_rate()
 @export_group("Bark")
 @export var use_type_bark: bool = true:
 	set(value):
@@ -101,6 +133,8 @@ const LEAF_GEOMETRY = preload("res://components/foliage/shared/leaf_geometry.gd"
 var _applying_preset: bool = false
 var _palette_materials: Array[ShaderMaterial] = []
 var _queued: bool = false
+var _falling_material: ShaderMaterial
+var _falling_origins: Array[Vector3] = []
 var _canopy_material: ShaderMaterial
 var _variant: Dictionary = VARIANTS.DEFINITIONS[0]
 
@@ -130,7 +164,7 @@ func _request_rebuild() -> void:
 		call_deferred("rebuild")
 
 func _update_wind() -> void:
-	for material in [_canopy_material]:
+	for material in [_canopy_material, _falling_material]:
 		if material:
 			material.set_shader_parameter("wind_strength", wind_strength)
 			material.set_shader_parameter("wind_speed", wind_speed)
@@ -139,7 +173,7 @@ func _material(shader: Shader, colors: GrassPalette) -> ShaderMaterial:
 	var material := ShaderMaterial.new()
 	material.shader = shader
 	for key in [&"root_color", &"shade_color", &"leaf_color", &"sun_color"]:
-		if shader == CANOPY_SHADER or key == &"root_color":
+		if shader == CANOPY_SHADER or shader == FALLING_SHADER or key == &"root_color":
 			material.set_shader_parameter(key, colors.get(key))
 	if shader == CANOPY_SHADER:
 		material.set_shader_parameter("tree_height", tree_height)
@@ -152,6 +186,8 @@ func rebuild() -> void:
 	if not is_inside_tree():
 		return
 	_palette_materials.clear()
+	_falling_material = null
+	_falling_origins.clear()
 	for child in get_children(true):
 		if child.get_meta(&"generated_tree", false):
 			remove_child(child)
@@ -218,6 +254,10 @@ func rebuild() -> void:
 	leaves.multimesh = multimesh
 	leaves.material_override = _canopy_material
 	_add_generated(leaves)
+	for transform in transforms:
+		if transform.origin.y > 0.4:
+			_falling_origins.append(transform.origin)
+	_rebuild_falling_leaves()
 	_add_shadow()
 	if trunk_collision:
 		var body := StaticBody3D.new()
@@ -234,6 +274,8 @@ func rebuild() -> void:
 			collision.quaternion = Quaternion(Vector3.UP, delta.normalized())
 			body.add_child(collision)
 		_add_generated(body)
+
+	_sync_recall()
 
 func _grow_deciduous(bark: SurfaceTool, rng: RandomNumberGenerator, transforms: Array[Transform3D], tints: Array[Color], lean: Vector3, bend_direction: Vector3) -> void:
 	# Canopy placement uses its original stream; wood grows from a separate skeleton.
@@ -524,3 +566,48 @@ func _hanging_foliage(center: Vector3, radii: Vector3, rng: RandomNumberGenerato
 			basis = basis.scaled(Vector3(size * 1.1, size * 0.75, size * 1.8))
 			transforms.append(Transform3D(basis, point))
 			tints.append(Color(0.45 + (1.0 - t) * 0.20 + rng.randf_range(-0.025, 0.025), rng.randf(), rng.randf(), point.y / tree_height))
+
+func _update_falling_rate() -> void:
+	if _falling_material:
+		_falling_material.set_shader_parameter("leaf_rate", falling_leaf_rate)
+	var leaves := get_node_or_null("FallingLeaves")
+	if leaves:
+		leaves.visible = falling_leaf_rate > 0.0 and (not recall_enabled or not is_instance_valid(_recall_effect) or _recall_effect.progress >= 1.0)
+
+func _rebuild_falling_leaves() -> void:
+	var old := get_node_or_null("FallingLeaves")
+	if old:
+		remove_child(old)
+		old.queue_free()
+	if _falling_material:
+		_palette_materials.erase(_falling_material)
+	_falling_material = null
+	if falling_leaf_count == 0 or _falling_origins.is_empty():
+		return
+	var colors: GrassPalette = palette if palette else DEFAULT_PALETTE
+	_falling_material = _material(FALLING_SHADER, colors)
+	_falling_material.set_shader_parameter("leaf_count",float(falling_leaf_count))
+	var instances := MultiMesh.new()
+	instances.transform_format = MultiMesh.TRANSFORM_3D
+	instances.use_custom_data = true
+	instances.mesh = LEAF_GEOMETRY.falling_leaf_mesh()
+	instances.instance_count = falling_leaf_count
+	var rng := RandomNumberGenerator.new()
+	rng.seed = tree_seed ^ 0xFA11
+	var bounds := AABB(Vector3.ZERO,Vector3.ZERO)
+	var max_height := 0.1
+	for index in range(falling_leaf_count):
+		var origin := _falling_origins[rng.randi_range(0,_falling_origins.size()-1)]
+		instances.set_instance_transform(index,Transform3D(Basis.IDENTITY,origin))
+		instances.set_instance_custom_data(index,Color((index+rng.randf_range(0.05,0.95))/falling_leaf_count,rng.randf_range(0.3,0.95),rng.randf(),origin.y))
+		bounds = bounds.expand(origin).expand(Vector3(origin.x,0,origin.z))
+		max_height = maxf(max_height,origin.y)
+	_falling_material.set_shader_parameter("max_height",max_height)
+	instances.custom_aabb = bounds.grow(1.3)
+	var leaves := MultiMeshInstance3D.new()
+	leaves.name = "FallingLeaves"
+	leaves.multimesh = instances
+	leaves.material_override = _falling_material
+	_add_generated(leaves)
+	_update_falling_rate()
+	_update_wind()

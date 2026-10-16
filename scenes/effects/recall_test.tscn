@@ -1,0 +1,159 @@
+[gd_scene load_steps=12 format=3 uid="uid://cnidsrr587nx7"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="1_grass"]
+[ext_resource type="PackedScene" uid="uid://xkovxofvhuc5" path="res://scenes/player/explorer.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://dfv70ixt0xorv" path="res://scripts/exploration_input.gd" id="3_input"]
+[ext_resource type="Shader" uid="uid://cx2lu7n4a7173" path="res://shaders/dream_surface.gdshader" id="4_surface"]
+[ext_resource type="Script" uid="uid://jrrbqd02l4qx" path="res://scenes/effects/recall_test.gd" id="5_test"]
+
+[sub_resource type="Environment" id="DreamEnvironment"]
+background_mode = 1
+background_color = Color(0.94, 0.935, 0.89, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.88, 0.9, 0.94, 1)
+ambient_light_energy = 0.65
+reflected_light_source = 2
+fog_enabled = true
+fog_light_color = Color(0.94, 0.935, 0.89, 1)
+fog_density = 0.012
+
+[sub_resource type="ShaderMaterial" id="SurfaceMaterial"]
+render_priority = 0
+shader = ExtResource("4_surface")
+
+[sub_resource type="PlaneMesh" id="SurfaceMesh"]
+material = SubResource("SurfaceMaterial")
+size = Vector2(2000, 2000)
+
+[sub_resource type="WorldBoundaryShape3D" id="GroundShape"]
+
+[sub_resource type="LabelSettings" id="StudyLabel"]
+font_size = 22
+font_color = Color(0.25, 0.3, 0.28, 1)
+
+[sub_resource type="LabelSettings" id="HintLabel"]
+font_size = 18
+font_color = Color(0.38, 0.4, 0.38, 1)
+
+[node name="RecallTest" type="Node3D"]
+script = ExtResource("5_test")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("DreamEnvironment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, 0.409576, -0.286788, 0, 0.573576, 0.819152, 0.5, -0.709406, 0.496732, 0, 0, 0)
+light_color = Color(1, 0.92, 0.81, 1)
+light_energy = 0.95
+
+[node name="DreamSurface" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("SurfaceMesh")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("GroundShape")
+
+[node name="Subjects" type="Node3D" parent="."]
+
+[node name="Grass" parent="Subjects" instance=ExtResource("1_grass")]
+recall_enabled = true
+patch_seed = 28
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 26.0
+grass_height = 0.24
+
+[node name="RecallOrigin" type="Marker3D" parent="Subjects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)
+
+[node name="Explorer" parent="." node_paths=PackedStringArray("movement_camera", "movement_input") instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.2)
+movement_camera = NodePath("../Camera3D")
+movement_input = NodePath("../Controls/ExplorationInput")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 10)
+projection = 1
+current = true
+size = 11.0
+near = 0.1
+far = 160.0
+
+[node name="Controls" type="CanvasLayer" parent="."]
+
+[node name="ExplorationInput" type="Control" parent="Controls"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_input")
+
+[node name="Title" type="Label" parent="Controls"]
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 700.0
+offset_bottom = 58.0
+text = "Recall study / Grass"
+label_settings = SubResource("StudyLabel")
+
+[node name="Hint" type="Label" parent="Controls"]
+offset_left = 28.0
+offset_top = 62.0
+offset_right = 1000.0
+offset_bottom = 92.0
+text = "Walk toward the meadow · R replay · Space pause · Drag slider to inspect"
+label_settings = SubResource("HintLabel")
+
+[node name="Panel" type="PanelContainer" parent="Controls"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -390.0
+offset_top = 24.0
+offset_right = -28.0
+offset_bottom = 224.0
+grow_horizontal = 0
+
+[node name="Rows" type="VBoxContainer" parent="Controls/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Status" type="Label" parent="Controls/Panel/Rows"]
+layout_mode = 2
+text = "Approach the meadow"
+
+[node name="Buttons" type="HBoxContainer" parent="Controls/Panel/Rows"]
+layout_mode = 2
+
+[node name="Replay" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+text = "Replay"
+
+[node name="Pause" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+text = "Play / Pause"
+
+[node name="Reset" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+text = "Reset / Explore"
+
+[node name="Scrub" type="HSlider" parent="Controls/Panel/Rows"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+
+[node name="SpeedLabel" type="Label" parent="Controls/Panel/Rows"]
+layout_mode = 2
+text = "Playback speed · 0.25× to 2×"
+
+[node name="Speed" type="HSlider" parent="Controls/Panel/Rows"]
+layout_mode = 2
+min_value = 0.25
+max_value = 2.0
+step = 0.05
+value = 1.0
+

@@ -56,3 +56,21 @@ static func needle_spray_mesh() -> ArrayMesh:
 				surface.add_vertex(point)
 	_shared_needle_spray = surface.commit()
 	return _shared_needle_spray
+
+static var _shared_falling_leaf: ArrayMesh
+static func falling_leaf_mesh() -> ArrayMesh:
+	if _shared_falling_leaf:
+		return _shared_falling_leaf
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for segment in range(10):
+		var rim: Array[Vector3] = []
+		for offset in range(2):
+			var angle := float(segment+offset)*TAU/10.0
+			rim.append(Vector3(cos(angle)*0.52,sin(angle)*0.14,sin(angle)))
+		for point in [Vector3(0,0.12,0),rim[0],rim[1]]:
+			surface.set_normal(Vector3.UP)
+			surface.set_uv(Vector2(point.x,point.z))
+			surface.add_vertex(point)
+	_shared_falling_leaf = surface.commit()
+	return _shared_falling_leaf

@@ -16,6 +16,8 @@ func run() -> void:
 		quit(1)
 		return
 	var tree: PainterlyTree = load("res://components/foliage/painterly_tree.tscn").instantiate()
+	# Isolate the no-emission baseline from editable component scene defaults.
+	tree.falling_leaf_count = 0
 	root.add_child(tree)
 	check(tree.get_children().is_empty(), "Generated children must not serialize into memory scenes")
 	check(tree.get_children(true).size() == 4, "Tree must contain three geometry nodes and one collision body")

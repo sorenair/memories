@@ -8,7 +8,8 @@ Open `project.godot` in Godot 4.4 or newer and press **F5** to open the text-onl
 
 - **WASD / arrow keys:** walk, relative to the screen.
 - **Controller left stick:** analog movement.
-- **Touch joystick:** drag the fixed stick in the bottom-left corner to walk. Its outline and center are faint at rest and become opaque while held; release to stop and gently recenter. No other touch buttons are shown. Mouse dragging also works for desktop preview.
+- **Touch joystick:** drag the fixed stick in the bottom-left corner to walk. Its outline and center are faint at rest and become opaque while held; release to stop and gently recenter. Mouse dragging also works for desktop preview.
+- **Return to timeline:** tap the small dot-and-line glyph at the top right, click it, or press Escape. The world fades back to the timeline with the selected memory preserved.
 
 The current scene contains a simple character, a finite memory platform, procedural foliage, stones, and a pond. It has gentle acceleration, deceleration, turning, a small walking motion, an elevated orthographic follow camera, warm ambient lighting, distance fog, and a soft contact shadow. The grass is present from startup, with gentle wind and local player bending; it has no recollection or transition effects. The pale platform descends into the fog, with an invisible rim keeping exploration inside the memory. Blank-void memories without a platform retain the original infinite ground.
 
@@ -84,3 +85,13 @@ Instance `components/guidance/wisps/dream_wisp_path.tscn` for sparse, ghostly br
 ## Memory boundaries
 
 Instance `components/scenery/platforms/memory_platform.tscn` under Environment for a finite, walkable memory atop a pale pillar fading into the void. Shape, footprint, optional custom outline, depth, fade, colors, and rim clearance are editable. The demo includes a 24×30 m platform; the world automatically switches to its floor and perimeter collision. See [the platform guide](components/scenery/platforms/README.md).
+
+## Weather
+
+Instance `components/weather/rain/painterly_rain.tscn` for fine drifting rain, tiny ground splashes, and soft water ripples. Intensity, coverage, counts, wind, speed, and colors are editable. The demo includes a gentle shower across the platform. See [the rain guide](components/weather/rain/README.md).
+
+Instance `components/weather/snow/painterly_snow.tscn` for soft drifting snow. Coverage, intensity, flake count/size, fall speed, wind, flutter, and colors are editable; it uses one GPU batch. The demo includes a light snowfall. See [the snow guide](components/weather/snow/README.md).
+
+## Fire VFX
+
+Instance `components/vfx/fire/painterly_fire.tscn` for curling painted flames, a gentle ground glow, and rising embers. Size, intensity, animation speed, wind, colors, and ember count are editable. The demo includes a small example near its entry. See [the fire guide](components/vfx/fire/README.md).

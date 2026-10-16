@@ -11,6 +11,7 @@ const DEMO_SCENE := "res://scenes/world/memory_world.tscn"
 const MemoryArrival := preload("res://UI/memory_arrival/memory_arrival.gd")
 const ENTRANCE_DURATION := 1.8
 static var _has_entered: bool = false
+static var _last_selected_index: int = 1
 const MEMORIES: Array[Dictionary] = [
 	{"title": "A Sunday walk", "date": "MAY 26, 2024", "short": "MAY 26"},
 	{"title": "Museum date", "date": "JUN 14, 2024", "short": "JUN 14"},
@@ -37,10 +38,15 @@ var _title_tween: Tween
 var _entrance_time: float = 0.0
 var _title_y: float = 0.0
 var _returning: bool = false
+var _date_font_size: int = 28
+var _mark_scale: float = 1.0
 
 func _ready() -> void:
-	_returning = _has_entered
+	var returning_veil := get_tree().root.get_node_or_null(MemoryArrival.VEIL_LAYER_NAME)
+	_returning = _has_entered or returning_veil != null
 	_has_entered = true
+	selected_index = _last_selected_index
+	_position = float(selected_index)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_sans = ThemeDB.fallback_font
 	_serif = SystemFont.new()
@@ -72,21 +78,33 @@ func _ready() -> void:
 	resized.connect(_layout)
 	_title.text = MEMORIES[selected_index].title
 	_layout()
+	if returning_veil != null:
+		returning_veil.reparent(self)
+		var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(returning_veil.get_node("Paper"), "modulate:a", 0.0, 0.4)
+		tween.tween_callback(returning_veil.queue_free)
 
 func _layout() -> void:
 	if not is_instance_valid(_title):
 		return
 	var portrait := size.y > size.x
-	_spacing = clampf(size.x * 0.20, 170.0, 340.0)
-	_line_y = size.y * (0.72 if portrait else 0.81)
-	_title_y = size.y * (0.45 if portrait else 0.60)
-	_title.add_theme_font_size_override("font_size", int(clampf(size.x * 0.037, 32.0, 66.0)))
-	_title.position = Vector2(32, _title_y)
-	_title.size = Vector2(size.x - 64, 90)
+	_spacing = clampf(size.x * 0.22, 170.0, 420.0)
+	_line_y = size.y * 0.70
+	_title_y = size.y * 0.40
+	var title_font_size := int(clampf(size.x * 0.112, 36.0, 56.0)) if portrait else int(clampf(minf(size.x * 0.05, size.y * 0.115), 36.0, 110.0))
+	var title_width := minf(size.x - 64.0, 1440.0)
+	var title_height := title_font_size * (2.8 if portrait or size.x < 760.0 else 1.5)
+	_title.add_theme_font_size_override("font_size", title_font_size)
+	_title.position = Vector2((size.x - title_width) * 0.5, _title_y)
+	_title.size = Vector2(title_width, title_height)
 	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_recall.add_theme_font_size_override("font_size", 24)
-	_recall.position = Vector2(size.x * 0.5 - 110, _title_y - 76)
-	_recall.size = Vector2(220, 64)
+	var recall_width := clampf(size.x * 0.20, 220.0, 340.0)
+	var recall_height := clampf(size.y * 0.105, 64.0, 96.0)
+	_recall.add_theme_font_size_override("font_size", int(clampf(title_font_size * 0.36, 24.0, 38.0)))
+	_recall.position = Vector2((size.x - recall_width) * 0.5, _title_y - recall_height - 24.0)
+	_recall.size = Vector2(recall_width, recall_height)
+	_date_font_size = int(clampf(minf(size.x * 0.015, size.y * 0.034), 18.0, 30.0))
+	_mark_scale = clampf(minf(size.x / 1920.0, size.y / 886.0), 0.8, 1.2)
 	_apply_entrance()
 	queue_redraw()
 
@@ -142,19 +160,19 @@ func _draw() -> void:
 			continue
 		var distance := absf(i - _position)
 		var proximity := 1.0 - smoothstep(0.0, 0.85, distance)
-		draw_circle(Vector2(x, _line_y), 5.0 + proximity * 4.0, Color(MUTED, alpha * (1.0 - proximity) * mark_reveal), true, -1, true)
+		draw_circle(Vector2(x, _line_y), (6.0 + proximity * 4.0) * _mark_scale, Color(MUTED, alpha * (1.0 - proximity) * mark_reveal), true, -1, true)
 		if distance < 1.7:
 			var text: String = MEMORIES[i].date if i == selected_index else MEMORIES[i].short
-			var font_size := 21 if i == selected_index else 19
+			var font_size := _date_font_size if i == selected_index else int(_date_font_size * 0.88)
 			var width := _sans.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 			var date_reveal := _reveal(arrival + 0.16, arrival + 0.56)
-			draw_string(_sans, Vector2(x - width * 0.5, _line_y + 56 + (1.0 - date_reveal) * 4.0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(INK if i == selected_index else MUTED, alpha * date_reveal))
+			draw_string(_sans, Vector2(x - width * 0.5, _line_y + _date_font_size * 2.0 + (1.0 - date_reveal) * 4.0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(INK if i == selected_index else MUTED, alpha * date_reveal))
 	# The selection point stays stationary while the memory marks slide beneath it.
 	var point_reveal := _reveal(0.05, 0.40)
 	var halo_settle := _reveal(0.15, 0.9)
-	draw_circle(Vector2(center, _line_y), lerpf(25.0, 19.0, halo_settle), Color(0.88, 0.85, 0.80, point_reveal * lerpf(0.24, 0.16, halo_settle)), true, -1, true)
-	draw_circle(Vector2(center, _line_y), 15, Color(PAPER, point_reveal), true, -1, true)
-	draw_circle(Vector2(center, _line_y), lerpf(10.0, 11.0, point_reveal), Color(INK, point_reveal), true, -1, true)
+	draw_circle(Vector2(center, _line_y), lerpf(29.0, 23.0, halo_settle) * _mark_scale, Color(0.88, 0.85, 0.80, point_reveal * lerpf(0.24, 0.16, halo_settle)), true, -1, true)
+	draw_circle(Vector2(center, _line_y), 18 * _mark_scale, Color(PAPER, point_reveal), true, -1, true)
+	draw_circle(Vector2(center, _line_y), lerpf(12.0, 14.0, point_reveal) * _mark_scale, Color(INK, point_reveal), true, -1, true)
 
 func select_memory(index: int) -> void:
 	_finish_entrance()
@@ -162,6 +180,7 @@ func select_memory(index: int) -> void:
 	if selected_index == index:
 		return
 	selected_index = index
+	_last_selected_index = index
 	_title.text = MEMORIES[index].title
 	if _title_tween:
 		_title_tween.kill()

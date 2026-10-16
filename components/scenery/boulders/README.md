@@ -51,3 +51,25 @@ Checks cover one closed manifold stone after welding hard-normal shading splits,
 `tests/boulder_variations.gd` checks 36 combinations spanning all six automatic families, corner rounding, and cut roughness for closed topology and nondegenerate faces. It also verifies substantial differences in seed height/aspect ratio and explicit profile selection. `docs/boulder-variations.png` is a labeled render comparison; the playable demo retains one boulder.
 
 For a group of smaller stones, use the [inherited rock cluster component](../rock_clusters/README.md). It shares this generator and palette system while merging the group into two draw surfaces.
+
+## Proximity recall
+
+Enable **Recall → Recall Enabled** on the component root to manifest the stone on
+approach. It defaults to off; editor previews remain complete. All demo boulders and
+the inherited pond rock cluster enable it and discover nearby explorers independently.
+
+The default solid effect scans upward from the buried base with a soft irregular white
+edge, resolving the original stone colors behind it. It shares the tree trunk's scan
+shader logic and takes 2.4 seconds. The contact shadow develops during recall; collision
+is enabled when the stone is complete. **Solid** still controls whether any collider
+exists. Either grounded explorer can trigger it, and it stays recalled for that visit.
+
+The component owns its internal `SolidRecall` controller. No scene effect nodes are
+needed. Toggle off to restore normal materials immediately. Palette changes remain
+live, geometry rebuilds preserve animation state, and no extra mesh surfaces or
+per-vertex CPU updates are added. Enabled instances perform proximity/state updates;
+disabled instances retain the original no-process behavior.
+
+Use `res://scenes/effects/boulder_recall_test.tscn` (F6) to replay/pause/scrub the effect.
+`tests/solid_recall.gd` checks discovery, stable geometry, collision, palette updates,
+rebuilds and empty/repopulated rock clusters. See [the effects guide](../../../scenes/effects/README.md).

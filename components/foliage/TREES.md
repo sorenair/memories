@@ -80,3 +80,43 @@ The variant check covers all six growth forms, deterministic rebuilding, shared 
 Wood generation has an independent seed stream. Trunk and limb refinements preserve the approved canopy transform/color buffers for every type. Lower-stem collision capsules follow the revised trunk curve.
 
 Three thick, curved buttress roots replace the five small root spikes. Their taper sinks below the ground surface, and their proportions follow each tree type’s trunk thickness. They use the same painted bark and uneven cross-sections as the limbs, with an independent random stream to preserve canopy placement.
+
+## Falling leaves
+
+**Falling Leaves → Falling Leaf Count** sets the maximum leaf pool (0–128); zero removes the effect and its draw call. **Falling Leaf Rate** sets target emissions per second; zero hides the effect. Higher rates are limited by Count and the time needed for a leaf to fall. Increase Count if the desired rate cannot be reached. The demo enables a quiet 0.65 leaves/second on three trees; other trees remain unchanged.
+
+Leaves start at seeded positions from the actual generated canopy, inherit its four-color palette, tumble and flutter with gentle wind, then fade near the tree's local ground plane. Their approximate downward speed is 0.55 m/s. They are decorative: no collision, accumulating leaf litter, or terrain-height sampling. Over water or uneven ground, the fade still uses the tree's local Y=0 plane.
+
+Each enabled tree adds one MultiMesh batch, using a shared curved 10-triangle leaf mesh. Count changes rebuild only this batch, while Rate, palette, and wind edits update its material. Animation runs entirely on the GPU, with no per-frame script callbacks. Bounds cover the full descent and drift. Count and Rate are saved with the tree; all six variants support the effect, and trees without canopy geometry emit no leaves.
+
+```sh
+godot --headless --path . --script tests/falling_leaves.gd
+godot --path . --script tests/falling_leaves_render.gd
+```
+
+Checks cover controls, palette updates, persistence, all tree types, bare trees, and preservation of canopy nodes. Captured-frame checks confirm falling motion with canopy wind disabled, and no motion when Rate is zero. `docs/falling-leaves.png` shows a denser single-tree preview (32 leaves, rate 4) than the demo uses.
+
+## Proximity recall
+
+Enable **Recall → Recall Enabled** on a tree instance's root. It defaults to off,
+with complete editor previews. All 11 demo trees enable it and discover explorers
+independently, using the type-adjusted crown footprint plus a 1.4 m margin. Either
+player can trigger it; airborne arrivals and distant foliage do not.
+
+The 4.5 second sequence first manifests trunk/branches upward, from pale pigment
+into the existing bark colors. Wood is complete by 42% of the sequence. Canopy
+sprays start unfurling at 24%, overlapping the finishing branches without a pause, and rise a short distance from their supporting branches and unfurl, using
+the same leaf growth/color shader as bushes. Wind resolves into the normal motion.
+The existing ground shadow develops with the tree. Trunk collision is enabled when
+wood finishes; falling leaves stay hidden until the canopy is complete. Live falling
+leaf count/rate edits respect that state.
+
+The component owns its internal `TreeRecall` controller; no extra nodes are needed
+in a memory scene. Toggle off to restore regular materials, shadow and collision.
+Rebuilds preserve progress. Completed recall lasts for the visit. No extra geometry,
+particles, or per-leaf CPU animation are added; all six tree types use this sequence.
+
+Open `res://scenes/effects/tree_recall_test.tscn` and press F6 to replay, pause, scrub,
+or change playback speed. Run `tests/tree_recall.gd` for state/variant checks, adding
+`-- --capture` with a real renderer for empty, wood-only, canopy and completed images
+in `/tmp/tree-recall-*.png`.

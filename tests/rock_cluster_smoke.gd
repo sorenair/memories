@@ -8,7 +8,8 @@ func check(condition: bool, message: String) -> void:
 		push_error(message)
 		failures += 1
 func run() -> void:
-	var cluster: PainterlyRockCluster = load("res://components/scenery/rock_clusters/painterly_rock_cluster.tscn").instantiate()
+	# Use generator defaults for size-distribution checks; scene presets are editable.
+	var cluster := PainterlyRockCluster.new()
 	root.add_child(cluster)
 	check(cluster is PainterlyBoulder, "Cluster must inherit the boulder generator")
 	check(cluster.get_children().is_empty(), "Generated cluster meshes must not serialize")

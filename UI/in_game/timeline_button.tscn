@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://UI/in_game/timeline_button.gd" id="1"]
+
+[node name="ReturnToTimeline" type="Button"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -140.0
+offset_top = 28.0
+offset_right = -28.0
+offset_bottom = 140.0
+grow_horizontal = 0
+script = ExtResource("1")

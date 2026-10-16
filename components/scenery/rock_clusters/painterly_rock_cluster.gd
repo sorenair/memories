@@ -30,6 +30,15 @@ func _validate_property(property: Dictionary) -> void:
 	if property.name == "regenerate":
 		property.usage = PROPERTY_USAGE_NONE
 
+func get_recall_mesh() -> MeshInstance3D:
+	return get_node_or_null("Stones") as MeshInstance3D
+
+func get_recall_shadow_material() -> ShaderMaterial:
+	return $ContactShadows.material_override
+
+func get_recall_collision_body() -> Node:
+	return get_node_or_null("ClusterCollision")
+
 func rebuild() -> void:
 	_queued = false
 	if not is_inside_tree():
@@ -41,6 +50,7 @@ func rebuild() -> void:
 	_rock_bounds.clear()
 	_stone_material = null
 	if rock_count == 0:
+		_sync_recall()
 		scenery_changed.emit()
 		return
 	var rng := RandomNumberGenerator.new()
@@ -94,6 +104,7 @@ func rebuild() -> void:
 	else:
 		body.free()
 
+	_sync_recall()
 	scenery_changed.emit()
 
 func _shadow_quad(surface: SurfaceTool, bounds: AABB) -> void:

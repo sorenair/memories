@@ -4,6 +4,7 @@ extends Node3D
 ## One contiguous seeded stone with clean painted planes and varied silhouettes.
 signal scenery_changed
 const GEOMETRY = preload("res://components/scenery/boulders/boulder_geometry.gd")
+const RECALL_SHADER = preload("res://components/effects/recall/shaders/stone_recall.gdshader")
 const STONE_SHADER = preload("res://components/scenery/boulders/shaders/painted_stone.gdshader")
 const SHADOW_SHADER = preload("res://shaders/contact_shadow.gdshader")
 const PRESETS = [null,
@@ -13,6 +14,37 @@ const PRESETS = [null,
 	preload("res://components/scenery/boulders/palettes/terracotta.tres"),
 	preload("res://components/scenery/boulders/palettes/chalk.tres"),
 	preload("res://components/scenery/boulders/palettes/dream_violet.tres")]
+
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+
+@export_group("Recall")
+## Hide at runtime and recall this component independently on approach.
+@export var recall_enabled: bool = false:
+	set(value):
+		if recall_enabled == value:
+			return
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint():
+			rebuild()
+var _recall_effect: Node
+
+func get_recall_controller() -> Node:
+	return _recall_effect
+
+func _sync_recall() -> void:
+	_recall_effect = RECALL.configure(self, "res://components/effects/recall/solid_recall.gd", _recall_effect)
+
+func get_recall_shader() -> Shader:
+	return RECALL_SHADER
+
+func get_recall_mesh() -> MeshInstance3D:
+	return get_node_or_null("Stone") as MeshInstance3D
+
+func get_recall_shadow_material() -> ShaderMaterial:
+	return $ContactShadow.mesh.material
+
+func get_recall_collision_body() -> Node:
+	return get_node_or_null("BoulderCollision")
 
 @export_group("Stone Colors")
 @export_enum("Custom", "Granite", "Sandstone", "Slate", "Terracotta", "Chalk", "Dream Violet") var palette_preset: int = 1:
@@ -150,6 +182,7 @@ func rebuild() -> void:
 		body.add_child(collision)
 		_add_generated(body)
 
+	_sync_recall()
 	scenery_changed.emit()
 
 func _add_generated(node: Node) -> void:

@@ -10,6 +10,25 @@ const DEFAULT_PALETTE = preload("res://components/foliage/palettes/meadow.tres")
 
 const PALETTES = preload("res://components/foliage/shared/foliage_palettes.gd")
 
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+
+@export_group("Recall")
+## Hide at runtime and recall this component independently on approach.
+@export var recall_enabled: bool = false:
+	set(value):
+		if recall_enabled == value:
+			return
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint():
+			rebuild()
+var _recall_effect: Node
+
+func get_recall_controller() -> Node:
+	return _recall_effect
+
+func _sync_recall() -> void:
+	_recall_effect = RECALL.configure(self, "res://components/effects/recall/grass_recall.gd", _recall_effect)
+
 @export_group("Foliage Colors")
 @export_enum("Custom", "Summer Meadow", "Spring", "Autumn Gold", "Autumn Red", "Winter Frost", "Dream Lavender", "Dream Blue", "Dream Rose", "Dusk") var palette_preset: int = 1:
 	set(value):
@@ -153,6 +172,7 @@ func rebuild() -> void:
 	_add_batch("GrassTufts", _make_tuft(), tufts_per_square_meter, rng, false)
 	_add_batch("PaintedLeaves", _make_leaves(), leaves_per_square_meter, rng, true)
 	set_process(not Engine.is_editor_hint() and react_to_explorer)
+	_sync_recall()
 
 func _make_material(shader: Shader, colors: GrassPalette) -> ShaderMaterial:
 	var material := ShaderMaterial.new()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://1bv5ujx506r3"]
+[gd_scene load_steps=14 format=3 uid="uid://1bv5ujx506r3"]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="2"]
@@ -8,8 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://cxegd0ga2n24p" path="res://components/scenery/water/painterly_water.tscn" id="6"]
 [ext_resource type="PackedScene" uid="uid://bm2sxgwwapscy" path="res://components/scenery/rock_clusters/painterly_rock_cluster.tscn" id="7"]
 [ext_resource type="PackedScene" path="res://components/guidance/wisps/dream_wisp_path.tscn" id="8"]
-
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://components/weather/rain/painterly_rain.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://components/vfx/fire/painterly_fire.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://components/weather/snow/painterly_snow.tscn" id="12"]
 
 [sub_resource type="Curve3D" id="ClearingWispRoute"]
 resource_local_to_scene = true
@@ -32,6 +34,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11.5)
 
 [node name="Meadow" parent="Environment" index="0" instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, -2.1)
+recall_enabled = true
 patch_size = Vector2(13, 11)
 patch_seed = 28
 tufts_per_square_meter = 12.0
@@ -41,16 +44,21 @@ ground_exclusions = Array[NodePath]([NodePath("../ClearingPond")])
 
 [node name="MeadowTree" parent="Environment" index="1" instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 0, 0.6)
-tree_type = 1
+recall_enabled = true
 tree_height = 3.7
 crown_width = 3.1
 branch_count = 4
+falling_leaf_count = 12
+falling_leaf_rate = 0.65
 
 [node name="MeadowBush" parent="Environment" index="2" instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.728, 0, 0.124429)
+recall_enabled = true
 
 [node name="SmallBush" parent="Environment" index="3" instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0, -2.8)
+recall_enabled = true
+palette_preset = 2
 bush_seed = 57
 footprint = Vector2(1.3, 1)
 bush_height = 0.7
@@ -58,30 +66,37 @@ sprays_per_mass = 42
 
 [node name="TreeBaseBush" parent="Environment" index="4" instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3, 0, 0.1)
+recall_enabled = true
+palette_preset = 2
 bush_seed = 289
 footprint = Vector2(1.1, 0.9)
 bush_height = 0.65
 sprays_per_mass = 42
 
 [node name="MeadowBoulder" parent="Environment" index="5" instance=ExtResource("5")]
+recall_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.851118, 0, -2.26456)
 shape_profile = 3
 
 [node name="MeadowBoulder2" parent="Environment" index="6" instance=ExtResource("5")]
+recall_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.17693, 0, -5.01596)
 shape_profile = 4
 
 [node name="WestGrove" parent="Environment" index="7" instance=ExtResource("3")]
 transform = Transform3D(0.949235, 0, 0.314567, 0, 1, 0, -0.314567, 0, 0.949235, -5.1, 0, -2.2)
+recall_enabled = true
 tree_seed = 103
 tree_height = 4.2
 crown_width = 3.1
 branch_count = 5
 leaf_sprays_per_cluster = 78
+falling_leaf_count = 12
+falling_leaf_rate = 0.65
 
 [node name="NorthwestOak" parent="Environment" index="8" instance=ExtResource("3")]
 transform = Transform3D(0.900447, 0, -0.434966, 0, 1, 0, 0.434966, 0, 0.900447, -4, 0, -5.1)
-tree_type = 1
+recall_enabled = true
 tree_seed = 119
 tree_height = 4.8
 crown_width = 3.5
@@ -90,13 +105,18 @@ leaf_sprays_per_cluster = 80
 
 [node name="NorthernCrown" parent="Environment" index="9" instance=ExtResource("3")]
 transform = Transform3D(0.825336, 0, 0.564642, 0, 1, 0, -0.564642, 0, 0.825336, -1.3, 0, -6.7)
+recall_enabled = true
 tree_seed = 147
 tree_height = 5.2
 crown_width = 3.7
 leaf_sprays_per_cluster = 80
+falling_leaf_count = 12
+falling_leaf_rate = 0.65
 
 [node name="NorthernBirch" parent="Environment" index="10" instance=ExtResource("3")]
 transform = Transform3D(0.980067, 0, -0.198669, 0, 1, 0, 0.198669, 0, 0.980067, 1.5, 0, -7.1)
+recall_enabled = true
+palette_preset = 2
 tree_type = 2
 tree_seed = 166
 tree_height = 4.7
@@ -106,7 +126,7 @@ leaf_sprays_per_cluster = 72
 
 [node name="NortheastOak" parent="Environment" index="11" instance=ExtResource("3")]
 transform = Transform3D(0.62161, 0, 0.783327, 0, 1, 0, -0.783327, 0, 0.62161, 4, 0, -5.5)
-tree_type = 1
+recall_enabled = true
 tree_seed = 184
 tree_height = 4.6
 crown_width = 3.3
@@ -115,6 +135,7 @@ leaf_sprays_per_cluster = 80
 
 [node name="EastGrove" parent="Environment" index="12" instance=ExtResource("3")]
 transform = Transform3D(0.764842, 0, -0.644218, 0, 1, 0, 0.644218, 0, 0.764842, 5.1, 0, -2.5)
+recall_enabled = true
 tree_seed = 207
 tree_height = 4.0
 crown_width = 3.0
@@ -123,6 +144,8 @@ leaf_sprays_per_cluster = 78
 
 [node name="EastBirch" parent="Environment" index="13" instance=ExtResource("3")]
 transform = Transform3D(0.877583, 0, 0.479426, 0, 1, 0, -0.479426, 0, 0.877583, 7.06667, 0, 2.03333)
+recall_enabled = true
+palette_preset = 2
 tree_type = 2
 tree_seed = 229
 tree_height = 3.7
@@ -132,6 +155,7 @@ leaf_sprays_per_cluster = 72
 
 [node name="WestEntrance" parent="Environment" index="14" instance=ExtResource("3")]
 transform = Transform3D(0.62161, 0, -0.783327, 0, 1, 0, 0.783327, 0, 0.62161, -4.8, 0, 3)
+recall_enabled = true
 tree_seed = 241
 tree_height = 3.2
 crown_width = 2.7
@@ -147,12 +171,14 @@ shore_field_quality = 1
 foam_width = 0.44
 
 [node name="PondShoreStone" parent="Environment" index="16" instance=ExtResource("5")]
+recall_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.78667, 0.035, 3.74242)
 boulder_seed = 142
 shape_profile = 2
 dimensions = Vector3(0.85, 0.45, 0.65)
 
 [node name="PondSmallStone" parent="Environment" index="17" instance=ExtResource("5")]
+recall_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.737778, 0.035, 5.45152)
 boulder_seed = 161
 shape_profile = 6
@@ -160,6 +186,8 @@ dimensions = Vector3(0.55, 0.32, 0.5)
 
 [node name="PondGroundcover" parent="Environment" index="18" instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 0, 3.6)
+recall_enabled = true
+palette_preset = 2
 patch_size = Vector2(9.8, 8.2)
 patch_seed = 98
 tufts_per_square_meter = 8.0
@@ -167,18 +195,10 @@ leaves_per_square_meter = 14.0
 grass_height = 0.17
 ground_exclusions = Array[NodePath]([NodePath("../ClearingPond")])
 
-[node name="PondWestTree" parent="Environment" index="19" instance=ExtResource("3")]
-transform = Transform3D(0.731689, 0, 0.681639, 0, 1, 0, -0.681639, 0, 0.731689, -1.53778, 0, 3.74242)
-tree_seed = 307
-tree_height = 3.35
-crown_width = 2.4
-trunk_radius = 0.12
-branch_count = 4
-leaf_sprays_per_cluster = 78
-
-[node name="PondWillow" parent="Environment" index="20" instance=ExtResource("3")]
+[node name="PondWillow" parent="Environment" index="19" instance=ExtResource("3")]
 transform = Transform3D(0.825336, 0, -0.564642, 0, 1, 0, 0.564642, 0, 0.825336, 3.65333, 0, -0.0318182)
-palette_preset = 1
+recall_enabled = true
+palette_preset = 2
 tree_type = 3
 tree_seed = 321
 tree_height = 3.3
@@ -187,77 +207,94 @@ trunk_radius = 0.12
 branch_count = 4
 leaf_sprays_per_cluster = 84
 
-[node name="PondWestBush" parent="Environment" index="21" instance=ExtResource("4")]
+[node name="PondWestBush" parent="Environment" index="20" instance=ExtResource("4")]
 transform = Transform3D(0.955337, 0, 0.29552, 0, 1, 0, -0.29552, 0, 0.955337, -0.897778, 0, 4.31212)
+recall_enabled = true
 bush_seed = 341
 footprint = Vector2(1.438, 1.15)
 bush_height = 0.65
 sprays_per_mass = 42
 
-[node name="PondStoneBush" parent="Environment" index="22" instance=ExtResource("4")]
+[node name="PondStoneBush" parent="Environment" index="21" instance=ExtResource("4")]
 transform = Transform3D(0.921061, 0, -0.389418, 0, 1, 0, 0.389418, 0, 0.921061, -0.471111, 0, 5.66515)
+recall_enabled = true
+palette_preset = 2
 bush_seed = 357
 footprint = Vector2(1.322, 0.9775)
 bush_height = 0.45
 sprays_per_mass = 36
 
-[node name="PondNearShore" parent="Environment" index="23" instance=ExtResource("4")]
+[node name="PondNearShore" parent="Environment" index="22" instance=ExtResource("4")]
 transform = Transform3D(0.995004, 0, 0.0998334, 0, 1, 0, -0.0998334, 0, 0.995004, 2.8, 0, 6.5197)
+recall_enabled = true
+palette_preset = 2
 bush_seed = 373
 footprint = Vector2(1.84, 0.92)
 bush_height = 0.35
 sprays_per_mass = 38
 
-[node name="PondSouthEastBush" parent="Environment" index="24" instance=ExtResource("4")]
+[node name="PondSouthEastBush" parent="Environment" index="23" instance=ExtResource("4")]
 transform = Transform3D(0.877583, 0, -0.479426, 0, 1, 0, 0.479426, 0, 0.877583, 5.43111, 0, 5.66515)
+recall_enabled = true
 bush_seed = 389
 footprint = Vector2(1.667, 1.15)
 bush_height = 0.55
 sprays_per_mass = 42
 
-[node name="PondEastBush" parent="Environment" index="25" instance=ExtResource("4")]
+[node name="PondEastBush" parent="Environment" index="24" instance=ExtResource("4")]
 transform = Transform3D(0.921061, 0, 0.389418, 0, 1, 0, -0.389418, 0, 0.921061, 6.42667, 0, 4.38333)
+recall_enabled = true
 bush_seed = 407
 footprint = Vector2(1.265, 1.552)
 bush_height = 0.75
 sprays_per_mass = 42
 
-[node name="PondBirchBush" parent="Environment" index="26" instance=ExtResource("4")]
+[node name="PondBirchBush" parent="Environment" index="25" instance=ExtResource("4")]
 transform = Transform3D(0.955337, 0, -0.29552, 0, 1, 0, 0.29552, 0, 0.955337, 5.92889, 0, 1.53485)
+recall_enabled = true
+palette_preset = 2
 bush_seed = 421
 footprint = Vector2(1.38, 1.035)
 bush_height = 0.6
 sprays_per_mass = 40
 
-[node name="PondBackShore" parent="Environment" index="27" instance=ExtResource("4")]
+[node name="PondBackShore" parent="Environment" index="26" instance=ExtResource("4")]
 transform = Transform3D(0.980067, 0, 0.198669, 0, 1, 0, -0.198669, 0, 0.980067, 2.72889, 0, 0.822727)
+recall_enabled = true
 bush_seed = 439
 footprint = Vector2(1.495, 0.9775)
 bush_height = 0.5
 sprays_per_mass = 40
 
-[node name="PondWestReeds" parent="Environment" index="28" instance=ExtResource("4")]
+[node name="PondWestReeds" parent="Environment" index="27" instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 0, 2.25)
+recall_enabled = true
+palette_preset = 2
 bush_seed = 457
 footprint = Vector2(1.1, 1)
 bush_height = 0.4
 sprays_per_mass = 36
 
-[node name="PondSouthLowBush" parent="Environment" index="29" instance=ExtResource("4")]
+[node name="PondSouthLowBush" parent="Environment" index="28" instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.45, 0, 6.05)
+recall_enabled = true
+palette_preset = 2
 bush_seed = 473
 footprint = Vector2(1.45, 0.9)
 bush_height = 0.35
 sprays_per_mass = 38
 
-[node name="PondNorthEastBush" parent="Environment" index="30" instance=ExtResource("4")]
+[node name="PondNorthEastBush" parent="Environment" index="29" instance=ExtResource("4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.65, 0, 1.65)
+recall_enabled = true
+palette_preset = 2
 bush_seed = 487
 footprint = Vector2(1.2, 0.85)
 bush_height = 0.5
 sprays_per_mass = 38
 
-[node name="PondRockCluster" parent="Environment" index="31" instance=ExtResource("7")]
+[node name="PondRockCluster" parent="Environment" index="30" instance=ExtResource("7")]
+recall_enabled = true
 transform = Transform3D(0.921061, 0, 0.389418, 0, 1, 0, -0.389418, 0, 0.921061, 0.15, 0.02, 4.8)
 rock_count = 8
 cluster_footprint = Vector2(1.8, 1.2)
@@ -265,13 +302,44 @@ rock_scale = 0.38
 size_variation = 0.8
 boulder_seed = 193
 
-[node name="ClearingWisps" parent="Environment" index="32" instance=ExtResource("8")]
+[node name="ClearingWisps" parent="Environment" index="31" instance=ExtResource("8")]
 visible = false
 curve = SubResource("ClearingWispRoute")
 wisp_count = 7
 float_height = 0.5
 
-[node name="MemoryPlatform" parent="Environment" index="33" instance=ExtResource("9")]
-position = Vector3(0, 0, 1)
+[node name="MemoryPlatform" parent="Environment" index="32" instance=ExtResource("9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 footprint = Vector2(24, 30)
 platform_seed = 139
+
+[node name="ClearingRain" parent="Environment" index="33" instance=ExtResource("10")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+visible = false
+footprint = Vector2(26, 32)
+drop_count = 1200
+platform = NodePath("../MemoryPlatform")
+water_bodies = Array[NodePath]([NodePath("../ClearingPond")])
+splash_count = 160
+
+[node name="MeadowTree2" parent="Environment" index="34" instance=ExtResource("3")]
+transform = Transform3D(0.74367, 0, -0.668547, 0, 1, 0, 0.668547, 0, 0.74367, -0.537333, 0, -1.08541)
+recall_enabled = true
+palette_preset = 3
+tree_height = 3.7
+crown_width = 3.1
+branch_count = 4
+falling_leaf_count = 12
+falling_leaf_rate = 0.65
+
+[node name="ClearingFire" parent="Environment" index="35" instance=ExtResource("11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 1.5)
+flame_size = Vector2(0.7, 1.25)
+animation_speed = 2.0
+ember_count = 14
+
+[node name="ClearingSnow" parent="Environment" index="36" instance=ExtResource("12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+visible = false
+footprint = Vector2(26, 32)
+flake_count = 1200

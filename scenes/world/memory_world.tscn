@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bivcld0gfpu6o"]
+[gd_scene load_steps=13 format=3 uid="uid://bivcld0gfpu6o"]
 
 [ext_resource type="Script" uid="uid://dol7foyhx3gxg" path="res://scripts/memory_world.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://xkovxofvhuc5" path="res://scenes/player/explorer.tscn" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://dfv70ixt0xorv" path="res://scripts/exploration_input.gd" id="5"]
 [ext_resource type="Shader" uid="uid://cx2lu7n4a7173" path="res://shaders/dream_surface.gdshader" id="6"]
 [ext_resource type="Script" uid="uid://bvml28wpkxoak" path="res://scripts/fps_label.gd" id="7"]
+[ext_resource type="PackedScene" path="res://UI/in_game/timeline_button.tscn" id="8"]
 
 [sub_resource type="Environment" id="DreamEnvironment"]
 background_mode = 1
@@ -83,9 +84,9 @@ script = ExtResource("5")
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -116.0
+offset_left = -272.0
 offset_top = 12.0
-offset_right = -16.0
+offset_right = -172.0
 offset_bottom = 38.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -93,3 +94,5 @@ theme_override_font_sizes/font_size = 18
 text = "0 FPS"
 horizontal_alignment = 2
 script = ExtResource("7")
+
+[node name="ReturnToTimeline" parent="Controls" instance=ExtResource("8")]

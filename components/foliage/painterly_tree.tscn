@@ -4,5 +4,7 @@
 
 [node name="PainterlyTree" type="Node3D"]
 script = ExtResource("1")
-palette_preset = 3
+tree_type = 1
 tree_seed = 88
+falling_leaf_count = 25
+falling_leaf_rate = 2.0
