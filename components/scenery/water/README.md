@@ -1,8 +1,8 @@
 # Painterly modular water
 
-Instance `painterly_water.tscn` at ground level in a memory. The component previews in the editor and appears fully at startup. It uses layered wave normals, broad painted pigment, separate shallow caustics, and a view-dependent sky-light cue. One white shoreline band fades inward and breaks into animated cells; there is no colored bank or secondary foam ribbon.
+Instance `painterly_water.tscn` at ground level in a memory. The component previews fully in the editor. Enable **Recall → Recall Enabled** to reveal it on approach; this defaults to off. It uses layered wave normals, broad painted pigment, separate shallow caustics, and a view-dependent sky-light cue. One white shoreline band fades inward and breaks into animated cells; there is no colored bank or secondary foam ribbon.
 
-The demo pond uses Calm Pond settings, with foliage framing the shore and registered rocks contributing foam. Run `scenes/memories/water_study.tscn` with F6 for an uncluttered custom-outline pond and a curved, variable-width stream.
+Each seasonal demo pond uses Calm Pond settings, with foliage framing the shore and registered rocks contributing foam. Run `scenes/memories/water_study.tscn` with F6 for an uncluttered custom-outline pond and a curved, variable-width stream.
 
 ## Appearance and motion
 
@@ -97,3 +97,42 @@ Framework checks cover custom triangulation, curved width/flow, shared-resource 
 ![Demo pond](../../../docs/pond-detail.png)
 
 ![Custom pond and curved stream](../../../docs/water-study.png)
+
+## Pond recall
+
+The demo pond enables **Recall → Recall Enabled**. Either nearby grounded explorer
+starts an independent 3.8 second expansion: a small pool grows outward, easing into
+the final outline. The existing white foam follows the moving edge and settles into
+the original shoreline. The component owns its internal `WaterRecall` controller;
+no extra effect nodes are needed. Toggle off to show the normal full-size water.
+
+Expansion runs in the vertex shader and preserves the original mesh/node transform.
+Painting and waves use the displayed water position. The shader adjusts shore distance
+for the moving rim so foam and shallow colors develop as the pool spreads. Registered
+rocks keep their cutouts at their authored locations, rather than shrinking with the
+water. Custom offset/concave outlines choose an interior seed point from the baked
+shore field. Expanding concave outlines are clipped to the authored body.
+
+Grass exclusions stay at the final authored outline: recall does not rebuild grass
+scatter, water meshes or collision shapes per frame. Shore blocking stays disabled
+during expansion; it returns after completion once any players inside have left, so
+recollection cannot enclose them behind the final barrier. **Block Water Entry** still
+controls whether barriers exist at all. Completed water stays recalled for the visit.
+Shape/obstacle rebuilds preserve progress, and all appearance/foam controls remain live.
+
+Bodies with registered rocks bake one additional outer-only shore field when rebuilt;
+without obstacles they reuse the original field. Expansion samples it alongside the
+normal field, keeping one opaque draw surface. At completion the shader uses the
+original rendering path. Enabled components check proximity/state each frame; disabled
+components keep the existing no-process behavior. Target-phone performance needs profiling.
+
+Open `res://scenes/effects/water_recall_test.tscn` and press F6 for replay, pause, speed,
+and scrub controls. `tests/water_recall.gd` checks expansion, stationary obstacle cutouts,
+custom outlines, stable geometry, rebuild state, toggles, proximity, and safe shoreline
+blocking. Add `-- --capture` with the renderer for images in `/tmp/water-recall-*.png`.
+
+The seasonal demo uses Turquoise, Autumn Jade, and Winter Glass pond palettes. Winter snow references its pond through Ground Exclusions; the public `get_ground_outline()` returns the sampled shoreline in world space for static groundcover masks.
+
+All recall types share **Proximity Distance** in
+`res://components/effects/recall/recall_settings.tres` (default 3.5 m beyond the outline).
+Increase it to begin pond recall farther from the player.

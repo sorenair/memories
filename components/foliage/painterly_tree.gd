@@ -434,30 +434,51 @@ func _add_shadow() -> void:
 	_add_generated(shadow)
 
 func _tube(surface: SurfaceTool, points: Array[Vector3], radii: Array, rng: RandomNumberGenerator, emit_geometry: bool = true) -> void:
-	var rings: Array[PackedVector3Array] = []
 	var twist := rng.randf() * TAU
-	for index in range(points.size()):
-		var direction: Vector3 = points[mini(index + 1, points.size() - 1)] - points[maxi(index - 1, 0)]
-		direction = direction.normalized()
+	# Preserve the old random stream so rounding wood never reshuffles the canopy.
+	for index in range(points.size() - 1):
+		for segment in range(7):
+			rng.randf_range(0.0, 0.12)
+	if not emit_geometry:
+		return
+	# Interpolate the existing scaffold, keeping its organic bends without sharp elbows.
+	var centers: Array[Vector3] = []
+	var widths: Array[float] = []
+	var curve_steps := 3 if points.size() >= 7 else 2
+	for index in range(points.size() - 1):
+		for step in range(curve_steps):
+			var t := float(step) / float(curve_steps)
+			centers.append(points[index].cubic_interpolate(points[index + 1], points[maxi(index - 1, 0)], points[mini(index + 2, points.size() - 1)], t))
+			widths.append(lerpf(float(radii[index]), float(radii[index + 1]), t))
+	centers.append(points[-1])
+	widths.append(float(radii[-1]))
+	const SIDES := 16
+	var rings: Array[PackedVector3Array] = []
+	var normals: Array[PackedVector3Array] = []
+	for index in range(centers.size()):
+		var previous := maxi(index - 1, 0)
+		var following := mini(index + 1, centers.size() - 1)
+		var direction := (centers[following] - centers[previous]).normalized()
 		var side := direction.cross(Vector3.FORWARD).normalized()
 		if side.length_squared() < 0.1:
 			side = direction.cross(Vector3.RIGHT).normalized()
 		var up := direction.cross(side).normalized()
+		var slope := (widths[following] - widths[previous]) / maxf(centers[following].distance_to(centers[previous]), 0.001)
 		var ring := PackedVector3Array()
-		for segment in range(7):
-			var angle := float(segment) * TAU / 7.0 + twist
-			# Uneven oval sections give painted ridges without noisy bark textures.
-			var ridge := 1.0 + sin(angle * 3.0 + twist) * 0.065
-			ring.append(points[index] + (side * cos(angle) * 1.08 + up * sin(angle) * 0.94) * float(radii[index]) * ridge)
+		var ring_normals := PackedVector3Array()
+		for segment in range(SIDES):
+			var angle := float(segment) * TAU / float(SIDES) + twist
+			var ridge := 1.0 + sin(angle * 3.0 + twist) * 0.025
+			ring.append(centers[index] + (side * cos(angle) * 1.08 + up * sin(angle) * 0.94) * widths[index] * ridge)
+			# Shared radial normals shade across faces, with taper accounted for.
+			ring_normals.append((side * cos(angle) / 1.08 + up * sin(angle) / 0.94 - direction * slope).normalized())
 		rings.append(ring)
+		normals.append(ring_normals)
 	for index in range(rings.size() - 1):
-		for segment in range(7):
-			var next := (segment + 1) % 7
-			var tint := rng.randf_range(0.0, 0.12)
-			if not emit_geometry:
-				continue
-			_bark_face(surface, rings[index][segment], rings[index + 1][segment], rings[index + 1][next], tint)
-			_bark_face(surface, rings[index][segment], rings[index + 1][next], rings[index][next], tint)
+		for segment in range(SIDES):
+			var next := (segment + 1) % SIDES
+			_bark_face(surface, [rings[index][segment], rings[index + 1][segment], rings[index + 1][next]], [normals[index][segment], normals[index + 1][segment], normals[index + 1][next]], twist)
+			_bark_face(surface, [rings[index][segment], rings[index + 1][next], rings[index][next]], [normals[index][segment], normals[index + 1][next], normals[index][next]], twist)
 
 func _leaf_mass(center: Vector3, radii: Vector3, rng: RandomNumberGenerator, transforms: Array[Transform3D], tints: Array[Color], density: int = -1, size_multiplier: float = 1.0) -> void:
 	if density < 0:
@@ -497,13 +518,15 @@ func _leaf_mass(center: Vector3, radii: Vector3, rng: RandomNumberGenerator, tra
 			transforms.append(Transform3D(basis, point))
 			tints.append(Color(clampf(clump_tint + float(_variant.tint) + rng.randf_range(-0.045, 0.045), 0.03, 0.97), rng.randf(), rng.randf(), point.y / tree_height))
 
-func _bark_face(surface: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, brush: float) -> void:
-	var normal := (c - a).cross(b - a).normalized()
-	var light := normal.dot(SUN_DIRECTION) * 0.38 + 0.48 + brush
-	var color := Color(clampf(light, 0.02, 1.0), clampf(0.5 + brush * 3.0, 0.0, 1.0), 1, 1)
-	for point in [a, b, c]:
+func _bark_face(surface: SurfaceTool, points: Array[Vector3], normals: Array[Vector3], phase: float) -> void:
+	for index in range(3):
+		var point := points[index]
+		var normal := normals[index]
+		# Subtle continuous pigment variation replaces random per-triangle patches.
+		var brush := 0.055 + sin(point.y * 1.7 + phase + point.x * 2.0) * 0.018
+		var light := normal.dot(SUN_DIRECTION) * 0.38 + 0.48 + brush
 		surface.set_normal(normal)
-		surface.set_color(color)
+		surface.set_color(Color(clampf(light, 0.02, 1.0), 0.5, 1.0, 1.0))
 		surface.add_vertex(point)
 
 func _leaf_spray_mesh() -> ArrayMesh:

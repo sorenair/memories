@@ -1,0 +1,165 @@
+[gd_scene load_steps=12 format=3 uid="uid://cjxw4gwen533n"]
+
+[ext_resource type="Script" path="res://tests/scenes/component_test.gd" id="1"]
+[ext_resource type="PackedScene" path="res://components/vfx/smoke/painterly_smoke.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://xkovxofvhuc5" path="res://scenes/player/explorer.tscn" id="3"]
+[ext_resource type="Script" uid="uid://dfv70ixt0xorv" path="res://scripts/exploration_input.gd" id="4"]
+
+[sub_resource type="Environment" id="Environment"]
+resource_local_to_scene = true
+background_mode = 1
+background_color = Color(0.28, 0.3, 0.33, 1)
+ambient_light_source = 3
+ambient_light_color = Color(0.88, 0.9, 0.94, 1)
+ambient_light_energy = 0.65
+reflected_light_source = 2
+
+[sub_resource type="StandardMaterial3D" id="FloorPaint"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_color = Color(0.28, 0.3, 0.33, 1)
+
+[sub_resource type="PlaneMesh" id="FloorMesh"]
+resource_local_to_scene = true
+material = SubResource("FloorPaint")
+size = Vector2(2000, 2000)
+
+[sub_resource type="WorldBoundaryShape3D" id="GroundShape"]
+
+[sub_resource type="StandardMaterial3D" id="WallPaint"]
+shading_mode = 0
+albedo_color = Color(0.36, 0.37, 0.39, 1)
+
+[sub_resource type="PlaneMesh" id="WallMesh"]
+material = SubResource("WallPaint")
+size = Vector2(12, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings"]
+resource_local_to_scene = true
+font_size = 22
+font_color = Color(0.94, 0.935, 0.89, 1)
+shadow_size = 3
+shadow_color = Color(0.08, 0.09, 0.1, 0.7)
+
+[node name="ComponentTest" type="Node3D"]
+script = ExtResource("1")
+subject_scene = ExtResource("2")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, 0.409576, -0.286788, 0, 0.573576, 0.819152, 0.5, -0.709406, 0.496732, 0, 0, 0)
+light_color = Color(1, 0.92, 0.81, 1)
+light_energy = 0.95
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("FloorMesh")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("GroundShape")
+
+[node name="BackWall" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.5, -3.2)
+visible = false
+cast_shadow = 0
+mesh = SubResource("WallMesh")
+
+[node name="SubjectMount" type="Node3D" parent="."]
+
+[node name="Explorer" parent="." node_paths=PackedStringArray("movement_camera", "movement_input") instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
+movement_camera = NodePath("../Camera3D")
+movement_input = NodePath("../Controls/ExplorationInput")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.735931, 0.677056, 0, -0.677056, 0.735931, 0, 10, 10)
+projection = 1
+current = true
+size = 10.0
+near = 0.1
+far = 160.0
+
+[node name="Controls" type="CanvasLayer" parent="."]
+
+[node name="ExplorationInput" type="Control" parent="Controls"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4")
+
+[node name="Title" type="Label" parent="Controls"]
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 800.0
+offset_bottom = 58.0
+text = "Component test / PainterlySmoke"
+label_settings = SubResource("LabelSettings")
+
+[node name="Hint" type="Label" parent="Controls"]
+offset_left = 28.0
+offset_top = 64.0
+offset_right = 1000.0
+offset_bottom = 92.0
+theme_override_colors/font_color = Color(0.94, 0.935, 0.89, 1)
+text = "WASD / arrows / joystick · R reload subject · V show / hide"
+
+[node name="Panel" type="PanelContainer" parent="Controls"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -270.0
+offset_top = 24.0
+offset_right = -28.0
+offset_bottom = 300.0
+grow_horizontal = 0
+
+[node name="Rows" type="VBoxContainer" parent="Controls/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Reload" type="Button" parent="Controls/Panel/Rows"]
+layout_mode = 2
+text = "Reload subject"
+
+[node name="Toggle" type="Button" parent="Controls/Panel/Rows"]
+layout_mode = 2
+text = "Show / hide subject"
+
+[node name="Replay" type="Button" parent="Controls/Panel/Rows"]
+layout_mode = 2
+disabled = true
+text = "Replay recall"
+
+[node name="Floor" type="OptionButton" parent="Controls/Panel/Rows"]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Neutral floor"
+popup/item_0/id = 0
+popup/item_1/text = "White floor"
+popup/item_1/id = 1
+popup/item_2/text = "Dark floor"
+popup/item_2/id = 2
+
+[node name="Wall" type="CheckButton" parent="Controls/Panel/Rows"]
+layout_mode = 2
+text = "Show back wall"
+
+[node name="RecallMode" type="OptionButton" parent="Controls/Panel/Rows"]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Recall: scene default"
+popup/item_0/id = 0
+popup/item_1/text = "Recall: enabled"
+popup/item_1/id = 1
+popup/item_2/text = "Recall: disabled"
+popup/item_2/id = 2

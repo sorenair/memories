@@ -1,6 +1,6 @@
 # Painterly snow
 
-Instance `painterly_snow.tscn` under a memory's Environment. Position its origin at the center of the weather area and its local ground level. The demo's `ClearingSnow` covers 26×32 m with 1,200 allocated flakes and Intensity 0.7.
+Instance `painterly_snow.tscn` under a memory's Environment. Position its origin at the center of the weather area and its local ground level. The demo's `Environment/Winter/Snowfall` covers 11×13 m with 550 allocated flakes and Intensity 0.75.
 
 Soft, slightly irregular round flakes fall slowly, weaving through broad swirls and gentle wind. Size, speed, brightness, and phase vary between flakes. Smaller flakes dominate, with occasional larger flakes giving depth without a screen-wide curtain. Normal depth testing hides snow behind scenery; flakes fade at the top and near the ground to hide their looping motion.
 
@@ -21,11 +21,11 @@ Soft, slightly irregular round flakes fall slowly, weaving through broad swirls 
 
 Footprint, seed, count, and ground edits rebuild the batch. Other appearance and motion edits update uniforms and bounds without regenerating geometry. Generated nodes remain internal; scene files save the authoring parameters. The volume stays fixed to the memory instead of recentering on the player. Size it to cover the whole play area, and keep its transform upright.
 
-Snow is decorative: it does not accumulate, change foliage palettes, freeze water, extinguish fire, or collide with roofs and arbitrary terrain. Its bottom fade uses the flat Ground Height plane. The demo's existing rain remains hidden, and foliage/recall settings are preserved. Disable or hide either weather component to choose the desired conditions.
+Snow is decorative: it does not accumulate, change foliage palettes, freeze water, extinguish fire, or collide with roofs and arbitrary terrain. Its bottom fade uses the flat Ground Height plane. The demo has localized rain in spring/summer, no weather in autumn, and snowfall in winter. Disable or hide either weather component to choose the desired conditions.
 
 ## Budget and validation
 
-All flakes share **one MultiMesh draw**, using two triangles each (2,400 allocated triangles in the demo). Shape, edge softness, color, and motion are computed in the shader. No textures, per-frame scripts, physics particles, raycasts, screen/depth reads, or accumulation buffers are needed. Bounds cover the entire height plus wind, flutter, and flake size. It has been visually checked on the desktop Mobile renderer; physical phone performance remains untested.
+All flakes share **one MultiMesh draw**, using two triangles each (1,100 allocated triangles in the demo). Shape, edge softness, color, and motion are computed in the shader. No textures, per-frame scripts, physics particles, raycasts, screen/depth reads, or accumulation buffers are needed. Bounds cover the entire height plus wind, flutter, and flake size. It has been visually checked on the desktop Mobile renderer; physical phone performance remains untested.
 
 ```sh
 godot --headless --path . --script tests/snow_component.gd

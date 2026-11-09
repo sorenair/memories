@@ -62,15 +62,9 @@ func _process(delta: float) -> void:
 	if not _material:
 		return
 	if auto_discover and not playing and progress == 0.0:
-		# Check the actual footprint, including asymmetrical stones and merged clusters.
-		for explorer in get_tree().get_nodes_in_group(&"explorers"):
-			if explorer is Node3D:
-				var point := patch.to_local(explorer.global_position)
-				var center := _bounds.get_center()
-				var radius := Vector2(_bounds.size.x, _bounds.size.z) * 0.5 + Vector2.ONE * 1.4
-				if absf(explorer.global_position.y - patch.global_position.y) < 1.5 and Vector2((point.x - center.x) / radius.x, (point.z - center.z) / radius.y).length() <= 1.0:
-					play()
-					break
+		var center := _bounds.get_center()
+		if preload("res://components/effects/recall/component_recall.gd").explorer_near(patch, Vector2(_bounds.size.x, _bounds.size.z), Vector2(center.x, center.z)):
+			play()
 	if playing:
 		seek(progress + delta / duration)
 		if progress >= 1.0:

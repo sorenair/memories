@@ -2,7 +2,7 @@
 
 Instance `memory_platform.tscn` under a memory's Environment to give it a finite, walkable surface. The top is local Y=0. Place Entry, Exit, foliage, water, and scenery on that level. The platform descends as a pale pillar, gradually matching the void color before its geometry ends. It has no visible fence; collision along the rim stops the explorer a short distance before the lip.
 
-The demo uses a 24×30 m rounded platform centered at `(0,0,1)`. It contains the forest, pond, entry/exit markers, and the recall landing area. The wisps remain hidden.
+The demo uses a 46×26 m rounded platform centered at `(0,0,1)`. It contains all three seasonal clearings, ponds, entry/exit markers, and the recall landing area. The wisps remain hidden.
 
 | Inspector field | Effect |
 | --- | --- |

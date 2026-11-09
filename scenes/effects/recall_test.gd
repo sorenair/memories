@@ -1,6 +1,6 @@
 extends Node3D
 ## Test controls live here; the reusable grass adapter has no UI dependencies.
-@export_range(0.5, 5.0, 0.1) var discovery_distance: float = 1.4
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
 @export var subject_name: String = "meadow"
 @export var subject_path := NodePath("Subjects/Grass")
 @onready var recall: Node = get_node(subject_path).get_recall_controller()
@@ -12,7 +12,7 @@ var _base_duration: float = 3.2
 func _ready() -> void:
 	recall.auto_discover = false
 	recall.origin = $Subjects/RecallOrigin
-	recall.reset()
+	_reset()
 	_base_duration = recall.duration
 	$Controls/Panel/Rows/Buttons/Replay.pressed.connect(_replay)
 	$Controls/Panel/Rows/Buttons/Reset.pressed.connect(_reset)
@@ -21,7 +21,7 @@ func _ready() -> void:
 	scrub.value_changed.connect(_scrubbed)
 
 func _process(_delta: float) -> void:
-	if _waiting and $Explorer.global_position.distance_to($Subjects/RecallOrigin.global_position) < discovery_distance:
+	if _waiting and $Explorer.global_position.distance_to($Subjects/RecallOrigin.global_position) <= RECALL.proximity_distance():
 		_waiting = false
 		recall.play()
 	scrub.set_value_no_signal(recall.progress)
@@ -40,7 +40,7 @@ func _replay() -> void:
 
 func _reset() -> void:
 	_waiting = true
-	$Explorer.position = Vector3(0, 0, 4.2)
+	$Explorer.global_position = $Subjects/RecallOrigin.global_position + Vector3(0, 0, RECALL.proximity_distance() + 0.6)
 	$Explorer.velocity = Vector3.ZERO
 	$Explorer.reset_physics_interpolation()
 	recall.reset()

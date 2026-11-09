@@ -1,4 +1,4 @@
-# Foliage recall
+# Recall effects
 
 Grass, bush and tree components expose one **Recall → Recall Enabled** checkbox
 (`recall_enabled`) on their root node. It defaults to off. Enable it on any instance
@@ -8,15 +8,33 @@ stay fully visible. Turning the toggle off restores the original materials immed
 
 Enabled components own an internal `RecallEffect` node using `GrassRecall`,
 `BushRecall` or `TreeRecall`. They preserve the effect's state when rebuilding geometry. Standalone
-components automatically discover explorers within their footprint plus a 1.4 m
-margin, and play a 3.2 second recall (4.5 seconds for trees). Completed foliage stays present for that visit;
+components automatically discover explorers within their footprint plus the shared recall distance, and play a 3.2 second recall (4.5 seconds for trees). Completed foliage stays present for that visit;
 reloading resets it. Sound, saved discovery and multiplayer synchronization are not
 implemented yet.
+
+## Global proximity distance
+
+Edit `res://components/effects/recall/recall_settings.tres` in the Godot Inspector:
+**Proximity Distance** is the one shared control for grass, bushes, trees, boulders,
+rock clusters and water. Its default is **3.5 meters**, increased from 1.4 meters.
+It adds reach beyond each component's footprint/outline rather than measuring from
+the player's position to the component origin. Larger values start recall earlier.
+A value of zero requires entering the footprint. The reach stays in world meters
+when instances are rotated or scaled. Each component still discovers independently;
+the per-component **Recall Enabled** checkbox is unchanged.
+
+All adapters read the same shared Resource through `component_recall.gd`. No per-scene
+distance overrides or cached per-effect copies are used. Study scenes also read this
+setting for their approach trigger, and reset the explorer just outside that range.
+Restart a running preview after saving a distance change in the Inspector.
+
+`tests/recall_settings.gd` checks that changing the one shared value affects every
+adapter without rebuilding it, including scaled/rotated components and zero reach.
 
 ## Demo
 
 Both demo grass patches, all 13 bushes, and all 11 trees have recall enabled. Each checks its own
-footprint independently: a grounded explorer within the footprint plus a 1.4 m margin
+footprint independently: a grounded explorer within the footprint plus the shared recall distance
 starts that component's animation. The check accounts for placement,
 rotation and scaling. Either explorer can trigger discovery. Airborne arrivals do not
 trigger it. Distant foliage stays hidden even while nearby foliage recalls.
@@ -92,7 +110,7 @@ uses no transparency or new geometry, and restores the full original color at co
 
 Boulders and inherited rock clusters expose **Recall → Recall Enabled**, default off.
 The demo enables all four individual boulders and the pond rock cluster. Discovery is
-independent and uses actual mesh bounds plus a 1.4 m margin. Recall lasts 2.4 seconds,
+independent and uses actual mesh bounds plus the shared recall distance. Recall lasts 2.4 seconds,
 with the contact shadow developing as the scan rises. Collision is disabled while
 hidden/recalling and enabled on completion, respecting the component's **Solid** toggle.
 Rebuilds preserve progress, live palette updates work, and empty clusters are supported.
@@ -105,3 +123,18 @@ For another solid component, extend its existing material with the shared scan i
 and provide the `SolidRecall` adapter with `get_recall_shader`, `get_recall_mesh`,
 `get_recall_shadow_material` and `get_recall_collision_body`. Its regular shading stays
 component-specific; the scan and lifecycle are shared.
+
+## Water / pond recall
+
+Water exposes the same **Recall → Recall Enabled** checkbox. The demo pond enables
+it and discovers nearby grounded explorers independently. Over 3.8 seconds a small
+pool expands to the final outline, carrying the existing white foam on its moving rim.
+Rock holes stay stationary; custom outlines use an interior seed. Completed water
+uses its original rendering path. Geometry, node transforms and grass exclusions stay
+fixed throughout the animation. Shore blockers return on completion after any inside
+players leave, avoiding an invisible barrier or trapping a player during recollection.
+
+Open `res://scenes/effects/water_recall_test.tscn` (F6) for the study controls.
+`tests/water_recall.gd` covers proximity, expansion, rebuilds, live foam settings,
+custom outlines, rock fields and collision; use `-- --capture` for rendered stages
+in `/tmp/water-recall-*.png`. See [the water guide](../../components/scenery/water/README.md).

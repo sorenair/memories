@@ -32,8 +32,14 @@ func run() -> void:
 	# Attempt escape at four rim faces; normal CharacterBody motion must stop inside.
 	player.movement_camera=null
 	for direction in [Vector2.RIGHT,Vector2.LEFT,Vector2.UP,Vector2.DOWN]:
-		var center:=Vector3(0,0,1)
-		var start:=center+Vector3(direction.x*9.5,0,direction.y*12.5)
+		var center:=platform.global_position
+		var low := 0.0
+		var high := platform.footprint.length()
+		for search in range(18):
+			var middle := (low+high)*0.5
+			if platform.contains_ground_point(center+Vector3(direction.x,0,direction.y)*middle):low=middle
+			else:high=middle
+		var start:=center+Vector3(direction.x,0,direction.y)*(low-1.0)
 		player.global_position=start
 		player.velocity=Vector3.ZERO
 		player.reset_physics_interpolation()

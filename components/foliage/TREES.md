@@ -83,7 +83,7 @@ Three thick, curved buttress roots replace the five small root spikes. Their tap
 
 ## Falling leaves
 
-**Falling Leaves → Falling Leaf Count** sets the maximum leaf pool (0–128); zero removes the effect and its draw call. **Falling Leaf Rate** sets target emissions per second; zero hides the effect. Higher rates are limited by Count and the time needed for a leaf to fall. Increase Count if the desired rate cannot be reached. The demo enables a quiet 0.65 leaves/second on three trees; other trees remain unchanged.
+**Falling Leaves → Falling Leaf Count** sets the maximum leaf pool (0–128); zero removes the effect and its draw call. **Falling Leaf Rate** sets target emissions per second; zero hides the effect. Higher rates are limited by Count and the time needed for a leaf to fall. Increase Count if the desired rate cannot be reached. The demo enables 0.6 leaves/second on the six autumn trees and a quiet 0.2 leaves/second on the summer willow; winter trees have falling leaves disabled.
 
 Leaves start at seeded positions from the actual generated canopy, inherit its four-color palette, tumble and flutter with gentle wind, then fade near the tree's local ground plane. Their approximate downward speed is 0.55 m/s. They are decorative: no collision, accumulating leaf litter, or terrain-height sampling. Over water or uneven ground, the fade still uses the tree's local Y=0 plane.
 
@@ -100,7 +100,7 @@ Checks cover controls, palette updates, persistence, all tree types, bare trees,
 
 Enable **Recall → Recall Enabled** on a tree instance's root. It defaults to off,
 with complete editor previews. All 11 demo trees enable it and discover explorers
-independently, using the type-adjusted crown footprint plus a 1.4 m margin. Either
+independently, using the type-adjusted crown footprint plus the shared recall proximity distance. Either
 player can trigger it; airborne arrivals and distant foliage do not.
 
 The 4.5 second sequence first manifests trunk/branches upward, from pale pigment
@@ -120,3 +120,7 @@ Open `res://scenes/effects/tree_recall_test.tscn` and press F6 to replay, pause,
 or change playback speed. Run `tests/tree_recall.gd` for state/variant checks, adding
 `-- --capture` with a real renderer for empty, wood-only, canopy and completed images
 in `/tmp/tree-recall-*.png`.
+
+Trunks, branches, and roots use three broad toon tones with softly edged transitions, driven by continuous directional lighting across smooth radial normals. Bark colors, root pigment blending, and birch markings remain shared across variants. This stays in the existing unshaded material and adds no lighting or shadow-map passes.
+
+Wood uses 16-sided oval cross-sections and two to three curve samples per scaffold segment. Shared radial normals and continuous pigment variation remove triangle-by-triangle faceting while preserving the seeded scaffold, canopy layout, and existing collision shapes. Rocks retain their separate angular geometry.

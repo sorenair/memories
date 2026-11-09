@@ -10,14 +10,15 @@ func check(condition: bool, message: String) -> void:
 func run() -> void:
 	var memory := load("res://scenes/memories/foliage_demo.tscn").instantiate() as Node3D
 	root.add_child(memory)
+	await process_frame
 	var effects: Array[Node] = []
-	for component in memory.get_node("Environment").get_children():
-		if component is PainterlyGrassPatch or component is PainterlyBush or component is PainterlyTree or component is PainterlyBoulder:
+	for component in memory.get_node("Environment").find_children("*", "", true, false):
+		if component is PainterlyGrassPatch or component is PainterlyBush or component is PainterlyTree or component is PainterlyBoulder or component is PainterlyWater:
 			var effect: Node = component.get_recall_controller()
 			check(effect != null and effect.auto_discover, "Each demo recallable component must discover independently")
 			effect.set_process(false)
 			effects.append(effect)
-	check(effects.size() == 31, "Demo should recall foliage, four boulders and a rock cluster independently")
+	check(effects.size() == 54, "Demo should recall foliage, stones and the pond independently")
 	check(not memory.get_node("RevealClusters").has_node("GrassRecall"), "Demo must not contain a shared recall wave")
 	var explorer := Node3D.new()
 	explorer.add_to_group(&"explorers")
@@ -26,9 +27,9 @@ func run() -> void:
 	for effect in effects:
 		effect._process(0.1)
 		check(effect.progress == 0.0, "Distant foliage must stay hidden")
-	var near_bush: BushRecall = memory.get_node("Environment/MeadowBush").get_recall_controller()
-	var far_tree: TreeRecall = memory.get_node("Environment/WestGrove").get_recall_controller()
-	var far_bush: BushRecall = memory.get_node("Environment/PondSouthLowBush").get_recall_controller()
+	var near_bush: BushRecall = memory.get_node("Environment/SummerSpring/MeadowBush").get_recall_controller()
+	var far_tree: TreeRecall = memory.get_node("Environment/Autumn/WestGrove").get_recall_controller()
+	var far_bush: BushRecall = memory.get_node("Environment/Winter/PondSouthLowBush").get_recall_controller()
 	explorer.position = near_bush.patch.global_position + Vector3(0, 5, 0)
 	near_bush._process(0.1)
 	check(near_bush.progress == 0.0, "Airborne arrivals must not trigger discovery")
@@ -39,7 +40,7 @@ func run() -> void:
 	check(far_bush.progress == 0.0 and not far_bush.playing, "Nearby bush recall must not reveal distant bushes")
 	check(far_tree.progress == 0.0, "Nearby foliage must not reveal distant trees")
 	# A player near a patch edge should trigger that patch without entering its center.
-	var grass: GrassRecall = memory.get_node("Environment/Meadow").get_recall_controller()
+	var grass: GrassRecall = memory.get_node("Environment/SummerSpring/Meadow").get_recall_controller()
 	grass.reset()
 	explorer.position = grass.patch.to_global(Vector3(-grass.patch.patch_size.x * 0.5 - 0.8, 0, 0))
 	grass._process(0.2)

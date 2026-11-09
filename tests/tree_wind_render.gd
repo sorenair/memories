@@ -20,10 +20,12 @@ func run() -> void:
 	root.content_scale_size = Vector2i(800, 800)
 	var world: Node3D = load("res://scenes/world/memory_world.tscn").instantiate()
 	root.add_child(world)
-	world.get_node("Memory/Environment/Meadow").hide()
+	world.get_node("Memory/Environment/SummerSpring/Meadow").hide()
 	world.get_node("Explorer").hide()
 	world.get_node("Controls").hide()
-	var tree: PainterlyTree = world.get_node("Memory/Environment/MeadowTree")
+	var tree: PainterlyTree = world.get_node("Memory/Environment/SummerSpring/MeadowTree")
+	tree.recall_enabled = false
+	tree.falling_leaf_count = 0
 	for sibling in tree.get_parent().get_children():
 		if sibling != tree and sibling is Node3D:
 			sibling.hide()

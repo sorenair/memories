@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c5mmf5qbufow3"]
+
+[resource]
+resource_name = "Toon Cloth - White"
+diffuse_mode = 3
+specular_mode = 1
+disable_fog = true

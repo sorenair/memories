@@ -30,6 +30,12 @@ uniform float foam_amount = 1.0;
 uniform float foam_width = 0.34;
 uniform float foam_cell_size = 1.0;
 uniform float motion_phase = 0.0;
+// Complete by default; the component's recall controller opts into expansion.
+uniform float recall_progress = 1.0;
+uniform float recall_scale = 1.0;
+uniform vec2 recall_center = vec2(0.0);
+uniform sampler2D recall_outline_field : repeat_disable, filter_linear;
+varying vec2 recall_source_uv;
 varying vec3 paint_position;
 varying vec2 field_uv;
 varying vec2 stream_uv;
@@ -41,10 +47,17 @@ vec3 wave_phases(vec2 world, float t) {
 		dot(world, vec2(0.20, -0.98)) * 3.8 + t * 0.73 + 2.7);
 }
 void vertex() {
+	recall_source_uv = (VERTEX.xz - field_origin) / field_size;
+	if (recall_progress < 1.0) {
+		VERTEX.xz = recall_center + (VERTEX.xz - recall_center) * max(recall_scale, 0.0001);
+	}
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	field_uv = (VERTEX.xz - field_origin) / field_size;
 	stream_uv = UV;
 	float distance = textureLod(shore_field, field_uv, 0.0).r;
+	if (recall_progress < 1.0) {
+		distance = min(distance, textureLod(recall_outline_field, recall_source_uv, 0.0).r * recall_scale);
+	}
 	vec3 phases = wave_phases(world.xz * ripple_scale / 1.6, TIME * flow_speed * 3.2);
 	VERTEX.y += dot(sin(phases), vec3(0.50, 0.30, 0.20)) * wave_height * wave_activity * smoothstep(0.0, 0.4, distance);
 	paint_position = world;
@@ -52,10 +65,16 @@ void vertex() {
 	axis_z = normalize(MODEL_MATRIX[2].xz);
 }
 void fragment() {
+	if (recall_progress <= 0.0) { discard; }
 	vec4 shore = texture(shore_field, field_uv);
 	// Geometry defines the outer body; registered rock sections cut interior holes.
 	if (shore.r < -0.025) { discard; }
 	float distance = max(shore.r, 0.0);
+	if (recall_progress < 1.0) {
+		// Outer shoreline expands; rock cutouts remain at their authored positions.
+		float outer_distance = texture(recall_outline_field, recall_source_uv).r * recall_scale;
+		distance = max(min(distance, outer_distance), 0.0);
+	}
 	vec2 local_flow = stream_body ? shore.gb : flow_direction;
 	vec2 flow = axis_x * local_flow.x + axis_z * local_flow.y;
 	float speed = shore.a * (stream_body ? 1.0 : min(length(flow_direction), 1.0));

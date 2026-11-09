@@ -38,9 +38,9 @@ func run() -> void:
 		await process_frame
 	# Individual component toggles remain authoritative in the demo.
 	var memory: Node3D = load("res://scenes/memories/foliage_demo.tscn").instantiate()
-	memory.get_node("Environment/MeadowBush").recall_enabled = false
+	memory.get_node("Environment/SummerSpring/MeadowBush").recall_enabled = false
 	root.add_child(memory)
-	check(memory.get_node("Environment/MeadowBush").get_recall_controller() == null, "Disabled demo bush must stay fully visible")
-	check(memory.get_node("Environment/SmallBush").get_recall_controller().auto_discover, "Other demo bushes must retain their independent discovery")
+	check(memory.get_node("Environment/SummerSpring/MeadowBush").get_recall_controller() == null, "Disabled demo bush must stay fully visible")
+	check(memory.get_node("Environment/SummerSpring/BackBush").get_recall_controller().auto_discover, "Other demo bushes must retain their independent discovery")
 	print("Foliage recall toggle checks: ", "PASS" if failures == 0 else "FAIL")
 	quit(failures)

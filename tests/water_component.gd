@@ -11,6 +11,8 @@ func vertices(water: Node) -> PackedVector3Array:
 	return water.get_node("PaintedWater").mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 func run() -> void:
 	var water: PainterlyWater = load("res://components/scenery/water/painterly_water.tscn").instantiate()
+	# These checks exercise local motion controls, independent of authored Settings.
+	water.settings = null
 	root.add_child(water)
 	for kind in range(2):
 		water.shape = kind
@@ -75,8 +77,8 @@ func run() -> void:
 		root.add_child(memory)
 		await process_frame
 		await process_frame
-		var meadow: PainterlyGrassPatch = memory.get_node("Environment/Meadow")
-		var pond: PainterlyWater = memory.get_node("Environment/ClearingPond")
+		var meadow: PainterlyGrassPatch = memory.get_node("Environment/SummerSpring/Meadow")
+		var pond: PainterlyWater = memory.get_node("Environment/SummerSpring/Pond")
 		meadow.rebuild()
 		for batch_name in ["PaintedLeaves", "GrassTufts"]:
 			var batch: MultiMeshInstance3D = meadow.get_node(batch_name)

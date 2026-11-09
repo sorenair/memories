@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1x0setdvlspm"]
+
+[ext_resource type="Script" uid="uid://cm1736874eq4f" path="res://components/lighting/light_shaft/painterly_light_shaft.gd" id="1"]
+
+[node name="PainterlyLightShaft" type="Node3D"]
+script = ExtResource("1")
+beam_height = 3.0
+opacity = 0.1
+paint_variation = 0.25

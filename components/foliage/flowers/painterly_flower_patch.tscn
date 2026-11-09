@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b22xn0670xll1"]
+
+[ext_resource type="Script" uid="uid://b6o0l6cwxvd7h" path="res://components/foliage/flowers/painterly_flower_patch.gd" id="1"]
+
+[node name="PainterlyFlowerPatch" type="Node3D"]
+script = ExtResource("1")
+flower_count = 65
+bloom_radius = 0.115
+petal_count = 6
+wind_strength = 0.045

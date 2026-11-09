@@ -1,6 +1,6 @@
 # Painterly fire
 
-Instance `painterly_fire.tscn` with its origin at the flame's base. The demo contains a small example named `ClearingFire` near the entry. It is a visual effect; a log pile, fire bowl, torch, collision, heat, and damage are separate scenery/gameplay choices.
+Instance `painterly_fire.tscn` with its origin at the flame's base. Each seasonal demo zone contains a small `Fire` instance. It is a visual effect; a log pile, fire bowl, torch, collision, heat, and damage are separate scenery/gameplay choices.
 
 The flame uses a warm pale core, yellow body, orange/red tips, three connected curling tongues, and broad rising cutouts. Curved, moving color bands supply the painted character. Small round embers rise, drift, and cool toward red. A subtle ground wash and narrow silhouette halo suggest warmth without requiring bloom or changing the world's lighting.
 

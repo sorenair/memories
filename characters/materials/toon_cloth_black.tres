@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c1b1gnxvdg0np"]
+
+[resource]
+resource_name = "Toon Cloth - Black"
+diffuse_mode = 3
+specular_mode = 1
+disable_fog = true
+albedo_color = Color(0, 0, 0, 1)

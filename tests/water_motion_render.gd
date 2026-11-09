@@ -19,6 +19,8 @@ func run() -> void:
 	var scene := Node3D.new()
 	root.add_child(scene)
 	var water: PainterlyWater = load("res://components/scenery/water/painterly_water.tscn").instantiate()
+	# These checks exercise local motion controls, independent of authored Settings.
+	water.settings = null
 	water.flow_speed = 0.0
 	scene.add_child(water)
 	var camera := Camera3D.new()

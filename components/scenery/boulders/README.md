@@ -73,3 +73,5 @@ disabled instances retain the original no-process behavior.
 Use `res://scenes/effects/boulder_recall_test.tscn` (F6) to replay/pause/scrub the effect.
 `tests/solid_recall.gd` checks discovery, stable geometry, collision, palette updates,
 rebuilds and empty/repopulated rock clusters. See [the effects guide](../../../scenes/effects/README.md).
+
+Stone shading uses three broad toon tones with softly edged transitions, preserving palette colors, per-plane pigment variation, and ground contact blending. The same bands are used during recall and by rock clusters. Geometry and hard plane normals are unchanged.

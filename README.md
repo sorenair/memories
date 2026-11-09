@@ -1,6 +1,6 @@
 # memories
 
-A shared relationship timeline told through small, dreamlike 3D memories. The first demo memory is a painterly forest clearing with eleven procedural trees, grass, bushes, and boulders in a white dreamscape.
+A shared relationship timeline told through small, dreamlike 3D memories. The demo memory contains three connected seasonal clearings—spring/summer, autumn, and winter—on a pale platform in the void. Each has a pond, fire, trees, and shrubs.
 
 ## Play
 
@@ -11,9 +11,25 @@ Open `project.godot` in Godot 4.4 or newer and press **F5** to open the text-onl
 - **Touch joystick:** drag the fixed stick in the bottom-left corner to walk. Its outline and center are faint at rest and become opaque while held; release to stop and gently recenter. Mouse dragging also works for desktop preview.
 - **Return to timeline:** tap the small dot-and-line glyph at the top right, click it, or press Escape. The world fades back to the timeline with the selected memory preserved.
 
-The current scene contains a simple character, a finite memory platform, procedural foliage, stones, and a pond. It has gentle acceleration, deceleration, turning, a small walking motion, an elevated orthographic follow camera, warm ambient lighting, distance fog, and a soft contact shadow. The grass is present from startup, with gentle wind and local player bending; it has no recollection or transition effects. The pale platform descends into the fog, with an invisible rim keeping exploration inside the memory. Blank-void memories without a platform retain the original infinite ground.
+The current scene contains a simple character, a finite memory platform, three seasonal zones, procedural foliage, stones, ponds, and fires. It has gentle acceleration, deceleration, turning, a small walking motion, an elevated orthographic follow camera, warm ambient lighting, distance fog, and a soft contact shadow. Foliage, stones, and ponds recall independently as players approach; grass also has gentle wind and local player bending. The pale platform descends into the fog, with an invisible rim keeping exploration inside the memory. Blank-void memories without a platform retain the original infinite ground.
 
 The game launches fullscreen at a fixed landscape phone aspect ratio (1920 × 886). Extra screen area is letterboxed in black, preserving proportions. A small black FPS counter appears at the top right of the game area. Rendering is uncapped with VSync disabled for performance testing. Movement stays on fixed physics ticks; physics interpolation smooths the character between them. The render-frame camera and grass sample the same interpolated player position. Reset player physics interpolation when teleporting or spawning after entering the scene tree.
+
+## Seasonal demo layout
+
+The content is grouped under `Environment/SummerSpring`, `Environment/Autumn`, and `Environment/Winter` in `scenes/memories/foliage_demo.tscn`. Their centers are at world X=-13, 0, and 13 m. Entry starts in spring/summer, and Exit is inside winter. The open walking lane follows local Z=-1.2 across the three clearings; the front ponds and perimeter groves leave it clear.
+
+| Zone | Groundcover | Foliage / pond palettes | Weather |
+| --- | --- | --- | --- |
+| Spring/summer | Grass | Summer Meadow + Spring / Turquoise | Local rain and pond impacts |
+| Autumn | Grass | Autumn Gold + Autumn Red / Autumn Jade | None; seasonal falling leaves |
+| Winter | Sculpted snow with temporary footsteps | Winter Frost / Winter Glass | Local snowfall |
+
+Each zone has a pond, shore stones, and fire. A sparse transitional grass patch links the two grassy clearings. The winter snow reaches toward autumn and masks its pond through Ground Exclusions. Weather coverage and drift are constrained to their zones. Scenery keeps independent recall controllers; the hidden wisp component remains available for future work.
+
+The common 46×26 m platform contains all scenery, the walking lane, and the recall arrival. Density is reduced per patch, with six trees and seven shrubs per zone rather than three full copies of the old dense forest. `tests/seasonal_demo.gd` verifies the seasonal configuration and walks the actual character from summer to winter with collision enabled.
+
+![Three seasonal clearings](docs/seasonal-demo-overview.png)
 
 ## Foliage components
 
@@ -84,14 +100,40 @@ Instance `components/guidance/wisps/dream_wisp_path.tscn` for sparse, ghostly br
 
 ## Memory boundaries
 
-Instance `components/scenery/platforms/memory_platform.tscn` under Environment for a finite, walkable memory atop a pale pillar fading into the void. Shape, footprint, optional custom outline, depth, fade, colors, and rim clearance are editable. The demo includes a 24×30 m platform; the world automatically switches to its floor and perimeter collision. See [the platform guide](components/scenery/platforms/README.md).
+Instance `components/scenery/platforms/memory_platform.tscn` under Environment for a finite, walkable memory atop a pale pillar fading into the void. Shape, footprint, optional custom outline, depth, fade, colors, and rim clearance are editable. The demo includes a 46×26 m platform; the world automatically switches to its floor and perimeter collision. See [the platform guide](components/scenery/platforms/README.md).
 
 ## Weather
 
-Instance `components/weather/rain/painterly_rain.tscn` for fine drifting rain, tiny ground splashes, and soft water ripples. Intensity, coverage, counts, wind, speed, and colors are editable. The demo includes a gentle shower across the platform. See [the rain guide](components/weather/rain/README.md).
+Instance `components/weather/rain/painterly_rain.tscn` for fine drifting rain, tiny ground splashes, and soft water ripples. Intensity, coverage, counts, wind, speed, and colors are editable. The spring/summer zone includes a localized shower. See [the rain guide](components/weather/rain/README.md).
 
-Instance `components/weather/snow/painterly_snow.tscn` for soft drifting snow. Coverage, intensity, flake count/size, fall speed, wind, flutter, and colors are editable; it uses one GPU batch. The demo includes a light snowfall. See [the snow guide](components/weather/snow/README.md).
+Instance `components/weather/snow/painterly_snow.tscn` for soft drifting snow. Coverage, intensity, flake count/size, fall speed, wind, flutter, and colors are editable; it uses one GPU batch. The winter zone includes localized snowfall. See [the snow guide](components/weather/snow/README.md).
 
 ## Fire VFX
 
-Instance `components/vfx/fire/painterly_fire.tscn` for curling painted flames, a gentle ground glow, and rising embers. Size, intensity, animation speed, wind, colors, and ember count are editable. The demo includes a small example near its entry. See [the fire guide](components/vfx/fire/README.md).
+Instance `components/vfx/fire/painterly_fire.tscn` for curling painted flames, a gentle ground glow, and rising embers. Size, intensity, animation speed, wind, colors, and ember count are editable. Each seasonal zone includes a small fire. See [the fire guide](components/vfx/fire/README.md).
+
+## Winter groundcover
+
+Instance `components/groundcover/snow/painterly_snow_patch.tscn` for soft sculpted snow and temporary player footsteps. Footprint Linger and Fade Duration control how long impressions remain. Add it to grass Ground Exclusions to replace grass locally. The winter zone uses snow groundcover with temporary footsteps. See [the ground-snow guide](components/groundcover/snow/README.md).
+
+## Memory fragments
+
+Reusable glowing, floating painterly orbs live in [components/interactables/fragments](components/interactables/fragments/README.md). Tap or click an orb within its exported interaction range to queue its editable note pages. The demo contains two: `SummerSpring/SummerFragment` and `Winter/WinterFragment`. `Controls/FragmentInteraction` manages picking and a shared note queue, with native touch support, drag cancellation, and collision occlusion checks. Fragments expose activation signals for future discoveries beyond text.
+
+![Fragment note preview](docs/fragment-note-demo.png)
+
+## Flower patches
+
+The summer clearing includes three procedural flower drifts: cream/buttercup, rose, and lavender. [Painterly flower patches](components/foliage/flowers/README.md) expose seed, count, footprint, bloom size, petal count, seasonal foliage colors, bloom palettes, wind, and water exclusions. Each patch uses one opaque instanced draw call and smoothly bends near explorers.
+
+![Summer flower patches](docs/flowers-summer-demo.png)
+
+## Birds
+
+The summer clearing includes three [painterly birds](components/animals/bird/README.md): a sparrow, robin, and bluebird. Each waits with subtle idle motion, then flaps upward and away when an explorer enters its configurable scare radius. Palette, size, flight speed, ascent, and optional respawn delay are editable in the component Inspector.
+
+## Wall vines
+
+[Painterly wall vines](components/foliage/vines/README.md) reuse the bush's curved leaf clusters and seasonal colors, arranging them along branching wall growth. Select climbing or hanging, then adjust footprint, density, leaf size, coverage, wind, and player disturbance. The summer demo shows one on a small stone wall behind the clearing.
+
+![Wall vine](docs/wall-vine-demo.png)

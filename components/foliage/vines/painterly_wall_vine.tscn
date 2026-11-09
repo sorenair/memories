@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/foliage/vines/painterly_wall_vine.gd" id="1"]
+[node name="PainterlyWallVine" type="Node3D"]
+script = ExtResource("1")

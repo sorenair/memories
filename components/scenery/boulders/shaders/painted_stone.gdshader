@@ -12,9 +12,9 @@ void vertex() {
 	local_position = VERTEX;
 	vec3 normal = normalize(MODEL_NORMAL_MATRIX * NORMAL);
 	float light = dot(normal, normalize(vec3(-0.45, 0.82, -0.35))) * 0.5 + 0.5;
-	// One clean, painted tone per physical plane. Triangulation is invisible.
-	vec3 color = mix(shadow_color.rgb, mid_color.rgb, smoothstep(0.18, 0.70, light));
-	color = mix(color, highlight_color.rgb, smoothstep(0.72, 1.0, light));
+	// Three broad toon tones with soft shoulders. Physical planes stay crisp.
+	vec3 color = mix(shadow_color.rgb, mid_color.rgb, smoothstep(0.38, 0.45, light));
+	color = mix(color, highlight_color.rgb, smoothstep(0.72, 0.79, light));
 	painted_color = color * (1.0 + (COLOR.r - 0.5) * plane_variation);
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	haze = smoothstep(25.0, 60.0, length((VIEW_MATRIX * vec4(world, 1.0)).xyz));

@@ -2,7 +2,7 @@
 
 Instance `painterly_rain.tscn` under a memory's Environment. Its origin defines the center of a rectangular rain volume and the base surface level. Fine, soft-edged strokes fall through world space, with varied length, speed, phase, and brightness. Small ground splashes and broader pond ripples add contact without a screen-wide mist overlay.
 
-The demo's `ClearingRain` covers 26×32 m above the platform, with 1,200 allocated drops, Intensity 0.7, and 160 impact slots. It keeps the existing lighting, palettes, water, and foliage intact.
+The demo's `Environment/SummerSpring/Rain` covers 11.5×13 m locally, with 500 allocated drops, Intensity 0.7, and 90 impact slots. It keeps the existing lighting, palettes, water, and foliage intact.
 
 | Inspector control | Purpose |
 | --- | --- |
@@ -26,7 +26,7 @@ Use **Refresh rain volume** after moving the component or editing its referenced
 
 ## Budget and validation
 
-The effect uses at most **two MultiMesh draws**, two triangles per drop or impact slot, and no textures, screen/depth reads, per-frame script callbacks, raycasts, or physics particles. Shader animation loops preseeded instances; tapered ends hide streak resets. Impacts use short expanding, broken rings and soft center flashes. The demo allocates 2,720 triangles in total, with a small transparent screen footprint. Zero intensity hides the batches; zero Drop Count removes them. Bounds include full height and wind displacement.
+The effect uses at most **two MultiMesh draws**, two triangles per drop or impact slot, and no textures, screen/depth reads, per-frame script callbacks, raycasts, or physics particles. Shader animation loops preseeded instances; tapered ends hide streak resets. Impacts use short expanding, broken rings and soft center flashes. The demo allocates 1,180 triangles in total, with a small transparent screen footprint. Zero intensity hides the batches; zero Drop Count removes them. Bounds include full height and wind displacement.
 
 ```sh
 godot --headless --path . --script tests/rain_component.gd

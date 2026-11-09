@@ -18,7 +18,7 @@ func run() -> void:
 	var player := world.get_node("Explorer") as CharacterBody3D
 	var input := world.get_node("Controls/ExplorationInput")
 	check(player.is_on_floor(), "Explorer must settle on the ground")
-	check(world.get_node("Memory/Environment").has_node("Meadow"), "Demo must contain the reusable meadow")
+	check(world.get_node("Memory/Environment").has_node("SummerSpring/Meadow"), "Demo must contain the reusable meadow")
 	check(physics_interpolation, "Physics interpolation must be enabled for uncapped rendering")
 	check(world.get_node("CameraRig").physics_interpolation_mode == Node.PHYSICS_INTERPOLATION_MODE_OFF, "Render-frame camera must avoid double interpolation")
 	var start := player.position

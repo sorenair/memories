@@ -11,7 +11,7 @@ func run() -> void:
 	root.add_child(world)
 	await process_frame
 	await process_frame
-	var rain: PainterlyRain=world.get_node("Memory/Environment/ClearingRain")
+	var rain: PainterlyRain=world.get_node("Memory/Environment/SummerSpring/Rain")
 	check(rain._streaks.multimesh.instance_count==rain.drop_count,"Requested drops must share one batch")
 	check(rain._splashes.multimesh.instance_count==rain.splash_count,"Requested impacts must share one batch")
 	check(rain.get_children().is_empty(),"Generated weather must not serialize")

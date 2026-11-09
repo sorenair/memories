@@ -23,6 +23,25 @@ const COLORS = [
 	["263e69", "426a91", "80a9b6", "d5e7df"]
 ]
 
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+
+@export_group("Recall")
+## Hide at runtime and recall this component independently on approach.
+@export var recall_enabled: bool = false:
+	set(value):
+		if recall_enabled == value:
+			return
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint():
+			rebuild()
+var _recall_effect: Node
+
+func get_recall_controller() -> Node:
+	return _recall_effect
+
+func _sync_recall() -> void:
+	_recall_effect = RECALL.configure(self, "res://components/effects/recall/water_recall.gd", _recall_effect)
+
 @export_group("Shared Appearance")
 @export_enum("Custom", "Calm Pond", "Flowing Stream", "Open Lake") var behavior_preset: int = 0:
 	set(value):
@@ -410,6 +429,7 @@ func rebuild() -> void:
 	surface.custom_aabb = surface.mesh.get_aabb().grow(0.025)
 	_generated(surface)
 	_add_shore(outline)
+	_sync_recall()
 	ground_exclusion_changed.emit()
 
 func _subdivide(surface: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, levels: int) -> void:
@@ -444,3 +464,12 @@ func _add_shore(outline: PackedVector2Array) -> void:
 		collider.rotation.y = atan2(b.x - a.x, b.z - a.z)
 		body.add_child(collider)
 	_generated(body)
+
+## World-space shoreline for static groundcover masks and other scenery consumers.
+func get_ground_outline() -> PackedVector3Array:
+	if _shape_data.is_empty():
+		_shape_data = _make_shape_data()
+	var polygon := PackedVector3Array()
+	for point in _shape_data.outline:
+		polygon.append(to_global(Vector3(point.x,0,point.y)))
+	return polygon
