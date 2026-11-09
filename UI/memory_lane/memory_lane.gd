@@ -9,6 +9,7 @@ const INK := Color("363634")
 const MUTED := Color("85827f")
 const DEMO_SCENE := "res://scenes/world/memory_world.tscn"
 const MemoryArrival := preload("res://UI/memory_arrival/memory_arrival.gd")
+const LanControls := preload("res://UI/memory_lane/lan_controls.gd")
 const ENTRANCE_DURATION := 1.8
 static var _has_entered: bool = false
 static var _last_selected_index: int = 1
@@ -29,9 +30,13 @@ var _start := Vector2.ZERO
 var _start_position: float = 1.0
 var _dragged: bool = false
 var _recall_touch: bool = false
+var _avatar_touch: Button
 var _travelling: bool = false
 var _title: Label
 var _recall: Button
+var _avatar_picker: HBoxContainer
+var _avatar_buttons: Array[Button] = []
+var _lan_controls: LanControls
 var _serif: SystemFont
 var _sans: Font
 var _title_tween: Tween
@@ -75,6 +80,14 @@ func _ready() -> void:
 	_recall.add_theme_stylebox_override("focus", focus)
 	_recall.pressed.connect(recall)
 	add_child(_recall)
+	_create_avatar_picker()
+	_lan_controls = LanControls.new()
+	_lan_controls.name = "LAN"
+	add_child(_lan_controls)
+	_lan_controls.host_requested.connect(_host_lan)
+	LanSession.join_accepted.connect(_join_lan)
+	LanSession.status_changed.connect(_update_lan_controls)
+	_update_lan_controls()
 	resized.connect(_layout)
 	_title.text = MEMORIES[selected_index].title
 	_layout()
@@ -83,6 +96,55 @@ func _ready() -> void:
 		var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		tween.tween_property(returning_veil.get_node("Paper"), "modulate:a", 0.0, 0.4)
 		tween.tween_callback(returning_veil.queue_free)
+
+func _create_avatar_picker() -> void:
+	_avatar_picker = HBoxContainer.new()
+	_avatar_picker.name = "CharacterPicker"
+	_avatar_picker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_avatar_picker.add_theme_constant_override("separation", 8)
+	add_child(_avatar_picker)
+	var label := Label.new()
+	label.text = "Play as"
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.add_theme_font_size_override("font_size", 24)
+	label.add_theme_color_override("font_color", MUTED)
+	_avatar_picker.add_child(label)
+
+	var group := ButtonGroup.new()
+	var selected := StyleBoxFlat.new()
+	selected.bg_color = Color("eeeae2")
+	selected.set_corner_radius_all(14)
+	var focus := StyleBoxFlat.new()
+	focus.bg_color = Color.TRANSPARENT
+	focus.border_color = Color("bdb7ac")
+	focus.set_border_width_all(1)
+	focus.set_corner_radius_all(14)
+	for avatar in [MemoryExplorer.Avatar.SOREN, MemoryExplorer.Avatar.VIVIAN]:
+		var button := Button.new()
+		button.text = "Vivian" if avatar == MemoryExplorer.Avatar.VIVIAN else "Soren"
+		button.name = button.text
+		button.toggle_mode = true
+		button.button_group = group
+		button.custom_minimum_size = Vector2(120.0, 88.0)
+		button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		button.add_theme_font_size_override("font_size", 28)
+		button.add_theme_color_override("font_color", MUTED)
+		button.add_theme_color_override("font_hover_color", INK)
+		button.add_theme_color_override("font_pressed_color", INK)
+		button.add_theme_color_override("font_hover_pressed_color", INK)
+		button.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+		button.add_theme_stylebox_override("hover", StyleBoxEmpty.new())
+		button.add_theme_stylebox_override("pressed", selected)
+		button.add_theme_stylebox_override("hover_pressed", selected)
+		button.add_theme_stylebox_override("focus", focus)
+		button.pressed.connect(_select_avatar.bind(avatar))
+		_avatar_picker.add_child(button)
+		_avatar_buttons.append(button)
+	_select_avatar(MemoryExplorer.preferred_avatar)
+
+func _select_avatar(avatar: MemoryExplorer.Avatar) -> void:
+	MemoryExplorer.preferred_avatar = avatar
+	_avatar_buttons[avatar].button_pressed = true
 
 func _layout() -> void:
 	if not is_instance_valid(_title):
@@ -103,6 +165,9 @@ func _layout() -> void:
 	_recall.add_theme_font_size_override("font_size", int(clampf(title_font_size * 0.36, 24.0, 38.0)))
 	_recall.position = Vector2((size.x - recall_width) * 0.5, _title_y - recall_height - 24.0)
 	_recall.size = Vector2(recall_width, recall_height)
+	_avatar_picker.size = _avatar_picker.get_combined_minimum_size()
+	_avatar_picker.position = Vector2((size.x - _avatar_picker.size.x) * 0.5, clampf(size.y * 0.04, 12.0, 44.0))
+	_lan_controls.layout_at_bottom(size)
 	_date_font_size = int(clampf(minf(size.x * 0.015, size.y * 0.034), 18.0, 30.0))
 	_mark_scale = clampf(minf(size.x / 1920.0, size.y / 886.0), 0.8, 1.2)
 	_apply_entrance()
@@ -118,6 +183,7 @@ func _apply_entrance() -> void:
 	_title.modulate.a = title_alpha
 	_title.position.y = _title_y + (1.0 - title_alpha) * 8.0
 	_recall.modulate.a = _reveal(1.35, ENTRANCE_DURATION)
+	_avatar_picker.modulate.a = _reveal(0.85, 1.45)
 
 func _finish_entrance() -> void:
 	if _entrance_time >= ENTRANCE_DURATION:
@@ -190,7 +256,7 @@ func select_memory(index: int) -> void:
 	memory_selected.emit(index)
 
 func _begin(point: Vector2, pointer: int) -> void:
-	if _pointer != -2 or _travelling:
+	if _pointer != -2 or _travelling or LanSession.state == LanSession.State.JOINING:
 		return
 	_finish_entrance()
 	_pointer = pointer
@@ -198,11 +264,17 @@ func _begin(point: Vector2, pointer: int) -> void:
 	_start_position = _position
 	_dragged = false
 	_recall_touch = pointer >= 0 and _recall.get_global_rect().has_point(point)
+	_avatar_touch = null
+	if pointer >= 0:
+		for button in _avatar_buttons:
+			if button.get_global_rect().has_point(point):
+				_avatar_touch = button
+				break
 
 func _move(point: Vector2) -> void:
 	if absf(point.x - _start.x) > 12.0:
 		_dragged = true
-	if _dragged and not _recall_touch:
+	if _dragged and not _recall_touch and _avatar_touch == null:
 		_position = clampf(_start_position - (point.x - _start.x) / _spacing, -0.22, MEMORIES.size() - 0.78)
 		select_memory(roundi(_position))
 
@@ -210,9 +282,14 @@ func _end(point: Vector2, cancelled: bool = false) -> void:
 	if _pointer == -2:
 		return
 	_pointer = -2
+	var avatar_button := _avatar_touch
+	_avatar_touch = null
 	if cancelled:
 		return
-	if _recall_touch:
+	if avatar_button != null:
+		if not _dragged and avatar_button.get_global_rect().has_point(point):
+			_select_avatar(_avatar_buttons.find(avatar_button) as MemoryExplorer.Avatar)
+	elif _recall_touch:
 		if not _dragged and _recall.get_global_rect().has_point(point):
 			recall()
 	elif _dragged:
@@ -226,6 +303,10 @@ func _input(event: InputEvent) -> void:
 		_finish_entrance()
 	elif event is InputEventKey and event.pressed and (event.is_action("ui_left") or event.is_action("ui_right") or event.is_action("ui_accept") or event.is_action("ui_focus_next")):
 		_finish_entrance()
+	if _lan_controls.handle_touch(event):
+		_finish_entrance()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			_begin(event.position, event.index)
@@ -246,6 +327,11 @@ func _gui_input(event: InputEvent) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if _travelling or not event.is_pressed() or event.is_echo():
 		return
+	if LanSession.state == LanSession.State.JOINING:
+		if event.is_action("ui_cancel"):
+			LanSession.leave()
+			accept_event()
+		return
 	if event.is_action("ui_left"):
 		select_memory(selected_index - 1)
 		accept_event()
@@ -260,22 +346,46 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		_pointer = -2
 
-func recall() -> void:
-	if _travelling:
+func _host_lan() -> void:
+	if not _travelling and LanSession.host(selected_index, MemoryExplorer.preferred_avatar):
+		_enter_memory()
+
+func _join_lan(index: int) -> void:
+	if index >= MEMORIES.size():
+		LanSession.leave("This memory isn’t available in your version of the game.")
 		return
+	select_memory(index)
+	_enter_memory()
+
+func _update_lan_controls() -> void:
+	var locked := _travelling or LanSession.state == LanSession.State.JOINING
+	_recall.disabled = locked
+	for button in _avatar_buttons:
+		button.disabled = locked
+	_lan_controls.refresh(_travelling)
+
+func recall() -> void:
+	if _travelling or LanSession.state != LanSession.State.OFFLINE:
+		return
+	_enter_memory()
+
+func _enter_memory() -> void:
 	_finish_entrance()
 	_travelling = true
-	_recall.disabled = true
+	_update_lan_controls()
 	var veil := MemoryArrival.get_transition_veil(get_tree())
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(veil, "modulate:a", 1.0, 0.45)
 	await tween.finished
 	get_tree().root.set_meta(MemoryArrival.REQUEST_META, true)
-	var error := get_tree().change_scene_to_file(DEMO_SCENE)
+	if LanSession.state == LanSession.State.OFFLINE and not LanSession.status.is_empty():
+		LanSession.leave()
+	var scene_path: String = MEMORIES[selected_index].get("scene", DEMO_SCENE)
+	var error := get_tree().change_scene_to_file(scene_path)
 	if error != OK:
 		get_tree().root.remove_meta(MemoryArrival.REQUEST_META)
-		push_error("Unable to recall demo: %s" % error_string(error))
+		push_error("Unable to recall memory: %s" % error_string(error))
 		_travelling = false
-		_recall.disabled = false
+		LanSession.leave("Couldn’t open this memory.")
 		veil.get_parent().queue_free()

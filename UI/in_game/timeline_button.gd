@@ -66,19 +66,22 @@ func return_to_timeline() -> void:
 	_returning = true
 	disabled = true
 	var controls: Control = _world.get_node("Controls/ExplorationInput")
-	var player: CharacterBody3D = _world.get_node("Explorer")
+	var player: MemoryExplorer = _world.get_node("Explorer")
 	var controls_mode := controls.process_mode
 	var player_processing := player.is_physics_processing()
 	controls._release()
 	controls.process_mode = Node.PROCESS_MODE_DISABLED
 	player.velocity = Vector3.ZERO
+	player.set_walking(false)
 	player.set_physics_process(false)
 	var veil := MemoryArrival.get_transition_veil(get_tree())
 	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(veil, "modulate:a", 1.0, 0.45)
 	await tween.finished
 	var error := get_tree().change_scene_to_file(TIMELINE_SCENE)
-	if error != OK:
+	if error == OK:
+		LanSession.leave()
+	else:
 		push_error("Unable to return to timeline: %s" % error_string(error))
 		veil.get_parent().queue_free()
 		controls.process_mode = controls_mode

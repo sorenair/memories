@@ -77,6 +77,17 @@ func run() -> void:
 	menu._layout()
 	check(menu.get_node("Recall").get_rect().end.y < menu._line_y, "Portrait layout must keep Recall clear of the timeline")
 	check(menu.get_node("MemoryTitle").size.x == 326, "Portrait title must fit the available width")
+	var soren_button := menu.get_node("CharacterPicker/Soren") as Button
+	var vivian_button := menu.get_node("CharacterPicker/Vivian") as Button
+	check(soren_button.button_pressed and not vivian_button.button_pressed, "Soren must be selected by default")
+	var vivian_point := vivian_button.get_global_rect().get_center()
+	touch(menu, vivian_point, true)
+	touch(menu, vivian_point, false, 0, true)
+	check(soren_button.button_pressed, "Cancelled touch must preserve the selected avatar")
+	touch(menu, vivian_point, true)
+	touch(menu, vivian_point, false)
+	check(vivian_button.button_pressed and not soren_button.button_pressed, "Touch must select only Vivian")
+	check(menu.selected_index == 3, "Avatar selection must leave the memory selection alone")
 	var recall_point: Vector2 = menu.get_node("Recall").get_global_rect().get_center()
 	touch(menu, recall_point, true)
 	touch(menu, recall_point, false)
@@ -86,7 +97,15 @@ func run() -> void:
 	check(current_scene.scene_file_path == "res://scenes/world/memory_world.tscn", "Recall must enter the demo world with its player and camera")
 	check(current_scene.has_node("Explorer"), "Recalled world must include the playable explorer")
 	var world := current_scene
-	var player := world.get_node("Explorer") as CharacterBody3D
+	var player := world.get_node("Explorer") as MemoryExplorer
+	var vivian := player.get_node("Visual/Vivian") as Node3D
+	var soren := player.get_node("Visual/Soren") as Node3D
+	var animator := vivian.get_node("AnimationPlayer") as AnimationPlayer
+	check(vivian.visible and not soren.visible, "Recall must show only the selected avatar")
+	check(animator.current_animation == &"IDLE", "Vivian must begin in IDLE")
+	check(animator.get_animation(&"IDLE").loop_mode == Animation.LOOP_LINEAR
+		and animator.get_animation(&"WALK").loop_mode == Animation.LOOP_LINEAR,
+		"Vivian's imported locomotion clips must both loop")
 	var arrival := world.get_node("MemoryArrival")
 	check(arrival._veil == transition_veil, "The same paper veil must bridge both scenes")
 	var landing := player.global_position
@@ -107,12 +126,18 @@ func run() -> void:
 	await physics_frame
 	check(player.is_physics_processing() and player.is_on_floor(), "Arrival must restore a grounded playable body")
 	check(player.get_node("Visual").position.is_equal_approx(Vector3.ZERO), "Arrival must settle the visual at the body")
-	check(player.get_node("Visual/Body").material_override == null, "Arrival must restore the original opaque player material")
+	var body := vivian.get_node("Armature/Skeleton3D/BODY") as MeshInstance3D
+	check(body.get_active_material(0) == preload("res://characters/materials/toon_skin_soren.tres"),
+		"Vivian must use the shared toon skin after arrival")
 	check(world.get_node("Controls/ExplorationInput").process_mode == Node.PROCESS_MODE_INHERIT, "Arrival must restore touch controls")
 	Input.action_press("move_right")
 	for frame in range(20):
 		await physics_frame
+	check(animator.current_animation == &"WALK", "Vivian must play WALK while moving")
 	Input.action_release("move_right")
 	check(player.global_position.distance_to(landing) > 0.1, "Explorer must walk normally after landing")
+	for frame in range(20):
+		await physics_frame
+	check(animator.current_animation == &"IDLE", "Vivian must return to IDLE after movement stops")
 	print("Memory Lane smoke checks: ", "PASS" if failures == 0 else "FAIL")
 	quit(failures)

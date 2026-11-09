@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" uid="uid://bom7t0sdq1s84" path="res://characters/soren/soren.glb" id="1_model"]
+[ext_resource type="Material" path="res://characters/materials/toon_skin_soren.tres" id="2_skin"]
+[ext_resource type="Material" path="res://characters/materials/toon_hair_brown.tres" id="3_hair"]
+[ext_resource type="Material" path="res://characters/materials/toon_cloth_black.tres" id="4_black"]
+[ext_resource type="Material" path="res://characters/materials/toon_cloth_white.tres" id="5_white"]
+
+[sub_resource type="StandardMaterial3D" id="NecklaceMetal"]
+resource_name = "Toon Necklace Metal"
+cull_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+disable_fog = true
+albedo_color = Color(0.4133, 0.4133, 0.4133, 1)
+roughness = 0.5
+
+[node name="Soren" instance=ExtResource("1_model")]
+
+[node name="BODY" parent="." index="1"]
+visible = false
+
+[node name="HAIR" parent="." index="3"]
+visible = false
+
+[node name="MeshToMixamo" parent="." index="4"]
+visible = false
+
+[node name="BODY_001" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_skin")
+surface_material_override/1 = ExtResource("3_hair")
+
+[node name="LEGS" parent="Armature/Skeleton3D" index="1"]
+surface_material_override/0 = ExtResource("2_skin")
+
+[node name="NECKLACE" parent="Armature/Skeleton3D" index="2"]
+surface_material_override/0 = ExtResource("4_black")
+surface_material_override/1 = SubResource("NecklaceMetal")
+
+[node name="SHORTS" parent="Armature/Skeleton3D" index="3"]
+surface_material_override/0 = ExtResource("4_black")
+
+[node name="TORSO" parent="Armature/Skeleton3D" index="4"]
+visible = false
+surface_material_override/0 = ExtResource("2_skin")
+
+[node name="TSHIRT" parent="Armature/Skeleton3D" index="5"]
+surface_material_override/0 = ExtResource("5_white")

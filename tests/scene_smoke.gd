@@ -15,9 +15,16 @@ func run() -> void:
 	root.add_child(world)
 	await physics_frame
 	await physics_frame
-	var player := world.get_node("Explorer") as CharacterBody3D
+	var player := world.get_node("Explorer") as MemoryExplorer
 	var input := world.get_node("Controls/ExplorationInput")
 	check(player.is_on_floor(), "Explorer must settle on the ground")
+	var soren := player.get_node("Visual/Soren") as Node3D
+	check(soren.visible and not player.get_node("Visual/Vivian").visible,
+		"Only Soren should be visible by default")
+	check(player.animation_player.current_animation == &"IDLE", "Soren must start in IDLE")
+	check(player.animation_player.get_animation(&"IDLE").loop_mode == Animation.LOOP_LINEAR
+		and player.animation_player.get_animation(&"WALK").loop_mode == Animation.LOOP_LINEAR,
+		"Soren's imported locomotion clips must both loop")
 	check(world.get_node("Memory/Environment").has_node("SummerSpring/Meadow"), "Demo must contain the reusable meadow")
 	check(physics_interpolation, "Physics interpolation must be enabled for uncapped rendering")
 	check(world.get_node("CameraRig").physics_interpolation_mode == Node.PHYSICS_INTERPOLATION_MODE_OFF, "Render-frame camera must avoid double interpolation")
@@ -25,6 +32,7 @@ func run() -> void:
 	Input.action_press("move_forward")
 	for frame in range(60):
 		await physics_frame
+	check(player.animation_player.current_animation == &"WALK", "Soren must play WALK while moving")
 	Input.action_release("move_forward")
 	check(player.position.distance_to(start) > 1.0, "Forward input must move the explorer")
 	var camera := world.get_node("CameraRig/Camera3D") as Camera3D
@@ -40,6 +48,7 @@ func run() -> void:
 	Input.action_release("move_right")
 	for frame in range(90):
 		await physics_frame
+	check(player.animation_player.current_animation == &"IDLE", "Soren must return to IDLE after stopping")
 	check(Vector2(player.velocity.x, player.velocity.z).length() < 0.01, "Explorer must stop after release")
 	check(world.get_node("CameraRig").position.distance_to(player.position) < 0.05, "Camera must settle on explorer")
 	var touch := InputEventScreenTouch.new()

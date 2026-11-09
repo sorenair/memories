@@ -1,10 +1,14 @@
 class_name MemoryExplorer
 extends CharacterBody3D
-## Reusable local explorer. Input is separate so networking can supply it later.
+## Simulates the local explorer and presents either local or replicated poses.
+
+enum Avatar { SOREN, VIVIAN }
 
 const IDLE_ANIMATION: StringName = &"IDLE"
 const WALK_ANIMATION: StringName = &"WALK"
 const MOVEMENT_THRESHOLD := 0.05
+
+static var preferred_avatar: Avatar = Avatar.SOREN
 
 @export var walk_speed: float = 3.2
 @export var acceleration: float = 12.0
@@ -13,10 +17,29 @@ const MOVEMENT_THRESHOLD := 0.05
 @export var movement_input: Node
 
 @onready var visual: Node3D = $Visual
-@onready var animation_player: AnimationPlayer = $Visual/AnimationPlayer
+@onready var _soren: Node3D = $Visual/Soren
+@onready var _vivian: Node3D = $Visual/Vivian
+@onready var _soren_animation: AnimationPlayer = $Visual/Soren/AnimationPlayer
+@onready var _vivian_animation: AnimationPlayer = $Visual/Vivian/AnimationPlayer
+var animation_player: AnimationPlayer
+var avatar: Avatar
+var walking := false
 
 func _ready() -> void:
-	animation_player.play(IDLE_ANIMATION)
+	set_avatar(preferred_avatar)
+
+func set_avatar(value: Avatar) -> void:
+	avatar = value
+	var is_vivian := avatar == Avatar.VIVIAN
+	_soren.visible = not is_vivian
+	_vivian.visible = is_vivian
+	var next_player := _vivian_animation if is_vivian else _soren_animation
+	if animation_player == next_player:
+		return
+	if animation_player:
+		animation_player.stop()
+	animation_player = next_player
+	animation_player.play(WALK_ANIMATION if walking else IDLE_ANIMATION)
 	animation_player.advance(0.0)
 
 func _physics_process(delta: float) -> void:
@@ -40,7 +63,10 @@ func _physics_process(delta: float) -> void:
 	if moving:
 		# The imported model faces local +Z.
 		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(motion.x, motion.z), 1.0 - exp(-turn_speed * delta))
-	var next_animation := WALK_ANIMATION if moving else IDLE_ANIMATION
-	# The short T-pose clip holds its final pose after it finishes.
+	set_walking(moving)
+
+func set_walking(value: bool) -> void:
+	walking = value
+	var next_animation := WALK_ANIMATION if walking else IDLE_ANIMATION
 	if animation_player.assigned_animation != next_animation:
 		animation_player.play(next_animation)

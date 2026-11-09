@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://ctna7m1cqj6jk"]
+
+[ext_resource type="PackedScene" uid="uid://bwskufuq52ot6" path="res://characters/vivian/vivian.glb" id="1_model"]
+[ext_resource type="Material" uid="uid://qpao8yu20fi2" path="res://characters/materials/toon_skin_soren.tres" id="2_skin"]
+[ext_resource type="Material" uid="uid://c1b1gnxvdg0np" path="res://characters/materials/toon_cloth_black.tres" id="3_black"]
+[ext_resource type="Material" uid="uid://c5mmf5qbufow3" path="res://characters/materials/toon_cloth_white.tres" id="4_white"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pq8oi"]
+resource_name = "Toon Hair - Brown"
+diffuse_mode = 3
+specular_mode = 1
+disable_fog = true
+albedo_color = Color(0.0532184, 0.019859, 0.00688449, 1)
+roughness = 0.0
+
+[node name="Vivian" instance=ExtResource("1_model")]
+
+[node name="HAIR_001" parent="Armature/Skeleton3D" index="0"]
+transform = Transform3D(-8.29331, -3.98311, -84.6745, 84.473, 6.86982, -8.57591, 6.99434, -87.6919, 3.17421, 2.87937, -3.44093, -78.4112)
+
+[node name="HAIR_001" parent="Armature/Skeleton3D/HAIR_001" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_pq8oi")
+
+[node name="LEGS" parent="Armature/Skeleton3D" index="1"]
+surface_material_override/0 = ExtResource("2_skin")
+
+[node name="BODY" parent="Armature/Skeleton3D" index="2"]
+surface_material_override/0 = ExtResource("2_skin")
+
+[node name="PANTS" parent="Armature/Skeleton3D" index="3"]
+surface_material_override/0 = ExtResource("4_white")
+
+[node name="SHIRT" parent="Armature/Skeleton3D" index="4"]
+surface_material_override/0 = ExtResource("3_black")
+
+[node name="TORSO" parent="Armature/Skeleton3D" index="5"]
+surface_material_override/0 = ExtResource("2_skin")
+
+[node name="WATCH" parent="Armature/Skeleton3D" index="6"]
+surface_material_override/0 = ExtResource("4_white")
+surface_material_override/1 = ExtResource("3_black")

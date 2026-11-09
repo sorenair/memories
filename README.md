@@ -11,6 +11,8 @@ Open `project.godot` in Godot 4.4 or newer and press **F5** to open the text-onl
 - **Touch joystick:** drag the fixed stick in the bottom-left corner to walk. Its outline and center are faint at rest and become opaque while held; release to stop and gently recenter. Mouse dragging also works for desktop preview.
 - **Return to timeline:** tap the small dot-and-line glyph at the top right, click it, or press Escape. The world fades back to the timeline with the selected memory preserved.
 
+To play together, connect both devices to the same Wi-Fi or LAN and use the same build. On the timeline, each player chooses their character. One player selects a memory and taps **Host LAN**. The game displays the host’s IP in the upper-left corner of the memory. On the other device, enter that address in **Host IP** and tap **Join LAN**. The guest enters the host’s selected memory with their own character. Allow local-network access if your device asks; the game uses UDP port **24680**. Returning to the timeline closes that player’s connection. The other player can keep exploring, and an active host can accept a returning guest.
+
 The current scene contains a simple character, a finite memory platform, three seasonal zones, procedural foliage, stones, ponds, and fires. It has gentle acceleration, deceleration, turning, a small walking motion, an elevated orthographic follow camera, warm ambient lighting, distance fog, and a soft contact shadow. Foliage, stones, and ponds recall independently as players approach; grass also has gentle wind and local player bending. The pale platform descends into the fog, with an invisible rim keeping exploration inside the memory. Blank-void memories without a platform retain the original infinite ground.
 
 The game launches fullscreen at a fixed landscape phone aspect ratio (1920 × 886). Extra screen area is letterboxed in black, preserving proportions. A small black FPS counter appears at the top right of the game area. Rendering is uncapped with VSync disabled for performance testing. Movement stays on fixed physics ticks; physics interpolation smooths the character between them. The render-frame camera and grass sample the same interpolated player position. Reset player physics interpolation when teleporting or spawning after entering the scene tree.
@@ -62,7 +64,7 @@ Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, pa
 - `WorldEnvironment` and `Sun`: palette, haze, and lighting.
 - `shaders/dream_surface.gdshader`: faint surface pigment.
 
-The Mobile renderer is preserved. The scene uses no volumetric fog, particles, or real-time shadow maps; water uses shared paint/normal/caustic/foam masks and a small per-body shoreline field. The soft contact shadow is a single transparent quad. iOS export, device performance, multiplayer, persistence, memory transitions, discovery effects, and interactions are future work; the named containers do not implement those systems yet.
+The Mobile renderer is preserved. The scene uses no volumetric fog, particles, or real-time shadow maps; water uses shared paint/normal/caustic/foam masks and a small per-body shoreline field. The soft contact shadow is a single transparent quad. LAN sync covers character choice, position, facing, and walk/idle state; scenery effects and memory fragments run locally. Persistence and device performance verification are future work.
 
 ## Validate
 
@@ -75,6 +77,15 @@ godot --path . --script tests/bush_smoke.gd
 ```
 
 The smoke check exercises scene loading, grounded movement, camera-relative direction, diagonal speed, stopping, camera follow, touch normalization/release, and replacement of the infinite ground by the finite memory platform. It exits nonzero on failure.
+
+Run the LAN check in two terminals, starting the host first:
+
+```sh
+godot --headless --path . --script tests/lan_multiplayer.gd -- host
+godot --headless --path . --script tests/lan_multiplayer.gd -- guest
+```
+
+This uses real ENet traffic on loopback to check the shared memory selection, both avatar choices, walking and animation in both directions, and disconnect/rejoin. It also checks interpolation with simulated packet delay and loss. To play on two devices, use the in-game LAN controls with the host’s Wi-Fi IP.
 
 `docs/first-scene.png` is a preview rendered with Godot 4.4.1's Mobile renderer on macOS. Touch input is checked synthetically; physical iOS hardware has not been tested.
 
