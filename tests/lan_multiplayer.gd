@@ -1,7 +1,9 @@
 extends SceneTree
 ## Run once with -- host and once with -- guest in a second process.
 const MENU := "res://UI/memory_lane/memory_lane.tscn"
-const WORLD := "res://scenes/world/memory_world.tscn"
+# Exercise each catalog entry with the same host / guest test.
+var memory_index: int = 1 if OS.get_cmdline_user_args().has("demo") else 0
+var world_path: String = "res://scenes/world/memory_world.tscn" if OS.get_cmdline_user_args().has("demo") else "res://scenes/world/first_meeting_world.tscn"
 const Session := preload("res://scripts/network/lan_session.gd")
 const RemoteMotion := preload("res://scripts/network/remote_motion.gd")
 var failures := 0
@@ -68,8 +70,8 @@ func run() -> void:
 	var address := controls._address as LineEdit
 	var join := controls._join as Button
 	var host_button := controls._host as Button
-	menu.select_memory(3 if host else 0)
-	menu.get_node("CharacterPicker/Vivian" if host else "CharacterPicker/Soren").pressed.emit()
+	menu.select_memory(memory_index if host else 1 - memory_index)
+	MemoryExplorer.preferred_avatar = MemoryExplorer.Avatar.VIVIAN if host else MemoryExplorer.Avatar.SOREN
 	if host:
 		host_button.pressed.emit()
 		if session.state != Session.State.HOSTING:
@@ -93,15 +95,16 @@ func run() -> void:
 		check(menu.get_node("Recall").disabled and session.state == Session.State.JOINING,
 			"IP submission should lock solo Recall while joining")
 
-	if not await wait_for(func() -> bool: return in_scene(WORLD), 12.0):
+	if not await wait_for(func() -> bool: return in_scene(world_path), 12.0):
 		push_error("Did not reach the memory: %s" % session.status)
 		quit(1)
 		return
 	var world := current_scene
+	check(world.get_node("Memory").memory_id == (&"first_meeting" if memory_index == 0 else &"foliage_demo"), "Both peers must load the host's actual memory content")
 	var local := world.get_node("Explorer") as MemoryExplorer
 	var local_avatar := MemoryExplorer.Avatar.VIVIAN if host else MemoryExplorer.Avatar.SOREN
 	var remote_avatar := MemoryExplorer.Avatar.SOREN if host else MemoryExplorer.Avatar.VIVIAN
-	check(session.memory_index == 3, "Both peers should use the host's selected memory")
+	check(session.memory_index == memory_index, "Both peers should use the host's selected memory")
 	check(local.avatar == local_avatar, "The local explorer should use this device's menu choice")
 	if not await wait_for(func() -> bool:
 		var partner := world.get_node_or_null("Partner") as MemoryExplorer
@@ -122,12 +125,19 @@ func run() -> void:
 	var local_start := local.global_position
 	var remote_start := remote.global_position
 	# Both routes head into the platform from the recalled landing, avoiding its outer rim.
-	var action := &"move_forward" if host else &"move_right"
+	# First Meeting has a real yard fence: host goes straight through its opening,
+	# guest walks along the sidewalk. The demo retains its original open routes.
+	var actions: Array[StringName] = []
+	if memory_index == 0:
+		actions.assign([&"move_forward", &"move_right"] if host else [&"move_back", &"move_right"])
+	else:
+		actions.assign([&"move_forward"] if host else [&"move_right"])
 	var previous := remote_start
 	var render_moves := 0
 	var saw_walk := false
 	var largest_step := 0.0
-	Input.action_press(action)
+	for action in actions:
+		Input.action_press(action)
 	var deadline := Time.get_ticks_msec() + 1250
 	while Time.get_ticks_msec() < deadline:
 		await process_frame
@@ -137,12 +147,13 @@ func run() -> void:
 			render_moves += 1
 		previous = remote.global_position
 		saw_walk = saw_walk or remote.animation_player.assigned_animation == MemoryExplorer.WALK_ANIMATION
-	Input.action_release(action)
+	for action in actions:
+		Input.action_release(action)
 	await create_timer(0.6).timeout
 	var local_travel := local.global_position - local_start
 	var remote_travel := remote.global_position - remote_start
-	var forward := Vector3(-1.0, 0.0, -1.0).normalized()
-	var right := Vector3(1.0, 0.0, -1.0).normalized()
+	var forward := Vector3.FORWARD if memory_index == 0 else Vector3(-1.0, 0.0, -1.0).normalized()
+	var right := Vector3.RIGHT if memory_index == 0 else Vector3(1.0, 0.0, -1.0).normalized()
 	check(local_travel.dot(forward if host else right) > 1.5,
 		"Local input should move the local player (%s)" % local_travel)
 	check(remote_travel.dot(right if host else forward) > 1.5,
@@ -161,13 +172,13 @@ func run() -> void:
 			"Guest should return to the timeline")
 		check(session.state == Session.State.OFFLINE, "Returning to the timeline should close the guest connection")
 		if in_scene(MENU):
-			check(current_scene.selected_index == 3, "Timeline should remember the shared selection")
+			check(current_scene.selected_index == memory_index, "Timeline should remember the shared selection")
 			current_scene.get_node("LAN")._join.pressed.emit()
-			if await wait_for(func() -> bool: return in_scene(WORLD), 5.0):
+			if await wait_for(func() -> bool: return in_scene(world_path), 5.0):
 				check(await wait_for(func() -> bool: return session.state == Session.State.OFFLINE, 7.0),
 					"Guest should detect the host leaving after reconnecting")
 				check(await wait_for(func() -> bool:
-					return in_scene(WORLD) and current_scene.get_node_or_null("Partner") == null
+					return in_scene(world_path) and current_scene.get_node_or_null("Partner") == null
 				, 2.0),
 					"Guest should remain in the memory solo when the host leaves")
 			else:

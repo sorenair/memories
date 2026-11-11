@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/activities/arcade/mechanical_band/painterly_mechanical_band.gd" id="1"]
+
+[node name="PainterlyMechanicalBand" type="Node3D"]
+script = ExtResource("1")

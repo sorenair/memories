@@ -15,6 +15,7 @@ var _note_cancelled: bool = false
 
 func _ready() -> void:
 	add_to_group(&"fragment_note_queue")
+	add_to_group(&"interaction_blockers")
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_panel = PanelContainer.new()
@@ -66,6 +67,9 @@ func _layout() -> void:
 	var width := minf(600.0, size.x - 40.0)
 	_panel.offset_left = -width * 0.5
 	_panel.offset_right = width * 0.5
+
+func blocks_interaction() -> bool:
+	return not current_note.is_empty()
 
 func enqueue_note(title: String, text: String, finished: Callable = Callable()) -> void:
 	pending_notes.append({"title": title, "text": text, "finished": finished})

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/activities/arcade/bar_corner/painterly_arcade_corner.gd" id="1"]
+
+[node name="PainterlyArcadeCorner" type="Node3D"]
+script = ExtResource("1")

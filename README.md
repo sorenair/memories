@@ -4,18 +4,36 @@ A shared relationship timeline told through small, dreamlike 3D memories. The de
 
 ## Play
 
-Open `project.godot` in Godot 4.4 or newer and press **F5** to open the text-only Memory Lane menu. Swipe or drag the timeline, tap a mark, or use left/right arrows to choose a memory. **Recall →** fades into the void just outside the clearing, where the player fades into view before movement resumes. All illustrative memories currently share that destination; the static demo scenery is visible toward the upper right and within a short walk of arrival. See [the UI guide](UI/README.md). Press **F6** with `scenes/world/memory_world.tscn` open to run the demo directly beside its scenery.
+Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains exactly two entries: **First Meeting — November 12, 2025**, selected by default, and **Seasonal Demo**. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
 
 - **WASD / arrow keys:** walk, relative to the screen.
 - **Controller left stick:** analog movement.
 - **Touch joystick:** drag the fixed stick in the bottom-left corner to walk. Its outline and center are faint at rest and become opaque while held; release to stop and gently recenter. Mouse dragging also works for desktop preview.
 - **Return to timeline:** tap the small dot-and-line glyph at the top right, click it, or press Escape. The world fades back to the timeline with the selected memory preserved.
 
-To play together, connect both devices to the same Wi-Fi or LAN and use the same build. On the timeline, each player chooses their character. One player selects a memory and taps **Host LAN**. The game displays the host’s IP in the upper-left corner of the memory. On the other device, enter that address in **Host IP** and tap **Join LAN**. The guest enters the host’s selected memory with their own character. Allow local-network access if your device asks; the game uses UDP port **24680**. Returning to the timeline closes that player’s connection. The other player can keep exploring, and an active host can accept a returning guest.
+To play together, connect both devices to the same Wi-Fi or LAN and use the same build. On the main menu, each player chooses their character, then enters the timeline with infinity. One player selects a memory and taps **Host LAN**. The game displays the host’s IP in the upper-left corner of the memory. On the other device, enter that address in **Host IP** and tap **Join LAN**. The guest enters the host’s selected memory with their own character. Allow local-network access if your device asks; the game uses UDP port **24680**. Returning to the timeline closes that player’s connection. The other player can keep exploring, and an active host can accept a returning guest.
 
 The current scene contains a simple character, a finite memory platform, three seasonal zones, procedural foliage, stones, ponds, and fires. It has gentle acceleration, deceleration, turning, a small walking motion, an elevated orthographic follow camera, warm ambient lighting, distance fog, and a soft contact shadow. Foliage, stones, and ponds recall independently as players approach; grass also has gentle wind and local player bending. The pale platform descends into the fog, with an invisible rim keeping exploration inside the memory. Blank-void memories without a platform retain the original infinite ground.
 
 The game launches fullscreen at a fixed landscape phone aspect ratio (1920 × 886). Extra screen area is letterboxed in black, preserving proportions. A small black FPS counter appears at the top right of the game area. Rendering is uncapped with VSync disabled for performance testing. Movement stays on fixed physics ticks; physics interpolation smooths the character between them. The render-frame camera and grass sample the same interpolated player position. Reset player physics interpolation when teleporting or spawning after entering the scene tree.
+
+## First Meeting
+
+`scenes/memories/first_meeting.tscn` inherits `memory_base.tscn`. Its house, autumn tree, garden, vines, paving, and finite platform live under `Environment`; `Entry` is on the front sidewalk. The house study has been moved here. The paving groundcover mask now lives in `components/groundcover/paving/groundcover_exclusion.gd`.
+
+`scenes/world/first_meeting_world.tscn` and the retained demo wrapper inherit `scenes/world/memory_world_base.tscn`, sharing players, camera, controls, arrival presentation, networking, and return navigation. First Meeting uses no extra recall spawn offset; the LAN guest spawns 1.2 m to the right of the host. Both memories use exactly the same close orthographic camera size, angle, centered follow, and controls. The demo retains its 10 m recalled arrival offset.
+
+![First Meeting timeline](docs/first-meeting-timeline.png)
+
+The yard is defined by a low diamond-mesh fence with a 2.3 m open gate. Full orange fall foliage with red accents, smooth rounded leaves across the paving and roof edges, and a fuller doorway vine arch give the outside space small details to discover. The autumn tree stands in the front yard left of the walk; there are no birds in First Meeting. The house uses broad plaster pigment, irregular shingle courses, painted curtains, and a warm porch lamp. The bungalow silhouette and sidewalk meeting point remain the focus. Thin paving collisions keep feet and contact shadows on the concrete.
+
+![First Meeting playable view](docs/first-meeting-playable.png)
+
+[Garden close-up](docs/first-meeting-garden.png) · [Composition overview (inspection camera)](docs/first-meeting-overview.png)
+
+First Meeting continues beyond the house into an ethereal arcade glade: pinball, a punching-bag machine, and a complete mechanical band sit in small autumn foliage islands, separated by the white void. Fading floorboard traces, pale pigment pools, and an interrupted strand of suspended warm bulbs suggest the bar. The machines form a loose triangle with open approaches. Their individual models, the original house, arrival, shared camera, timeline entry, and connected platform remain intact. See [the arcade component guide](components/activities/arcade/README.md).
+
+[Expanded memory](docs/first-meeting-expanded.png) · [Arcade area](docs/first-meeting-arcade.png) · [Mechanical band](docs/arcade-mechanical_band.png)
 
 ## Seasonal demo layout
 
@@ -53,14 +71,14 @@ Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, pa
 2. Set its unique `memory_id` and `display_name` in the Inspector.
 3. Position `Entry` at the spawn point and `Exit` at the intended connection to the next memory. Both are invisible markers.
 4. Put scenery under `Environment`. The empty `RevealClusters`, `Interactions`, and `SignatureInteraction` containers reserve consistent places for future systems.
-5. Replace the `Memory` instance in `scenes/world/memory_world.tscn` with the new memory. Keep its node name `Memory`; the world uses its entry transform to spawn the explorer.
+5. Inherit `scenes/world/memory_world_base.tscn` and add your content as a child named `Memory`, following `first_meeting_world.tscn`. Set per-memory camera framing and recall offsets on this wrapper. Add its path to `MEMORIES` in `UI/memory_lane/memory_lane.gd` to expose it on the timeline.
 
 `blank_void.tscn` demonstrates inheritance without adding content. The world scene owns presentation, ground, controls, player, and camera, so memory content can share the same foundation. Each future memory can inherit the content template instead of duplicating player or camera code.
 
 ## Tune the foundation
 
 - `Explorer` instance: `walk_speed`, `acceleration`, `turn_speed`.
-- `CameraRig`: `follow_speed`; `Camera3D`: size, position, rotation, projection.
+- `CameraRig`: `follow_speed`, `framing_offset`; `Camera3D`: size, position, rotation, projection.
 - `WorldEnvironment` and `Sun`: palette, haze, and lighting.
 - `shaders/dream_surface.gdshader`: faint surface pigment.
 
@@ -107,7 +125,9 @@ Instance `components/scenery/rock_clusters/painterly_rock_cluster.tscn` for smal
 
 ## Dream guides
 
-Instance `components/guidance/wisps/dream_wisp_path.tscn` for sparse, ghostly brushstrokes drifting along an editable Path3D curve. Count, color, opacity, height, width, and speed are exposed in the Inspector. The demo includes a subtle route from the pond-side entrance into the clearing. See [the wisp authoring guide](components/guidance/wisps/README.md).
+Instance `components/guidance/wisps/dream_wisp_path.tscn` for sparse, ghostly brushstrokes drifting along an editable Path3D curve. Count, color, opacity, height, width, and speed are exposed in the Inspector. The demo retains this route hidden. See [the wisp authoring guide](components/guidance/wisps/README.md).
+
+Instance `components/guidance/brushstroke/living_brushstroke.tscn` for a luminous white ribbon with a soft glow, uneven painterly bands, and a dissolving tail. It gathers at the start, blooms through the middle, and releases into fine strands near the destination. Set its two local-space endpoints in the Inspector, then tune width, glow, evolution, palette, timing, and sway. One white stroke guides across the summer clearing. See [the brushstroke guide](components/guidance/brushstroke/README.md).
 
 ## Memory boundaries
 

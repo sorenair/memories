@@ -60,7 +60,7 @@ const DEFAULT_PALETTE = preload("res://components/foliage/palettes/meadow.tres")
 		palette = value
 		if palette and not palette.changed.is_connected(_apply_palette):
 			palette.changed.connect(_apply_palette)
-		if not _applying_preset:
+		if not _applying_preset and not _matches_selected_preset(palette):
 			palette_preset = 0
 		_apply_palette()
 @export_group("Motion")
@@ -89,6 +89,19 @@ var _stem_material: ShaderMaterial
 var _generated: Array[Node] = []
 var _positions: Array[Vector3] = [Vector3.ZERO, Vector3.ZERO]
 var _weights := PackedFloat32Array([0.0, 0.0])
+
+func _matches_selected_preset(colors: GrassPalette) -> bool:
+	# Godot saves the selected preset and its generated resource. Loading that
+	# matching resource should preserve the Inspector selection rather than reset it.
+	if not colors or palette_preset <= 0:
+		return false
+	var selected: GrassPalette = PALETTES.create_preset(palette_preset)
+	for key in PALETTES.COLOR_KEYS:
+		var actual: Color = colors.get(key)
+		var expected: Color = selected.get(key)
+		if not actual.is_equal_approx(expected):
+			return false
+	return true
 
 func _ready() -> void:
 	if palette and not palette.changed.is_connected(_apply_palette):

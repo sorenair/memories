@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/activities/arcade/pinball/painterly_pinball.gd" id="1"]
+
+[node name="PainterlyPinball" type="Node3D"]
+script = ExtResource("1")

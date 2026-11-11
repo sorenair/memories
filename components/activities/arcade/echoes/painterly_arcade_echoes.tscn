@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/activities/arcade/echoes/painterly_arcade_echoes.gd" id="1"]
+[node name="PainterlyArcadeEchoes" type="Node3D"]
+script = ExtResource("1")

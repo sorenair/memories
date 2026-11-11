@@ -7,6 +7,7 @@ Instance `painterly_grass_patch.tscn` beneath any memory's `Environment`, place 
 - **Patch Size:** full X/Z footprint in meters. Shape is an irregular ellipse, with a slightly larger ground wash. Place several small patches to compose a meadow; do not scale one patch to cover an entire level.
 - **Patch Seed:** repeatable shape, placements, size variations, and color clusters.
 - **Palette:** a reusable `GrassPalette` resource. `palettes/meadow.tres` and `palettes/dusk.tres` are included. Duplicate a preset to create another look. Editing a shared palette updates all patches that use it.
+- **Ground Leaf Scale:** shrink broad groundcover dabs independently of tuft height; the default 1.0 preserves existing patches. First Meeting uses 0.55 for a finer meadow.
 - **Tufts / Leaves per Square Meter:** independent density controls for upright rounded grass strokes and low oval groundcover. Zero disables that layer.
 - **Grass Height:** height of upright grass; tips and edges vary organically around that value.
 - **Wind Strength / Speed:** continuous, GPU-driven sway. Set strength to zero for still foliage.

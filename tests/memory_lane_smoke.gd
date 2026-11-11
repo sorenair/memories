@@ -19,11 +19,17 @@ func touch(menu: Control, point: Vector2, pressed: bool, index: int = 0, cancell
 	menu._input(event)
 
 func run() -> void:
+	var main_menu = load("res://UI/main_menu/main_menu.tscn").instantiate()
+	root.add_child(main_menu)
+	main_menu.get_node("CharacterPicker/Vivian").pressed.emit()
+	main_menu.free()
 	var menu = load("res://UI/memory_lane/memory_lane.tscn").instantiate()
 	root.add_child(menu)
 	current_scene = menu
 	await process_frame
-	check(menu.selected_index == 1, "Museum date should be selected initially")
+	check(menu.selected_index == 0, "First Meeting should be selected initially")
+	check(menu.MEMORIES.size() == 2, "Timeline must contain exactly First Meeting and Seasonal Demo")
+	check(menu.MEMORIES[0].title == "First Meeting" and menu.MEMORIES[0].date == "NOV 12, 2025", "First memory must have the requested title and date")
 	menu.set_process(false)
 	menu._entrance_time = 0.0
 	menu._apply_entrance()
@@ -52,15 +58,15 @@ func run() -> void:
 	touch(menu, origin, false, 1)
 	check(menu._pointer == 0, "A second finger must not release the active swipe")
 	touch(menu, drag.position, false)
-	check(menu.selected_index == 2, "A left swipe should select the next memory")
-	check(menu.get_node("MemoryTitle").text == "Under the stadium lights", "Selection must update the title")
+	check(menu.selected_index == 1, "A left swipe should select the next memory")
+	check(menu.get_node("MemoryTitle").text == "Seasonal Demo", "Selection must update the title")
 	for frame in range(80):
 		menu._process(1.0 / 60.0)
-	check(is_equal_approx(menu._position, 2.0), "Swipe release should settle the mark at the fixed selection point")
-	var next := origin + Vector2(menu._spacing, 0)
+	check(is_equal_approx(menu._position, 1.0), "Swipe release should settle the mark at the fixed selection point")
+	var next := origin - Vector2(menu._spacing, 0)
 	touch(menu, next, true)
 	touch(menu, next, false)
-	check(menu.selected_index == 3, "Tapping a neighboring mark should select it")
+	check(menu.selected_index == 0, "Tapping a neighboring mark should select it")
 	menu.select_memory(-100)
 	check(menu.selected_index == 0, "Selection must clamp at the earliest memory")
 	menu.select_memory(100)
@@ -72,29 +78,19 @@ func run() -> void:
 	key.keycode = KEY_LEFT
 	key.pressed = true
 	menu._unhandled_key_input(key)
-	check(menu.selected_index == 3, "Keyboard left should select the preceding memory")
+	check(menu.selected_index == 0, "Keyboard left should select the preceding memory")
 	menu.size = Vector2(390, 844)
 	menu._layout()
 	check(menu.get_node("Recall").get_rect().end.y < menu._line_y, "Portrait layout must keep Recall clear of the timeline")
 	check(menu.get_node("MemoryTitle").size.x == 326, "Portrait title must fit the available width")
-	var soren_button := menu.get_node("CharacterPicker/Soren") as Button
-	var vivian_button := menu.get_node("CharacterPicker/Vivian") as Button
-	check(soren_button.button_pressed and not vivian_button.button_pressed, "Soren must be selected by default")
-	var vivian_point := vivian_button.get_global_rect().get_center()
-	touch(menu, vivian_point, true)
-	touch(menu, vivian_point, false, 0, true)
-	check(soren_button.button_pressed, "Cancelled touch must preserve the selected avatar")
-	touch(menu, vivian_point, true)
-	touch(menu, vivian_point, false)
-	check(vivian_button.button_pressed and not soren_button.button_pressed, "Touch must select only Vivian")
-	check(menu.selected_index == 3, "Avatar selection must leave the memory selection alone")
+	check(not menu.has_node("CharacterPicker"), "Avatar selection must live on the main menu")
 	var recall_point: Vector2 = menu.get_node("Recall").get_global_rect().get_center()
 	touch(menu, recall_point, true)
 	touch(menu, recall_point, false)
 	var transition_veil := root.get_node("MemoryTransitionVeil/Paper")
 	await create_timer(0.6).timeout
 	check(current_scene != menu, "Touch Recall must change scenes")
-	check(current_scene.scene_file_path == "res://scenes/world/memory_world.tscn", "Recall must enter the demo world with its player and camera")
+	check(current_scene.scene_file_path == "res://scenes/world/first_meeting_world.tscn", "Recall must enter First Meeting with its player and camera")
 	check(current_scene.has_node("Explorer"), "Recalled world must include the playable explorer")
 	var world := current_scene
 	var player := world.get_node("Explorer") as MemoryExplorer
@@ -109,7 +105,7 @@ func run() -> void:
 	var arrival := world.get_node("MemoryArrival")
 	check(arrival._veil == transition_veil, "The same paper veil must bridge both scenes")
 	var landing := player.global_position
-	check(is_equal_approx(landing.distance_to(world.get_node("Memory/Entry").global_position), 10.0), "Recall must land within a short walk of the clearing")
+	check(is_equal_approx(landing.distance_to(world.get_node("Memory/Entry").global_position), 0.0), "First Meeting must land on its sidewalk entry")
 	check(arrival._veil.modulate.a > 0.9, "Paper veil must survive the scene swap without a background flash")
 	check(root.get_node_or_null("MemoryTransitionVeil") == null, "Destination must take ownership of the transition veil")
 	check(not player.is_physics_processing(), "Movement must pause during the arrival")

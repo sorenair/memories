@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/memory_world_base.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/memories/first_meeting.tscn" id="2"]
+
+[node name="MemoryWorld" instance=ExtResource("1")]
+recalled_spawn_offset = Vector3(0, 0, 0)
+
+[node name="Memory" parent="." index="4" instance=ExtResource("2")]

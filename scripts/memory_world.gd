@@ -37,7 +37,7 @@ func _ready() -> void:
 				player.global_position = guest_spawn
 		_setup_lan()
 	player.reset_physics_interpolation()
-	$CameraRig.global_position = player.global_position
+	$CameraRig.global_position = player.global_position + $CameraRig.framing_offset
 	$DreamSurface.global_position.x = player.global_position.x
 	$DreamSurface.global_position.z = player.global_position.z
 	if recalled:

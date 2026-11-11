@@ -10,11 +10,14 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
+	var main_menu = load("res://UI/main_menu/main_menu.tscn").instantiate()
+	root.add_child(main_menu)
+	main_menu.get_node("CharacterPicker/Vivian").pressed.emit()
+	main_menu.free()
 	var menu = load("res://UI/memory_lane/memory_lane.tscn").instantiate()
 	root.add_child(menu)
 	current_scene = menu
-	menu.select_memory(3)
-	menu.get_node("CharacterPicker/Vivian").pressed.emit()
+	menu.select_memory(1)
 	menu.free()
 	var world = load("res://scenes/world/memory_world.tscn").instantiate()
 	root.add_child(world)
@@ -52,8 +55,8 @@ func run() -> void:
 	button.return_to_timeline()
 	await create_timer(1.0).timeout
 	check(current_scene.scene_file_path == "res://UI/memory_lane/memory_lane.tscn", "Return button must open the timeline")
-	check(current_scene.selected_index == 3, "Timeline must remember the selected memory")
-	check(current_scene.get_node("CharacterPicker/Vivian").button_pressed, "Timeline must remember the chosen avatar")
+	check(current_scene.selected_index == 1, "Timeline must remember the selected memory")
+	check(MemoryExplorer.preferred_avatar == MemoryExplorer.Avatar.VIVIAN, "Returning must preserve the chosen avatar")
 	check(current_scene._returning, "Timeline return must use the shorter entrance")
 	check(not current_scene.has_node("MemoryTransitionVeil"), "Return veil must clean up after fading out")
 	print("Timeline return smoke checks: ", "PASS" if failures == 0 else "FAIL")

@@ -8,7 +8,8 @@ signal snapshot_received(time: float, position: Vector3, heading: float, walking
 enum State { OFFLINE, HOSTING, JOINING, GUEST }
 const PORT := 24680
 const SERVER_ID := 1
-const PROTOCOL_VERSION := 1
+# Memory indices now identify First Meeting and Seasonal Demo. Reject older catalogs.
+const PROTOCOL_VERSION := 2
 const JOIN_TIMEOUT_MS := 10000
 
 var state := State.OFFLINE

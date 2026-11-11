@@ -69,6 +69,11 @@ func _sync_recall() -> void:
 	set(value):
 		grass_height = value
 		_request_rebuild()
+## Scale the broad groundcover dabs independently of grass height; 1 preserves existing patches.
+@export_range(0.2, 1.0, 0.05) var ground_leaf_scale: float = 1.0:
+	set(value):
+		ground_leaf_scale = clampf(value, 0.2, 1.0)
+		_request_rebuild()
 @export_range(0.0, 0.3, 0.01) var wind_strength: float = 0.07:
 	set(value):
 		wind_strength = value
@@ -219,7 +224,7 @@ func _add_batch(batch_name: String, mesh: ArrayMesh, density: float, rng: Random
 		var basis := Basis(Vector3.UP, rng.randf() * TAU)
 		var height := grass_height * rng.randf_range(0.65, 1.35)
 		if is_leaf:
-			basis = basis.scaled(Vector3.ONE * scale_factor * lerpf(0.7, 1.2, meadow))
+			basis = basis.scaled(Vector3.ONE * scale_factor * ground_leaf_scale * lerpf(0.7, 1.2, meadow))
 		else:
 			basis = basis.scaled(Vector3(scale_factor, height * scale_factor, scale_factor))
 		var tint := Color(clampf((meadow - 0.5) * 1.8 + 0.5 + rng.randf_range(-0.12, 0.12), 0.0, 1.0), rng.randf(), rng.randf(), edge)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://1bv5ujx506r3"]
+[gd_scene load_steps=25 format=3 uid="uid://1bv5ujx506r3"]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="2"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://dfpbtjuh46a44" path="res://components/foliage/grass_palette.gd" id="16_ms7w1"]
 [ext_resource type="PackedScene" path="res://components/foliage/vines/painterly_wall_vine.tscn" id="17"]
 [ext_resource type="Shader" uid="uid://c7r5jsobfph35" path="res://components/scenery/boulders/shaders/painted_stone.gdshader" id="18"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/living_brushstroke.tscn" id="19_brush"]
 
 [sub_resource type="Curve3D" id="Curve3D_x0y5e"]
 resource_local_to_scene = true
@@ -51,7 +52,7 @@ shade_color = Color(0.301961, 0.501961, 0.317647, 1)
 leaf_color = Color(0.639216, 0.788235, 0.419608, 1)
 sun_color = Color(0.886275, 0.929412, 0.615686, 1)
 
-[node name="Memory" instance=ExtResource("1")]
+[node name="Memory2" instance=ExtResource("1")]
 memory_id = &"foliage_demo"
 display_name = "Three seasons"
 
@@ -324,6 +325,12 @@ footprint = Vector2(2.5, 1.95)
 leaf_spray_count = 280
 palette_preset = 0
 palette = SubResource("Resource_whmme")
+
+[node name="LivingBrushstroke" parent="Environment/SummerSpring" index="26" instance=ExtResource("19_brush")]
+start_point = Vector3(-2.4, 0.7, -0.2)
+end_point = Vector3(-0.1, 1.05, -2.8)
+arc_height = 0.42
+curve_bend = 0.32
 
 [node name="Autumn" type="Node3D" parent="Environment" index="4"]
 

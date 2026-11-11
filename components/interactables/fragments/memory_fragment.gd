@@ -63,6 +63,7 @@ var _tap_feedback: float = 0.0
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		add_to_group(&"memory_fragments")
+		add_to_group(&"memory_interactables")
 	_visual = Node3D.new()
 	_visual.name = "Orb"
 	_visual.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF

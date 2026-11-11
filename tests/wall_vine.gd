@@ -36,6 +36,8 @@ func run() -> void:
 	vine.rebuild()
 	check(vine.get_node("Foliage").multimesh.buffer == initial, "Same seed must reproduce leaf placement")
 	vine.palette_preset = 3
+	vine.palette = vine.palette.duplicate()
+	check(vine.palette_preset == 3, "Deserializing a matching preset resource must preserve the autumn selection")
 	check(vine.get_node("Foliage").multimesh.buffer == initial, "Palette changes must preserve placement")
 	vine.vine_seed += 1
 	vine.rebuild()
