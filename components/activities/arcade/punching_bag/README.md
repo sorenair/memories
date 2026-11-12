@@ -38,4 +38,4 @@ godot --path . --windowed --resolution 1400x900 --script tests/punching_bag_rend
 
 Checks cover direct touch/click activation on the actual machine, range and busy gates, reavailability, score variation and completion events, mesh reuse, cancellation, saved settings, frame-independent motion, maximum-swing clearance in both directions, and visible feedback in the Mobile renderer and First Meeting.
 
-[Impact preview](../../../../docs/punching-bag-impact.png) · [Completed result](../../../../docs/punching-bag-interaction.png).
+[Impact preview](../../../../docs/previews/punching-bag-impact.png) · [Completed result](../../../../docs/previews/punching-bag-interaction.png).

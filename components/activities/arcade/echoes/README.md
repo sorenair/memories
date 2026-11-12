@@ -13,4 +13,4 @@ godot --headless --path . --script tests/arcade_echoes.gd
 godot --headless --path . --script tests/first_meeting_arcade.gd
 ```
 
-The former cutaway-room component remains available separately in `bar_corner/`; it is not instantiated in First Meeting. [Current glade preview](../../../../docs/first-meeting-arcade.png).
+The former cutaway-room component remains available separately in `bar_corner/`; it is not instantiated in First Meeting. [Current glade preview](../../../../docs/previews/first-meeting-arcade.png).

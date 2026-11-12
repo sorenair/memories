@@ -92,7 +92,7 @@ godot --headless --path . --script res://tests/crowd_collision.gd
 godot --path . --script res://tests/crowd_render.gd --windowed --resolution 1600x1000
 ```
 
-The render check writes `docs/crowd-preview.png` and `docs/crowd-detail.png`, checks
+The render check writes `docs/previews/crowd-preview.png` and `docs/previews/crowd-detail.png`, checks
 visible GPU motion, and verifies that zero strength remains still over time.
 Physics checks cover individual ray hits, scaled capsules, removal/rebuild, and
 the actual explorer stopping at and walking around a crowd member.

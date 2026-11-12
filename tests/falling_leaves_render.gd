@@ -37,7 +37,7 @@ func run():
  var a=await snapshot()
  await create_timer(.6).timeout
  var b=await snapshot()
- root.get_texture().get_image().save_png("res://docs/falling-leaves.png")
+ root.get_texture().get_image().save_png("res://docs/previews/falling-leaves.png")
  tree.falling_leaf_rate=0.0
  await create_timer(.1).timeout
  var c=await snapshot()

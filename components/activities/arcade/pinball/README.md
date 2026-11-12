@@ -40,4 +40,4 @@ godot --path . --windowed --resolution 1400x900 --script tests/pinball_render.gd
 
 Checks include collision containment across 24 seeded launches at 30/60/144 FPS and coarse 170 ms frames, upper-field reach, repeat requests, score bounds/variation, one completion event per run, safe cancellation, saved settings, mesh reuse, transformed placement, and actual rendered movement/display changes. The shared-controller integration check uses the real First Meeting player and cabinet to exercise direct taps/clicks, front approach range, moving away before release, hidden targets, movement locks, busy-state dimming, and automatic reavailability.
 
-[Rendered machine](../../../../docs/pinball-interaction.png).
+[Rendered machine](../../../../docs/previews/pinball-interaction.png).

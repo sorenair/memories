@@ -1,5 +1,7 @@
 # Authoring memories with zones
 
+For composition, visual style, and a complete new-memory workflow, start with the [memory design guide](../../docs/MEMORY_DESIGN_GUIDE.md).
+
 A memory is an ordered collection of places. Each place uses `memory_zone.tscn`: a movable **MemoryZone** with **Scenery**, one **Fragment**, and an **Ambience** player. First Meeting is the working example; its two authored zone scenes are `first_meeting/house_zone.tscn` and `first_meeting/arcade_zone.tscn`.
 
 ```text

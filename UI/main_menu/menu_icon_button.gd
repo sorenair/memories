@@ -17,7 +17,7 @@ func _ready() -> void:
 func _target_alpha() -> float:
 	if selection_icon:
 		return 1.0 if button_pressed else (0.4 if is_hovered() or has_focus() else 0.18)
-	return 1.0 if is_hovered() or has_focus() or _pointer >= 0 else 0.72
+	return 1.0 if is_hovered() or has_focus() or is_pressed() or _pointer >= 0 else 0.72
 
 func _process(delta: float) -> void:
 	_ink_alpha = lerpf(_ink_alpha, _target_alpha(), 1.0 - exp(-delta * 16.0))
@@ -28,7 +28,7 @@ func _draw() -> void:
 		draw_texture_rect(symbol, Rect2((size - symbol_size) * 0.5, symbol_size), false, Color(1, 1, 1, _ink_alpha))
 
 func _input(event: InputEvent) -> void:
-	if disabled:
+	if disabled or not is_visible_in_tree():
 		return
 	if event is InputEventScreenTouch:
 		if event.pressed and _pointer == -1 and get_global_rect().has_point(event.position):

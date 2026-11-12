@@ -1,5 +1,5 @@
 extends SceneTree
-## GPU verification on a neutral canvas; saves an example still in docs/.
+## GPU verification on a neutral canvas; saves an example still in docs/previews/.
 var brush: LivingBrushstroke
 
 func _initialize() -> void:
@@ -73,7 +73,7 @@ func run() -> void:
 	var still_a := await snapshot()
 	await create_timer(0.2).timeout
 	var still_b := await snapshot()
-	still_a.save_png("res://docs/living-brushstroke.png")
+	still_a.save_png("res://docs/previews/living-brushstroke.png")
 	set_time(3.6)
 	var moved := await snapshot()
 	moved.save_png("/tmp/living-brushstroke-later.png")

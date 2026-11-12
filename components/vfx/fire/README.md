@@ -30,6 +30,6 @@ godot --path . --script tests/fire_motion_render.gd
 
 Checks cover saved controls, optional embers, culling bounds, zero-intensity/glow modes, geometry preservation during appearance edits, frozen animation, visible animated change, and visibility from another camera angle. The demo also passes the scene movement check.
 
-`docs/fire-study.png` is an isolated dark-background preview. `docs/fire-clearing.png` shows the example in the memory.
+`docs/previews/fire-study.png` is an isolated dark-background preview. `docs/previews/fire-clearing.png` shows the example in the memory.
 
-`docs/fire-motion.gif` is a four-second actual-engine animation preview.
+`docs/previews/fire-motion.gif` is a four-second actual-engine animation preview.

@@ -59,7 +59,7 @@ func run() -> void:
 	camera.size=3.0
 	camera.look_at(Vector3(0,0.9,0))
 	var full:=await snapshot()
-	full.save_png("res://docs/pinball-interaction.png")
+	full.save_png("res://docs/previews/pinball-interaction.png")
 	var motion:=changes(first,upper)
 	var visible:=changes(bounce,hidden)
 	var scoring:=changes(bounce,score)

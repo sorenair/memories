@@ -24,11 +24,27 @@ const FAR_BOWL_RADII := Vector2(56.0, 33.0)
 	set(value):
 		minnesota_branding = value
 		_request_rebuild()
+@export_group("Crowd Motion")
+## Maximum upward movement in meters; zero gives a still crowd.
+@export_range(0.0, 0.35, 0.01) var crowd_bounce_height := 0.14:
+	set(value):
+		crowd_bounce_height = clampf(value, 0.0, 0.35)
+		_update_crowd_motion()
+@export_range(0.0, 2.0, 0.05) var crowd_bounce_speed := 1.0:
+	set(value):
+		crowd_bounce_speed = clampf(value, 0.0, 2.0)
+		_update_crowd_motion()
+
+func _update_crowd_motion() -> void:
+	if _material:
+		_material.set_shader_parameter("crowd_bounce_height", crowd_bounce_height)
+		_material.set_shader_parameter("crowd_bounce_speed", crowd_bounce_speed)
 
 func _build(b: RefCounted) -> void:
 	var snow := Color("edeede")
 	var metal := Color("626d70")
 	_material.set_shader_parameter("edge_half_size", Vector2(73, 88))
+	_update_crowd_motion()
 	# Foreground rows descend toward the field; aisles break the long bench runs.
 	for row in 14:
 		var y := 2.2 + row * 0.6
@@ -114,7 +130,11 @@ func _far_bowl(b: RefCounted, snow: Color) -> void:
 			for dab in 3:
 				var point := at + tangent * (dab - 1) * width * 0.27
 				var color := [seat_color, Color("b6a68c"), Color("8d9290")][(sector + row + dab) % 3] as Color
-				b.soft_box(point + Vector3.UP * 0.58, Vector3(0.45, 0.5, 0.4), color, 0.08, 1.0)
+				# Every vertex in a figure shares its phase/rate. The shader lifts the
+				# whole figure rigidly, inside the existing single stands mesh batch.
+				b.s.set_uv(Vector2(b.rng.randf_range(0.0, TAU), b.rng.randf_range(2.0, 3.6)))
+				b.soft_box(point + Vector3.UP * 0.58, Vector3(0.45, 0.5, 0.4), color, 0.08, 7.0)
+				b.s.set_uv(Vector2.ZERO)
 	# Broken roof trim and supports give the distant tiers a college-stadium silhouette.
 	for sector in range(2, 31, 2):
 		var angle := PI + PI * sector / 32.0

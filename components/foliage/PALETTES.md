@@ -29,7 +29,7 @@ Preset selections and custom colors persist when scenes are saved. Presets save 
 
 ## Previews and validation
 
-Rendered examples are `docs/palette-summer.png`, `docs/palette-autumn.png`, `docs/palette-winter.png`, and `docs/palette-dream.png`. They show the same foliage geometry and color distribution with different palettes. The demo scene's saved palette remains summer.
+Rendered examples are `docs/previews/palette-summer.png`, `docs/previews/palette-autumn.png`, `docs/previews/palette-winter.png`, and `docs/previews/palette-dream.png`. They show the same foliage geometry and color distribution with different palettes. The demo scene's saved palette remains summer.
 
 ```sh
 godot --path . --script tests/foliage_palettes.gd

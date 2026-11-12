@@ -43,7 +43,7 @@ godot --path . --script tests/bush_interaction_render.gd
 
 A rendering device is required for reliable MultiMesh transform-buffer readback. The checks cover repeatable placement and colors, seed variation, geometry budget, volumetric leaf shapes, culling bounds, palette independence, shared tree/bush geometry, live wind controls, and fully empty zero-density components.
 
-`docs/bush-demo.png` shows the playable scene. `docs/bush-detail.png` shows the bushes more closely.
+`docs/previews/bush-demo.png` shows the playable scene. `docs/previews/bush-detail.png` shows the bushes more closely.
 
 The interaction checks cover two independent explorers, easing, frame-rate independence, removal, teleports, and disabling the effect without disabling wind. A rendered check isolates a bush and confirms visible disturbance, return to its resting shape, and continued wind. Tree shaders keep disturbance strength at zero, preserving their existing behavior.
 

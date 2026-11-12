@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/autumn_wind.wav" id="wind"]
+[ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_museum_portico.tscn" id="portico"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+
+[node name="EntranceZone" instance=ExtResource("zone")]
+zone_id = &"entrance"
+display_name = "At the museum entrance"
+ambience_stream = ExtResource("wind")
+ambience_volume_db = -25.0
+ambience_size = Vector2(18, 14)
+ambience_blend_distance = 4.0
+
+[node name="Portico" parent="Scenery" instance=ExtResource("portico")]
+position = Vector3(0, 0, 0)
+
+[node name="Forecourt" parent="Scenery" instance=ExtResource("paving")]
+position = Vector3(0, 0, 5.8)
+footprint = Vector2(6.3, 4.2)
+slab_length = 1.4
+paving_color = Color(0.82, 0.81, 0.76, 1)
+end_fade = Vector2(0.5, 1.8)
+irregularity = 0.3
+[node name="Fragment" parent="." index="1"]
+position = Vector3(0, 0.04, 4.1)
+fragment_seed = 1212
+note_title = "At the museum entrance"
+notes = Array[String](["Placeholder: Write your memory of arriving at the museum together here."])

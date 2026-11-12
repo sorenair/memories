@@ -45,6 +45,8 @@ minnesota_branding = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10.5, -12)
 seat_color = Color(0.478431, 0, 0.0980392, 1)
 minnesota_branding = true
+crowd_bounce_height = 0.35
+crowd_bounce_speed = 1.5
 
 [node name="ViewingPlatform" type="Node3D" parent="Scenery" index="3"]
 

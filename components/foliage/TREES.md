@@ -17,7 +17,7 @@ Choose **Tree Shape → Tree Type** on any instance of `painterly_tree.tscn`. Al
 
 Types apply proportion multipliers to your authored dimensions, rather than replacing them. Combine the type with **Tree Seed**, height, width, bend, density, and a seasonal palette for variations within a forest. **Bark → Use Type Bark** enables birch's pale marked bark; disable it to use your own Bark Shadow / Light colors. Other types use those authored colors directly.
 
-![Six tree types at matching authoring dimensions](../../docs/tree-variants.png)
+![Six tree types at matching authoring dimensions](../../docs/previews/tree-variants.png)
 
 ## Authoring controls
 
@@ -57,7 +57,7 @@ This uses more geometry than the earlier sphere canopy to make leaves form the s
 
 The cheap shadow lies at ground level; it does not dynamically shade grass leaves. Painted shadow colors establish the canopy's volume without dynamic lighting passes.
 
-`scenes/memories/foliage_demo.tscn` contains a 3.7 m tree with a 3.1 m crown. `docs/tree-demo.png` shows the playable composition and `docs/tree-detail.png` shows the component more closely.
+`scenes/memories/foliage_demo.tscn` contains a 3.7 m tree with a 3.1 m crown. `docs/previews/tree-demo.png` shows the playable composition and `docs/previews/tree-detail.png` shows the component more closely.
 
 ## Validation
 
@@ -75,7 +75,7 @@ The wind rendering check isolates the tree and compares frames with strength zer
 
 Each component exposes **Foliage Colors → Palette Preset** in the Inspector. Choose seasonal or dreamlike colors, or edit a custom four-color mix. Palette changes preserve geometry and the painterly color distribution. See [the palette guide](PALETTES.md).
 
-The variant check covers all six growth forms, deterministic rebuilding, shared meshes, geometry bounds, palette independence, type/palette scene persistence, birch markings, wind parameters, odd cypress density, and zero-density evergreen foliage. `docs/tree-variants.png` compares the types in an actual Godot render.
+The variant check covers all six growth forms, deterministic rebuilding, shared meshes, geometry bounds, palette independence, type/palette scene persistence, birch markings, wind parameters, odd cypress density, and zero-density evergreen foliage. `docs/previews/tree-variants.png` compares the types in an actual Godot render.
 
 Wood generation has an independent seed stream. Trunk and limb refinements preserve the approved canopy transform/color buffers for every type. Lower-stem collision capsules follow the revised trunk curve.
 
@@ -94,7 +94,7 @@ godot --headless --path . --script tests/falling_leaves.gd
 godot --path . --script tests/falling_leaves_render.gd
 ```
 
-Checks cover controls, palette updates, persistence, all tree types, bare trees, and preservation of canopy nodes. Captured-frame checks confirm falling motion with canopy wind disabled, and no motion when Rate is zero. `docs/falling-leaves.png` shows a denser single-tree preview (32 leaves, rate 4) than the demo uses.
+Checks cover controls, palette updates, persistence, all tree types, bare trees, and preservation of canopy nodes. Captured-frame checks confirm falling motion with canopy wind disabled, and no motion when Rate is zero. `docs/previews/falling-leaves.png` shows a denser single-tree preview (32 leaves, rate 4) than the demo uses.
 
 ## Proximity recall
 

@@ -44,4 +44,4 @@ The reusable activities are **Pinball**, **PunchingBag**, and **MechanicalBand**
 
 `tests/arcade_components.gd` checks the approved props. `tests/arcade_echoes.gd` checks the lightweight decorative kit. `tests/first_meeting_arcade.gd` verifies platform coverage, absence of room blockers, and real walking from the original arrival to every activity anchor across the open glade.
 
-[Expanded memory overview](../../docs/first-meeting-expanded.png) · [Arcade glade](../../docs/first-meeting-arcade.png)
+[Expanded memory overview](../../docs/previews/first-meeting-expanded.png) · [Arcade glade](../../docs/previews/first-meeting-arcade.png)

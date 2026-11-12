@@ -40,7 +40,7 @@ var button_position: Vector3 = band.get_anchor(&"KickButton").global_position
 
 `scenes/memories/first_meeting.tscn` groups the activities under **Zones/Arcade/Scenery/Machines**, centered at world `(15, 0, 1)`, east of the original house. They form a loose triangle in the white void, each nestled into a small autumn foliage pocket. A broken suspended light strand and fading traces of floorboards suggest the bar; there are no room walls or continuous arcade floor. The house sidewalk dissolves into a few faint paving impressions and scattered leaves. The band faces diagonally into the open foreground. The 34 × 19 m platform, original arrival, shared camera, timeline identity, and LAN setup are preserved.
 
-[Pinball](../../../docs/arcade-pinball.png) · [Punching bag](../../../docs/arcade-punching_bag.png) · [Band](../../../docs/arcade-mechanical_band.png) · [In the memory](../../../docs/first-meeting-arcade.png)
+[Pinball](../../../docs/previews/arcade-pinball.png) · [Punching bag](../../../docs/previews/arcade-punching_bag.png) · [Band](../../../docs/previews/arcade-mechanical_band.png) · [In the memory](../../../docs/previews/first-meeting-arcade.png)
 
 The decorative [arcade echoes component](echoes/README.md) provides the suspended lights, faint floor traces, and pigment pools without collision. The decorative scenery is independent of activity behavior. Pinball and punching bag now use shared-controller interactions and random scores; the band remains static.
 

@@ -2,11 +2,11 @@ extends Node3D
 ## Shared presentation and local player setup, independent of memory content.
 const MemoryArrival := preload("res://UI/memory_arrival/memory_arrival.gd")
 const RemoteMotion := preload("res://scripts/network/remote_motion.gd")
+const RemotePresence := preload("res://scripts/network/remote_presence.gd")
 const ExplorerScene := preload("res://scenes/player/explorer.tscn")
 const SNAPSHOT_INTERVAL := 0.05
 
 @export var recalled_spawn_offset := Vector3(0.0, 0.0, 10.0)
-@export_range(4.0, 14.0, 0.1) var arrival_drop_height: float = 6.0
 
 var _bounded_memory: bool = false
 var _platforms: Array[MemoryPlatform] = []
@@ -14,7 +14,8 @@ var _remote: MemoryExplorer
 var _motion: RemoteMotion
 var _remote_id := 0
 var _send_timer := 0.0
-var _lan_label: Label
+var _visit_id := 0
+var _remote_visit := 0
 
 @onready var player: MemoryExplorer = $Explorer
 @onready var memory: MemoryScene = $Memory
@@ -29,13 +30,12 @@ func _ready() -> void:
 		var landing := player.global_position + recalled_spawn_offset
 		if not _bounded_memory or _landing_supported(landing):
 			player.global_position = landing
-	if LanSession.state != LanSession.State.OFFLINE:
-		player.set_avatar(LanSession.local_avatar)
-		if LanSession.state == LanSession.State.GUEST:
-			var guest_spawn := player.global_position + Vector3.RIGHT * 1.2
-			if not _bounded_memory or _landing_supported(guest_spawn):
-				player.global_position = guest_spawn
-		_setup_lan()
+	_visit_id = LanSession.enter_memory(memory.memory_id)
+	if LanSession.state == LanSession.State.GUEST and LanSession.shares_memory():
+		var guest_spawn := player.global_position + Vector3.RIGHT * 1.2
+		if not _bounded_memory or _landing_supported(guest_spawn):
+			player.global_position = guest_spawn
+	_setup_lan()
 	player.reset_physics_interpolation()
 	memory.get_audio().set_listener(player)
 	$CameraRig.global_position = player.global_position + $CameraRig.framing_offset
@@ -45,7 +45,14 @@ func _ready() -> void:
 		var arrival := MemoryArrival.new()
 		arrival.name = "MemoryArrival"
 		add_child(arrival)
-		arrival.begin(self, arrival_drop_height)
+		arrival.begin(self)
+
+func begin_departure() -> void:
+	# Announce exit as our own reverse scan starts, so observers see it together.
+	LanSession.exit_memory(memory.memory_id, _visit_id)
+
+func cancel_departure() -> void:
+	_visit_id = LanSession.enter_memory(memory.memory_id)
 
 func _physics_process(delta: float) -> void:
 	if not _bounded_memory:
@@ -60,35 +67,36 @@ func _physics_process(delta: float) -> void:
 		LanSession.send_snapshot(player.global_position, player.visual.rotation.y, player.walking)
 
 func _setup_lan() -> void:
-	# Sample the body after its movement tick; remote poses advance on render frames.
+	# Listen even when entering solo: a pending join may finish inside this memory.
 	process_physics_priority = 1
-	_lan_label = Label.new()
-	_lan_label.name = "LanStatus"
-	_lan_label.position = Vector2(32.0, 24.0)
-	_lan_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_lan_label.add_theme_font_size_override("font_size", 24)
-	_lan_label.add_theme_color_override("font_outline_color", Color(0.12, 0.12, 0.12, 0.8))
-	_lan_label.add_theme_constant_override("outline_size", 6)
-	$Controls.add_child(_lan_label)
-	LanSession.status_changed.connect(_update_lan)
+	LanSession.presence_changed.connect(_update_lan)
 	LanSession.snapshot_received.connect(_receive_snapshot)
 	_update_lan()
 
 func _update_lan() -> void:
-	_lan_label.text = LanSession.status
-	if _remote_id == LanSession.partner_id:
+	var desired_id := LanSession.partner_id if LanSession.shares_memory() else 0
+	if _remote_id == desired_id and _remote_visit == LanSession.partner_visit:
+		if is_instance_valid(_remote) and _remote.avatar != LanSession.partner_avatar:
+			_remote.set_avatar(LanSession.partner_avatar)
 		return
 	if is_instance_valid(_remote):
 		_remote.collision_layer = 0
-		_remote.hide()
-		_remote.queue_free()
+		# Detach from active presence immediately; its last pose can dissolve while
+		# a new visit creates its own replica and fresh motion buffer.
+		_remote.name = "DepartingPartner"
+		_remote.get_node("PresenceRecall").disappear()
 		_remote = null
 	_motion = null
-	_remote_id = LanSession.partner_id
-	_send_timer = SNAPSHOT_INTERVAL
+	_remote_id = desired_id
+	_remote_visit = LanSession.partner_visit
+	_send_timer = 0.0
+
+func _exit_tree() -> void:
+	if is_instance_valid(memory):
+		LanSession.exit_memory(memory.memory_id, _visit_id)
 
 func _receive_snapshot(time: float, point: Vector3, heading: float, walking: bool) -> void:
-	if _remote_id == 0:
+	if _remote_id == 0 or not LanSession.shares_memory():
 		return
 	if _remote == null:
 		_remote = ExplorerScene.instantiate() as MemoryExplorer
@@ -104,6 +112,9 @@ func _receive_snapshot(time: float, point: Vector3, heading: float, walking: boo
 		add_child(_remote)
 		_remote.set_physics_process(false)
 		_remote.set_avatar(LanSession.partner_avatar)
+		var presence := RemotePresence.new()
+		presence.name = "PresenceRecall"
+		_remote.add_child(presence)
 		_motion = RemoteMotion.new()
 	_motion.push(time, point, heading, walking)
 

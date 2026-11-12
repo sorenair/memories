@@ -1,0 +1,62 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_room.wav" id="room"]
+[ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_gallery_display.tscn" id="display"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+[ext_resource type="Texture2D" path="res://components/scenery/museum/art/olive_trees.jpg" id="olive"]
+[ext_resource type="Texture2D" path="res://components/scenery/museum/art/lucretia.jpg" id="portrait"]
+[ext_resource type="Texture2D" path="res://components/scenery/museum/art/monet_landscape.jpg" id="monet"]
+
+[node name="PaintingsZone" instance=ExtResource("zone")]
+zone_id = &"paintings"
+display_name = "Looking at paintings"
+ambience_stream = ExtResource("room")
+ambience_volume_db = -24.0
+ambience_size = Vector2(15, 12)
+ambience_blend_distance = 4.0
+
+[node name="OliveTrees" parent="Scenery" instance=ExtResource("display")]
+position = Vector3(-3.5, 0, -2.4)
+artwork = ExtResource("olive")
+canvas_size = Vector2(2.8, 2.23)
+rotation_degrees = Vector3(0, 14, 0)
+[node name="Lucretia" parent="Scenery" instance=ExtResource("display")]
+position = Vector3(0, 0, -3.0)
+artwork = ExtResource("portrait")
+canvas_size = Vector2(1.85, 2.23)
+rotation_degrees = Vector3(0, 0, 0)
+[node name="Grainstack" parent="Scenery" instance=ExtResource("display")]
+position = Vector3(3.5, 0, -2.5)
+artwork = ExtResource("monet")
+canvas_size = Vector2(2.6, 1.57)
+rotation_degrees = Vector3(0, -18, 0)
+[node name="Bench" parent="Scenery" instance=ExtResource("display")]
+position = Vector3(3.9, 0, 3.8)
+display_type = 1
+rotation_degrees = Vector3(0, -20, 0)
+[node name="RememberedFloorboards" parent="Scenery" instance=ExtResource("paving")]
+position = Vector3(0, 0, 0)
+footprint = Vector2(5.4, 7.0)
+slab_length = 1.9
+paving_color = Color(0.87, 0.83, 0.77, 1)
+end_fade = Vector2(2.1, 2.1)
+irregularity = 0.2
+[node name="AfternoonWash" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(0, 0, 0)
+footprint = Vector2(7, 5)
+light_color = Color(1, 0.89, 0.67, 1)
+intensity = 0.13
+softness = 0.8
+wash_shape = 2
+window_grid = Vector2i(3, 2)
+
+[node name="Fragment" parent="." index="1"]
+position = Vector3(-0.6, 0.04, -0.2)
+fragment_seed = 1213
+note_title = "Looking at paintings"
+notes = Array[String](["Placeholder: Write your memory of looking at the paintings together here."])
+
+[node name="ViewingFocus" type="Marker3D" parent="." groups=["museum_camera_focus"]]
+position = Vector3(0, 0, -2.5)

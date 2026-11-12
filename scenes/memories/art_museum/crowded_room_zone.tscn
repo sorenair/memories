@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="murmur"]
+[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
+[ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_museum_highlight.tscn" id="highlight"]
+[ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_marble_statue.tscn" id="statue"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+
+[node name="CrowdedRoomZone" instance=ExtResource("zone")]
+zone_id = &"crowded_room"
+display_name = "Together in a crowded room"
+ambience_stream = ExtResource("murmur")
+ambience_volume_db = -24.0
+ambience_size = Vector2(17, 16)
+ambience_blend_distance = 4.0
+
+[node name="Visitors" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(0, 0, 0.5)
+count = 34
+crowd_seed = 120425
+footprint = Vector2(10.0, 8.0)
+spacing = 0.72
+person_scale = 0.95
+facing_degrees = 160.0
+facing_variation = 75.0
+empty_areas = Array[Rect2]([Rect2(-1.4, -5.5, 2.8, 11), Rect2(-7, -5.5, 14, 3.6), Rect2(-7, 1.75, 6, 3.75)])
+palette = 4
+clothing_colors = PackedColorArray(0.42, 0.48, 0.48, 1, 0.57, 0.42, 0.39, 1, 0.58, 0.53, 0.42, 1, 0.43, 0.43, 0.53, 1)
+softness = 0.13
+pose_mix = 2
+motion_strength = 0.35
+motion_speed = 0.6
+chunk_size = 16.0
+
+[node name="JadeMountain" parent="Scenery" instance=ExtResource("highlight")]
+position = Vector3(-3.2, 0, -3.5)
+rotation_degrees = Vector3(0, 18, 0)
+exhibit = 0
+
+[node name="KiiTokugawaArmor" parent="Scenery" instance=ExtResource("highlight")]
+position = Vector3(0.5, 0, -4.3)
+rotation_degrees = Vector3(0, 5, 0)
+exhibit = 1
+
+[node name="VeiledLady" parent="Scenery" instance=ExtResource("statue")]
+position = Vector3(3.8, 0, -3.4)
+rotation_degrees = Vector3(0, -15, 0)
+figure = 3
+
+[node name="WarmGalleryFloor" parent="Scenery" instance=ExtResource("paving")]
+position = Vector3(0, 0, 0)
+footprint = Vector2(7.4, 9.5)
+paving_color = Color(0.87, 0.83, 0.76, 1)
+slab_length = 2.1
+end_fade = Vector2(1.5, 2.8)
+irregularity = 0.2
+[node name="WarmLight" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(0, 0, 0)
+footprint = Vector2(9, 6)
+light_color = Color(1, 0.87, 0.61, 1)
+intensity = 0.13
+softness = 0.9
+
+[node name="Fragment" parent="." index="1"]
+position = Vector3(0, 0.04, -1.5)
+fragment_seed = 1216
+note_title = "Together in a crowded room"
+notes = Array[String](["Placeholder: Write your memory of being together in the crowded gallery here."])
+
+[node name="ViewingFocus" type="Marker3D" parent="." groups=["museum_camera_focus"]]
+position = Vector3(0, 0, -2.5)

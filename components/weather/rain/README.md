@@ -35,4 +35,4 @@ godot --path . --script tests/rain_motion_render.gd
 
 Component checks cover budgets, Inspector updates, persistence, internal generated nodes, and disabled modes. Real-renderer captured frames verify moving streaks, independently animated impacts, a frozen mode, and complete disabling. The effect has been checked using Godot's Mobile renderer on desktop; physical phone performance still requires profiling.
 
-`docs/rain-motion.gif` is an actual-engine motion preview of the demo; `docs/rain-clearing.png` is a still frame.
+`docs/previews/rain-motion.gif` is an actual-engine motion preview of the demo; `docs/previews/rain-clearing.png` is a still frame.

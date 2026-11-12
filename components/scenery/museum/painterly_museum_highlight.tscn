@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/scenery/museum/painterly_museum_highlight.gd" id="highlight"]
+
+[node name="PainterlyMuseumHighlight" type="Node3D"]
+script = ExtResource("highlight")

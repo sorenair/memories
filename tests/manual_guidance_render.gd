@@ -57,7 +57,7 @@ func run() -> void:
 	if not is_instance_valid(guide): quit(1); return
 	guide.set_process(false)
 	guide._process(guide.travel_duration*0.65)
-	var painted := await snapshot("res://docs/manual-guide-arrival.png")
+	var painted := await snapshot("res://docs/previews/manual-guide-arrival.png")
 	var pixels := brightened_pixels(plain,painted)
 	check(pixels>120,"A requested painterly stroke must be readable at the normal gameplay camera scale")
 	guide._process(guide.travel_duration+guide.trail_duration+0.2)
@@ -80,7 +80,7 @@ func run() -> void:
 	check(is_instance_valid(guide) and guidance.active_destination.name == &"ArcadeFragment","A fresh request must now point from the player to the arcade")
 	guide.set_process(false)
 	guide._process(minf(1.2,guide.travel_duration*0.3))
-	await snapshot("res://docs/manual-guide-onward.png")
+	await snapshot("res://docs/previews/manual-guide-onward.png")
 	world.queue_free()
 	await process_frame
 	await process_frame

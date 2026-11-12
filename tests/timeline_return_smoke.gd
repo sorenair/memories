@@ -10,6 +10,8 @@ func _initialize() -> void:
 	call_deferred("run")
 
 func run() -> void:
+	# Presentation checks run independently of the two-process LAN suite.
+	root.get_node("LanSession")._main_menu_opened = true
 	var main_menu = load("res://UI/main_menu/main_menu.tscn").instantiate()
 	root.add_child(main_menu)
 	main_menu.get_node("CharacterPicker/Vivian").pressed.emit()
@@ -53,7 +55,7 @@ func run() -> void:
 	check(not world.get_node("Explorer").is_physics_processing(), "Return must stop player movement during the fade")
 	check(root.has_node("MemoryTransitionVeil"), "Return fade must survive the scene swap")
 	button.return_to_timeline()
-	await create_timer(1.0).timeout
+	await create_timer(2.0).timeout
 	check(current_scene.scene_file_path == "res://UI/memory_lane/memory_lane.tscn", "Return button must open the timeline")
 	check(current_scene.selected_index == 1, "Timeline must remember the selected memory")
 	check(MemoryExplorer.preferred_avatar == MemoryExplorer.Avatar.VIVIAN, "Returning must preserve the chosen avatar")

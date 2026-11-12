@@ -44,7 +44,7 @@ func run() -> void:
 	var first := await snapshot()
 	for crowd in crowds:
 		crowd._material.set_shader_parameter("preview_time", 3.0)
-	var second := await snapshot("res://docs/crowd-preview.png")
+	var second := await snapshot("res://docs/previews/crowd-preview.png")
 	var moving := pixel_changes(first, second)
 	check(moving > 150, "GPU idle motion must be visible without moving the feet")
 	for crowd in crowds:
@@ -78,7 +78,7 @@ func run() -> void:
 	stage.get_node("Captions/AudienceCaption").hide()
 	stage.get_node("Captions/ExplorerCaption").hide()
 	stage.get_node("Captions/Subtitle").text = "Gameplay camera scale  /  both explorers beside the crowd"
-	await snapshot("res://docs/crowd-detail.png")
+	await snapshot("res://docs/previews/crowd-detail.png")
 	print("Crowd GPU: ", "PASS" if failures == 0 else "FAIL", " | animated pixels: ", moving, " | still pixels: ", still, " | pose pixels: ", posing)
 	stage.free()
 	await process_frame

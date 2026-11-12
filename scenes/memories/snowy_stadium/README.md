@@ -45,9 +45,9 @@ godot --path . --script tests/football_players.gd
 godot --path . --windowed --resolution 1600x738 --script tests/snowy_stadium.gd -- --capture
 ```
 
-The scene test walks the actual explorer from arrival fragment through the aisle to the overlook and back, checks footstep impressions, safety bounds, camera widening/return, timeline Recall, and the elevated arrival. The motion test checks separate routes, bounds, turning, bobbing, pose timing, and actual mesh transforms when rendered. The capture mode saves the arrival and overlook screenshots under `docs/`.
+The scene test walks the actual explorer from arrival fragment through the aisle to the overlook and back, checks footstep impressions, safety bounds, camera widening/return, timeline Recall, and the elevated arrival. The motion test checks separate routes, bounds, turning, bobbing, pose timing, and actual mesh transforms when rendered. The capture mode saves the arrival and overlook screenshots under `docs/previews/`.
 
 Run the existing two-process LAN check with `-- host stadium` and `-- guest stadium` to check shared scene selection, both avatar choices, interpolation, contact, and reconnect at the raised spawn. The catalog protocol version has been advanced; both devices need the same build.
 
-![Arrival landing](../../../docs/snowy-stadium-aisle.png)
-![Stadium overlook](../../../docs/snowy-stadium-overlook.png)
+![Arrival landing](../../../docs/previews/snowy-stadium-aisle.png)
+![Stadium overlook](../../../docs/previews/snowy-stadium-overlook.png)

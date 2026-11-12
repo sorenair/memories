@@ -36,5 +36,5 @@ func capture() -> void:
 	camera.look_at(Vector3.ZERO)
 	await create_timer(0.8).timeout
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("res://docs/water-preview.png")
+	root.get_texture().get_image().save_png("res://docs/previews/water-preview.png")
 	quit()

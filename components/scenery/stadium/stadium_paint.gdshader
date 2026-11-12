@@ -5,6 +5,9 @@ render_mode unshaded, cull_disabled, fog_disabled;
 uniform float pigment_strength = 0.65;
 uniform float paint_phase = 0.0;
 uniform float frost_amount = 0.0;
+uniform float crowd_bounce_height = 0.0;
+uniform float crowd_bounce_speed = 1.0;
+uniform sampler2D artwork_texture : source_color, filter_linear_mipmap;
 uniform sampler2D minnesota_mark : source_color, filter_linear_mipmap;
 uniform vec2 edge_half_size = vec2(1000.0);
 uniform vec3 void_color : source_color = vec3(0.94, 0.935, 0.89);
@@ -35,13 +38,19 @@ float drift_noise(vec2 at) {
 	return value;
 }
 void vertex() {
+	p = VERTEX;
+	kind = UV2.x;
+	if (abs(kind - 7.0) < 0.1) {
+		// UVs are constant across each figure: phase and pace, baked once.
+		float bounce = 0.5 + 0.5 * sin(TIME * crowd_bounce_speed * UV.y + UV.x);
+		float variation = mix(0.65, 1.0, fract(UV.x * 2.73));
+		VERTEX.y += crowd_bounce_height * variation * bounce;
+	}
 	vec3 normal = normalize(MODEL_NORMAL_MATRIX * NORMAL);
 	float light = dot(normal, normalize(vec3(-0.45, 0.82, 0.35))) * 0.5 + 0.5;
 	float shade = mix(0.76, 0.96, smoothstep(0.28, 0.39, light));
 	shade = mix(shade, 1.025, smoothstep(0.71, 0.81, light));
 	paint = COLOR.rgb * shade;
-	p = VERTEX;
-	kind = UV2.x;
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	haze = smoothstep(70.0, 155.0, length((VIEW_MATRIX * vec4(world, 1.0)).xyz));
 }
@@ -53,6 +62,7 @@ void fragment() {
 		if (mark.a < 0.5) { discard; }
 		color *= mark.rgb;
 	}
+	if (abs(kind - 8.0) < 0.1) { color *= texture(artwork_texture, UV).rgb; }
 	float field = 1.0 - smoothstep(0.1, 0.3, abs(kind));
 	float branding = 1.0 - smoothstep(0.1, 0.3, abs(kind - 4.0));
 	float marking = 1.0 - smoothstep(0.1, 0.3, abs(kind - 5.0));

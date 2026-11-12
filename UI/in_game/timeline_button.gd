@@ -1,6 +1,7 @@
 extends Button
 ## A small timeline glyph with a generous invisible touch target.
 const MemoryArrival := preload("res://UI/memory_arrival/memory_arrival.gd")
+const Presence := preload("res://scripts/network/remote_presence.gd")
 const Timeline := preload("res://UI/memory_lane/memory_lane.gd")
 const TIMELINE_SCENE := "res://UI/memory_lane/memory_lane.tscn"
 const CONTRAST_SHADER := preload("res://UI/in_game/glyph_contrast.gdshader")
@@ -74,17 +75,33 @@ func return_to_timeline() -> void:
 	player.velocity = Vector3.ZERO
 	player.set_walking(false)
 	player.set_physics_process(false)
-	AudioMixer.fade_memory_out(0.45)
+	var collision_layer := player.collision_layer
+	var collision_mask := player.collision_mask
+	var presence := player.get_node_or_null("PresenceRecall")
+	if presence == null:
+		# Direct F6 play has no arrival wrapper, but still gets the same departure.
+		presence = Presence.new()
+		presence.name = "PresenceRecall"
+		presence.progress = 1.0
+		presence.free_on_departure = false
+		player.add_child(presence)
+	presence.free_on_departure = false
+	_world.begin_departure()
+	AudioMixer.fade_memory_out(Presence.DEPARTURE_DURATION + 0.35)
 	var veil := MemoryArrival.get_transition_veil(get_tree())
+	presence.disappear()
+	await presence.departed
 	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(veil, "modulate:a", 1.0, 0.45)
+	tween.tween_property(veil, "modulate:a", 1.0, 0.35)
 	await tween.finished
 	var error := get_tree().change_scene_to_file(TIMELINE_SCENE)
-	if error == OK:
-		LanSession.leave()
-	else:
+	if error != OK:
 		push_error("Unable to return to timeline: %s" % error_string(error))
 		AudioMixer.resume_memory()
+		presence.restore()
+		player.collision_layer = collision_layer
+		player.collision_mask = collision_mask
+		_world.cancel_departure()
 		veil.get_parent().queue_free()
 		controls.process_mode = controls_mode
 		player.set_physics_process(player_processing)

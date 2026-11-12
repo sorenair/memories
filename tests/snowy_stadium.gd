@@ -92,7 +92,7 @@ func run() -> void:
 	if "--capture" in OS.get_cmdline_user_args():
 		root.content_scale_size = Vector2i(1600, 738)
 		await create_timer(0.7).timeout
-		await capture("res://docs/snowy-stadium-aisle.png")
+		await capture("res://docs/previews/snowy-stadium-aisle.png")
 	check(await walk_to(player, zone.get_fragment().global_position), "The arrival fragment must be reachable at close camera scale")
 	check(zone.get_fragment().try_activate(player), "The arrival fragment must be readable")
 	world.get_node("Controls/FragmentInteraction").advance_note()
@@ -111,7 +111,7 @@ func run() -> void:
 	check(camera.size > 63.0 and camera.size < 65.0, "The viewing platform must keep the tighter stadium view")
 	check(not camera.is_position_behind(field.global_position), "The football field must be in front of the overlook camera")
 	if "--capture" in OS.get_cmdline_user_args():
-		await capture("res://docs/snowy-stadium-overlook.png")
+		await capture("res://docs/previews/snowy-stadium-overlook.png")
 	Input.action_press("move_forward")
 	for frame in 160: await physics_frame
 	Input.action_release("move_forward")

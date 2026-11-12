@@ -43,9 +43,12 @@ func run() -> void:
 		await physics_frame
 	check(rig.global_position.distance_to(player.global_position + rig.framing_offset) < 0.08, "Camera framing must follow movement without drifting away")
 	world.get_node("Controls/ReturnToTimeline").return_to_timeline()
-	await create_timer(1.0).timeout
+	await create_timer(1.7).timeout
 	check(current_scene.scene_file_path == MENU and current_scene.selected_index == 0, "Return must reopen First Meeting in the timeline")
-	current_scene.select_memory(2)
+	for index in range(current_scene.MEMORIES.size()):
+		if current_scene.MEMORIES[index].scene == "res://scenes/world/memory_world.tscn":
+			current_scene.select_memory(index)
+			break
 	current_scene.recall()
 	await create_timer(0.6).timeout
 	check(current_scene.scene_file_path == "res://scenes/world/memory_world.tscn", "Demo entry must recall the retained demo world")

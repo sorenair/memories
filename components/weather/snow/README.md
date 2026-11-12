@@ -34,4 +34,4 @@ godot --path . --script tests/snow_motion_render.gd
 
 Checks cover counts/budgets, bounds, live Inspector changes, ordered size ranges, persistence, generated-node isolation, zero-count/intensity modes, and captured frames for visible drift, freezing, and disabling.
 
-`docs/snow-clearing.png` and `docs/snow-motion.gif` show the fully populated memory for visual weather review; the saved memory's recall settings are unchanged.
+`docs/previews/snow-clearing.png` and `docs/previews/snow-motion.gif` show the fully populated memory for visual weather review; the saved memory's recall settings are unchanged.

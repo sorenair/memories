@@ -56,4 +56,4 @@ godot --path . --script tests/snow_ground_render.gd -- --outline
 
 Checks cover finite geometry, budgets, grass exclusion shape, placement bounds, independent stride states, standing/teleport behavior, saved settings without trails, and actual explorer footsteps in the demo. Rendered checks verify visible impressions, unchanged appearance during the linger period, complete restoration after fading, and valid marks with later timestamps.
 
-`docs/snow-ground-demo.png` shows a real player-made trail. `docs/snow-ground-motion.gif` demonstrates filling in with a shortened 2.5-second linger and 1.2-second fade for the preview; the saved demo retains the default timings. Preview foliage is fully populated without changing saved recall settings.
+`docs/previews/snow-ground-demo.png` shows a real player-made trail. `docs/previews/snow-ground-motion.gif` demonstrates filling in with a shortened 2.5-second linger and 1.2-second fade for the preview; the saved demo retains the default timings. Preview foliage is fully populated without changing saved recall settings.

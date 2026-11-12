@@ -41,4 +41,4 @@ godot --headless --path . --script tests/scene_smoke.gd
 
 Checks cover finite seeded geometry, spawn/exit clearance, floor collision, attempts to walk off all four sides, custom concave outlines, saved controls, unsupported recall positions, and the blank-void fallback.
 
-![Demo platform](../../../docs/memory-platform.png)
+![Demo platform](../../../docs/previews/memory-platform.png)

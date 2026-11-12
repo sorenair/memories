@@ -41,7 +41,6 @@ func _build(b: RefCounted) -> void:
 	var line := Color("eeeadd")
 	_material.set_shader_parameter("frost_amount", snow_coverage)
 	_material.set_shader_parameter("edge_half_size", half + Vector2(8, 7))
-	b.box(Vector3(0, -0.07, 0), Vector3(field_size.x + 14, 0.12, field_size.y + 12), Color("dedfd5"), 1.0)
 	for band in 10:
 		var x := -playing_length * 0.5 + playing_length * (band + 0.5) / 10.0
 		var color := turf_color.lightened(0.055) if band % 2 else turf_color

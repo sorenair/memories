@@ -7,14 +7,16 @@ const PAPER := Color("faf9f6")
 const INK := Color("363634")
 const MUTED := Color("85827f")
 const MemoryArrival := preload("res://UI/memory_arrival/memory_arrival.gd")
-const LanControls := preload("res://UI/memory_lane/lan_controls.gd")
 const IconButton := preload("res://UI/main_menu/menu_icon_button.gd")
+const MemoryAction := preload("res://UI/main_menu/memory_action_button.gd")
+const ThreadTransition := preload("res://UI/main_menu/timeline_transition.gd")
 const ENTRANCE_DURATION := 1.8
 static var _has_entered: bool = false
 static var _last_selected_index: int = 0
 const MEMORIES: Array[Dictionary] = [
 	{"title": "First Meeting", "date": "NOV 12, 2025", "short": "NOV 12", "scene": "res://scenes/world/first_meeting_world.tscn"},
 	{"title": "Football in the snow", "date": "COLLEGE FOOTBALL", "short": "SNOW", "scene": "res://scenes/world/snowy_stadium_world.tscn"},
+	{"title": "Minneapolis Institute of Art", "date": "DEC 4, 2025", "short": "DEC 4", "scene": "res://scenes/world/art_museum_world.tscn"},
 	{"title": "Seasonal Demo", "date": "DEMO", "short": "DEMO", "scene": "res://scenes/world/memory_world.tscn"},
 ]
 
@@ -31,13 +33,16 @@ var _travelling: bool = false
 var _title: Label
 var _recall: Button
 var _back: Button
-var _lan_controls: LanControls
 var _serif: SystemFont
 var _sans: Font
 var _title_tween: Tween
 var _entrance_time: float = 0.0
 var _title_y: float = 0.0
 var _returning: bool = false
+var _bridge_active := false
+var _shared_point := false
+var _entrance_delay := 0.0
+var _entrance_speed := 1.0
 var _date_font_size: int = 28
 var _mark_scale: float = 1.0
 
@@ -62,20 +67,10 @@ func _ready() -> void:
 	_title.add_theme_font_override("font", _serif)
 	_title.add_theme_color_override("font_color", INK)
 	add_child(_title)
-	_recall = Button.new()
+	_recall = MemoryAction.new()
 	_recall.name = "Recall"
-	_recall.text = "Recall  →"
-	_recall.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	_recall.add_theme_color_override("font_color", MUTED)
-	_recall.add_theme_color_override("font_hover_color", INK)
-	_recall.add_theme_color_override("font_pressed_color", INK)
-	for style in ["normal", "hover", "pressed", "disabled"]:
-		_recall.add_theme_stylebox_override(style, StyleBoxEmpty.new())
-	var focus := StyleBoxFlat.new()
-	focus.bg_color = Color.TRANSPARENT
-	focus.border_color = Color("bdb7ac")
-	focus.border_width_bottom = 1
-	_recall.add_theme_stylebox_override("focus", focus)
+	_recall.action = MemoryAction.Action.RECALL
+	_recall.tooltip_text = "Recall memory"
 	_recall.pressed.connect(recall)
 	add_child(_recall)
 	_back = IconButton.new()
@@ -85,16 +80,17 @@ func _ready() -> void:
 	_back.tooltip_text = "Main menu"
 	_back.pressed.connect(return_to_main_menu)
 	add_child(_back)
-	_lan_controls = LanControls.new()
-	_lan_controls.name = "LAN"
-	add_child(_lan_controls)
-	_lan_controls.host_requested.connect(_host_lan)
-	LanSession.join_accepted.connect(_join_lan)
-	LanSession.status_changed.connect(_update_lan_controls)
-	_update_lan_controls()
 	resized.connect(_layout)
 	_title.text = MEMORIES[selected_index].title
 	_layout()
+	var bridge := get_tree().root.get_node_or_null("%s/Morph" % ThreadTransition.LAYER_NAME)
+	if from_main and bridge != null:
+		_bridge_active = true
+		_shared_point = true
+		_entrance_delay = ThreadTransition.TIMELINE_REVEAL_START - ThreadTransition.DEPART_DURATION
+		_entrance_speed = 2.0
+		_update_navigation()
+		bridge.attach_timeline(self)
 	if returning_veil != null:
 		returning_veil.reparent(self)
 		var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
@@ -106,24 +102,24 @@ func _layout() -> void:
 		return
 	var portrait := size.y > size.x
 	_spacing = clampf(size.x * 0.22, 170.0, 420.0)
-	_line_y = size.y * 0.70
-	_title_y = size.y * 0.40
+	_line_y = size.y * 0.50
+	_date_font_size = int(clampf(minf(size.x * 0.015, size.y * 0.034), 18.0, 30.0))
 	var title_font_size := int(clampf(size.x * 0.112, 36.0, 56.0)) if portrait else int(clampf(minf(size.x * 0.05, size.y * 0.115), 36.0, 110.0))
 	var title_width := minf(size.x - 64.0, 1440.0)
 	var title_height := title_font_size * (2.8 if portrait or size.x < 760.0 else 1.5)
+	_title_y = _line_y - title_height - clampf(size.y * 0.065, 32.0, 64.0)
 	_title.add_theme_font_size_override("font_size", title_font_size)
 	_title.position = Vector2((size.x - title_width) * 0.5, _title_y)
 	_title.size = Vector2(title_width, title_height)
 	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var recall_width := clampf(size.x * 0.20, 220.0, 340.0)
-	var recall_height := clampf(size.y * 0.105, 64.0, 96.0)
-	_recall.add_theme_font_size_override("font_size", int(clampf(title_font_size * 0.36, 24.0, 38.0)))
-	_recall.position = Vector2((size.x - recall_width) * 0.5, _title_y - recall_height - 24.0)
+	var recall_y := _line_y + _date_font_size * 2.0 + clampf(size.y * 0.055, 28.0, 52.0)
+	var recall_height := minf(clampf(size.y * 0.18, 112.0, 168.0), maxf(88.0, size.y - recall_y - 16.0))
+	var recall_width := recall_height + 48.0
+	_recall.symbol_size = Vector2(76, 76) if portrait else Vector2(96, 96)
+	_recall.position = Vector2((size.x - recall_width) * 0.5, recall_y)
 	_recall.size = Vector2(recall_width, recall_height)
 	_back.position = Vector2(24, 24)
 	_back.size = Vector2(96, 96)
-	_lan_controls.layout_at_bottom(size)
-	_date_font_size = int(clampf(minf(size.x * 0.015, size.y * 0.034), 18.0, 30.0))
 	_mark_scale = clampf(minf(size.x / 1920.0, size.y / 886.0), 0.8, 1.2)
 	_apply_entrance()
 	queue_redraw()
@@ -148,8 +144,13 @@ func _finish_entrance() -> void:
 	queue_redraw()
 
 func _process(delta: float) -> void:
+	var entrance_delta := delta
+	if _entrance_delay > 0.0:
+		var consumed := minf(entrance_delta, _entrance_delay)
+		_entrance_delay -= consumed
+		entrance_delta -= consumed
 	if _entrance_time < ENTRANCE_DURATION:
-		_entrance_time = minf(_entrance_time + delta, ENTRANCE_DURATION)
+		_entrance_time = minf(_entrance_time + entrance_delta * _entrance_speed, ENTRANCE_DURATION)
 		_apply_entrance()
 	if _pointer == -2:
 		_position = lerpf(_position, float(selected_index), 1.0 - exp(-14.0 * delta))
@@ -189,8 +190,10 @@ func _draw() -> void:
 			var date_reveal := _reveal(arrival + 0.16, arrival + 0.56)
 			draw_string(_sans, Vector2(x - width * 0.5, _line_y + _date_font_size * 2.0 + (1.0 - date_reveal) * 4.0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(INK if i == selected_index else MUTED, alpha * date_reveal))
 	# The selection point stays stationary while the memory marks slide beneath it.
-	var point_reveal := _reveal(0.05, 0.40)
-	var halo_settle := _reveal(0.15, 0.9)
+	if _bridge_active:
+		return
+	var point_reveal := 1.0 if _shared_point else _reveal(0.05, 0.40)
+	var halo_settle := 1.0 if _shared_point else _reveal(0.15, 0.9)
 	draw_circle(Vector2(center, _line_y), lerpf(29.0, 23.0, halo_settle) * _mark_scale, Color(0.88, 0.85, 0.80, point_reveal * lerpf(0.24, 0.16, halo_settle)), true, -1, true)
 	draw_circle(Vector2(center, _line_y), 18 * _mark_scale, Color(PAPER, point_reveal), true, -1, true)
 	draw_circle(Vector2(center, _line_y), lerpf(12.0, 14.0, point_reveal) * _mark_scale, Color(INK, point_reveal), true, -1, true)
@@ -211,7 +214,7 @@ func select_memory(index: int) -> void:
 	memory_selected.emit(index)
 
 func _begin(point: Vector2, pointer: int) -> void:
-	if _pointer != -2 or _travelling or LanSession.state == LanSession.State.JOINING:
+	if _pointer != -2 or _travelling or _bridge_active:
 		return
 	_finish_entrance()
 	_pointer = pointer
@@ -242,15 +245,13 @@ func _end(point: Vector2, cancelled: bool = false) -> void:
 		select_memory(roundi(_position + (point.x - size.x * 0.5) / _spacing))
 
 func _input(event: InputEvent) -> void:
+	if _bridge_active:
+		return
 	# Finish before GUI hit testing, so even an early click can activate Recall.
 	if event is InputEventMouseButton and event.pressed:
 		_finish_entrance()
 	elif event is InputEventKey and event.pressed and (event.is_action("ui_left") or event.is_action("ui_right") or event.is_action("ui_accept") or event.is_action("ui_focus_next")):
 		_finish_entrance()
-	if _lan_controls.handle_touch(event):
-		_finish_entrance()
-		get_viewport().set_input_as_handled()
-		return
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			_begin(event.position, event.index)
@@ -269,12 +270,7 @@ func _gui_input(event: InputEvent) -> void:
 			_begin(event.position, -1)
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if _travelling or not event.is_pressed() or event.is_echo():
-		return
-	if LanSession.state == LanSession.State.JOINING:
-		if event.is_action("ui_cancel"):
-			LanSession.leave()
-			accept_event()
+	if _travelling or _bridge_active or not event.is_pressed() or event.is_echo():
 		return
 	if event.is_action("ui_cancel"):
 		return_to_main_menu()
@@ -293,55 +289,44 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		_pointer = -2
 
-func _host_lan() -> void:
-	if not _travelling and LanSession.host(selected_index, MemoryExplorer.preferred_avatar):
-		_enter_memory()
+func _update_navigation() -> void:
+	_recall.disabled = _travelling or _bridge_active
+	_back.disabled = _travelling or _bridge_active
 
-func _join_lan(index: int) -> void:
-	if index < 0 or index >= MEMORIES.size():
-		LanSession.leave("This memory isn’t available in your version of the game.")
-		return
-	select_memory(index)
-	_enter_memory()
-
-func _update_lan_controls() -> void:
-	var locked := _travelling or LanSession.state == LanSession.State.JOINING
-	_recall.disabled = locked
-	_back.disabled = locked
-	_lan_controls.refresh(_travelling)
+func complete_main_menu_transition() -> void:
+	_bridge_active = false
+	_update_navigation()
+	queue_redraw()
 
 func recall() -> void:
-	if _travelling or LanSession.state != LanSession.State.OFFLINE:
+	if _travelling or _bridge_active:
 		return
 	_enter_memory()
 
 func _enter_memory() -> void:
 	_finish_entrance()
 	_travelling = true
-	_update_lan_controls()
+	_update_navigation()
 	var veil := MemoryArrival.get_transition_veil(get_tree())
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(veil, "modulate:a", 1.0, 0.45)
 	await tween.finished
 	get_tree().root.set_meta(MemoryArrival.REQUEST_META, true)
-	if LanSession.state == LanSession.State.OFFLINE and not LanSession.status.is_empty():
-		LanSession.leave()
 	var scene_path: String = MEMORIES[selected_index].scene
 	var error := get_tree().change_scene_to_file(scene_path)
 	if error != OK:
 		get_tree().root.remove_meta(MemoryArrival.REQUEST_META)
 		push_error("Unable to recall memory: %s" % error_string(error))
 		_travelling = false
-		LanSession.leave("Couldn’t open this memory.")
+		_update_navigation()
 		veil.get_parent().queue_free()
 
 func return_to_main_menu() -> void:
-	if _travelling:
+	if _travelling or _bridge_active:
 		return
 	_travelling = true
-	_update_lan_controls()
-	LanSession.leave()
+	_update_navigation()
 	var veil := MemoryArrival.get_transition_veil(get_tree())
 	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(veil, "modulate:a", 1.0, 0.4)
@@ -350,5 +335,5 @@ func return_to_main_menu() -> void:
 	if error != OK:
 		veil.get_parent().queue_free()
 		_travelling = false
-		_update_lan_controls()
+		_update_navigation()
 		push_error("Unable to open main menu: %s" % error_string(error))

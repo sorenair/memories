@@ -31,4 +31,4 @@ godot --headless --path . --script tests/scene_smoke.gd
 
 Checks cover inheritance, exact count, varied smaller sizes, deterministic geometry, merged surfaces, per-rock collision, palette updates and scene persistence, seed variation, and counts 0, 1, and 40.
 
-![Default rock cluster](../../../docs/rock-cluster.png)
+![Default rock cluster](../../../docs/previews/rock-cluster.png)

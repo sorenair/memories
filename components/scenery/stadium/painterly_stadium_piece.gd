@@ -13,7 +13,7 @@ const PAINT = preload("res://components/scenery/stadium/stadium_paint.gdshader")
 	set(value):
 		pigment_strength = value
 		_request_rebuild()
-@export_tool_button("Regenerate stadium piece") var regenerate = rebuild
+@export_tool_button("Regenerate scenery") var regenerate = rebuild
 var _queued := false
 var _material: ShaderMaterial
 

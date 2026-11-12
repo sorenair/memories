@@ -52,7 +52,7 @@ func run() -> void:
 	actor.position = Vector3(band.get_button(0).position.x,0,2.15)
 	controller.refresh_target()
 	controller._outlines._process(0.5)
-	var outlined := await snapshot("res://docs/mechanical-band-outline.png")
+	var outlined := await snapshot("res://docs/previews/mechanical-band-outline.png")
 	var outline_change := changed_pixels(idle,outlined)
 	if outline_change < 40 or outline_change > 3000: failures += 1
 	print("Band selected cap changed pixels: ",outline_change)
@@ -60,7 +60,7 @@ func run() -> void:
 	for i in range(1,4): band.play_instrument(i)
 	band.set_process(false)
 	band._process(0.075)
-	var struck := await snapshot("res://docs/mechanical-band-playing.png")
+	var struck := await snapshot("res://docs/previews/mechanical-band-playing.png")
 	var animation_change := changed_pixels(outlined,struck)
 	if animation_change < 200: failures += 1
 	print("Band moving mechanism changed pixels: ",animation_change)
@@ -96,7 +96,7 @@ func run() -> void:
 	actor.position = Vector3(0,0,1.13)
 	controller.refresh_target()
 	controller._outlines._process(0.5)
-	var bright := await snapshot("res://docs/interaction-outline.png")
+	var bright := await snapshot("res://docs/previews/interaction-outline.png")
 	var outline_pixels := changed_pixels(plain,bright)
 	if outline_pixels < 300 or outline_pixels > 15000: failures += 1
 	print("Pinball outlined pixels: ",outline_pixels)
@@ -114,7 +114,7 @@ func run() -> void:
 	rig.set_process(false)
 	rig.global_position = player.global_position
 	await create_timer(0.5).timeout
-	await snapshot("res://docs/mechanical-band-memory.png")
+	await snapshot("res://docs/previews/mechanical-band-memory.png")
 	var live_controller: Node = world.get_node("InteractionController")
 	if live_controller.target != live_band.get_button(2): failures += 1
 	world.free()

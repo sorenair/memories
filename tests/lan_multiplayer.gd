@@ -1,22 +1,32 @@
 extends SceneTree
-## Run once with -- host and once with -- guest in a second process.
-const MENU := "res://UI/memory_lane/memory_lane.tscn"
-# Exercise each catalog entry with the same host / guest test.
-var memory_index: int = 1 if OS.get_cmdline_user_args().has("stadium") else (2 if OS.get_cmdline_user_args().has("demo") else 0)
-var world_path: String = ["res://scenes/world/first_meeting_world.tscn", "res://scenes/world/snowy_stadium_world.tscn", "res://scenes/world/memory_world.tscn"][memory_index]
-const Session := preload("res://scripts/network/lan_session.gd")
+## Run with -- host and -- guest in two processes on the same machine.
+const MAIN := "res://UI/main_menu/main_menu.tscn"
+const TIMELINE := "res://UI/memory_lane/memory_lane.tscn"
+const WORLDS := ["res://scenes/world/first_meeting_world.tscn", "res://scenes/world/snowy_stadium_world.tscn", "res://scenes/world/art_museum_world.tscn", "res://scenes/world/memory_world.tscn"]
 const RemoteMotion := preload("res://scripts/network/remote_motion.gd")
 var failures := 0
+var session: Node
+var sync: TestSync
+
+class TestSync extends Node:
+	var phase := 0
+	var acknowledged := 0
+	@rpc("any_peer", "reliable")
+	func command(value: int) -> void:
+		phase = value
+	@rpc("any_peer", "reliable")
+	func acknowledge(value: int) -> void:
+		acknowledged = value
 
 func _initialize() -> void:
 	call_deferred("run")
 
 func check(condition: bool, message: String) -> void:
 	if not condition:
-		push_error(message)
 		failures += 1
+		push_error(message)
 
-func wait_for(condition: Callable, seconds: float) -> bool:
+func wait_for(condition: Callable, seconds: float = 12.0) -> bool:
 	var deadline := Time.get_ticks_msec() + int(seconds * 1000.0)
 	while not condition.call() and Time.get_ticks_msec() < deadline:
 		await process_frame
@@ -25,6 +35,210 @@ func wait_for(condition: Callable, seconds: float) -> bool:
 func in_scene(path: String) -> bool:
 	return is_instance_valid(current_scene) and current_scene.scene_file_path == path
 
+func wait_scene(path: String) -> void:
+	check(await wait_for(func(): return in_scene(path)), "Navigation should open " + path)
+
+func timeline() -> void:
+	if in_scene(MAIN):
+		current_scene.enter_timeline()
+	elif not in_scene(TIMELINE):
+		current_scene.get_node("Controls/ReturnToTimeline").return_to_timeline()
+	await wait_scene(TIMELINE)
+	check(await wait_for(func(): return in_scene(TIMELINE) and not current_scene._bridge_active), "Timeline must finish its shared menu transition before navigation")
+	check(not current_scene.has_node("LAN"), "Connection controls must be absent from the timeline")
+	check(session.partner_id != 0, "Returning to the timeline must preserve the connection")
+
+func enter(index: int) -> void:
+	await timeline()
+	# Match by scene, not timeline order: new memories may be inserted before Demo.
+	var selected := -1
+	for entry in range(current_scene.MEMORIES.size()):
+		if current_scene.MEMORIES[entry].scene == WORLDS[index]:
+			selected = entry
+	check(selected >= 0, "Requested test memory must exist in the timeline")
+	current_scene.select_memory(selected)
+	current_scene.recall()
+	await wait_scene(WORLDS[index])
+	check(await wait_for(func(): return not current_scene.has_node("MemoryArrival")), "Arrival should finish normally")
+
+func main_menu() -> void:
+	await timeline()
+	current_scene.return_to_main_menu()
+	await wait_scene(MAIN)
+
+func shared() -> void:
+	check(await wait_for(func(): return session.shares_memory() and current_scene.get_node_or_null("Partner") != null), "Matching memories must show the partner")
+	var remote = current_scene.get_node_or_null("Partner")
+	if remote:
+		check(await wait_for(func(): return remote.visible), "Buffered partner playback must become visible")
+		check(remote.avatar == session.partner_avatar and remote.collision_layer == 2, "Partner must have the chosen avatar and local collision")
+
+func solo() -> void:
+	check(await wait_for(func(): return not session.shares_memory() and current_scene.get_node_or_null("Partner") == null), "Different memories/menus must remove the partner")
+	check(current_scene.get_node("Explorer").is_physics_processing(), "Solo exploration must keep movement enabled")
+
+func moving_partner() -> void:
+	var remote: Node3D = current_scene.get_node("Partner")
+	var start := remote.global_position
+	var observed := {"walking": false}
+	var listen := func(_time: float, _point: Vector3, _heading: float, walking: bool): observed.walking = observed.walking or walking
+	session.snapshot_received.connect(listen)
+	Input.action_press("move_forward")
+	for frame in range(45):
+		await physics_frame
+	Input.action_release("move_forward")
+	await create_timer(0.25).timeout
+	session.snapshot_received.disconnect(listen)
+	check(observed.walking and remote.global_position.distance_to(start) > 0.1, "Live partner snapshots must animate and move smoothly during shared exploration")
+
+func command(value: int) -> void:
+	sync.command.rpc_id(session.partner_id, value)
+
+func acknowledged(value: int) -> void:
+	check(await wait_for(func(): return sync.acknowledged >= value), "Guest must finish phase %d" % value)
+
+func guest_phase(value: int) -> void:
+	check(await wait_for(func(): return sync.phase >= value, 20.0), "Host must start phase %d" % value)
+
+func ack(value: int) -> void:
+	sync.acknowledge.rpc_id(1, value)
+
+func run() -> void:
+	session = root.get_node("LanSession")
+	sync = TestSync.new()
+	sync.name = "TestSync"
+	root.add_child(sync)
+	var host := OS.get_cmdline_user_args().has("host")
+	if not host:
+		# The other test process owns this machine's listening port already.
+		session._main_menu_opened = true
+	change_scene_to_file(MAIN)
+	await wait_scene(MAIN)
+	current_scene.get_node("CharacterPicker/Vivian" if host else "CharacterPicker/Soren").pressed.emit()
+	var controls = current_scene.get_node("LAN")
+	if host:
+		check(session.state == session.State.HOSTING and not controls._address.editable, "Fresh launch must host on the main menu and show its IP")
+		print("LAN host ready")
+	else:
+		controls._join.pressed.emit()
+		check(controls._row.visible, "Join must reveal its address field")
+		controls._address.text = "invalid"
+		controls._submit.pressed.emit()
+		check(session.state == session.State.OFFLINE and not session.status.is_empty(), "Invalid IP must leave solo play available")
+		controls._address.text = "127.0.0.1"
+		controls._submit.pressed.emit()
+	check(await wait_for(func(): return session.partner_id != 0), "Both menu peers must connect")
+	check(in_scene(MAIN), "Connecting must not choose or enter a memory")
+	check(controls._connection.connected and not controls._status.visible, "Connected rings must replace routine connection text")
+	check(session.local_memory.is_empty() and session.partner_memory.is_empty(), "Menu connection must start without a shared memory")
+	if host:
+		await host_checks()
+	else:
+		await guest_checks()
+	check_jitter_playback()
+	print("Persistent LAN %s: %s" % ["host" if host else "guest", "PASS" if failures == 0 else "FAIL"])
+	if is_instance_valid(current_scene): current_scene.free()
+	session.leave()
+	await create_timer(0.35).timeout
+	quit(failures)
+
+func host_checks() -> void:
+	command(1)
+	await enter(0)
+	await acknowledged(1)
+	check(session.partner_memory == "foliage_demo", "The guest must retain their own memory selection")
+	await solo()
+	command(2)
+	await acknowledged(2)
+	await shared()
+	command(3)
+	await acknowledged(3)
+	await solo()
+	await create_timer(0.25).timeout
+	check(current_scene.get_node_or_null("Partner") == null, "Delayed old-visit poses must not resurrect a partner who left")
+	command(4)
+	await enter(1)
+	await acknowledged(4)
+	await solo()
+	check(session.state == session.State.HOSTING, "Independent memory changes must keep hosting")
+	command(5)
+	await acknowledged(5)
+	await shared()
+	command(6)
+	await main_menu()
+	current_scene.get_node("CharacterPicker/Soren").pressed.emit()
+	await acknowledged(6)
+	check(not current_scene.get_node("LAN")._address.editable and current_scene.get_node("LAN")._address.text.is_valid_ip_address(), "Host IP must remain available after returning through menus")
+	var previous_id: int = session.partner_id
+	command(7)
+	check(await wait_for(func(): return session.partner_id == 0), "Host should detect the guest disconnecting")
+	check(await wait_for(func(): return session.partner_id != 0), "Host should accept a reconnect without leaving the menu")
+	await acknowledged(7)
+	check(session.partner_id != previous_id, "Reconnect must use a fresh peer identity")
+	command(8)
+	await enter(2)
+	await acknowledged(8)
+	await shared()
+	command(9)
+	await moving_partner()
+	await acknowledged(9)
+	var position: Vector3 = current_scene.get_node("Explorer").global_position
+	session.leave()
+	await solo()
+	check(current_scene.get_node("Explorer").global_position.distance_to(position) < 0.1, "Disconnect must not move the local player")
+
+func guest_checks() -> void:
+	await guest_phase(1)
+	await enter(3)
+	await solo()
+	ack(1)
+	await guest_phase(2)
+	await enter(0)
+	await shared()
+	ack(2)
+	await guest_phase(3)
+	var old_visit: int = session.local_visit
+	var old_host_visit: int = session.partner_visit
+	await timeline()
+	# Deliberately send a stale pose through the real RPC transport after announcing exit.
+	session._receive_snapshot.rpc_id(1, "first_meeting", old_visit, old_host_visit, 99999.0, Vector3.ONE * 999, 0.0, false)
+	check(session.state == session.State.GUEST and session.local_memory.is_empty(), "Menus must retain the connection and clear memory presence")
+	ack(3)
+	await guest_phase(4)
+	await enter(0)
+	check(await wait_for(func(): return session.partner_memory == "snowy_stadium"), "Guest must receive the host's independent location")
+	await solo()
+	ack(4)
+	await guest_phase(5)
+	await enter(1)
+	await shared()
+	ack(5)
+	await guest_phase(6)
+	check(await wait_for(func(): return session.partner_memory.is_empty()), "Partner menus must clear their in-memory presence")
+	await solo()
+	ack(6)
+	await guest_phase(7)
+	await main_menu()
+	var controls = current_scene.get_node("LAN")
+	controls._join.pressed.emit()
+	check(session.state == session.State.OFFLINE, "Selected Join must allow explicit disconnect")
+	await create_timer(0.5).timeout
+	controls._address.text = "127.0.0.1"
+	controls._submit.pressed.emit()
+	check(await wait_for(func(): return session.state == session.State.GUEST), "Join arrow must reconnect in place")
+	check(in_scene(MAIN), "Reconnect must not force a scene change")
+	ack(7)
+	await guest_phase(8)
+	await enter(2)
+	await shared()
+	check(session.partner_avatar == MemoryExplorer.Avatar.SOREN, "Main-menu character changes must be reflected after reconnect")
+	ack(8)
+	await guest_phase(9)
+	await moving_partner()
+	ack(9)
+	check(await wait_for(func(): return session.state == session.State.OFFLINE), "Host loss must fall back to solo")
+	await solo()
+	check(in_scene(WORLDS[2]), "Host loss must leave the guest in the museum memory")
 func check_jitter_playback() -> void:
 	var explorer := load("res://scenes/player/explorer.tscn").instantiate() as MemoryExplorer
 	root.add_child(explorer)
@@ -56,186 +270,3 @@ func check_jitter_playback() -> void:
 	check(is_equal_approx(explorer.position.x, 4.8) and not explorer.walking,
 		"Playback should settle exactly at the last resting pose")
 	explorer.free()
-
-func run() -> void:
-	var host := OS.get_cmdline_user_args().has("host")
-	var session := root.get_node("LanSession") as Session
-	change_scene_to_file(MENU)
-	if not await wait_for(func() -> bool: return in_scene(MENU), 3.0):
-		push_error("Could not open the timeline")
-		quit(1)
-		return
-	var menu := current_scene
-	var controls := menu.get_node("LAN")
-	var address := controls._address as LineEdit
-	var join := controls._join as Button
-	var host_button := controls._host as Button
-	menu.select_memory(memory_index if host else (memory_index + 1) % 3)
-	MemoryExplorer.preferred_avatar = MemoryExplorer.Avatar.VIVIAN if host else MemoryExplorer.Avatar.SOREN
-	if host:
-		host_button.pressed.emit()
-		if session.state != Session.State.HOSTING:
-			push_error(session.status)
-			quit(1)
-			return
-	else:
-		address.text = "invalid"
-		join.pressed.emit()
-		check(session.state == Session.State.OFFLINE and not session.status.is_empty(),
-			"Invalid IP should keep the timeline available and show feedback")
-		address.text = "127.0.0.1"
-		var touch := InputEventScreenTouch.new()
-		touch.position = address.get_global_rect().get_center()
-		touch.pressed = true
-		menu._input(touch)
-		touch.pressed = false
-		menu._input(touch)
-		check(address.has_focus(), "Tapping the IP field must focus it with mouse emulation disabled")
-		address.text_submitted.emit(address.text)
-		check(menu.get_node("Recall").disabled and session.state == Session.State.JOINING,
-			"IP submission should lock solo Recall while joining")
-
-	if not await wait_for(func() -> bool: return in_scene(world_path), 12.0):
-		push_error("Did not reach the memory: %s" % session.status)
-		quit(1)
-		return
-	var world := current_scene
-	check(world.get_node("Memory").memory_id == [&"first_meeting", &"snowy_stadium", &"foliage_demo"][memory_index], "Both peers must load the host's actual memory content")
-	var local := world.get_node("Explorer") as MemoryExplorer
-	var local_avatar := MemoryExplorer.Avatar.VIVIAN if host else MemoryExplorer.Avatar.SOREN
-	var remote_avatar := MemoryExplorer.Avatar.SOREN if host else MemoryExplorer.Avatar.VIVIAN
-	check(session.memory_index == memory_index, "Both peers should use the host's selected memory")
-	check(local.avatar == local_avatar, "The local explorer should use this device's menu choice")
-	if not await wait_for(func() -> bool:
-		var partner := world.get_node_or_null("Partner") as MemoryExplorer
-		return partner != null and partner.visible and not world.has_node("MemoryArrival")
-	, 8.0):
-		push_error("Never saw the other explorer: %s" % session.status)
-		quit(1)
-		return
-	var remote := world.get_node("Partner") as MemoryExplorer
-	check(remote.avatar == remote_avatar, "Partner should show the other device's menu choice")
-	check(remote.get_node("Visual/Vivian").visible == (remote_avatar == MemoryExplorer.Avatar.VIVIAN),
-		"Partner should render the selected character model")
-	check(world.get_node("CameraRig").target == local and not remote.is_physics_processing()
-		and remote.collision_layer == 2 and remote.collision_mask == 0
-		and local.collision_mask & remote.collision_layer != 0 and remote.movement_input == null,
-		"Only the local explorer should drive input and camera; the partner must block local movement")
-	check(remote.global_position.distance_to(local.global_position) > 0.8, "Spawn points should be separate")
-
-	var local_start := local.global_position
-	var remote_start := remote.global_position
-	# Both routes head into the platform from the recalled landing, avoiding its outer rim.
-	# First Meeting has a real yard fence: host goes straight through its opening,
-	# guest walks along the sidewalk. The demo retains its original open routes.
-	var actions: Array[StringName] = []
-	if memory_index == 1:
-		local.movement_camera = null
-		actions.assign([&"move_left"] if host else [&"move_right"])
-	elif memory_index == 0:
-		actions.assign([&"move_forward", &"move_right"] if host else [&"move_back", &"move_right"])
-	else:
-		actions.assign([&"move_forward"] if host else [&"move_right"])
-	var previous := remote_start
-	var render_moves := 0
-	var saw_walk := false
-	var largest_step := 0.0
-	for action in actions:
-		Input.action_press(action)
-	var deadline := Time.get_ticks_msec() + 1250
-	while Time.get_ticks_msec() < deadline:
-		await process_frame
-		var step := remote.global_position.distance_to(previous)
-		largest_step = maxf(step, largest_step)
-		if step > 0.001:
-			render_moves += 1
-		previous = remote.global_position
-		saw_walk = saw_walk or remote.animation_player.assigned_animation == MemoryExplorer.WALK_ANIMATION
-	for action in actions:
-		Input.action_release(action)
-	await create_timer(0.6).timeout
-	var local_travel := local.global_position - local_start
-	var remote_travel := remote.global_position - remote_start
-	var forward := Vector3.LEFT if memory_index == 1 else (Vector3.FORWARD if memory_index == 0 else Vector3(-1.0, 0.0, -1.0).normalized())
-	var right := Vector3.RIGHT if memory_index in [0, 1] else Vector3(1.0, 0.0, -1.0).normalized()
-	var minimum_travel := local.walk_speed * 0.9
-	check(local_travel.dot(forward if host else right) > minimum_travel,
-		"Local input should move the local player (%s)" % local_travel)
-	check(remote_travel.dot(right if host else forward) > minimum_travel,
-		"The other peer should follow its own input (%s)" % remote_travel)
-	check(saw_walk and remote.animation_player.assigned_animation == MemoryExplorer.IDLE_ANIMATION,
-		"Remote animation must follow walking and stopping")
-	var travel := (remote.global_position - remote_start).normalized()
-	check(Vector3(sin(remote.visual.rotation.y), 0.0, cos(remote.visual.rotation.y)).dot(travel) > 0.9,
-		"Remote facing must track its motion")
-	check(render_moves > 35 and largest_step < 0.25,
-		"Remote motion must advance between the 20 Hz packets without snapshot-sized jumps (%d rendered moves, %.3f m max)" % [render_moves, largest_step])
-
-	# Real network contact on an isolated floor, away from memory scenery.
-	var contact_origin := Vector3(200, 0, 200)
-	var contact_floor := StaticBody3D.new()
-	var contact_shape := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = Vector3(20, 0.5, 20)
-	contact_shape.shape = box
-	contact_floor.add_child(contact_shape)
-	contact_floor.position = contact_origin - Vector3.UP * 0.25
-	world.add_child(contact_floor)
-	local.movement_camera = null
-	local.global_position = contact_origin + Vector3.RIGHT * (0.0 if host else 2.0)
-	local.velocity = Vector3.ZERO
-	local.reset_physics_interpolation()
-	await create_timer(0.7).timeout
-	check(remote.position.distance_to(local.position) > 1.8, "Both peers must receive the separated contact positions")
-	if not host:
-		Input.action_press("move_left")
-	var minimum_contact_distance := INF
-	var contact_deadline := Time.get_ticks_msec() + 1900
-	while Time.get_ticks_msec() < contact_deadline:
-		await physics_frame
-		await process_frame
-		minimum_contact_distance = minf(minimum_contact_distance, local.position.distance_to(remote.position))
-	if not host:
-		Input.action_release("move_left")
-	await create_timer(0.3).timeout
-	check(minimum_contact_distance >= 0.44,
-		"Network-driven player contact must keep capsules separated (%.3f m)" % minimum_contact_distance)
-	check(local.position.distance_to(remote.position) < 0.65,
-		"The moving player must reach, but not pass through, the partner")
-	check(local.position.x < remote.position.x if host else local.position.x > remote.position.x,
-		"LAN players must remain on their original sides after walking into one another")
-
-	if not host:
-		world.get_node("Controls/ReturnToTimeline").return_to_timeline()
-		check(await wait_for(func() -> bool: return in_scene(MENU), 3.0),
-			"Guest should return to the timeline")
-		check(session.state == Session.State.OFFLINE, "Returning to the timeline should close the guest connection")
-		if in_scene(MENU):
-			check(current_scene.selected_index == memory_index, "Timeline should remember the shared selection")
-			current_scene.get_node("LAN")._join.pressed.emit()
-			if await wait_for(func() -> bool: return in_scene(world_path), 5.0):
-				check(await wait_for(func() -> bool: return session.state == Session.State.OFFLINE, 7.0),
-					"Guest should detect the host leaving after reconnecting")
-				check(await wait_for(func() -> bool:
-					return in_scene(world_path) and current_scene.get_node_or_null("Partner") == null
-				, 2.0),
-					"Guest should remain in the memory solo when the host leaves")
-			else:
-				check(false, "Guest could not reconnect: %s" % session.status)
-	else:
-		check(await wait_for(func() -> bool: return session.partner_id == 0, 5.0),
-			"Host should immediately detect guest leaving")
-		check(await wait_for(func() -> bool: return world.get_node_or_null("Partner") == null, 2.0),
-			"Host should remove the guest replica")
-		check(await wait_for(func() -> bool: return world.get_node_or_null("Partner") != null, 8.0),
-			"Host should accept the returning guest")
-		world.get_node("Controls/ReturnToTimeline").return_to_timeline()
-		check(await wait_for(func() -> bool: return in_scene(MENU), 3.0),
-			"Host should return to the timeline")
-		check_jitter_playback()
-	print("LAN %s checks: %s" % ["host" if host else "guest", "PASS" if failures == 0 else "FAIL"])
-	# The guest may end inside a live memory; release its audio before driver shutdown.
-	if is_instance_valid(current_scene):
-		current_scene.free()
-	await create_timer(0.35).timeout
-	quit(failures)

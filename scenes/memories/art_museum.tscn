@@ -1,0 +1,111 @@
+[gd_scene load_steps=11 format=3]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
+[ext_resource type="PackedScene" path="res://scenes/memories/art_museum/entrance_zone.tscn" id="entrance"]
+[ext_resource type="PackedScene" path="res://scenes/memories/art_museum/marble_zone.tscn" id="marble"]
+[ext_resource type="PackedScene" path="res://scenes/memories/art_museum/paintings_zone.tscn" id="paintings"]
+[ext_resource type="PackedScene" path="res://scenes/memories/art_museum/crowded_room_zone.tscn" id="crowded"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+
+[sub_resource type="Curve2D" id="MuseumOutline"]
+_data = {"points": PackedVector2Array(0, 0, 0, 0, -20.5, -21.5, 0, 0, 0, 0, -8.5, -21.5, 0, 0, 0, 0, -8.5, -12.5, 0, 0, 0, 0, -6, -12.5, 0, 0, 0, 0, -6, -14.5, 0, 0, 0, 0, 6, -14.5, 0, 0, 0, 0, 6, -12.5, 0, 0, 0, 0, 9, -12.5, 0, 0, 0, 0, 9, -22, 0, 0, 0, 0, 21.5, -22, 0, 0, 0, 0, 21.5, -9, 0, 0, 0, 0, 9, -9, 0, 0, 0, 0, 9, -9.2, 0, 0, 0, 0, 6, -9.2, 0, 0, 0, 0, 6, -6.5, 0, 0, 0, 0, 2.1, -6.5, 0, 0, 0, 0, 2.1, -3.65, 0, 0, 0, 0, 7.5, -3.65, 0, 0, 0, 0, 7.5, 8, 0, 0, 0, 0, -7.5, 8, 0, 0, 0, 0, -7.5, -3.65, 0, 0, 0, 0, -2.1, -3.65, 0, 0, 0, 0, -2.1, -6.5, 0, 0, 0, 0, -6, -6.5, 0, 0, 0, 0, -6, -9.2, 0, 0, 0, 0, -10, -9.2, 0, 0, 0, 0, -10, -10, 0, 0, 0, 0, -20.5, -10, 0, 0, 0, 0, -20.5, -21.5)}
+point_count = 29
+
+[node name="Memory" instance=ExtResource("base")]
+memory_id = &"art_museum"
+display_name = "Minneapolis Institute of Art"
+
+[node name="Entry" parent="." index="0"]
+position = Vector3(0, 0.04, 6)
+
+[node name="Exit" parent="." index="1"]
+position = Vector3(14.5, 0.04, -12)
+
+[node name="MuseumFloor" parent="Environment" instance=ExtResource("platform")]
+custom_outline = SubResource("MuseumOutline")
+outline_detail = 96
+pillar_depth = 10.0
+fade_start = 0.0
+fade_depth = 3.5
+top_color = Color(0.94, 0.935, 0.89, 1)
+side_color = Color(0.94, 0.935, 0.89, 1)
+pigment_strength = 0.003
+edge_inset = 0.15
+
+[node name="ThroughPorticoTrace" parent="Environment" instance=ExtResource("paving")]
+position = Vector3(0, 0, -5.5)
+footprint = Vector2(2.5, 3.7)
+paving_color = Color(0.89, 0.87, 0.83, 1)
+end_fade = Vector2(0.8, 0.4)
+slab_length = 1.4
+
+[node name="LeftBranchTrace" parent="Environment" instance=ExtResource("paving")]
+position = Vector3(-7.8, 0, -10.8)
+rotation_degrees = Vector3(0, 90, 0)
+footprint = Vector2(2.0, 7.0)
+paving_color = Color(0.89, 0.87, 0.83, 1)
+end_fade = Vector2(1.5, 1.5)
+slab_length = 1.8
+
+[node name="RightBranchTrace" parent="Environment" instance=ExtResource("paving")]
+position = Vector3(7.8, 0, -10.8)
+rotation_degrees = Vector3(0, 90, 0)
+footprint = Vector2(2.0, 7.0)
+paving_color = Color(0.89, 0.87, 0.83, 1)
+end_fade = Vector2(1.5, 1.5)
+slab_length = 1.8
+
+[node name="EntranceFocus" type="Marker3D" parent="Environment"]
+position = Vector3(0, 2.4, 0)
+
+[node name="Guidance" type="Node3D" parent="Environment"]
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Entrance" parent="Zones" instance=ExtResource("entrance")]
+position = Vector3(0, 0, 0)
+
+[node name="Marble" parent="Zones" instance=ExtResource("marble")]
+position = Vector3(0, 0, -10)
+
+[node name="Paintings" parent="Zones" instance=ExtResource("paintings")]
+position = Vector3(-14.5, 0, -16)
+
+[node name="CrowdedRoom" parent="Zones" instance=ExtResource("crowded")]
+position = Vector3(14.5, 0, -16)
+
+[node name="Arrival" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/Entrance/Fragment")
+waypoints = PackedVector3Array()
+stroke_width = 0.16
+opacity = 0.6
+
+[node name="ToMarble" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Entrance/Fragment")
+end_anchor = NodePath("../../../Zones/Marble/Fragment")
+waypoints = PackedVector3Array(0, 0.76, 3.6, 0, 1.06, 1.7, 0, 1.06, -1.7, 0, 0.76, -3.6, 0, 0.76, -6.5)
+stroke_width = 0.16
+opacity = 0.6
+
+[node name="ToPaintings" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Marble/Fragment")
+end_anchor = NodePath("../../../Zones/Paintings/Fragment")
+waypoints = PackedVector3Array(-4.5, 0.76, -10.8, -7.5, 0.76, -10.8, -11, 0.76, -10.8, -14.5, 0.76, -13)
+stroke_width = 0.16
+opacity = 0.6
+
+[node name="ToCrowdedRoom" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Paintings/Fragment")
+end_anchor = NodePath("../../../Zones/CrowdedRoom/Fragment")
+waypoints = PackedVector3Array(-14.5, 0.76, -13, -11, 0.76, -10.8, -7.5, 0.76, -10.8, -4.5, 0.76, -10.8, 0, 0.76, -10.8, 4.5, 0.76, -10.8, 7.5, 0.76, -10.8, 11, 0.76, -10.8, 14.5, 0.76, -13)
+stroke_width = 0.16
+opacity = 0.6

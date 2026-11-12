@@ -73,4 +73,4 @@ Metal Mobile captures in `/tmp/light-shaft-{neutral,white,dark,side}.png` verify
 render comparisons check that zero drift is stationary and GPU motion is visible.
 Profile overlapping shafts and large screen coverage on the target phone.
 
-![Light shaft preview](../../../docs/light-shaft-preview.png)
+![Light shaft preview](../../../docs/previews/light-shaft-preview.png)

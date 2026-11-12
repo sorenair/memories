@@ -64,4 +64,4 @@ godot --headless --path . --script tests/recall_settings.gd
 The render check verifies motion, a frozen frame, and captures all four presets
 to `/tmp/painterly-smoke-{steam,smoke,candle,mist}.png`.
 
-![Steam preset](../../../docs/smoke-steam-preview.png)
+![Steam preset](../../../docs/previews/smoke-steam-preview.png)

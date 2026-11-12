@@ -92,11 +92,11 @@ godot --headless --path . --script tests/scene_smoke.gd
 
 Framework checks cover custom triangulation, curved width/flow, shared-resource updates and persistence, signed shore distance, moving stones, decorative rock clusters, open mouths, and shape/exclusion agreement. Component checks cover seeded generation, palettes, budgets, collision, and grass updates; grass MultiMesh readback requires a real renderer. Captured-frame checks verify stationary modes and independent wave/foam animation.
 
-`docs/water-upgrade-motion.gif` is a six-second actual-engine animation preview.
+`docs/previews/water-upgrade-motion.gif` is a six-second actual-engine animation preview.
 
-![Demo pond](../../../docs/pond-detail.png)
+![Demo pond](../../../docs/previews/pond-detail.png)
 
-![Custom pond and curved stream](../../../docs/water-study.png)
+![Custom pond and curved stream](../../../docs/previews/water-study.png)
 
 ## Pond recall
 

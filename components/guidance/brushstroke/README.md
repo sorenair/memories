@@ -32,7 +32,7 @@ Default cost: **1,344 triangles, two translucent draw calls** (one if the surfac
 
 The foliage demo retains a brushstroke under `Environment/SummerSpring/LivingBrushstroke`, passing across the clearing between the fire and vine wall, but this old automatic decoration is hidden during gameplay. The previous `ClearingWisps` also stays hidden. Standalone `LivingBrushstroke` instances retain the repeating visual behavior described above.
 
-Verified using Godot 4.4.1's Mobile renderer on Apple M1. Physical-phone performance is not measured. Preview: [component](../../../docs/living-brushstroke.png), [in the demo](../../../docs/living-brushstroke-demo.png).
+Verified using Godot 4.4.1's Mobile renderer on Apple M1. Physical-phone performance is not measured. Preview: [component](../../../docs/previews/living-brushstroke.png), [in the demo](../../../docs/previews/living-brushstroke-demo.png).
 
 ```sh
 godot --headless --path . --script tests/living_brushstroke.gd

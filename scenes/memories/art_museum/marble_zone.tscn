@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_room.wav" id="room"]
+[ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_marble_statue.tscn" id="statue"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+
+[node name="MarbleZone" instance=ExtResource("zone")]
+zone_id = &"marble"
+display_name = "Among the marble figures"
+ambience_stream = ExtResource("room")
+ambience_volume_db = -24.0
+ambience_size = Vector2(14, 13)
+ambience_blend_distance = 4.0
+
+[node name="Athlete" parent="Scenery" instance=ExtResource("statue")]
+position = Vector3(-3.5, 0, -2.7)
+figure = 0
+rotation_degrees = Vector3(0, 18, 0)
+[node name="DrapedFigure" parent="Scenery" instance=ExtResource("statue")]
+position = Vector3(0, 0, -3.0)
+figure = 1
+rotation_degrees = Vector3(0, -12, 0)
+[node name="PortraitBust" parent="Scenery" instance=ExtResource("statue")]
+position = Vector3(3.5, 0, -2.7)
+figure = 2
+rotation_degrees = Vector3(0, -22, 0)
+[node name="StoneFloor" parent="Scenery" instance=ExtResource("paving")]
+position = Vector3(0, 0, -0.4)
+footprint = Vector2(4.8, 6.8)
+slab_length = 2.2
+paving_color = Color(0.91, 0.90, 0.86, 1)
+end_fade = Vector2(2.0, 2.0)
+irregularity = 0.2
+[node name="CoolDaylight" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(-1, 0, -1)
+footprint = Vector2(6.5, 4.0)
+light_color = Color(0.86, 0.91, 1.0, 1)
+intensity = 0.13
+softness = 0.85
+wash_shape = 1
+
+[node name="Fragment" parent="." index="1"]
+position = Vector3(0, 0.04, -0.7)
+fragment_seed = 1210
+note_title = "Among the marble figures"
+notes = Array[String](["Placeholder: Write your memory of the marble sculptures here."])
+
+[node name="ViewingFocus" type="Marker3D" parent="." groups=["museum_camera_focus"]]
+position = Vector3(0, 0, -2.5)
