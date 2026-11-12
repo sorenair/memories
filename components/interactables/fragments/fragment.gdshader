@@ -8,6 +8,7 @@ uniform float seed = 1.0;
 uniform int mote_count = 8;
 uniform float wisp_strength = 1.0;
 uniform float decay : hint_range(0.0, 1.0) = 0.0;
+uniform float interaction_outline : hint_range(0.0, 1.0) = 0.0;
 void vertex() {
 	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);
 	MODELVIEW_MATRIX[0] *= length(MODEL_MATRIX[0].xyz);
@@ -71,7 +72,12 @@ void fragment() {
 	float orb_alpha = body * mix(0.56, 0.93, activity) * (1.0 - smoothstep(0.04, 0.32, decay));
 	float wisps = puff * wisp_strength * smoothstep(0.0, 0.08, decay) * pow(1.0 - decay, 1.4);
 	float particles = motes * mix(0.18, 0.85, activity) * (1.0 - decay);
-	float total = orb_alpha + wisps + particles;
+	// Follow the undulating orb, not the rectangular effect card.
+	float pixel = max(fwidth(r), 0.0001);
+	float outline = (1.0 - smoothstep(pixel, pixel * 2.0, abs(r - 1.0)))
+		* interaction_outline * (1.0 - smoothstep(0.0, 0.1, decay));
+	float total = orb_alpha + wisps + particles + outline;
 	ALBEDO = glow_color.rgb * mix(0.82, 1.0, activity) * mix(1.0, tone, orb_alpha / max(total, 0.001));
+	ALBEDO = mix(ALBEDO, vec3(1.0), outline);
 	ALPHA = clamp(total, 0.0, 0.97);
 }

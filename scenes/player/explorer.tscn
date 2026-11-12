@@ -19,9 +19,11 @@ material = SubResource("ShadowMaterial")
 size = Vector2(2, 1.7)
 
 [node name="Explorer" type="CharacterBody3D" groups=["explorers"]]
+collision_mask = 3
 floor_snap_length = 0.2
+platform_floor_layers = 1
 script = ExtResource("1")
-walk_speed = 1.5
+walk_speed = 1.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.675, 0)

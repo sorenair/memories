@@ -19,9 +19,11 @@ The game launches fullscreen at a fixed landscape phone aspect ratio (1920 × 88
 
 ## First Meeting
 
-`scenes/memories/first_meeting.tscn` inherits `memory_base.tscn`. Its house, autumn tree, garden, vines, paving, and finite platform live under `Environment`; `Entry` is on the front sidewalk. The house study has been moved here. The paving groundcover mask now lives in `components/groundcover/paving/groundcover_exclusion.gd`.
+Memories share a small [audio framework](audio/README.md): independent Music, Ambience, SFX, and UI buses, with memory entry/exit fades and a Master limiter. Select **Audio** for shared music/cues and each **Zone** root for local ambience and coverage. First Meeting blends house wind into arcade room tone and has a fragment chime; the existing mechanical-band notes route through SFX. The Music slot is ready for a chosen soundtrack.
 
-`scenes/world/first_meeting_world.tscn` and the retained demo wrapper inherit `scenes/world/memory_world_base.tscn`, sharing players, camera, controls, arrival presentation, networking, and return navigation. First Meeting uses no extra recall spawn offset; the LAN guest spawns 1.2 m to the right of the host. Both memories use exactly the same close orthographic camera size, angle, centered follow, and controls. The demo retains its 10 m recalled arrival offset.
+`scenes/memories/first_meeting.tscn` inherits `memory_base.tscn`. Its **Zones/House** and **Zones/Arcade** instances own scenery, one fragment each, and local ambient audio. The shared platform and connecting guidance remain under **Environment**; **Entry** is on the front sidewalk. See [the zone authoring guide](scenes/memories/README.md). The house study has been moved here. The paving groundcover mask now lives in `components/groundcover/paving/groundcover_exclusion.gd`.
+
+`scenes/world/first_meeting_world.tscn` and the retained demo wrapper inherit `scenes/world/memory_world_base.tscn`, sharing players, camera, controls, arrival presentation, networking, and return navigation. First Meeting enables proximity recall on its 40 foliage, house, fence, arcade, vine, and leaf-litter components. Existing grass/bush/tree effects are reused; solid props and accents resolve upward with a cream-white edge. The platform, paving, and atmospheric arcade traces remain present as the setting. All effects use `components/effects/recall/recall_settings.tres`. First Meeting uses no extra recall spawn offset; the LAN guest spawns 1.2 m to the right of the host. Both memories use exactly the same close orthographic camera size, angle, centered follow, and controls. The demo retains its 10 m recalled arrival offset.
 
 ![First Meeting timeline](docs/first-meeting-timeline.png)
 
@@ -34,6 +36,12 @@ The yard is defined by a low diamond-mesh fence with a 2.3 m open gate. Full ora
 First Meeting continues beyond the house into an ethereal arcade glade: pinball, a punching-bag machine, and a complete mechanical band sit in small autumn foliage islands, separated by the white void. Fading floorboard traces, pale pigment pools, and an interrupted strand of suspended warm bulbs suggest the bar. The machines form a loose triangle with open approaches. Their individual models, the original house, arrival, shared camera, timeline entry, and connected platform remain intact. See [the arcade component guide](components/activities/arcade/README.md).
 
 [Expanded memory](docs/first-meeting-expanded.png) · [Arcade area](docs/first-meeting-arcade.png) · [Mechanical band](docs/arcade-mechanical_band.png)
+
+## Football in the snow
+
+The second timeline memory, **Football in the snow**, places both explorers high in a snowy college-stadium seating section. Its compact upper cross-aisle has safe guardrails, benches, and a fragment, with existing ground snow/footprints and falling snow. Approaching the railing gently opens the camera across the painted football field and distant stands; walking back returns to closer exploration framing. The field and bowl are scenic, while the upper deck is walkable.
+
+Open `scenes/world/snowy_stadium_world.tscn` to play it directly. Its field and stands are reusable components built with First Meeting's geometry/vertex-paint workflow. See [the stadium guide](scenes/memories/snowy_stadium/README.md) for layout, snow controls, fragment text, and validation.
 
 ## Seasonal demo layout
 
@@ -67,13 +75,9 @@ Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, pa
 
 ## Create another memory
 
-1. In Godot, create an **inherited scene** from `scenes/memories/memory_base.tscn` and save it under `scenes/memories/`.
-2. Set its unique `memory_id` and `display_name` in the Inspector.
-3. Position `Entry` at the spawn point and `Exit` at the intended connection to the next memory. Both are invisible markers.
-4. Put scenery under `Environment`. The empty `RevealClusters`, `Interactions`, and `SignatureInteraction` containers reserve consistent places for future systems.
-5. Inherit `scenes/world/memory_world_base.tscn` and add your content as a child named `Memory`, following `first_meeting_world.tscn`. Set per-memory camera framing and recall offsets on this wrapper. Add its path to `MEMORIES` in `UI/memory_lane/memory_lane.gd` to expose it on the timeline.
+Use [the zone authoring guide](scenes/memories/README.md). Create an inherited memory from `scenes/memories/memory_base.tscn`, then instance authored `memory_zone.tscn` scenes under **Zones** in story order. Each zone contains **Scenery**, **Fragment**, and **Ambience**. The `memory_template.tscn` starter supplies one complete zone and shared ground.
 
-`blank_void.tscn` demonstrates inheritance without adding content. The world scene owns presentation, ground, controls, player, and camera, so memory content can share the same foundation. Each future memory can inherit the content template instead of duplicating player or camera code.
+Keep shared music, ground, Entry/Exit, and connecting paths at memory level. Wrap the memory with `scenes/world/memory_world_base.tscn` and add that wrapper to the timeline catalog. Player, camera, guidance controls, and LAN setup remain shared.
 
 ## Tune the foundation
 

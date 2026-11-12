@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, fog_disabled;
+#include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
 // Leaf geometry forms the whole canopy. Shared clump colors replace face lighting.
 uniform vec4 root_color : source_color;
 uniform vec4 shade_color : source_color;
@@ -58,10 +59,14 @@ void vertex() {
 	painted_color = color * mix(0.97, 1.03, INSTANCE_CUSTOM.g);
 	paint_position = world;
 	haze = smoothstep(25.0, 60.0, length((VIEW_MATRIX * vec4(world, 1.0)).xyz));
+	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 void fragment() {
 	// Small pigment shifts run across neighboring leaf forms, independent of triangles.
 	float pigment = sin(paint_position.x * 15.0 + sin(paint_position.y * 18.0)) * sin(paint_position.z * 19.0 + paint_position.y * 9.0);
 	vec3 color = painted_color * (1.0 + pigment * 0.035);
 	ALBEDO = mix(color, vec3(0.87, 0.86, 0.77), haze);
+	float assembly = assembly_clarity(assembly_position);
+	if (assembly <= 0.001) { discard; }
+	ALBEDO = mix(vec3(0.94, 0.935, 0.89), ALBEDO, smoothstep(0.0, 1.0, assembly));
 }

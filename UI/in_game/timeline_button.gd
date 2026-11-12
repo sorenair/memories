@@ -74,6 +74,7 @@ func return_to_timeline() -> void:
 	player.velocity = Vector3.ZERO
 	player.set_walking(false)
 	player.set_physics_process(false)
+	AudioMixer.fade_memory_out(0.45)
 	var veil := MemoryArrival.get_transition_veil(get_tree())
 	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(veil, "modulate:a", 1.0, 0.45)
@@ -83,6 +84,7 @@ func return_to_timeline() -> void:
 		LanSession.leave()
 	else:
 		push_error("Unable to return to timeline: %s" % error_string(error))
+		AudioMixer.resume_memory()
 		veil.get_parent().queue_free()
 		controls.process_mode = controls_mode
 		player.set_physics_process(player_processing)

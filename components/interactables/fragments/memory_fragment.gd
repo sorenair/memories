@@ -132,6 +132,18 @@ func _set_state(value: State) -> void:
 func get_orb_position() -> Vector3:
 	return _visual.global_position if is_instance_valid(_visual) else global_position + Vector3.UP * float_height
 
+func get_interaction_tap_position() -> Vector3:
+	return get_orb_position()
+
+func get_interaction_tap_radius() -> float:
+	var camera := get_viewport().get_camera_3d()
+	var point := get_orb_position()
+	return maxf(tap_radius_pixels, camera.unproject_position(point).distance_to(camera.unproject_position(point + camera.global_basis.x * orb_radius)) * 1.4) if camera else tap_radius_pixels
+
+func set_interaction_outline(amount: float, selected: bool) -> void:
+	if _material:
+		_material.set_shader_parameter("interaction_outline", amount * (1.0 if selected else 0.55))
+
 func can_interact(explorer: Node3D) -> bool:
 	if not is_instance_valid(explorer) or not is_visible_in_tree() or collected or _reading or state == State.DECAYING or _cooldown > 0.0:
 		return false

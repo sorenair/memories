@@ -20,7 +20,7 @@ Three activity props for memories, sharing a muted painted palette, broad pigmen
 
 Round bag and guitar silhouettes are smoothly sampled. Flat cabinet and piano planes retain their intentional stylization. Static lettering is baked into the same mesh. Pinball and punching bag share a texture-free shader for their changing scores, with separate six- and three-digit displays and no runtime text-mesh rebuilds.
 
-[Pinball](pinball/README.md) and [punching bag](punching_bag/README.md) use the shared action button and E near their front controls. Each becomes unavailable during its run and returns after completing its score result. Pinball launches a contained ball; punching bag adds anticipation, a painted impact, damped leather motion, and a three-digit strength counter. Both process only during a run and retain direct start/request/completion hooks. The mechanical band remains static, with one opaque draw and one contact-shadow draw. All three avoid real-time shadow maps and runtime audio.
+[Pinball](pinball/README.md) and [punching bag](punching_bag/README.md) use the shared action button and E near their front controls. Each becomes unavailable during its run and returns after completing its score result. Pinball launches a contained ball with launch, bumper, and result cues; punching bag adds anticipation, a painted impact, a timed thump, damped leather motion, and a three-digit strength counter/result cue. Both process only during a run and retain direct start/request/completion hooks. The mechanical band has four independently playable instruments. All three avoid real-time shadow maps and route their bounded audio voices through **SFX**. Pinball and punching bag expose **Sound → Sound Volume dB**; regenerate their original clips with `python3 tools/generate_arcade_audio.py`.
 
 ## Future interaction hooks
 
@@ -38,7 +38,7 @@ var button_position: Vector3 = band.get_anchor(&"KickButton").global_position
 
 ## First Meeting placement
 
-`scenes/memories/first_meeting.tscn` groups the activities under **Environment/Arcade**, centered at world `(15, 0, 1)`, east of the original house. They form a loose triangle in the white void, each nestled into a small autumn foliage pocket. A broken suspended light strand and fading traces of floorboards suggest the bar; there are no room walls or continuous arcade floor. The house sidewalk dissolves into a few faint paving impressions and scattered leaves. The band faces diagonally into the open foreground. The 34 × 19 m platform, original arrival, shared camera, timeline identity, and LAN setup are preserved.
+`scenes/memories/first_meeting.tscn` groups the activities under **Zones/Arcade/Scenery/Machines**, centered at world `(15, 0, 1)`, east of the original house. They form a loose triangle in the white void, each nestled into a small autumn foliage pocket. A broken suspended light strand and fading traces of floorboards suggest the bar; there are no room walls or continuous arcade floor. The house sidewalk dissolves into a few faint paving impressions and scattered leaves. The band faces diagonally into the open foreground. The 34 × 19 m platform, original arrival, shared camera, timeline identity, and LAN setup are preserved.
 
 [Pinball](../../../docs/arcade-pinball.png) · [Punching bag](../../../docs/arcade-punching_bag.png) · [Band](../../../docs/arcade-mechanical_band.png) · [In the memory](../../../docs/first-meeting-arcade.png)
 

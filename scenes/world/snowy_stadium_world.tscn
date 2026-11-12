@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/memory_world_base.tscn" id="world"]
+[ext_resource type="PackedScene" path="res://scenes/memories/snowy_stadium.tscn" id="memory"]
+[ext_resource type="Script" path="res://scripts/stadium_camera.gd" id="camera"]
+
+[node name="MemoryWorld" instance=ExtResource("world")]
+recalled_spawn_offset = Vector3(0, 0, 0)
+
+[node name="Memory" parent="." index="4" instance=ExtResource("memory")]
+
+[node name="CameraRig" parent="." index="5" node_paths=PackedStringArray("transition_start", "transition_end", "view_focus")]
+script = ExtResource("camera")
+transition_start = NodePath("../Memory/Zones/Stadium/CameraTransitionStart")
+transition_end = NodePath("../Memory/Zones/Stadium/CameraTransitionEnd")
+view_focus = NodePath("../Memory/Zones/Stadium/StadiumViewFocus")
+
+[node name="Camera3D" parent="CameraRig" index="0"]
+position = Vector3(13, 42, 38)
+rotation_degrees = Vector3(-46.3, 18.89, 0)
+size = 3.5
+far = 240.0

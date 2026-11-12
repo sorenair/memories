@@ -13,12 +13,34 @@ var ivory: Color
 var wood := Color("725546")
 var colliders: Array[Dictionary] = []
 var anchors: Dictionary = {}
+var parts: Dictionary = {}
+var _part_stack: Array = []
+var _outline_tool: SurfaceTool
+var _record_outline := false
+
+# Keep moving pieces in small opaque batches; the rest stays in the original mesh.
+func begin_part(id: StringName, pivot: Vector3) -> void:
+	_part_stack.append([s, frame])
+	if not parts.has(id):
+		var tool := SurfaceTool.new()
+		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+		parts[id] = {"tool":tool, "pivot":pivot}
+	s = parts[id].tool
+	frame = Transform3D(Basis.IDENTITY, -pivot) * frame
+
+func end_part() -> void:
+	var previous: Array = _part_stack.pop_back()
+	s = previous[0]
+	frame = previous[1]
 
 func vertex(p: Vector3, n: Vector3, color: Color, kind: float = 0.0) -> void:
 	s.set_normal((frame.basis.inverse().transposed() * n).normalized())
 	s.set_color(color.srgb_to_linear())
 	s.set_uv2(Vector2(kind, 0.0))
 	s.add_vertex(frame * p)
+	if _record_outline and _outline_tool:
+		_outline_tool.set_normal((frame.basis.inverse().transposed() * n).normalized())
+		_outline_tool.add_vertex(frame * p)
 
 func quad(a: Vector3, b: Vector3, c: Vector3, d: Vector3, color: Color, kind: float = 0.0) -> void:
 	var n := (b-a).cross(c-a).normalized()
@@ -138,6 +160,7 @@ func collider(center: Vector3, size: Vector3, name: String) -> void:
 	colliders.append({"center":center,"size":size,"name":name})
 
 func pinball() -> void:
+	_record_outline = true
 	# Legs, wedge cabinet, and sloping playfield: solid painted shapes, no glass pass.
 	for x in [-0.36,0.36]:
 		for z in [-0.57,0.57]:
@@ -154,6 +177,7 @@ func pinball() -> void:
 	for x in [-0.405,0.405]:
 		rod(Vector3(x,y.call(0.66)+0.02,0.66),Vector3(x,y.call(-0.66)+0.02,-0.66),0.027,ivory)
 	for z in [-0.66,0.66]: rod(Vector3(-0.4,y.call(z)+0.02,z),Vector3(0.4,y.call(z)+0.02,z),0.024,brass)
+	_record_outline = false
 	# Bumpers, raised orbit, slingshots, and flippers. The live ball is separate.
 	for point in PINBALL.BUMPERS:
 		var p:=Vector3(point.x,y.call(point.y)+0.024,point.y)
@@ -177,7 +201,9 @@ func pinball() -> void:
 	# A narrow shooter lane and a banked guide send the launch into the upper field.
 	rod(PINBALL.on_surface(PINBALL.GUIDE_A,0.025),PINBALL.on_surface(PINBALL.GUIDE_B,0.025),PINBALL.GUIDE_RADIUS,brass)
 	rod(PINBALL.on_surface(PINBALL.DEFLECTOR_A,0.025),PINBALL.on_surface(PINBALL.DEFLECTOR_B,0.025),PINBALL.DEFLECTOR_RADIUS,ivory)
+	_record_outline = true
 	soft_box(Vector3(0,1.47,-0.72),Vector3(0.98,0.76,0.22),body,0.075)
+	_record_outline = false
 	soft_box(Vector3(0,1.49,-0.596),Vector3(0.86,0.62,0.026),brass,0.045)
 	soft_box(Vector3(0,1.52,-0.575),Vector3(0.78,0.49,0.02),ivory,0.035)
 	text("PINBALL",Vector3(0,1.58,-0.556),0.145,body)
@@ -196,9 +222,11 @@ func pinball() -> void:
 	anchors = {"Play":Vector3(0,0.85,1.13),"Ball":PINBALL.ball_center(PINBALL.HOME)}
 
 func punching_bag() -> void:
+	_record_outline = true
 	soft_box(Vector3(0,0.075,0.21),Vector3(0.93,0.15,1.12),ink,0.1)
 	soft_box(Vector3(0,0.94,-0.28),Vector3(0.78,1.77,0.43),body,0.13)
 	soft_box(Vector3(0,1.91,0.02),Vector3(0.94,0.5,1.03),body,0.09)
+	_record_outline = false
 	soft_box(Vector3(0,1.96,0.553),Vector3(0.82,0.30,0.035),ivory,0.05)
 	text("STRIKE",Vector3(0,2.005,0.578),0.115,body)
 	soft_box(Vector3(0,1.86,0.58),Vector3(0.47,0.105,0.02),ink,0.015)
@@ -257,23 +285,29 @@ func guitar() -> void:
 	rod(Vector3(-1.58,0.18,-0.12),Vector3(-1.58,1.35,-0.12),0.033,brass)
 	rod(Vector3(-1.98,0.18,0.26),Vector3(-1.98,0.67,0.26),0.028,brass)
 	gear(Vector3(-1.98,0.55,0.28),0.145)
+	begin_part(&"GuitarPick", Vector3(-1.98,0.59,0.32))
 	rod(Vector3(-1.98,0.59,0.32),Vector3(-1.64,0.59,0.23),0.018,brass)
 	ball(Vector3(-1.64,0.59,0.23),Vector3(0.10,0.065,0.04),ivory)
+	end_part()
 
 func drums() -> void:
 	var kick:=Vector3(-0.43,0.56,0.14)
 	disc(kick,0.355,0.43,accent,Vector3.BACK)
 	for z in [-0.09,0.37]:
 		disc(Vector3(-0.43,0.56,z),0.377,0.032,brass,Vector3.BACK)
+	begin_part(&"KickHead", Vector3(-0.43,0.56,0.392))
 	disc(Vector3(-0.43,0.56,0.392),0.335,0.02,ivory,Vector3.BACK)
 	star(Vector3(-0.43,0.56,0.407),0.14,body)
+	end_part()
 	for i in range(8):
 		var a:=TAU*i/8.0
 		rod(Vector3(-0.43+cos(a)*0.363,0.56+sin(a)*0.363,-0.1),Vector3(-0.43+cos(a)*0.363,0.56+sin(a)*0.363,0.37),0.009,ink,6)
 	for side in [-1.0,1.0]: rod(kick+Vector3(side*0.27,-0.12,0),kick+Vector3(side*0.37,-0.36,0.25),0.02,brass)
 	soft_box(Vector3(-0.43,0.19,0.64),Vector3(0.13,0.03,0.28),ink,0.02)
+	begin_part(&"KickBeater", Vector3(-0.43,0.20,0.63))
 	rod(Vector3(-0.43,0.20,0.63),Vector3(-0.43,0.50,0.47),0.015,brass)
 	ball(Vector3(-0.43,0.50,0.47),Vector3.ONE*0.105,ivory)
+	end_part()
 	var snare:=Vector3(0.43,0.83,0.06)
 	rod(Vector3(0.43,0.2,0.06),snare,0.025,brass)
 	for i in range(3):
@@ -281,14 +315,18 @@ func drums() -> void:
 		rod(Vector3(0.43,0.22,0.06),Vector3(0.43+cos(a)*0.24,0.17,0.06+sin(a)*0.24),0.015,brass)
 	disc(snare,0.24,0.18,body)
 	for y in [0.73,0.93]: disc(Vector3(0.43,y,0.06),0.25,0.025,brass)
+	begin_part(&"SnareHead", Vector3(0.43,0.947,0.06))
 	disc(Vector3(0.43,0.947,0.06),0.226,0.012,ivory)
+	end_part()
 	for i in range(8):
 		var a:=TAU*i/8.0
 		rod(Vector3(0.43+cos(a)*0.244,0.75,0.06+sin(a)*0.244),Vector3(0.43+cos(a)*0.244,0.92,0.06+sin(a)*0.244),0.008,brass,6)
 	rod(Vector3(0.7,0.2,-0.22),Vector3(0.7,1.22,-0.22),0.028,brass)
 	gear(Vector3(0.7,1.15,-0.19),0.12)
+	begin_part(&"SnareStick", Vector3(0.7,1.19,-0.14))
 	rod(Vector3(0.7,1.19,-0.14),Vector3(0.43,1.04,0.08),0.018,wood)
 	ball(Vector3(0.43,1.04,0.08),Vector3.ONE*0.08,ivory)
+	end_part()
 
 func piano() -> void:
 	soft_box(Vector3(1.48,0.81,-0.12),Vector3(1.02,1.26,0.44),body,0.05)
@@ -300,14 +338,18 @@ func piano() -> void:
 	box(Vector3(1.48,0.825,0.32),Vector3(1.12,0.08,0.48),wood)
 	for i in range(14):
 		var x:=1.48+(i-6.5)*0.069
+		if i in [2,6,10]: begin_part(&"PianoAction", Vector3(1.48,0.88,0.33))
 		box(Vector3(x,0.88,0.33),Vector3(0.065,0.065,0.37),ivory.lightened(rng.randf_range(-0.02,0.01)))
+		if i in [2,6,10]: end_part()
 		if i%7 in [0,1,3,4,5]: box(Vector3(x+0.0345,0.93,0.23),Vector3(0.04,0.07,0.22),ink)
 	for x in [1.02,1.94]:
 		rod(Vector3(x,0.2,0.43),Vector3(x,0.83,0.43),0.035,wood)
+	begin_part(&"PianoAction", Vector3(1.48,0.88,0.33))
 	for x in [1.2,1.46,1.72]:
 		rod(Vector3(x,1.19,-0.03),Vector3(x,1.19,0.32),0.017,brass)
 		rod(Vector3(x,1.19,0.32),Vector3(x,0.99,0.34),0.015,brass)
 		ball(Vector3(x,0.99,0.34),Vector3(0.06,0.04,0.08),ivory)
+	end_part()
 	gear(Vector3(2.03,1.14,0.14),0.14)
 
 func mechanical_band() -> void:
@@ -325,7 +367,7 @@ func mechanical_band() -> void:
 	guitar()
 	drums()
 	piano()
-	# Four independent buttons and future hooks, but no input or audio yet.
+	# Four independent caps, each a small interaction/animation target.
 	for x in [-0.78,0.78]: rod(Vector3(x,0.04,1.42),Vector3(x,0.69,1.42),0.035,brass)
 	soft_box(Vector3(0,0.70,1.43),Vector3(1.95,0.16,0.48),body,0.05)
 	var colors: Array[Color] = [accent,Color("d49c61"),Color("8caaa0"),ivory]
@@ -334,7 +376,9 @@ func mechanical_band() -> void:
 	for i in range(4):
 		var x: float = (i-1.5)*0.44
 		disc(Vector3(x,0.797,1.43),0.107,0.025,brass)
+		begin_part(StringName(labels[i].capitalize()+"Button"), Vector3(x,0.826,1.43))
 		disc(Vector3(x,0.826,1.43),0.084,0.043,colors[i],Vector3.UP,2.0)
+		end_part()
 		text(labels[i],Vector3(x,0.667,1.677),0.057,ivory)
 		var end: Vector3 = targets[i]
 		tube([Vector3(x,0.66,1.26),Vector3(x,0.20,1.05),Vector3(end.x,0.20,0.85),Vector3(end.x,0.20,end.z)],0.012,ink,6)
@@ -396,9 +440,16 @@ func create(kind: StringName, config: Dictionary) -> Dictionary:
 	rng.seed = config.prop_seed
 	s = SurfaceTool.new()
 	s.begin(Mesh.PRIMITIVE_TRIANGLES)
+	if kind in [&"pinball", &"punching_bag"]:
+		_outline_tool = SurfaceTool.new()
+		_outline_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	match kind:
 		&"pinball": pinball()
 		&"punching_bag": punching_bag()
 		&"mechanical_band": mechanical_band()
 		&"bar_corner": bar_corner()
-	return {"mesh":s.commit(),"colliders":colliders,"anchors":anchors}
+	for part in parts.values():
+		part["mesh"] = part.tool.commit()
+		part.erase("tool")
+	return {"mesh":s.commit(),"colliders":colliders,"anchors":anchors,"parts":parts,
+		"outline_mesh":_outline_tool.commit() if _outline_tool else null}

@@ -13,6 +13,13 @@ const PAINT := preload("res://components/guidance/brushstroke/living_brushstroke
 	set(value):
 		end_point = value
 		_update_path()
+## Optional curved route. Null retains the original two-point gesture.
+@export var route_curve: Curve3D:
+	set(value):
+		if route_curve and route_curve.changed.is_connected(_curve_changed): route_curve.changed.disconnect(_curve_changed)
+		route_curve = value
+		if route_curve and not route_curve.changed.is_connected(_curve_changed): route_curve.changed.connect(_curve_changed)
+		_curve_changed()
 @export_range(0.0, 2.0, 0.01) var arc_height: float = 0.38:
 	set(value):
 		arc_height = value
@@ -109,6 +116,8 @@ var _ribbon: MeshInstance3D
 var _wash: MeshInstance3D
 var _materials: Array[ShaderMaterial] = []
 var _queued: bool = false
+var _route_texture: ImageTexture
+var _route_length := 0.0
 
 func _ready() -> void:
 	rebuild()
@@ -130,6 +139,8 @@ func _rebuild_queued() -> void:
 
 func sample_path(t: float) -> Vector3:
 	t = clampf(t, 0.0, 1.0)
+	if route_curve and route_curve.point_count >= 2 and _route_length > 0.01:
+		return route_curve.sample_baked(t*_route_length, true)
 	var delta := end_point - start_point
 	var side := delta.normalized().cross(Vector3.UP)
 	if side.length_squared() < 0.001:
@@ -138,13 +149,25 @@ func sample_path(t: float) -> Vector3:
 		side = side.normalized()
 	return start_point.lerp(end_point, t) + Vector3.UP * sin(t * PI) * arc_height + side * sin(t * TAU) * sin(t * PI) * curve_bend
 
+func _curve_changed() -> void:
+	_route_length = route_curve.get_baked_length() if route_curve and route_curve.point_count >= 2 else 0.0
+	_route_texture = null
+	if _route_length > 0.01:
+		# Arc-length samples keep the animated mark's speed even around corners.
+		var field := Image.create(256,1,false,Image.FORMAT_RGBAF)
+		for i in 256:
+			var point := route_curve.sample_baked(float(i)/255.0*_route_length,true)
+			field.set_pixel(i,0,Color(point.x,point.y,point.z,1.0))
+		_route_texture = ImageTexture.create_from_image(field)
+	_update_path()
+
 func _update_path() -> void:
 	_update_materials()
 	if is_instance_valid(_ribbon):
-		var valid := start_point.distance_squared_to(end_point) > 0.0025
+		var valid := _route_length > 0.01 or start_point.distance_squared_to(end_point) > 0.0025
 		_ribbon.visible = valid
 		var flat := Vector2(end_point.x - start_point.x, end_point.z - start_point.z)
-		_wash.visible = valid and surface_wash_enabled and flat.length_squared() > 0.0025
+		_wash.visible = valid and surface_wash_enabled and (_route_length > 0.01 or flat.length_squared() > 0.0025)
 	_update_bounds()
 
 func _update_materials() -> void:
@@ -152,7 +175,9 @@ func _update_materials() -> void:
 		for key in [&"start_point", &"end_point", &"arc_height", &"curve_bend", &"stroke_width", &"pigment_color", &"edge_color", &"highlight_color", &"opacity", &"glow_strength", &"evolution_strength", &"travel_duration", &"trail_duration", &"rest_duration", &"playback_speed", &"motion_amount", &"wash_height", &"wash_opacity"]:
 			material.set_shader_parameter(key, get(key))
 		material.set_shader_parameter("seed_phase", float(posmod(stroke_seed * 37, 997)) / 997.0)
-		material.set_shader_parameter("route_length", maxf(0.05, start_point.distance_to(end_point)))
+		material.set_shader_parameter("route_length", _route_length if _route_texture else maxf(0.05, start_point.distance_to(end_point)))
+		material.set_shader_parameter("use_route", _route_texture != null)
+		material.set_shader_parameter("route_texture", _route_texture)
 	for node in [_ribbon, _wash]:
 		if is_instance_valid(node):
 			node.visibility_range_end = visibility_distance

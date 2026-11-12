@@ -37,6 +37,7 @@ func _ready() -> void:
 				player.global_position = guest_spawn
 		_setup_lan()
 	player.reset_physics_interpolation()
+	memory.get_audio().set_listener(player)
 	$CameraRig.global_position = player.global_position + $CameraRig.framing_offset
 	$DreamSurface.global_position.x = player.global_position.x
 	$DreamSurface.global_position.z = player.global_position.z
@@ -78,6 +79,7 @@ func _update_lan() -> void:
 	if _remote_id == LanSession.partner_id:
 		return
 	if is_instance_valid(_remote):
+		_remote.collision_layer = 0
 		_remote.hide()
 		_remote.queue_free()
 		_remote = null
@@ -92,10 +94,12 @@ func _receive_snapshot(time: float, point: Vector3, heading: float, walking: boo
 		_remote = ExplorerScene.instantiate() as MemoryExplorer
 		_remote.name = "Partner"
 		_remote.hide()
-		# The partner is presentation-only: no input, collisions, or second transform interpolator.
+		# A network-driven obstacle: local movement collides with it, but it never
+		# simulates input or collides back against its delayed copy of the world.
 		_remote.remove_from_group(&"explorers")
-		_remote.collision_layer = 0
+		_remote.collision_layer = 2
 		_remote.collision_mask = 0
+		_remote.position = to_local(point)
 		_remote.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 		add_child(_remote)
 		_remote.set_physics_process(false)

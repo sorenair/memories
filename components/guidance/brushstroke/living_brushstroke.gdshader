@@ -24,6 +24,12 @@ uniform float route_length = 4.2;
 uniform bool surface_layer = false;
 // Deterministic render verification. A negative value uses the live shader clock.
 uniform float time_override = -1.0;
+uniform bool use_route = false;
+uniform sampler2D route_texture : filter_linear, repeat_disable;
+uniform bool randomized_start = true;
+uniform bool single_pass = false;
+uniform float pulse_interval = 0.0;
+uniform float guide_opacity = 1.0;
 varying float paint_age;
 varying float paint_clock;
 varying float head_progress;
@@ -41,6 +47,9 @@ float noise2(vec2 p) {
 		mix(hash21(i + vec2(0,1)), hash21(i + vec2(1,1)), f.x), f.y);
 }
 vec3 gesture(float t) {
+	if (use_route) {
+		return textureLod(route_texture,vec2(mix(0.5/256.0,255.5/256.0,t),0.5),0.0).xyz;
+	}
 	vec3 delta = end_point - start_point;
 	vec3 direction = length(delta) > 0.0001 ? normalize(delta) : vec3(0);
 	vec3 side = cross(direction, vec3(0,1,0));
@@ -59,10 +68,17 @@ float paint_life(float age, float progress) {
 void vertex() {
 	float clock = (time_override >= 0.0 ? time_override : TIME) * playback_speed;
 	float cycle_length = travel_duration + trail_duration + rest_duration;
-	float cycle = mod(clock + seed_phase * cycle_length, cycle_length);
+	float cycle = single_pass ? clock : mod(clock + (randomized_start ? seed_phase * cycle_length : 0.0), cycle_length);
 	float progress = clamp(cycle / travel_duration, 0.0, 1.0);
-	head_progress = progress;
 	paint_age = cycle - UV.x * travel_duration;
+	if (pulse_interval > 0.0) {
+		// Several widely separated gestures can follow one route without drawing a line.
+		float passage = clock - UV.x*travel_duration;
+		paint_age = passage >= 0.0 ? mod(passage,pulse_interval) : passage;
+		float departure = max(0.0,floor(passage/pulse_interval))*pulse_interval;
+		progress = clamp((clock-departure)/travel_duration,0.0,1.0);
+	}
+	head_progress = progress;
 	paint_clock = clock;
 	float lead = smoothstep(0.0, 0.23, paint_age);
 	float life = paint_life(paint_age, progress);
@@ -137,5 +153,5 @@ void fragment() {
 	}
 	ALBEDO = color;
 	EMISSION = color * glow_strength * (surface_layer ? 0.0 : 0.16 * edge);
-	ALPHA = alpha;
+	ALPHA = alpha * guide_opacity;
 }

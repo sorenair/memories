@@ -24,7 +24,7 @@ func run() -> void:
 	var player: MemoryExplorer = world.get_node("Explorer")
 	player.movement_camera = null
 	player.walk_speed = 2.5
-	var env := world.get_node("Memory/Environment")
+	var env := world.get_node("Memory/Zones/House/Scenery")
 	await physics_frame
 	await physics_frame
 	var left: PainterlyYardFence = env.get_node("FrontFenceLeft")
@@ -57,5 +57,6 @@ func run() -> void:
 	check(env.get_node("Meadow").ground_leaf_scale < 1.0, "First Meeting should use smaller groundcover dabs")
 	world.queue_free()
 	await process_frame
+	await create_timer(0.35).timeout
 	print("First Meeting layout: ", "PASS" if failures == 0 else "FAIL")
 	quit(failures)

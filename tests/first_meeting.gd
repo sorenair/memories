@@ -16,7 +16,7 @@ func run() -> void:
 	await physics_frame
 	var memory: MemoryScene = world.get_node("Memory")
 	check(memory.memory_id == &"first_meeting" and memory.display_name == "First Meeting", "Memory must use the shared MemoryScene framework")
-	check(memory.has_node("Environment/House") and not memory.has_node("Camera3D") and not memory.has_node("WorldEnvironment"), "Scenery must belong to the memory, presentation to the shared world")
+	check(memory.has_node("Zones/House/Scenery/House") and not memory.has_node("Camera3D") and not memory.has_node("WorldEnvironment"), "Scenery must belong to the memory, presentation to the shared world")
 	for node in ["Explorer", "CameraRig/Camera3D", "Controls/ExplorationInput", "Controls/ReturnToTimeline", "Controls/FragmentInteraction"]:
 		check(world.has_node(node), "Playable memory must include " + node)
 	var player: MemoryExplorer = world.get_node("Explorer")
@@ -24,7 +24,7 @@ func run() -> void:
 	check(world._bounded_memory and world.get_node("Ground/CollisionShape3D").disabled, "House must use the finite memory platform")
 	check(player.is_on_floor() and player.global_position.distance_to(memory.get_entry_transform().origin) < 0.1, "Local explorer must spawn grounded on the sidewalk")
 	check(platform.contains_ground_point(player.global_position, 0.8) and platform.contains_ground_point(player.global_position + Vector3.RIGHT * 1.2, 0.8), "Local and guest spawn positions must be safely on the platform")
-	var house: PainterlyHouse = memory.get_node("Environment/House")
+	var house: PainterlyHouse = memory.get_node("Zones/House/Scenery/House")
 	check(not house.excludes_ground_point(player.global_position) and not house.excludes_ground_point(player.global_position + Vector3.RIGHT * 1.2), "Both LAN spawns must be outside the house and steps")
 	var rig := world.get_node("CameraRig")
 	check(rig.target == player and rig.framing_offset == Vector3.ZERO, "First Meeting must use the same centered follow camera as the demo")
@@ -45,10 +45,10 @@ func run() -> void:
 	world.get_node("Controls/ReturnToTimeline").return_to_timeline()
 	await create_timer(1.0).timeout
 	check(current_scene.scene_file_path == MENU and current_scene.selected_index == 0, "Return must reopen First Meeting in the timeline")
-	current_scene.select_memory(1)
+	current_scene.select_memory(2)
 	current_scene.recall()
 	await create_timer(0.6).timeout
-	check(current_scene.scene_file_path == "res://scenes/world/memory_world.tscn", "Second entry must recall the retained demo world")
+	check(current_scene.scene_file_path == "res://scenes/world/memory_world.tscn", "Demo entry must recall the retained demo world")
 	check(current_scene.get_node("Memory").memory_id == &"foliage_demo", "Demo entry must load the seasonal content, not First Meeting")
 	if current_scene.has_node("MemoryArrival"):
 		await current_scene.get_node("MemoryArrival").finished

@@ -4,7 +4,7 @@ The machine now has a short, self-contained pinball run. The ball waits at the b
 
 ## Shared interaction controller
 
-At runtime the machine joins `memory_interactables` and implements `can_interact(actor)` / `try_activate(actor)`. The inherited `InteractionController` in `memory_world_base.tscn` discovers it, so the shared bottom-right button and **E** now launch pinball in First Meeting. The front control anchor, projected onto the floor, defines the interaction point. Busy, hidden, paused, and out-of-range machines are unavailable; completion makes the target available again on the next controller refresh.
+At runtime the machine joins `memory_interactables` and implements `can_interact(actor)` / `try_activate(actor)`. The inherited `InteractionController` in `memory_world_base.tscn` discovers it, so tapping or clicking the cabinet while in range launches pinball in First Meeting. The front control anchor, projected onto the floor, defines the interaction point. Busy, hidden, paused, and out-of-range machines are unavailable; completion makes the target available again on the next controller refresh.
 
 For scripted launches or authoring previews, the direct API remains available:
 
@@ -18,6 +18,8 @@ Alternatively emit `pinball.interaction_requested`. It is connected to the same 
 The Inspector's **Preview pinball run** button calls this hook directly, including in the editor. Loading a scene never starts a run automatically. Regenerating the component while playing cancels it, emits `interaction_cancelled`, and returns the ball to the launch chute without awarding a score.
 
 ## Controls
+
+The machine plays a spring/clack on launch, a soft metallic ping on real bumper hits, and a two-tone result cue when the run ends. Hits within one rendered frame are coalesced, with at most two overlapping bumper voices. **Sound → Sound Volume dB** sets the machine's level (default −10 dB); all cues use **SFX** and the memory fade. Regeneration cancels active sounds along with the run. Cues also work in the Inspector preview.
 
 - **Interaction Range:** world-space reach from the front controls; default 1.35 m.
 - **Play Duration:** maximum run time, 2–8 seconds; default 5. A lower catch can finish sooner.
@@ -36,6 +38,6 @@ godot --headless --path . --script tests/interact_button.gd
 godot --path . --windowed --resolution 1400x900 --script tests/pinball_render.gd
 ```
 
-Checks include collision containment across 24 seeded launches at 30/60/144 FPS and coarse 170 ms frames, upper-field reach, repeat requests, score bounds/variation, one completion event per run, safe cancellation, saved settings, mesh reuse, transformed placement, and actual rendered movement/display changes. The shared-controller integration check uses the real First Meeting player and HUD to exercise touch, E, front approach range, moving away before release, hidden targets, movement locks, busy-state dimming, and automatic reavailability.
+Checks include collision containment across 24 seeded launches at 30/60/144 FPS and coarse 170 ms frames, upper-field reach, repeat requests, score bounds/variation, one completion event per run, safe cancellation, saved settings, mesh reuse, transformed placement, and actual rendered movement/display changes. The shared-controller integration check uses the real First Meeting player and cabinet to exercise direct taps/clicks, front approach range, moving away before release, hidden targets, movement locks, busy-state dimming, and automatic reavailability.
 
 [Rendered machine](../../../../docs/pinball-interaction.png).

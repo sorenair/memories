@@ -86,8 +86,10 @@ func run() -> void:
 	check(ui.current_note.text == "Third", "Queue must retain cross-fragment ordering")
 	check(first.state == MemoryFragment.State.DECAYING and second.state == MemoryFragment.State.ACTIVE, "Only the fragment whose final page was dismissed should decay")
 	ui.advance_note()
-	check(ui.current_note.is_empty() and not ui._panel.visible, "Final close should dismiss note panel")
+	check(ui.current_note.is_empty(), "Final close must release the current note immediately")
 	check(second.state == MemoryFragment.State.DECAYING, "Closing the final note must start its fragment decay")
+	await create_timer(0.22).timeout
+	check(not ui._panel.visible, "Final close should dissolve and dismiss the note panel")
 	var occluded: MemoryFragment = load("res://components/interactables/fragments/memory_fragment.tscn").instantiate()
 	occluded.position = second.position
 	world.add_child(occluded)

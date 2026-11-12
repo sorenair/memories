@@ -2,8 +2,8 @@ extends SceneTree
 ## Run once with -- host and once with -- guest in a second process.
 const MENU := "res://UI/memory_lane/memory_lane.tscn"
 # Exercise each catalog entry with the same host / guest test.
-var memory_index: int = 1 if OS.get_cmdline_user_args().has("demo") else 0
-var world_path: String = "res://scenes/world/memory_world.tscn" if OS.get_cmdline_user_args().has("demo") else "res://scenes/world/first_meeting_world.tscn"
+var memory_index: int = 1 if OS.get_cmdline_user_args().has("stadium") else (2 if OS.get_cmdline_user_args().has("demo") else 0)
+var world_path: String = ["res://scenes/world/first_meeting_world.tscn", "res://scenes/world/snowy_stadium_world.tscn", "res://scenes/world/memory_world.tscn"][memory_index]
 const Session := preload("res://scripts/network/lan_session.gd")
 const RemoteMotion := preload("res://scripts/network/remote_motion.gd")
 var failures := 0
@@ -70,7 +70,7 @@ func run() -> void:
 	var address := controls._address as LineEdit
 	var join := controls._join as Button
 	var host_button := controls._host as Button
-	menu.select_memory(memory_index if host else 1 - memory_index)
+	menu.select_memory(memory_index if host else (memory_index + 1) % 3)
 	MemoryExplorer.preferred_avatar = MemoryExplorer.Avatar.VIVIAN if host else MemoryExplorer.Avatar.SOREN
 	if host:
 		host_button.pressed.emit()
@@ -100,7 +100,7 @@ func run() -> void:
 		quit(1)
 		return
 	var world := current_scene
-	check(world.get_node("Memory").memory_id == (&"first_meeting" if memory_index == 0 else &"foliage_demo"), "Both peers must load the host's actual memory content")
+	check(world.get_node("Memory").memory_id == [&"first_meeting", &"snowy_stadium", &"foliage_demo"][memory_index], "Both peers must load the host's actual memory content")
 	var local := world.get_node("Explorer") as MemoryExplorer
 	var local_avatar := MemoryExplorer.Avatar.VIVIAN if host else MemoryExplorer.Avatar.SOREN
 	var remote_avatar := MemoryExplorer.Avatar.SOREN if host else MemoryExplorer.Avatar.VIVIAN
@@ -118,8 +118,9 @@ func run() -> void:
 	check(remote.get_node("Visual/Vivian").visible == (remote_avatar == MemoryExplorer.Avatar.VIVIAN),
 		"Partner should render the selected character model")
 	check(world.get_node("CameraRig").target == local and not remote.is_physics_processing()
-		and remote.collision_layer == 0 and remote.movement_input == null,
-		"Only the local explorer should drive input, camera, and collisions")
+		and remote.collision_layer == 2 and remote.collision_mask == 0
+		and local.collision_mask & remote.collision_layer != 0 and remote.movement_input == null,
+		"Only the local explorer should drive input and camera; the partner must block local movement")
 	check(remote.global_position.distance_to(local.global_position) > 0.8, "Spawn points should be separate")
 
 	var local_start := local.global_position
@@ -128,7 +129,10 @@ func run() -> void:
 	# First Meeting has a real yard fence: host goes straight through its opening,
 	# guest walks along the sidewalk. The demo retains its original open routes.
 	var actions: Array[StringName] = []
-	if memory_index == 0:
+	if memory_index == 1:
+		local.movement_camera = null
+		actions.assign([&"move_left"] if host else [&"move_right"])
+	elif memory_index == 0:
 		actions.assign([&"move_forward", &"move_right"] if host else [&"move_back", &"move_right"])
 	else:
 		actions.assign([&"move_forward"] if host else [&"move_right"])
@@ -152,11 +156,12 @@ func run() -> void:
 	await create_timer(0.6).timeout
 	var local_travel := local.global_position - local_start
 	var remote_travel := remote.global_position - remote_start
-	var forward := Vector3.FORWARD if memory_index == 0 else Vector3(-1.0, 0.0, -1.0).normalized()
-	var right := Vector3.RIGHT if memory_index == 0 else Vector3(1.0, 0.0, -1.0).normalized()
-	check(local_travel.dot(forward if host else right) > 1.5,
+	var forward := Vector3.LEFT if memory_index == 1 else (Vector3.FORWARD if memory_index == 0 else Vector3(-1.0, 0.0, -1.0).normalized())
+	var right := Vector3.RIGHT if memory_index in [0, 1] else Vector3(1.0, 0.0, -1.0).normalized()
+	var minimum_travel := local.walk_speed * 0.9
+	check(local_travel.dot(forward if host else right) > minimum_travel,
 		"Local input should move the local player (%s)" % local_travel)
-	check(remote_travel.dot(right if host else forward) > 1.5,
+	check(remote_travel.dot(right if host else forward) > minimum_travel,
 		"The other peer should follow its own input (%s)" % remote_travel)
 	check(saw_walk and remote.animation_player.assigned_animation == MemoryExplorer.IDLE_ANIMATION,
 		"Remote animation must follow walking and stopping")
@@ -165,6 +170,40 @@ func run() -> void:
 		"Remote facing must track its motion")
 	check(render_moves > 35 and largest_step < 0.25,
 		"Remote motion must advance between the 20 Hz packets without snapshot-sized jumps (%d rendered moves, %.3f m max)" % [render_moves, largest_step])
+
+	# Real network contact on an isolated floor, away from memory scenery.
+	var contact_origin := Vector3(200, 0, 200)
+	var contact_floor := StaticBody3D.new()
+	var contact_shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(20, 0.5, 20)
+	contact_shape.shape = box
+	contact_floor.add_child(contact_shape)
+	contact_floor.position = contact_origin - Vector3.UP * 0.25
+	world.add_child(contact_floor)
+	local.movement_camera = null
+	local.global_position = contact_origin + Vector3.RIGHT * (0.0 if host else 2.0)
+	local.velocity = Vector3.ZERO
+	local.reset_physics_interpolation()
+	await create_timer(0.7).timeout
+	check(remote.position.distance_to(local.position) > 1.8, "Both peers must receive the separated contact positions")
+	if not host:
+		Input.action_press("move_left")
+	var minimum_contact_distance := INF
+	var contact_deadline := Time.get_ticks_msec() + 1900
+	while Time.get_ticks_msec() < contact_deadline:
+		await physics_frame
+		await process_frame
+		minimum_contact_distance = minf(minimum_contact_distance, local.position.distance_to(remote.position))
+	if not host:
+		Input.action_release("move_left")
+	await create_timer(0.3).timeout
+	check(minimum_contact_distance >= 0.44,
+		"Network-driven player contact must keep capsules separated (%.3f m)" % minimum_contact_distance)
+	check(local.position.distance_to(remote.position) < 0.65,
+		"The moving player must reach, but not pass through, the partner")
+	check(local.position.x < remote.position.x if host else local.position.x > remote.position.x,
+		"LAN players must remain on their original sides after walking into one another")
 
 	if not host:
 		world.get_node("Controls/ReturnToTimeline").return_to_timeline()
@@ -195,4 +234,8 @@ func run() -> void:
 			"Host should return to the timeline")
 		check_jitter_playback()
 	print("LAN %s checks: %s" % ["host" if host else "guest", "PASS" if failures == 0 else "FAIL"])
+	# The guest may end inside a live memory; release its audio before driver shutdown.
+	if is_instance_valid(current_scene):
+		current_scene.free()
+	await create_timer(0.35).timeout
 	quit(failures)

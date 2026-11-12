@@ -78,7 +78,7 @@ func run() -> void:
 	house.rebuild()
 	check(not house.has_node("BuildingCollision"), "Scenery-only houses must support disabling collision")
 	var study: Node = load("res://scenes/memories/first_meeting.tscn").instantiate()
-	check(study.has_node("Environment/House") and study.has_node("Environment/AutumnTree"), "First Meeting must include the house in its autumn composition")
+	check(study.has_node("Zones/House/Scenery/House") and study.has_node("Zones/House/Scenery/AutumnTree"), "First Meeting must include the house in its autumn composition")
 	study.free()
 	house.queue_free()
 	player.queue_free()

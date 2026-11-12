@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/memory_zone.gd" id="zone"]
+[ext_resource type="PackedScene" path="res://components/interactables/fragments/memory_fragment.tscn" id="fragment"]
+
+[node name="MemoryZone" type="Node3D"]
+script = ExtResource("zone")
+
+[node name="Scenery" type="Node3D" parent="."]
+
+[node name="Fragment" parent="." instance=ExtResource("fragment")]
+
+[node name="Ambience" type="AudioStreamPlayer" parent="."]
+bus = &"Ambience"

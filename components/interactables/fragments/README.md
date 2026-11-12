@@ -17,7 +17,7 @@ Tap / click the orb while an explorer is within **Interaction Range**. Release m
 | Once Per Visit | Consume after its final note is dismissed; resets when the scene is instantiated again |
 | Note Title / Notes | Plain-text heading and ordered note pages; empty pages are skipped |
 
-Notes from multiple fragments append to one queue. Continue advances; Close dismisses its final page. Walking remains available while a note is open. The panel supports native touch without mouse emulation and desktop mouse input. Return to the timeline discards the current scene's queue.
+Notes from multiple fragments append to one queue. The **arrow** advances; the **X** dismisses its final page. The rounded warm-white reading panel uses a quiet uppercase heading, centered serif prose, and an icon-only action with a generous touch target. It fades in with a small upward settle, softly introduces each page, and dissolves on close. It sits between the thumb controls in landscape and above them in portrait; long prose scrolls inside the panel, keeping the action visible. Native touch dragging scrolls text without advancing a page; Enter/Space also advances. Walking remains available while a note is open. Return to the timeline discards the current scene's queue.
 
 `activated(fragment)` and `note_requested(title, text)` signals let future content trigger journal entries, audio, or other small discoveries. `try_activate(explorer)` performs the same range and one-shot checks as tapping. A custom memory host needs one `fragment_interaction.tscn` Control under its CanvasLayer, an active Camera3D, and a CharacterBody3D explorer in the `explorers` group. Gameplay activation is runtime only; the orb also previews in the editor.
 
@@ -26,6 +26,8 @@ The visual uses two billboards: one translucent painted orb with up to 16 proced
 Demo instances: `Memory/Environment/SummerSpring/SummerFragment` (two note pages) and `Memory/Environment/Winter/WinterFragment` (one page). The notes are placeholder prose and can be edited directly in each instance's Inspector.
 
 Verification: `godot --headless --path . --script res://tests/fragments.gd` covers range, tapping, drag cancellation, one-shot use, multi-fragment queue ordering, native note-button touch, occlusion, and demo instance count.
+
+`godot --headless --path . --script res://tests/fragment_note_ui.gd` checks content-driven panel sizing, portrait bounds, long-note scrolling, cancelled action touches, keyboard advance, and a new note arriving during the closing fade.
 
 ## Proximity states and reading
 

@@ -8,6 +8,9 @@ signal interaction_cancelled
 signal score_awarded(score: int)
 const SCORE_PAINT = preload("res://components/activities/arcade/shared/arcade_score.gdshader")
 const IMPACT_PAINT = preload("res://components/activities/arcade/punching_bag/punch_impact.gdshader")
+const SOUNDS = preload("res://components/activities/arcade/shared/arcade_sounds.gd")
+const IMPACT_SOUND = preload("res://audio/samples/punch_impact.wav")
+const RESULT_SOUND = preload("res://audio/samples/arcade_result.wav")
 const PIVOT := Vector3(0,1.57,0.31)
 const IMPACT_POINT := Vector3(0,1.22,0.535)
 const WINDUP := 0.18
@@ -26,6 +29,12 @@ const IMPACT_TIME := 0.30
 		score_range = Vector2i(mini(limits.x,limits.y),maxi(limits.x,limits.y))
 @export_tool_button("Preview punch") var preview_punch = start_interaction
 
+@export_group("Sound")
+@export_range(-60.0, 0.0, 0.5, "suffix:dB") var sound_volume_db := -10.0:
+	set(value):
+		sound_volume_db = value
+		if is_instance_valid(_sounds): _sounds.set_volume_db(value)
+
 var last_score: int = 0
 var _playing := false
 var _elapsed := 0.0
@@ -40,6 +49,7 @@ var _bag: MeshInstance3D
 var _score_material: ShaderMaterial
 var _impact: MeshInstance3D
 var _impact_material: ShaderMaterial
+var _sounds: SOUNDS
 
 func _init() -> void:
 	cabinet_color = Color("a95e50")
@@ -61,6 +71,12 @@ func rebuild() -> void:
 	set_process(false)
 	super.rebuild()
 	if not is_inside_tree(): return
+	_sounds = SOUNDS.new()
+	_sounds.name = "Sounds"
+	_generated(_sounds)
+	_sounds.add_cue(&"Impact", IMPACT_SOUND)
+	_sounds.add_cue(&"Result", RESULT_SOUND, -4.0)
+	_sounds.set_volume_db(sound_volume_db)
 	var builder := GEOMETRY.new()
 	builder.s = SurfaceTool.new()
 	builder.s.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -109,6 +125,7 @@ func rebuild() -> void:
 	_reset_pose()
 	_displayed_score = -1
 	_set_score(last_score)
+	_sync_recall()
 	if cancelled: interaction_cancelled.emit()
 
 func can_interact(actor: Node3D) -> bool:
@@ -144,7 +161,10 @@ func is_playing() -> bool:
 
 func _process(delta: float) -> void:
 	if not _playing: return
+	var previous := _elapsed
 	_elapsed = minf(_run_duration,_elapsed+maxf(delta,0.0))
+	if previous < WINDUP and _elapsed >= WINDUP:
+		_sounds.play(&"Impact")
 	if _elapsed<WINDUP:
 		var anticipation := smoothstep(0.0,1.0,_elapsed/WINDUP)
 		_pivot.rotation = Vector3(-0.035*anticipation,0,-_direction*0.05*anticipation)
@@ -168,6 +188,7 @@ func _process(delta: float) -> void:
 		_reset_pose()
 		last_score = _pending_score
 		_set_score(last_score)
+		_sounds.play(&"Result")
 		score_awarded.emit(last_score)
 
 func _reset_pose() -> void:

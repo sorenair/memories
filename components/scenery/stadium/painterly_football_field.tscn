@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/stadium/painterly_football_field.gd" id="1"]
+[node name="FootballField" type="Node3D"]
+script = ExtResource("1")

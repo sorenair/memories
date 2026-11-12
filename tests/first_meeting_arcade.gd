@@ -41,14 +41,15 @@ func has_physical_blocker(node: Node) -> bool:
 func run() -> void:
 	var world: Node3D = load("res://scenes/world/first_meeting_world.tscn").instantiate()
 	root.add_child(world)
-	var env := world.get_node("Memory/Environment")
-	var arcade: Node3D = env.get_node("Arcade")
+	var env := world.get_node("Memory/Zones/Arcade/Scenery")
+	var arcade: Node3D = env.get_node("Machines")
+	var house: Node3D = world.get_node("Memory/Zones/House/Scenery/House")
 	var player: MemoryExplorer = world.get_node("Explorer")
 	player.movement_camera = null
 	await physics_frame
 	await physics_frame
-	var platform: MemoryPlatform = env.get_node("Platform")
-	check(arcade.position.x > 10 and env.has_node("House") and env.get_node("House").position.x < 2,
+	var platform: MemoryPlatform = world.get_node("Memory/Environment/Platform")
+	check(arcade.global_position.x > 10 and house.global_position.x < 2,
 		"The arcade glade must remain a distinct area beyond the original house")
 	check(not arcade.has_node("Room"), "The arcade must no longer contain the cutaway room")
 	check(arcade.has_node("Echoes"), "The arcade must contain its decorative memory echoes")

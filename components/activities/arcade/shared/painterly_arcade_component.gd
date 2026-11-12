@@ -45,11 +45,30 @@ const PAINT = preload("res://components/activities/arcade/shared/arcade_paint.gd
 @export_tool_button("Regenerate component") var regenerate = rebuild
 var _queued := false
 var _material: ShaderMaterial
+var _outline_mesh: Mesh
 var _collision_boxes: Array[Dictionary] = []
 var _anchors: Dictionary = {}
 
 func _kind() -> StringName:
 	return &"pinball"
+
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+@export_group("Recall")
+@export var recall_enabled: bool = false:
+	set(value):
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint():
+			_sync_recall()
+var _recall: Node
+
+func get_recall_controller() -> Node:
+	return _recall
+
+func _sync_recall() -> void:
+	_recall = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall)
+	if not recall_enabled and not Engine.is_editor_hint():
+		preload("res://components/effects/recall/assembled_recall.gd").restore_component(self)
+
 
 func _ready() -> void:
 	set_notify_transform(true)
@@ -83,6 +102,7 @@ func rebuild() -> void:
 			child.free()
 	var config := {"cabinet_color":cabinet_color,"accent_color":accent_color,"metal_color":metal_color,"cream_color":cream_color,"prop_seed":prop_seed}
 	var result: Dictionary = GEOMETRY.new().create(_kind(),config)
+	_outline_mesh = result.get("outline_mesh")
 	_collision_boxes.assign(result.colliders)
 	_material = ShaderMaterial.new()
 	_material.shader = PAINT
@@ -130,7 +150,12 @@ func rebuild() -> void:
 		mount.add_child(marker)
 		_anchors[StringName(key)] = marker
 	_generated(mount)
+	_build_details(result)
+	_sync_recall()
 	ground_exclusion_changed.emit()
+
+func _build_details(_result: Dictionary) -> void:
+	pass
 
 func _generated(node: Node) -> void:
 	node.set_meta(&"arcade_generated",true)
@@ -139,6 +164,17 @@ func _generated(node: Node) -> void:
 ## Stable, named placement hooks; these do not implement interaction or play sound.
 func get_anchor(id: StringName) -> Marker3D:
 	return _anchors.get(id) as Marker3D
+
+func get_interaction_outline_meshes() -> Array[MeshInstance3D]:
+	var result: Array[MeshInstance3D] = []
+	for path in ["Visual", "Ball", "BagSwing/LeatherBag"]:
+		var mesh := get_node_or_null(path) as MeshInstance3D
+		if mesh: result.append(mesh)
+	return result
+
+func get_interaction_outline_mesh(source: MeshInstance3D) -> Mesh:
+	# Outline the cabinet silhouette, not every painted decoration and bumper.
+	return _outline_mesh if source.name == &"Visual" and _outline_mesh else source.mesh
 
 func excludes_ground_point(world_point: Vector3) -> bool:
 	var point := to_local(world_point) / prop_scale

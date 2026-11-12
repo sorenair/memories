@@ -60,7 +60,7 @@ func run() -> void:
 	var world: Node3D=load("res://scenes/world/first_meeting_world.tscn").instantiate()
 	root.add_child(world)
 	world.get_node("Controls/FPSLabel").hide()
-	var bag: PainterlyPunchingBag=world.get_node("Memory/Environment/Arcade/PunchingBag")
+	var bag: PainterlyPunchingBag=world.get_node("Memory/Zones/Arcade/Scenery/Machines/PunchingBag")
 	var player: Node3D=world.get_node("Explorer")
 	player.global_position=bag.get_anchor(&"Punch").global_position
 	player.global_position.y=0.05

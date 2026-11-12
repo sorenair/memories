@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" uid="uid://dol7foyhx3gxg" path="res://scripts/memory_world.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://xkovxofvhuc5" path="res://scenes/player/explorer.tscn" id="2"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" path="res://UI/fragments/fragment_interaction.tscn" id="9"]
 [ext_resource type="Script" path="res://scripts/interaction/interaction_controller.gd" id="10"]
 [ext_resource type="PackedScene" path="res://UI/in_game/interact_button.tscn" id="11"]
+[ext_resource type="Script" path="res://components/guidance/brushstroke/guidance_controller.gd" id="guidance"]
 
 [sub_resource type="Environment" id="DreamEnvironment"]
 background_mode = 1
@@ -99,9 +100,16 @@ script = ExtResource("7")
 
 [node name="FragmentInteraction" parent="Controls" instance=ExtResource("9")]
 
-[node name="InteractButton" parent="Controls" node_paths=PackedStringArray("controller") instance=ExtResource("11")]
-controller = NodePath("../../InteractionController")
+[node name="InteractButton" parent="Controls" node_paths=PackedStringArray("input_gate") instance=ExtResource("11")]
+input_gate = NodePath("../../InteractionController")
 
 [node name="InteractionController" type="Node" parent="." node_paths=PackedStringArray("actor")]
 script = ExtResource("10")
 actor = NodePath("../Explorer")
+
+[node name="GuidanceController" type="Node" parent="." node_paths=PackedStringArray("actor", "memory", "button", "input_gate")]
+script = ExtResource("guidance")
+actor = NodePath("../Explorer")
+memory = NodePath("../Memory")
+button = NodePath("../Controls/InteractButton")
+input_gate = NodePath("../InteractionController")

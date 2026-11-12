@@ -1,6 +1,8 @@
 # Punching-bag interaction
 
-Approach the front of the machine and use the shared **Interact** circle or **E**. A brief anticipation leads into a painted impact, a small squash of the leather, and a damped swing around its mounting point. The amber counter climbs to a random three-digit strength score while the bag settles back to its resting pose. The machine stays unavailable until the sequence ends, then becomes available again automatically.
+A short leather thump plays once when the visual windup ends, followed by a soft two-tone cue when the strength result is finalized. **Sound → Sound Volume dB** sets the machine's level (default −10 dB); both cues use **SFX** and the memory fade. Busy/rejected presses add no sound, and regeneration stops active cues. Sounds also work in the Inspector preview.
+
+Approach the front of the machine and tap or click the machine. A brief anticipation leads into a painted impact, a small squash of the leather, and a damped swing around its mounting point. The amber counter climbs to a random three-digit strength score while the bag settles back to its resting pose. The machine stays unavailable until the sequence ends, then becomes available again automatically.
 
 The component registers in `memory_interactables` and implements `can_interact(actor)` / `try_activate(actor)`, matching pinball and the existing `InteractionController`. Range is measured in world space from the authored front approach at floor level. Hidden, paused, busy, and out-of-range machines are unavailable; the controller handles movement locks and modal UI gates.
 
@@ -34,6 +36,6 @@ godot --headless --path . --script tests/punching_bag_interaction.gd
 godot --path . --windowed --resolution 1400x900 --script tests/punching_bag_render.gd
 ```
 
-Checks cover real HUD touch/E activation, range and busy gates, reavailability, score variation and completion events, mesh reuse, cancellation, saved settings, frame-independent motion, maximum-swing clearance in both directions, and visible feedback in the Mobile renderer and First Meeting.
+Checks cover direct touch/click activation on the actual machine, range and busy gates, reavailability, score variation and completion events, mesh reuse, cancellation, saved settings, frame-independent motion, maximum-swing clearance in both directions, and visible feedback in the Mobile renderer and First Meeting.
 
 [Impact preview](../../../../docs/punching-bag-impact.png) · [Completed result](../../../../docs/punching-bag-interaction.png).

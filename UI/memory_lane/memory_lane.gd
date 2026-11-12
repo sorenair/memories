@@ -14,6 +14,7 @@ static var _has_entered: bool = false
 static var _last_selected_index: int = 0
 const MEMORIES: Array[Dictionary] = [
 	{"title": "First Meeting", "date": "NOV 12, 2025", "short": "NOV 12", "scene": "res://scenes/world/first_meeting_world.tscn"},
+	{"title": "Football in the snow", "date": "COLLEGE FOOTBALL", "short": "SNOW", "scene": "res://scenes/world/snowy_stadium_world.tscn"},
 	{"title": "Seasonal Demo", "date": "DEMO", "short": "DEMO", "scene": "res://scenes/world/memory_world.tscn"},
 ]
 

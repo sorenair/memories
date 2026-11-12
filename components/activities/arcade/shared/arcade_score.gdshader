@@ -21,7 +21,13 @@ int mask_for(int digit) {
 	if (digit==8) return 127;
 	return 111;
 }
+#include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
+void vertex() {
+	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+}
 void fragment() {
+	float assembly = assembly_clarity(assembly_position);
+	if (assembly <= 0.001) { discard; }
 	int count = clamp(digit_count,1,6);
 	int cell = int(clamp(floor(UV.x*float(count)),0.0,float(count-1)));
 	int divisor = 1;

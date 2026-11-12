@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.gd" id="1"]
+
+[node name="FragmentBrushstrokeGuide" type="Node3D"]
+script = ExtResource("1")
+stroke_width = 0.22
+opacity = 0.74
+glow_strength = 0.85
+trail_duration = 2.2
+motion_amount = 0.035
+surface_wash_enabled = false
+detail = 128

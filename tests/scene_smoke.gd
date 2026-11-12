@@ -28,13 +28,22 @@ func run() -> void:
 	check(world.get_node("Memory/Environment").has_node("SummerSpring/Meadow"), "Demo must contain the reusable meadow")
 	check(physics_interpolation, "Physics interpolation must be enabled for uncapped rendering")
 	check(world.get_node("CameraRig").physics_interpolation_mode == Node.PHYSICS_INTERPOLATION_MODE_OFF, "Render-frame camera must avoid double interpolation")
+	var crowd: PainterlyCrowd = world.get_node("Memory/Environment/SummerSpring/CrowdGathering")
+	check(crowd.generated_count == 12 and crowd._hitbox_shapes.size() == 12, "The demo gathering must contain twelve solid people")
+	# The starting clearing now deliberately contains solid crowd members. Exercise
+	# unblocked locomotion in the open autumn clearing instead of walking into them.
+	player.global_position = Vector3(0, 0.04, -1.2)
+	player.reset_physics_interpolation()
+	await physics_frame
+	await physics_frame
 	var start := player.position
 	Input.action_press("move_forward")
 	for frame in range(60):
 		await physics_frame
 	check(player.animation_player.current_animation == &"WALK", "Soren must play WALK while moving")
 	Input.action_release("move_forward")
-	check(player.position.distance_to(start) > 1.0, "Forward input must move the explorer")
+	check(player.position.distance_to(start) > player.walk_speed * 0.8,
+		"Forward input must move the explorer at its configured speed")
 	var camera := world.get_node("CameraRig/Camera3D") as Camera3D
 	var screen_forward := -camera.global_basis.z
 	screen_forward.y = 0.0

@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, fog_disabled;
+#include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
 uniform vec4 ochre_color : source_color = vec4(0.83, 0.56, 0.23, 1);
 uniform vec4 rust_color : source_color = vec4(0.57, 0.29, 0.15, 1);
 uniform vec4 cream_color : source_color = vec4(0.92, 0.79, 0.50, 1);
@@ -20,6 +21,7 @@ void vertex() {
 	paint = pigment * (0.95 + INSTANCE_CUSTOM.g * 0.045);
 	brush_uv = UV;
 	haze = smoothstep(25.0, 60.0, length((VIEW_MATRIX * vec4(origin, 1)).xyz));
+	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 void fragment() {
 	// Broad, softly edged pigment regions cross the whole leaf rather than
@@ -28,4 +30,7 @@ void fragment() {
 	float wash = smoothstep(-0.75, 0.75, brush_uv.y);
 	vec3 color = paint * (0.910 + fold * 0.110 + wash * 0.020);
 	ALBEDO = mix(color, vec3(0.87, 0.86, 0.77), haze);
+	float assembly = assembly_clarity(assembly_position);
+	if (assembly <= 0.001) { discard; }
+	ALBEDO = mix(vec3(0.94, 0.935, 0.89), ALBEDO, smoothstep(0.0, 1.0, assembly));
 }

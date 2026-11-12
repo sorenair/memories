@@ -9,6 +9,16 @@ const SNOW_SHADER = preload("res://components/groundcover/snow/snow_ground.gdsha
 	set(value):
 		patch_size = value.max(Vector2(1,1))
 		_request_rebuild()
+## Optional closed outline in local X/Z meters. Supports concave connected areas;
+## leave empty for the existing soft oval. May share a platform's Custom Outline.
+@export var custom_outline: Curve2D:
+	set(value):
+		if custom_outline and custom_outline.changed.is_connected(_request_rebuild):
+			custom_outline.changed.disconnect(_request_rebuild)
+		custom_outline = value
+		if custom_outline:
+			custom_outline.changed.connect(_request_rebuild)
+		_request_rebuild()
 @export var patch_seed: int = 419:
 	set(value):
 		patch_seed = value
@@ -71,6 +81,10 @@ const SNOW_SHADER = preload("res://components/groundcover/snow/snow_ground.gdsha
 		_request_rebuild()
 var _ground_regions: Array[Node3D] = []
 var _outline := PackedVector2Array()
+var _custom_shape := false
+var _shape_bounds := Rect2()
+var _field_size := Vector2(5.2,3.6)*1.12
+var _field_center := Vector2.ZERO
 var _noise: FastNoiseLite
 var _material: ShaderMaterial
 var _field: Image
@@ -111,6 +125,13 @@ func _radius(angle: float) -> float:
 	return 1.0+sin(angle*3.0+phase)*0.035+sin(angle*7.0-phase)*0.018
 
 func _radial(point: Vector2) -> float:
+	if _custom_shape:
+		# Only the outside perimeter melts down. Interior joins have no bank/seam.
+		var distance := INF
+		for index in _outline.size():
+			distance = minf(distance,point.distance_to(Geometry2D.get_closest_point_to_segment(
+				point,_outline[index],_outline[(index+1)%_outline.size()])))
+		return 1.0 + (-distance if Geometry2D.is_point_in_polygon(point,_outline) else distance)/0.75
 	var scaled := point/(patch_size*0.5)
 	return scaled.length()/_radius(atan2(scaled.y,scaled.x))
 
@@ -130,7 +151,7 @@ func _update_material() -> void:
 		return
 	for key in [&"snow_color",&"shade_color",&"edge_color",&"footprint_linger",&"footprint_fade_duration",&"footprint_depth"]:
 		_material.set_shader_parameter(key,get(key))
-	_material.set_shader_parameter("field_size",patch_size*1.12)
+	_material.set_shader_parameter("field_size",_field_size)
 	_material.set_shader_parameter("snow_time",_clock)
 
 func rebuild() -> void:
@@ -149,6 +170,7 @@ func rebuild() -> void:
 	_noise.seed = patch_seed
 	_noise.frequency = 0.85
 	_noise.fractal_octaves = 2
+	_prepare_shape()
 	var resolution: int = [128,256,512][footprint_quality]
 	_field = Image.create(resolution,resolution,false,Image.FORMAT_RGF)
 	_texture = ImageTexture.create_from_image(_field)
@@ -158,6 +180,40 @@ func rebuild() -> void:
 	_material.set_shader_parameter("field_texel",Vector2.ONE/resolution)
 	_update_material()
 	_bake_coverage()
+	var arrays := _custom_mesh_arrays() if _custom_shape else _oval_mesh_arrays()
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+	var visual := MeshInstance3D.new()
+	visual.name = "SnowSurface"
+	visual.mesh = mesh
+	visual.material_override = _material
+	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	visual.custom_aabb = mesh.get_aabb().grow(0.08)
+	visual.set_meta(&"generated_snow_patch",true)
+	add_child(visual,false,Node.INTERNAL_MODE_BACK)
+	ground_exclusion_changed.emit()
+
+func _prepare_shape() -> void:
+	_custom_shape = false
+	_outline.clear()
+	if custom_outline and custom_outline.point_count >= 3:
+		_outline = custom_outline.tessellate(5,4.0)
+		if _outline.size()>1 and _outline[0].is_equal_approx(_outline[-1]):
+			_outline.remove_at(_outline.size()-1)
+		_custom_shape = not Geometry2D.triangulate_polygon(_outline).is_empty()
+	_field_center = Vector2.ZERO
+	_field_size = patch_size*1.12
+	if _custom_shape:
+		_shape_bounds = Rect2(_outline[0],Vector2.ZERO)
+		for point in _outline:
+			_shape_bounds = _shape_bounds.expand(point)
+		_field_center = _shape_bounds.get_center()
+		_field_size = _shape_bounds.size.max(Vector2.ONE*0.1)*1.12
+
+func _point_to_uv(point: Vector2) -> Vector2:
+	return (point-_field_center)/_field_size+Vector2.ONE*0.5
+
+func _oval_mesh_arrays() -> Array:
 	var vertices := PackedVector3Array()
 	var normals := PackedVector3Array()
 	var uvs := PackedVector2Array()
@@ -198,17 +254,52 @@ func rebuild() -> void:
 	arrays[Mesh.ARRAY_TEX_UV] = uvs
 	arrays[Mesh.ARRAY_COLOR] = colors
 	arrays[Mesh.ARRAY_INDEX] = indices
-	var mesh := ArrayMesh.new()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
-	var visual := MeshInstance3D.new()
-	visual.name = "SnowSurface"
-	visual.mesh = mesh
-	visual.material_override = _material
-	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	visual.custom_aabb = mesh.get_aabb().grow(0.08)
-	visual.set_meta(&"generated_snow_patch",true)
-	add_child(visual,false,Node.INTERNAL_MODE_BACK)
-	ground_exclusion_changed.emit()
+	return arrays
+
+func _custom_mesh_arrays() -> Array:
+	# Clip a regular grid to the outline. A fan would bridge concave cutouts;
+	# giant outline triangles would lose the sculpted snow and foot impressions.
+	var arrays: Array = []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = PackedVector3Array()
+	arrays[Mesh.ARRAY_NORMAL] = PackedVector3Array()
+	arrays[Mesh.ARRAY_TEX_UV] = PackedVector2Array()
+	arrays[Mesh.ARRAY_COLOR] = PackedColorArray()
+	arrays[Mesh.ARRAY_INDEX] = PackedInt32Array()
+	var cache := {}
+	var spacing := maxf(_shape_bounds.size.x,_shape_bounds.size.y)/mesh_detail
+	var columns := maxi(1,ceili(_shape_bounds.size.x/spacing))
+	var rows := maxi(1,ceili(_shape_bounds.size.y/spacing))
+	var cell := _shape_bounds.size/Vector2(columns,rows)
+	for row in rows:
+		for column in columns:
+			var start := _shape_bounds.position+Vector2(column,row)*cell
+			var rectangle := PackedVector2Array([start,start+Vector2(cell.x,0),start+cell,start+Vector2(0,cell.y)])
+			for polygon in Geometry2D.intersect_polygons(_outline,rectangle):
+				var triangles := Geometry2D.triangulate_polygon(polygon)
+				for index in range(0,triangles.size(),3):
+					var a := polygon[triangles[index]]
+					var b := polygon[triangles[index+1]]
+					var c := polygon[triangles[index+2]]
+					if absf((b-a).cross(c-a))<0.00000001:
+						continue
+					# X/Z winding is reversed for an upward-facing mesh.
+					if (b-a).cross(c-a)>0.0:
+						var swap := b
+						b = c
+						c = swap
+					for point in [a,b,c]:
+						var key := Vector2i(roundi(point.x*100000.0),roundi(point.y*100000.0))
+						if not cache.has(key):
+							cache[key] = arrays[Mesh.ARRAY_VERTEX].size()
+							var dx := (_height(point+Vector2(0.025,0))-_height(point-Vector2(0.025,0)))/0.05
+							var dz := (_height(point+Vector2(0,0.025))-_height(point-Vector2(0,0.025)))/0.05
+							arrays[Mesh.ARRAY_VERTEX].append(Vector3(point.x,_height(point),point.y))
+							arrays[Mesh.ARRAY_NORMAL].append(Vector3(-dx,1,-dz).normalized())
+							arrays[Mesh.ARRAY_TEX_UV].append(_point_to_uv(point))
+							arrays[Mesh.ARRAY_COLOR].append(Color(clampf(_radial(point),0,1),0,0,1))
+						arrays[Mesh.ARRAY_INDEX].append(cache[key])
+	return arrays
 
 ## Stamp an individual shoe at a world position; also usable by future AI/animation events.
 func stamp_footprint(world_point: Vector3,world_forward: Vector3) -> bool:
@@ -224,13 +315,13 @@ func stamp_footprint(world_point: Vector3,world_forward: Vector3) -> bool:
 		return false
 	var side := Vector2(forward.y,-forward.x)
 	var size := _field.get_width()
-	var pixel_center := (point/(patch_size*1.12)+Vector2.ONE*0.5)*size
+	var pixel_center := _point_to_uv(point)*size
 	var reach := footprint_size.length()*0.6
-	var pixel_radius := Vector2.ONE*reach/(patch_size*1.12)*size+Vector2.ONE*2.0
+	var pixel_radius := Vector2.ONE*reach/_field_size*size+Vector2.ONE*2.0
 	var changed := false
 	for y in range(maxi(0,int(pixel_center.y-pixel_radius.y)),mini(size,int(pixel_center.y+pixel_radius.y)+1)):
 		for x in range(maxi(0,int(pixel_center.x-pixel_radius.x)),mini(size,int(pixel_center.x+pixel_radius.x)+1)):
-			var p := (Vector2(x+0.5,y+0.5)/size-Vector2.ONE*0.5)*(patch_size*1.12)-point
+			var p := (Vector2(x+0.5,y+0.5)/size-Vector2.ONE*0.5)*_field_size+_field_center-point
 			var u := p.dot(side)/(footprint_size.x*0.5)
 			var v := p.dot(forward)/(footprint_size.y*0.5)
 			# A broad toe and narrower heel make shoe impressions rather than circles.
@@ -339,7 +430,7 @@ func _bake_coverage() -> void:
 	image.fill(Color.WHITE)
 	for y in range(resolution):
 		for x in range(resolution):
-			var point := (Vector2(x+0.5,y+0.5)/resolution-Vector2.ONE*0.5)*patch_size*1.12
+			var point := (Vector2(x+0.5,y+0.5)/resolution-Vector2.ONE*0.5)*_field_size+_field_center
 			var excluded := false
 			for polygon in polygons:
 				if Geometry2D.is_point_in_polygon(point,polygon):

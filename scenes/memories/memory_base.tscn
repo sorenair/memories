@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/memory.gd" id="1"]
+[ext_resource type="PackedScene" path="res://audio/memory_audio.tscn" id="audio"]
 
 [node name="Memory" type="Node3D"]
 script = ExtResource("1")
@@ -17,3 +18,7 @@ position = Vector3(0, 0, -20)
 [node name="Interactions" type="Node3D" parent="."]
 
 [node name="SignatureInteraction" type="Node3D" parent="."]
+
+[node name="Audio" parent="." instance=ExtResource("audio")]
+
+[node name="Zones" type="Node3D" parent="."]

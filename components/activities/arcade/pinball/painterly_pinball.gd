@@ -9,6 +9,10 @@ signal score_awarded(score: int)
 const LAYOUT = preload("res://components/activities/arcade/pinball/pinball_layout.gd")
 const SIMULATION = preload("res://components/activities/arcade/pinball/pinball_simulation.gd")
 const SCORE_PAINT = preload("res://components/activities/arcade/shared/arcade_score.gdshader")
+const SOUNDS = preload("res://components/activities/arcade/shared/arcade_sounds.gd")
+const LAUNCH_SOUND = preload("res://audio/samples/pinball_launch.wav")
+const BUMPER_SOUND = preload("res://audio/samples/pinball_bumper.wav")
+const RESULT_SOUND = preload("res://audio/samples/arcade_result.wav")
 
 @export_group("Pinball Interaction")
 ## World-space range measured from the floor in front of the play controls.
@@ -25,6 +29,12 @@ const SCORE_PAINT = preload("res://components/activities/arcade/shared/arcade_sc
 ## Explicit authoring preview; it never starts automatically on load.
 @export_tool_button("Preview pinball run") var preview_pinball = start_interaction
 
+@export_group("Sound")
+@export_range(-60.0, 0.0, 0.5, "suffix:dB") var sound_volume_db := -10.0:
+	set(value):
+		sound_volume_db = value
+		if is_instance_valid(_sounds): _sounds.set_volume_db(value)
+
 var last_score: int = 0
 var _playing := false
 var _pending_score := 0
@@ -34,6 +44,7 @@ var _simulation: RefCounted = SIMULATION.new()
 var _ball: MeshInstance3D
 var _score_display: MeshInstance3D
 var _score_material: ShaderMaterial
+var _sounds: SOUNDS
 
 func _kind() -> StringName:
 	return &"pinball"
@@ -53,6 +64,13 @@ func rebuild() -> void:
 	set_process(false)
 	super.rebuild()
 	if not is_inside_tree(): return
+	_sounds = SOUNDS.new()
+	_sounds.name = "Sounds"
+	_generated(_sounds)
+	_sounds.add_cue(&"Launch", LAUNCH_SOUND)
+	_sounds.add_cue(&"Bumper", BUMPER_SOUND, -3.0, 2)
+	_sounds.add_cue(&"Result", RESULT_SOUND, -4.0)
+	_sounds.set_volume_db(sound_volume_db)
 	# The cabinet remains a single static batch; only this small painted ball moves.
 	var builder := GEOMETRY.new()
 	builder.s = SurfaceTool.new()
@@ -80,6 +98,7 @@ func rebuild() -> void:
 	_generated(_score_display)
 	_place_ball(LAYOUT.HOME)
 	_set_score(last_score)
+	_sync_recall()
 	if cancelled: interaction_cancelled.emit()
 
 ## Side-effect-free availability contract used by InteractionController.
@@ -97,7 +116,7 @@ func try_activate(actor: Node3D) -> bool:
 	if not can_interact(actor): return false
 	return start_interaction()
 
-## Direct authoring/scripted launch; the shared button uses try_activate(actor).
+## Direct authoring/scripted launch; direct component taps use try_activate(actor).
 
 ## Returns false when a run is already active or the component is not ready.
 func start_interaction() -> bool:
@@ -110,6 +129,7 @@ func start_interaction() -> bool:
 	_place_ball(LAYOUT.HOME)
 	_set_score(0)
 	set_process(true)
+	_sounds.play(&"Launch")
 	interaction_started.emit()
 	return true
 
@@ -127,12 +147,15 @@ func _process(delta: float) -> void:
 	_place_ball(point)
 	if _shown_hits!=_simulation.bumper_hits:
 		_shown_hits = _simulation.bumper_hits
+		# Coalesce hits within one rendered frame rather than burst after a long frame.
+		_sounds.play(&"Bumper", 1.0 + (_shown_hits % 3) * 0.04)
 		_set_score(int(_pending_score*minf(0.9,_shown_hits*0.14)))
 	if not _simulation.running:
 		_playing = false
 		set_process(false)
 		last_score = _pending_score
 		_set_score(last_score)
+		_sounds.play(&"Result")
 		# Completion is one event, after the final score and idle state are ready.
 		score_awarded.emit(last_score)
 

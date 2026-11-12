@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://scenes/memories/snowy_stadium/stadium_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+
+[node name="Memory" instance=ExtResource("base")]
+memory_id = &"snowy_stadium"
+display_name = "Football in the snow"
+
+[node name="Entry" parent="." index="0"]
+position = Vector3(-6, 10.54, 22.1)
+
+[node name="Exit" parent="." index="1"]
+position = Vector3(7.5, 10.54, 11.5)
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Stadium" parent="Zones" instance=ExtResource("zone")]
+position = Vector3(0, 10.5, 12)

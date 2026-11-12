@@ -1,0 +1,257 @@
+[gd_scene load_steps=16 format=3]
+
+[ext_resource type="PackedScene" path="res://components/buildings/house/painterly_house.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://1t6fd5lxbf2u" path="res://components/foliage/painterly_tree.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://components/foliage/vines/painterly_wall_vine.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://components/foliage/leaf_litter/painterly_leaf_litter.tscn" id="litter"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="AudioStream" uid="uid://bkp2h00cuatg4" path="res://audio/samples/autumn_wind.wav" id="wind"]
+[ext_resource type="PackedScene" path="res://components/scenery/fences/painterly_yard_fence.tscn" id="yard_fence"]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone_base"]
+
+[ext_resource type="Script" uid="uid://dfpbtjuh46a44" path="res://components/foliage/grass_palette.gd" id="7_61ur4"]
+
+[sub_resource type="Resource" id="Resource_fc45v"]
+script = ExtResource("7_61ur4")
+root_color = Color(0.345098, 0.247059, 0.211765, 1)
+shade_color = Color(0.65098, 0.356863, 0.207843, 1)
+leaf_color = Color(0.862745, 0.596078, 0.247059, 1)
+sun_color = Color(0.952941, 0.823529, 0.462745, 1)
+
+[sub_resource type="Resource" id="Resource_fkpku"]
+script = ExtResource("7_61ur4")
+root_color = Color(0.345098, 0.247059, 0.211765, 1)
+shade_color = Color(0.65098, 0.356863, 0.207843, 1)
+leaf_color = Color(0.862745, 0.596078, 0.247059, 1)
+sun_color = Color(0.952941, 0.823529, 0.462745, 1)
+
+[sub_resource type="Resource" id="Resource_jwnl6"]
+script = ExtResource("7_61ur4")
+root_color = Color(0.298039, 0.188235, 0.27451, 1)
+shade_color = Color(0.568627, 0.247059, 0.294118, 1)
+leaf_color = Color(0.8, 0.396078, 0.298039, 1)
+sun_color = Color(0.952941, 0.705882, 0.462745, 1)
+
+[sub_resource type="Resource" id="Resource_t4ome"]
+script = ExtResource("7_61ur4")
+root_color = Color(0.345098, 0.247059, 0.211765, 1)
+shade_color = Color(0.65098, 0.356863, 0.207843, 1)
+leaf_color = Color(0.862745, 0.596078, 0.247059, 1)
+sun_color = Color(0.952941, 0.823529, 0.462745, 1)
+
+[node name="HouseZone" instance=ExtResource("zone_base")]
+zone_id = &"house"
+display_name = "Outside the house"
+ambience_stream = ExtResource("wind")
+ambience_size = Vector2(14, 18)
+
+[node name="House" parent="Scenery" instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, -1)
+recall_enabled = true
+
+[node name="Meadow" parent="Scenery" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+recall_enabled = true
+palette_preset = 3
+patch_size = Vector2(13.5, 11)
+patch_seed = 212
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 38.0
+grass_height = 0.18
+ground_leaf_scale = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../House"), NodePath("../FrontWalk"), NodePath("../Sidewalk")])
+
+[node name="AutumnTree" parent="Scenery" instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9, 0, 3.45)
+recall_enabled = true
+palette_preset = 3
+tree_seed = 151
+tree_height = 5.4
+crown_width = 5.8
+trunk_radius = 0.23
+branch_count = 5
+leaf_sprays_per_cluster = 125
+falling_leaf_count = 28
+falling_leaf_rate = 1.1
+
+[node name="FrontLeftBush" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, 2.1)
+recall_enabled = true
+palette_preset = 3
+bush_seed = 45
+footprint = Vector2(2, 1.25)
+bush_height = 0.62
+sprays_per_mass = 78
+
+[node name="FrontRightBush" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 0, 2.3)
+recall_enabled = true
+palette_preset = 4
+bush_seed = 129
+footprint = Vector2(1.85, 1.15)
+bush_height = 0.6
+sprays_per_mass = 78
+
+[node name="RightSideBush" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7, 0, -0.6)
+recall_enabled = true
+palette_preset = 3
+bush_seed = 65
+footprint = Vector2(1.2, 2.5)
+bush_height = 0.7
+sprays_per_mass = 78
+
+[node name="DoorVineLeft" parent="Scenery" instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 0.45, 1.93)
+vine_seed = 12
+footprint = Vector2(0.45, 2.1)
+branch_count = 3
+leaf_spray_count = 135
+leaf_size = 0.11
+coverage_spread = 0.15
+palette_preset = 3
+palette = SubResource("Resource_fc45v")
+recall_enabled = true
+
+[node name="DoorVineRight" parent="Scenery" instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.32, 0.45, 1.93)
+vine_seed = 54
+footprint = Vector2(0.45, 2.1)
+branch_count = 3
+leaf_spray_count = 135
+leaf_size = 0.11
+coverage_spread = 0.15
+palette_preset = 3
+palette = SubResource("Resource_fkpku")
+recall_enabled = true
+
+[node name="FrontWalk" parent="Scenery" instance=ExtResource("paving")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.022, 4.4)
+footprint = Vector2(1.65, 3.3)
+slab_length = 1.1
+paving_seed = 31
+end_fade = Vector2(0, 0.55)
+edge_softness = 0.13
+
+[node name="Sidewalk" parent="Scenery" instance=ExtResource("paving")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.29041, 0.026, 6.4)
+footprint = Vector2(1.6, 10)
+
+[node name="FrontFenceLeft" parent="Scenery" instance=ExtResource("yard_fence")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.475, 0, 5.25)
+length = 5.85
+recall_enabled = true
+
+[node name="FrontFenceRight" parent="Scenery" instance=ExtResource("yard_fence")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.075, 0, 5.25)
+length = 4.65
+recall_enabled = true
+
+[node name="SideFence" parent="Scenery" instance=ExtResource("yard_fence")]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 6.4, 0, 1.125)
+length = 8.25
+recall_enabled = true
+
+[node name="DoorVineArch" parent="Scenery" instance=ExtResource("6")]
+transform = Transform3D(7.54979e-08, 1, 0, -1, 7.54979e-08, 0, 0, 0, 1, -0.12, 2.66, 1.96)
+vine_seed = 189
+footprint = Vector2(0.3, 1.5)
+branch_count = 3
+leaf_spray_count = 90
+leaf_size = 0.105
+coverage_spread = 0.11
+palette_preset = 4
+palette = SubResource("Resource_jwnl6")
+recall_enabled = true
+
+[node name="CornerCreeper" parent="Scenery" instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1, 0.03, 1.96)
+vine_seed = 89
+footprint = Vector2(0.42, 1.1)
+branch_count = 3
+leaf_spray_count = 75
+leaf_size = 0.1
+coverage_spread = 0.1
+palette_preset = 3
+palette = SubResource("Resource_t4ome")
+recall_enabled = true
+
+[node name="TreePocketBush" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4, 0, 2.9)
+recall_enabled = true
+palette_preset = 3
+bush_seed = 92
+footprint = Vector2(1.1, 0.9)
+bush_height = 0.4
+sprays_per_mass = 78
+
+[node name="SideGardenBush" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 0, -2.4)
+recall_enabled = true
+palette_preset = 4
+bush_seed = 49
+footprint = Vector2(1, 1.6)
+bush_height = 0.55
+sprays_per_mass = 78
+
+[node name="SidewalkLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.052, 6.4)
+leaf_seed = 76
+leaf_count = 160
+footprint = Vector2(13.1, 1.45)
+size_range = Vector2(0.045, 0.11)
+edge_bias = 0.55
+flutter_strength = 0.025
+recall_enabled = true
+
+[node name="WalkLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.05, 4.4)
+leaf_seed = 31
+footprint = Vector2(1.5, 3)
+size_range = Vector2(0.045, 0.1)
+edge_bias = 0.75
+flutter_strength = 0.025
+recall_enabled = true
+
+[node name="TopStepLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.463, 2.075)
+leaf_seed = 19
+leaf_count = 12
+footprint = Vector2(1.45, 0.25)
+size_range = Vector2(0.04, 0.08)
+recall_enabled = true
+
+[node name="MiddleStepLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.313, 2.425)
+leaf_seed = 22
+leaf_count = 10
+footprint = Vector2(1.45, 0.25)
+size_range = Vector2(0.04, 0.08)
+recall_enabled = true
+
+[node name="BottomStepLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.163, 2.775)
+leaf_seed = 36
+leaf_count = 14
+footprint = Vector2(1.45, 0.25)
+size_range = Vector2(0.04, 0.08)
+recall_enabled = true
+
+[node name="RoofEdgeLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 0.859901, -0.51046, 0, 0.51046, 0.859901, 0.6, 3.612, 1.65)
+leaf_seed = 102
+leaf_count = 55
+footprint = Vector2(5.5, 0.75)
+size_range = Vector2(0.045, 0.09)
+flutter_strength = 0.015
+recall_enabled = true
+
+[node name="Fragment" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.04, 3.6)
+fragment_seed = 12
+note_title = "Outside the house"
+notes = Array[String](["Placeholder: Write about meeting outside the house here."])
+

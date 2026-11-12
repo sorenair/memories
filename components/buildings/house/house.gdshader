@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, fog_disabled;
+#include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
 uniform float pigment_strength = 0.65;
 uniform float paint_phase = 0.0;
 uniform float wall_top = 3.25;
@@ -19,6 +20,7 @@ void vertex() {
 	paint_kind = UV2.x;
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	haze = smoothstep(30.0, 70.0, length((VIEW_MATRIX * vec4(world, 1.0)).xyz));
+	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 void fragment() {
 	vec3 p = paint_position;
@@ -37,4 +39,8 @@ void fragment() {
 	color *= 1.0 + roof * brush * pigment_strength * 0.018;
 	ALBEDO = mix(color, vec3(0.87, 0.86, 0.77), haze);
 	EMISSION = color * glow * 0.18 * (1.0 - haze);
+	float assembly = assembly_clarity(assembly_position);
+	if (assembly <= 0.001) { discard; }
+	ALBEDO = mix(vec3(0.94, 0.935, 0.89), ALBEDO, smoothstep(0.0, 1.0, assembly));
+	EMISSION *= assembly;
 }

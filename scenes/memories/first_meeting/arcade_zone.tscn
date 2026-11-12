@@ -1,0 +1,223 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" uid="uid://1t6fd5lxbf2u" path="res://components/foliage/painterly_tree.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://components/activities/arcade/punching_bag/painterly_punching_bag.tscn" id="arcade_bag"]
+[ext_resource type="PackedScene" path="res://components/activities/arcade/mechanical_band/painterly_mechanical_band.tscn" id="arcade_band"]
+[ext_resource type="PackedScene" path="res://components/activities/arcade/echoes/painterly_arcade_echoes.tscn" id="arcade_echoes"]
+[ext_resource type="PackedScene" path="res://components/activities/arcade/pinball/painterly_pinball.tscn" id="arcade_pinball"]
+[ext_resource type="PackedScene" path="res://components/foliage/leaf_litter/painterly_leaf_litter.tscn" id="litter"]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone_base"]
+
+[ext_resource type="AudioStream" path="res://audio/samples/arcade_hum.wav" id="arcade_hum"]
+
+[node name="ArcadeZone" instance=ExtResource("zone_base")]
+zone_id = &"arcade"
+display_name = "At the arcade"
+ambience_stream = ExtResource("arcade_hum")
+ambience_volume_db = -24.0
+ambience_size = Vector2(13, 14)
+
+[node name="Machines" type="Node3D" parent="Scenery"]
+
+[node name="Pinball" parent="Scenery/Machines" instance=ExtResource("arcade_pinball")]
+transform = Transform3D(0.992809, 0, -0.119712, 0, 1, 0, 0.119712, 0, 0.992809, -3.1, 0, -0.7)
+prop_scale = 0.85
+recall_enabled = true
+
+[node name="PunchingBag" parent="Scenery/Machines" instance=ExtResource("arcade_bag")]
+transform = Transform3D(0.995004, 0, 0.0998334, 0, 1, 0, -0.0998334, 0, 0.995004, -0.3, 0, -2.9)
+prop_scale = 0.85
+cabinet_color = Color(0.662745, 0.368627, 0.313726, 1)
+accent_color = Color(0.576471, 0.333333, 0.282353, 1)
+recall_enabled = true
+
+[node name="MechanicalBand" parent="Scenery/Machines" instance=ExtResource("arcade_band")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 2.3, 0, 0.3)
+prop_scale = 0.65
+recall_enabled = true
+
+[node name="Echoes" parent="Scenery/Machines" instance=ExtResource("arcade_echoes")]
+
+[node name="TransitionGrass" parent="Scenery" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2, 0, 1.4)
+recall_enabled = true
+palette_preset = 3
+patch_size = Vector2(2.8, 5.7)
+patch_seed = 79
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 32.0
+grass_height = 0.16
+ground_leaf_scale = 0.64
+
+[node name="TransitionTree" parent="Scenery" instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.15, 0, 0)
+recall_enabled = true
+palette_preset = 3
+tree_seed = 302
+tree_height = 3.5
+crown_width = 2.7
+trunk_radius = 0.13
+branch_count = 4
+leaf_sprays_per_cluster = 90
+falling_leaf_count = 10
+falling_leaf_rate = 0.5
+
+[node name="PinballGrass" parent="Scenery" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, -0.1)
+recall_enabled = true
+palette_preset = 3
+patch_size = Vector2(3.4, 3.6)
+patch_seed = 821
+tufts_per_square_meter = 7.0
+leaves_per_square_meter = 22.0
+grass_height = 0.14
+ground_leaf_scale = 0.6
+ground_exclusions = Array[NodePath]([NodePath("../Machines/Pinball")])
+
+[node name="PunchGrass" parent="Scenery" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0, -3.2)
+recall_enabled = true
+palette_preset = 3
+patch_size = Vector2(3, 2.6)
+patch_seed = 852
+tufts_per_square_meter = 7.0
+leaves_per_square_meter = 20.0
+grass_height = 0.14
+ground_leaf_scale = 0.6
+ground_exclusions = Array[NodePath]([NodePath("../Machines/PunchingBag")])
+
+[node name="BandBackGrass" parent="Scenery" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0, -0.9)
+recall_enabled = true
+palette_preset = 3
+patch_size = Vector2(2.5, 2.3)
+patch_seed = 895
+tufts_per_square_meter = 7.0
+leaves_per_square_meter = 20.0
+grass_height = 0.14
+ground_leaf_scale = 0.6
+ground_exclusions = Array[NodePath]([NodePath("../Machines/MechanicalBand")])
+
+[node name="BandSideGrass" parent="Scenery" instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0.7)
+recall_enabled = true
+palette_preset = 3
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 808
+tufts_per_square_meter = 7.0
+leaves_per_square_meter = 20.0
+grass_height = 0.14
+ground_leaf_scale = 0.6
+ground_exclusions = Array[NodePath]([NodePath("../Machines/MechanicalBand")])
+
+[node name="PinballBirch" parent="Scenery" instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7, 0, -3)
+recall_enabled = true
+palette_preset = 3
+tree_type = 2
+tree_seed = 701
+tree_height = 3.1
+crown_width = 2.5
+trunk_radius = 0.1
+branch_count = 4
+leaf_sprays_per_cluster = 78
+falling_leaf_count = 12
+falling_leaf_rate = 0.45
+
+[node name="BandBirch" parent="Scenery" instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9, 0, -2.9)
+recall_enabled = true
+palette_preset = 3
+tree_type = 2
+tree_seed = 707
+tree_height = 3.35
+crown_width = 2.8
+trunk_radius = 0.11
+branch_count = 4
+leaf_sprays_per_cluster = 78
+falling_leaf_count = 12
+falling_leaf_rate = 0.45
+
+[node name="PinballPocket" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3, 0, -1)
+recall_enabled = true
+palette_preset = 3
+bush_seed = 419
+footprint = Vector2(1.7, 1.5)
+bush_height = 0.46
+sprays_per_mass = 65
+
+[node name="PunchPocket" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, -4)
+recall_enabled = true
+palette_preset = 3
+bush_seed = 427
+footprint = Vector2(2, 1.2)
+bush_height = 0.45
+sprays_per_mass = 65
+
+[node name="PunchRedAccent" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0, -2.7)
+recall_enabled = true
+palette_preset = 4
+bush_seed = 428
+footprint = Vector2(1, 0.9)
+bush_height = 0.32
+sprays_per_mass = 60
+
+[node name="BandPocket" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9, 0, 0.7)
+recall_enabled = true
+palette_preset = 4
+bush_seed = 429
+footprint = Vector2(1.1, 1.5)
+bush_height = 0.46
+sprays_per_mass = 65
+
+[node name="ForegroundAccent" parent="Scenery" instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 0, 3.7)
+recall_enabled = true
+palette_preset = 3
+bush_seed = 469
+footprint = Vector2(1.1, 0.8)
+bush_height = 0.28
+sprays_per_mass = 60
+
+[node name="TrailLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3, 0.012, 4)
+leaf_seed = 913
+leaf_count = 50
+footprint = Vector2(4.5, 2.8)
+size_range = Vector2(0.04, 0.09)
+edge_bias = 0.25
+flutter_strength = 0.015
+recall_enabled = true
+
+[node name="PinballLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 0.014, 0)
+leaf_seed = 914
+leaf_count = 40
+footprint = Vector2(3.1, 2.8)
+size_range = Vector2(0.04, 0.085)
+edge_bias = 0.5
+flutter_strength = 0.012
+recall_enabled = true
+
+[node name="BandLeaves" parent="Scenery" instance=ExtResource("litter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.014, 0.6)
+leaf_seed = 915
+leaf_count = 30
+footprint = Vector2(4.2, 2.8)
+size_range = Vector2(0.04, 0.085)
+edge_bias = 0.7
+flutter_strength = 0.012
+recall_enabled = true
+
+[node name="Fragment" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3667, 0.04, -1.1)
+fragment_seed = 25
+note_title = "At the arcade"
+notes = Array[String](["Placeholder: Write about playing arcade games together here."])
+

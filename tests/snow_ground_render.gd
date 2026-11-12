@@ -24,6 +24,13 @@ func run() -> void:
 	env.environment.background_color=Color(0.94,0.935,0.89)
 	scene.add_child(env)
 	var patch: PainterlySnowPatch=load("res://components/groundcover/snow/painterly_snow_patch.tscn").instantiate()
+	var custom := "--outline" in OS.get_cmdline_user_args()
+	var offset := Vector3(3,0,2) if custom else Vector3.ZERO
+	if custom:
+		var outline := Curve2D.new()
+		for point in [Vector2(-2.6,-1.8),Vector2(2.6,-1.8),Vector2(2.6,0.4),Vector2(0.5,0.4),Vector2(0.5,1.8),Vector2(-2.6,1.8)]:
+			outline.add_point(point+Vector2(offset.x,offset.z))
+		patch.custom_outline=outline
 	patch.track_footprints=false
 	patch.footprint_linger=0.6
 	patch.footprint_fade_duration=0.5
@@ -32,12 +39,12 @@ func run() -> void:
 	camera.projection=Camera3D.PROJECTION_ORTHOGONAL
 	camera.size=6.0
 	scene.add_child(camera)
-	camera.position=Vector3(5,7,6)
-	camera.look_at(Vector3.ZERO)
+	camera.position=Vector3(5,7,6)+offset
+	camera.look_at(offset)
 	await create_timer(0.2).timeout
 	var blank: Image=await snapshot()
 	for index in range(7):
-		patch.stamp_footprint(Vector3(-1.2+index*0.38,0,0.1 if index%2==0 else -0.1),Vector3.RIGHT)
+		patch.stamp_footprint(offset+Vector3(-1.2+index*0.38,0,0.1 if index%2==0 else -0.1),Vector3.RIGHT)
 	patch._flush_field()
 	var stamped: Image=await snapshot()
 	await create_timer(0.3).timeout
@@ -45,7 +52,7 @@ func run() -> void:
 	await create_timer(1.0).timeout
 	var faded: Image=await snapshot()
 	patch._clock=300.0
-	patch.stamp_footprint(Vector3.ZERO,Vector3.RIGHT)
+	patch.stamp_footprint(offset,Vector3.RIGHT)
 	patch._flush_field()
 	await physics_frame
 	var late: Image=await snapshot()
@@ -53,5 +60,5 @@ func run() -> void:
 	var hold:=changes(stamped,lingering)
 	var restored:=changes(blank,faded)
 	var late_visible:=changes(blank,late)
-	print("Snow ground render | prints: ",visible," | linger change: ",hold," | after fade: ",restored," | late timestamp: ",late_visible)
+	print("Snow ground render (", "outline" if custom else "oval", ") | prints: ",visible," | linger change: ",hold," | after fade: ",restored," | late timestamp: ",late_visible)
 	quit(0 if visible>200 and hold==0 and restored==0 and late_visible>30 else 1)

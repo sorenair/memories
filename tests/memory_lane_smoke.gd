@@ -28,7 +28,7 @@ func run() -> void:
 	current_scene = menu
 	await process_frame
 	check(menu.selected_index == 0, "First Meeting should be selected initially")
-	check(menu.MEMORIES.size() == 2, "Timeline must contain exactly First Meeting and Seasonal Demo")
+	check(menu.MEMORIES.size() == 3, "Timeline must contain First Meeting, snowy football, and Seasonal Demo")
 	check(menu.MEMORIES[0].title == "First Meeting" and menu.MEMORIES[0].date == "NOV 12, 2025", "First memory must have the requested title and date")
 	menu.set_process(false)
 	menu._entrance_time = 0.0
@@ -59,7 +59,7 @@ func run() -> void:
 	check(menu._pointer == 0, "A second finger must not release the active swipe")
 	touch(menu, drag.position, false)
 	check(menu.selected_index == 1, "A left swipe should select the next memory")
-	check(menu.get_node("MemoryTitle").text == "Seasonal Demo", "Selection must update the title")
+	check(menu.get_node("MemoryTitle").text == "Football in the snow", "Selection must update the title")
 	for frame in range(80):
 		menu._process(1.0 / 60.0)
 	check(is_equal_approx(menu._position, 1.0), "Swipe release should settle the mark at the fixed selection point")
@@ -78,7 +78,8 @@ func run() -> void:
 	key.keycode = KEY_LEFT
 	key.pressed = true
 	menu._unhandled_key_input(key)
-	check(menu.selected_index == 0, "Keyboard left should select the preceding memory")
+	check(menu.selected_index == 1, "Keyboard left should select the preceding memory")
+	menu.select_memory(0)
 	menu.size = Vector2(390, 844)
 	menu._layout()
 	check(menu.get_node("Recall").get_rect().end.y < menu._line_y, "Portrait layout must keep Recall clear of the timeline")

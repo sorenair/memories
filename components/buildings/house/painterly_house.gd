@@ -115,6 +115,24 @@ const PAINT = preload("res://components/buildings/house/house.gdshader")
 var _queued: bool = false
 var _generated: Array[Node] = []
 
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+@export_group("Recall")
+@export var recall_enabled: bool = false:
+	set(value):
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint():
+			_sync_recall()
+var _recall: Node
+
+func get_recall_controller() -> Node:
+	return _recall
+
+func _sync_recall() -> void:
+	_recall = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall)
+	if not recall_enabled and not Engine.is_editor_hint():
+		preload("res://components/effects/recall/assembled_recall.gd").restore_component(self)
+
+
 func _ready() -> void:
 	set_notify_transform(true)
 	rebuild()
@@ -182,6 +200,7 @@ func rebuild() -> void:
 		marker.name = key
 		marker.position = Vector3(0, foundation_height, footprint.y * 0.5 + 0.35) if key == "FrontDoor" else Vector3(0, 0, footprint.y * 0.5 + step_count * step_depth + 1.0)
 		_add_generated(marker)
+	_sync_recall()
 	ground_exclusion_changed.emit()
 
 func _add_generated(node: Node) -> void:
