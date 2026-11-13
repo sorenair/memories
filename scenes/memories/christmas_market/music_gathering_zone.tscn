@@ -1,0 +1,376 @@
+[gd_scene load_steps=13 format=3]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/buildings/market_hut/painterly_market_hut.tscn" id="hut"]
+[ext_resource type="PackedScene" path="res://components/lighting/festive_lights/painterly_festive_lights.tscn" id="lights"]
+[ext_resource type="PackedScene" path="res://components/scenery/christmas_market/decorated_pine.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
+[ext_resource type="PackedScene" path="res://components/scenery/christmas_market/painterly_market_stage.tscn" id="stage"]
+[ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_gallery_display.tscn" id="bench"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="murmur"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="winter_tree"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="winter_bush"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="winter_grass"]
+
+[node name="MusicGatheringZone" instance=ExtResource("zone")]
+zone_id = &"music_gathering"
+display_name = "Under the lights, listening together"
+ambience_stream = ExtResource("murmur")
+ambience_volume_db = -30.0
+ambience_size = Vector2(19, 17)
+ambience_blend_distance = 4.0
+
+[node name="AcousticStage" parent="Scenery" instance=ExtResource("stage")]
+position = Vector3(1.2, 0, -4.0)
+
+[node name="ChristmasTree" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3, 0, -1)
+
+[node name="SweetHut" parent="Scenery" instance=ExtResource("hut")]
+position = Vector3(-5, 0, 3)
+rotation_degrees = Vector3(0, 55, 0)
+goods = 0
+trim_color = Color(0.54, 0.39, 0.32, 1)
+paint_seed = 1291
+
+[node name="SweetHutWarmth" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(-3.4436111158509157, 0.07, 3)
+footprint = Vector2(3.2, 3.0)
+light_color = Color(1, 0.79, 0.46, 1)
+intensity = 0.22
+softness = 0.85
+motion = 1
+motion_amount = 0.035
+
+[node name="CiderHut" parent="Scenery" instance=ExtResource("hut")]
+position = Vector3(6, 0, 0)
+rotation_degrees = Vector3(0, -20, 0)
+goods = 2
+trim_color = Color(0.41, 0.48, 0.38, 1)
+paint_seed = 1291
+
+[node name="CiderHutWarmth" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(5.350161727681229, 0.07, 0)
+footprint = Vector2(3.2, 3.0)
+light_color = Color(1, 0.79, 0.46, 1)
+intensity = 0.22
+softness = 0.85
+motion = 1
+motion_amount = 0.035
+
+[node name="WestPine" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6, 0, -5.5)
+scale = Vector3(0.57, 0.57, 0.57)
+rotation_degrees = Vector3(0, 28, 0)
+
+[node name="BackPine" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(6, 0, -6.0)
+scale = Vector3(0.63, 0.63, 0.63)
+rotation_degrees = Vector3(0, 28, 0)
+
+[node name="GatheringLights" parent="Scenery" instance=ExtResource("lights")]
+position = Vector3(0, 0, 2.0)
+span = 6.0
+height = 3.9
+sag = 0.52
+
+[node name="TreeWarmth" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(-3, 0.07, -0.5)
+footprint = Vector2(5, 4)
+light_color = Color(1, 0.84, 0.54, 1)
+intensity = 0.18
+softness = 0.9
+
+[node name="StageWarmth" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(1.2, 0.07, -1.0)
+footprint = Vector2(6.5, 4)
+light_color = Color(1, 0.84, 0.55, 1)
+intensity = 0.18
+softness = 0.9
+
+[node name="Listeners" parent="Scenery" instance=ExtResource("crowd")]
+count = 8
+footprint = Vector2(8, 6)
+spacing = 0.72
+crowd_seed = 191225
+person_scale = 1.05
+palette = 3
+facing_degrees = 175.0
+facing_variation = 32.0
+empty_areas = Array[Rect2]([Rect2(-1.6, -4.5, 3.2, 9), Rect2(-5, -6, 10, 3.5), Rect2(-4.3, -2.2, 2.8, 3.2), Rect2(-7.5, 0.7, 5.2, 5), Rect2(3.5, -2.5, 5, 5), Rect2(2.5, 2.9, 4.5, 2.5)])
+pose_mix = 2
+motion_strength = 0.28
+motion_speed = 0.7
+
+[node name="ListeningBench" parent="Scenery" instance=ExtResource("bench")]
+position = Vector3(-5.6, 0, 0)
+rotation_degrees = Vector3(0, -10, 0)
+display_type = 1
+
+[node name="SweetHutVisitors" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(-2.8, 0, 4)
+count = 2
+footprint = Vector2(0.7, 2.0)
+spacing = 0.65
+crowd_seed = 1225
+person_scale = 1.05
+palette = 3
+facing_degrees = -125.0
+facing_variation = 20.0
+pose_mix = 2
+motion_strength = 0.25
+
+[node name="SideBench" parent="Scenery" instance=ExtResource("bench")]
+position = Vector3(4.0, 0, 3.9)
+rotation_degrees = Vector3(0, -25, 0)
+display_type = 1
+
+[node name="Fragment" parent="."]
+position = Vector3(0, 0.04, 0)
+fragment_seed = 1220
+note_title = "Under the lights, listening together"
+notes = Array[String](["Placeholder: Write your memory of the music, Christmas tree, and lights here."])
+
+
+[node name="WinterFoliage" type="Node3D" parent="Scenery"]
+
+[node name="FrostBirchByBench" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+position = Vector3(-6.8, 0, -2.8)
+palette_preset = 5
+tree_type = 2
+tree_seed = 19401
+tree_height = 3.3
+crown_width = 2.0
+trunk_radius = 0.11
+trunk_bend = 0.035
+branch_count = 5
+leaf_sprays_per_cluster = 14
+wind_strength = 0.025
+wind_speed = 0.6
+
+
+[node name="SnowPineBehindStage" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+position = Vector3(-2.8, 0, -6.7)
+palette_preset = 5
+tree_type = 4
+tree_seed = 19402
+tree_height = 3.5
+crown_width = 2.0
+trunk_radius = 0.11
+trunk_bend = 0.035
+branch_count = 5
+leaf_sprays_per_cluster = 45
+wind_strength = 0.025
+wind_speed = 0.6
+
+
+[node name="SnowPineBehindCider" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+position = Vector3(7, 0, -3)
+palette_preset = 5
+tree_type = 4
+tree_seed = 19403
+tree_height = 2.8
+crown_width = 1.6
+trunk_radius = 0.11
+trunk_bend = 0.035
+branch_count = 5
+leaf_sprays_per_cluster = 45
+wind_strength = 0.025
+wind_speed = 0.6
+
+
+[node name="SnowPineBySweetHut" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+position = Vector3(-7, 0, 1.4)
+palette_preset = 5
+tree_type = 4
+tree_seed = 19404
+tree_height = 2.5
+crown_width = 1.4
+trunk_radius = 0.11
+trunk_bend = 0.035
+branch_count = 5
+leaf_sprays_per_cluster = 45
+wind_strength = 0.025
+wind_speed = 0.6
+
+
+[node name="BenchBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+position = Vector3(-6.5, 0, 1)
+palette_preset = 5
+bush_seed = 19501
+footprint = Vector2(1.3, 1.4)
+bush_height = 0.43
+mass_count = 3
+sprays_per_mass = 38
+wind_strength = 0.025
+react_to_explorers = false
+
+
+[node name="BirchBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+position = Vector3(-6.7, 0, -3)
+palette_preset = 5
+bush_seed = 19502
+footprint = Vector2(1.5, 1.5)
+bush_height = 0.55
+mass_count = 3
+sprays_per_mass = 38
+wind_strength = 0.025
+react_to_explorers = false
+
+
+[node name="StageBackdropBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+position = Vector3(-3.1, 0, -6.6)
+palette_preset = 5
+bush_seed = 19503
+footprint = Vector2(1.7, 1.2)
+bush_height = 0.52
+mass_count = 3
+sprays_per_mass = 38
+wind_strength = 0.025
+react_to_explorers = false
+
+
+[node name="CiderBackdropBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+position = Vector3(6.4, 0, -3.2)
+palette_preset = 5
+bush_seed = 19504
+footprint = Vector2(1.2, 1.6)
+bush_height = 0.51
+mass_count = 3
+sprays_per_mass = 38
+wind_strength = 0.025
+react_to_explorers = false
+
+
+[node name="RightBankBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+position = Vector3(6.5, 0, 3.3)
+palette_preset = 5
+bush_seed = 19505
+footprint = Vector2(1.3, 1.4)
+bush_height = 0.48
+mass_count = 3
+sprays_per_mass = 38
+wind_strength = 0.025
+react_to_explorers = false
+
+
+[node name="SweetHutBankBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+position = Vector3(-7.1, 0, 4.8)
+palette_preset = 5
+bush_seed = 19506
+footprint = Vector2(1.2, 1.0)
+bush_height = 0.41
+mass_count = 3
+sprays_per_mass = 38
+wind_strength = 0.025
+react_to_explorers = false
+
+
+[node name="TreeSkirtBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+position = Vector3(-4.5, 0, -1.7)
+palette_preset = 5
+bush_seed = 19507
+footprint = Vector2(1.2, 1.1)
+bush_height = 0.34
+mass_count = 3
+sprays_per_mass = 38
+wind_strength = 0.025
+react_to_explorers = false
+
+
+[node name="BenchGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+position = Vector3(-6.5, 0, -2.5)
+palette_preset = 5
+patch_seed = 19601
+patch_size = Vector2(2.1, 3.7)
+tufts_per_square_meter = 13.0
+leaves_per_square_meter = 0.0
+grass_height = 0.23
+wind_strength = 0.025
+wind_speed = 0.65
+react_to_explorer = false
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+
+
+[node name="StageBackdropGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+position = Vector3(-3, 0, -6.4)
+palette_preset = 5
+patch_seed = 19602
+patch_size = Vector2(3.0, 2.0)
+tufts_per_square_meter = 13.0
+leaves_per_square_meter = 0.0
+grass_height = 0.23
+wind_strength = 0.025
+wind_speed = 0.65
+react_to_explorer = false
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+
+
+[node name="CiderBackdropGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+position = Vector3(6.6, 0, -4)
+palette_preset = 5
+patch_seed = 19603
+patch_size = Vector2(2.3, 3.4)
+tufts_per_square_meter = 13.0
+leaves_per_square_meter = 0.0
+grass_height = 0.23
+wind_strength = 0.025
+wind_speed = 0.65
+react_to_explorer = false
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+
+
+[node name="RightBankGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+position = Vector3(6.5, 0, 3.9)
+palette_preset = 5
+patch_seed = 19604
+patch_size = Vector2(2.0, 1.7)
+tufts_per_square_meter = 13.0
+leaves_per_square_meter = 0.0
+grass_height = 0.23
+wind_strength = 0.025
+wind_speed = 0.65
+react_to_explorer = false
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+
+
+[node name="TreeSkirtGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+position = Vector3(-4.4, 0, -0.8)
+palette_preset = 5
+patch_seed = 19605
+patch_size = Vector2(2.1, 2.4)
+tufts_per_square_meter = 13.0
+leaves_per_square_meter = 0.0
+grass_height = 0.23
+wind_strength = 0.025
+wind_speed = 0.65
+react_to_explorer = false
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+
+
+[node name="TreeAndStageBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+position = Vector3(-2.8, 0, -2.5)
+palette_preset = 5
+bush_seed = 19705
+footprint = Vector2(0.9, 1.0)
+bush_height = 0.28
+mass_count = 3
+sprays_per_mass = 32
+wind_strength = 0.025
+react_to_explorers = false
+
+[node name="TreeAndStageGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+position = Vector3(-2.9, 0, -2.4)
+palette_preset = 5
+patch_seed = 19805
+patch_size = Vector2(1.4, 1.5)
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
+grass_height = 0.23
+wind_strength = 0.025
+wind_speed = 0.65
+react_to_explorer = false
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])

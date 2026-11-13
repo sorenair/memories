@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/buildings/market_hut/painterly_market_hut.gd" id="hut"]
+[node name="PainterlyMarketHut" type="Node3D"]
+script = ExtResource("hut")

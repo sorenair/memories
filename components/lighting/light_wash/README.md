@@ -31,8 +31,7 @@ visibility. Keep the root at floor level in both placement modes for discovery.
 
 ## Test stage
 
-Open `res://tests/scenes/component_test.tscn` and press F6. Set **Subject Scene** to the light wash scene to study it. The stage currently
-shows the smoke / steam emitter. Edit the component scene's root parameters to author a wash, or
+Open `res://tests/scenes/component_test.tscn` and press F6. Set **Subject Scene** to the light wash scene to study it. Edit the component scene's root parameters to author a wash, or
 save a variant and assign it to the stage's **Subject Scene**.
 
 Use the Neutral/White/Dark floor selector to judge the tint against different

@@ -58,3 +58,5 @@ godot --headless --path . --script tests/memory_audio.gd
 ```
 
 These checks cover the two real zones, template structure, story order, local-player audio blending and silence outside bounds, fragment guidance, and audio/scene lifetime.
+
+The fourth authored example is [Christmas market](christmas_market/README.md), dated December 19, 2025: two zones, six huts, a small acoustic performance, and one continuous floor/snow outline.

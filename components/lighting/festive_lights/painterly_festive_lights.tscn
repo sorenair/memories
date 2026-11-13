@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/lighting/festive_lights/painterly_festive_lights.gd" id="lights"]
+[node name="PainterlyFestiveLights" type="Node3D"]
+script = ExtResource("lights")

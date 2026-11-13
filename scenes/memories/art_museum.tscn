@@ -83,29 +83,29 @@ visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Entrance/Fragment")
 waypoints = PackedVector3Array()
-stroke_width = 0.16
-opacity = 0.6
+stroke_width = 0.34
+opacity = 0.92
 
 [node name="ToMarble" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Entrance/Fragment")
 end_anchor = NodePath("../../../Zones/Marble/Fragment")
 waypoints = PackedVector3Array(0, 0.76, 3.6, 0, 1.06, 1.7, 0, 1.06, -1.7, 0, 0.76, -3.6, 0, 0.76, -6.5)
-stroke_width = 0.16
-opacity = 0.6
+stroke_width = 0.34
+opacity = 0.92
 
 [node name="ToPaintings" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Marble/Fragment")
 end_anchor = NodePath("../../../Zones/Paintings/Fragment")
 waypoints = PackedVector3Array(-4.5, 0.76, -10.8, -7.5, 0.76, -10.8, -11, 0.76, -10.8, -14.5, 0.76, -13)
-stroke_width = 0.16
-opacity = 0.6
+stroke_width = 0.34
+opacity = 0.92
 
 [node name="ToCrowdedRoom" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Paintings/Fragment")
 end_anchor = NodePath("../../../Zones/CrowdedRoom/Fragment")
 waypoints = PackedVector3Array(-14.5, 0.76, -13, -11, 0.76, -10.8, -7.5, 0.76, -10.8, -4.5, 0.76, -10.8, 0, 0.76, -10.8, 4.5, 0.76, -10.8, 7.5, 0.76, -10.8, 11, 0.76, -10.8, 14.5, 0.76, -13)
-stroke_width = 0.16
-opacity = 0.6
+stroke_width = 0.34
+opacity = 0.92

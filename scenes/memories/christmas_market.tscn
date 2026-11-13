@@ -1,0 +1,92 @@
+[gd_scene load_steps=11 format=3]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
+[ext_resource type="PackedScene" path="res://components/groundcover/snow/painterly_snow_patch.tscn" id="ground_snow"]
+[ext_resource type="PackedScene" path="res://components/weather/snow/painterly_snow.tscn" id="snowfall"]
+[ext_resource type="PackedScene" path="res://scenes/memories/christmas_market/market_lane_zone.tscn" id="lane"]
+[ext_resource type="PackedScene" path="res://scenes/memories/christmas_market/music_gathering_zone.tscn" id="plaza"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="AudioStream" path="res://audio/samples/christmas_market_waltz.wav" id="music"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+
+[sub_resource type="Curve2D" id="MarketOutline"]
+_data = {"points": PackedVector2Array(0, 0, 0, 0, -14, -22.55, 0, 0, 0, 0, -13.55, -23, 0, 0, 0, 0, 2.05, -23, 0, 0, 0, 0, 2.5, -22.55, 0, 0, 0, 0, 2.5, -10.45, 0, 0, 0, 0, 2.05, -10, 0, 0, 0, 0, -2.05, -10, 0, 0, 0, 0, -2.5, -9.7, 0, 0, 0, 0, -2.5, -9.1, 0, 0, 0, 0, -2.05, -8.8, 0, 0, 0, 0, 6.05, -8.8, 0, 0, 0, 0, 6.5, -8.35, 0, 0, 0, 0, 6.5, 7.05, 0, 0, 0, 0, 6.05, 7.5, 0, 0, 0, 0, -6.05, 7.5, 0, 0, 0, 0, -6.5, 7.05, 0, 0, 0, 0, -6.5, -9.55, 0, 0, 0, 0, -6.95, -10, 0, 0, 0, 0, -13.55, -10, 0, 0, 0, 0, -14, -10.45, 0, 0, 0, 0, -14, -22.55)}
+point_count = 21
+
+[node name="Memory" instance=ExtResource("base")]
+memory_id = &"christmas_market"
+display_name = "Christmas market"
+
+[node name="Entry" parent="."]
+position = Vector3(0, 0.04, 5.4)
+
+[node name="Exit" parent="."]
+position = Vector3(-6, 0.04, -12.5)
+
+[node name="MarketFloor" parent="Environment" instance=ExtResource("platform")]
+custom_outline = SubResource("MarketOutline")
+outline_detail = 112
+pillar_depth = 9.0
+fade_start = 0.0
+fade_depth = 3.0
+top_color = Color(0.94, 0.935, 0.89, 1)
+side_color = Color(0.94, 0.935, 0.89, 1)
+pigment_strength = 0.003
+edge_inset = 0.18
+
+[node name="ContinuousSnow" parent="Environment" instance=ExtResource("ground_snow")]
+custom_outline = SubResource("MarketOutline")
+patch_seed = 191225
+snow_depth = 0.035
+puffiness = 0.025
+mesh_detail = 96
+footprint_quality = 2
+ground_exclusions = Array[NodePath]([NodePath("../../Zones/MarketLane/Scenery/BakeryHut"), NodePath("../../Zones/MarketLane/Scenery/OrnamentHut"), NodePath("../../Zones/MarketLane/Scenery/CocoaHut"), NodePath("../../Zones/MarketLane/Scenery/GiftHut"), NodePath("../../Zones/MusicGathering/Scenery/SweetHut"), NodePath("../../Zones/MusicGathering/Scenery/CiderHut"), NodePath("../../Zones/MusicGathering/Scenery/AcousticStage")])
+snow_color = Color(0.96, 0.967, 0.94, 1)
+shade_color = Color(0.78, 0.83, 0.86, 1)
+edge_color = Color(0.94, 0.935, 0.89, 1)
+
+[node name="FallingSnow" parent="Environment" instance=ExtResource("snowfall")]
+position = Vector3(-3.5, 0, -7.5)
+footprint = Vector2(23, 32)
+snow_height = 5.5
+flake_count = 950
+snow_seed = 191225
+intensity = 0.65
+fall_speed = 0.4
+wind = Vector2(0.18, 0.09)
+flutter = 0.3
+flake_size = Vector2(0.07, 0.17)
+opacity = 0.9
+
+[node name="GatheringFocus" type="Marker3D" parent="Environment"]
+position = Vector3(-6.7, 1.4, -16.5)
+
+[node name="Guidance" type="Node3D" parent="Environment"]
+
+[node name="Audio" parent="."]
+music_stream = ExtResource("music")
+music_volume_db = -18.0
+fragment_sound = ExtResource("chime")
+
+[node name="MarketLane" parent="Zones" instance=ExtResource("lane")]
+
+[node name="MusicGathering" parent="Zones" instance=ExtResource("plaza")]
+position = Vector3(-6, 0, -15)
+
+[node name="Arrival" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/MarketLane/Fragment")
+waypoints = PackedVector3Array(0, 0.76, 2, 0, 0.76, -1)
+stroke_width = 0.34
+opacity = 0.92
+
+[node name="ToMusic" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/MarketLane/Fragment")
+end_anchor = NodePath("../../../Zones/MusicGathering/Fragment")
+waypoints = PackedVector3Array(0, 0.76, -5.5, -2.8, 0.76, -7.4, -4.5, 0.76, -9.8, -6, 0.76, -11.4, -6, 0.76, -13)
+stroke_width = 0.34
+opacity = 0.92
+

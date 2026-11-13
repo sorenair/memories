@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="pine"]
+[ext_resource type="PackedScene" path="res://components/lighting/festive_lights/painterly_festive_lights.tscn" id="trim"]
+[ext_resource type="Script" path="res://components/foliage/grass_palette.gd" id="palette"]
+[sub_resource type="Resource" id="Evergreen"]
+script = ExtResource("palette")
+root_color = Color(0.20, 0.29, 0.25, 1)
+shade_color = Color(0.28, 0.38, 0.32, 1)
+leaf_color = Color(0.40, 0.50, 0.39, 1)
+sun_color = Color(0.59, 0.65, 0.49, 1)
+[node name="DecoratedPine" type="Node3D"]
+[node name="Pine" parent="." instance=ExtResource("pine")]
+palette_preset = 0
+palette = SubResource("Evergreen")
+tree_type = 4
+tree_seed = 1219
+tree_height = 4.0
+crown_width = 3.0
+trunk_radius = 0.14
+trunk_bend = 0.015
+branch_count = 6
+leaf_sprays_per_cluster = 65
+wind_strength = 0.018
+[node name="Trimming" parent="." instance=ExtResource("trim")]
+layout = 1
+height = 4.1
+tree_radius = 1.03

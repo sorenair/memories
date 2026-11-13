@@ -47,7 +47,7 @@ const SNOW_SHADER = preload("res://components/weather/snow/snowflakes.gdshader")
 		_update_material()
 		_update_bounds()
 ## Min/max flake diameters in meters.
-@export var flake_size := Vector2(0.04,0.11):
+@export var flake_size := Vector2(0.08,0.20):
 	set(value):
 		flake_size = Vector2(maxf(minf(value.x,value.y),0.005),maxf(maxf(value.x,value.y),0.005))
 		_update_material()
@@ -56,11 +56,11 @@ const SNOW_SHADER = preload("res://components/weather/snow/snowflakes.gdshader")
 	set(value):
 		snow_color = value
 		_update_material()
-@export var shade_color := Color("b4c9da"):
+@export var shade_color := Color("a0b5c9"):
 	set(value):
 		shade_color = value
 		_update_material()
-@export_range(0.0,1.0,0.01) var opacity: float = 0.85:
+@export_range(0.0,1.0,0.01) var opacity: float = 0.95:
 	set(value):
 		opacity = value
 		_update_material()

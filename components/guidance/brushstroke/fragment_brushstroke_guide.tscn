@@ -4,9 +4,11 @@
 
 [node name="FragmentBrushstrokeGuide" type="Node3D"]
 script = ExtResource("1")
-stroke_width = 0.22
-opacity = 0.74
-glow_strength = 0.85
+stroke_width = 0.34
+edge_color = Color(0.41, 0.45, 0.56, 1)
+outline_strength = 0.9
+opacity = 0.92
+glow_strength = 1.0
 trail_duration = 2.2
 motion_amount = 0.035
 surface_wash_enabled = false

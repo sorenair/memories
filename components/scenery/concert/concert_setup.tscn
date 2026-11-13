@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://components/scenery/concert/stage/painterly_stage.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/scenery/concert/lights/painterly_rave_lights.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/scenery/concert/speakers/painterly_speaker_stack.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://components/scenery/concert/display/painterly_concert_screen.tscn" id="5"]
+
+[node name="ConcertSetup" type="Node3D"]
+
+[node name="Stage" parent="." instance=ExtResource("1")]
+
+[node name="RaveLights" parent="." instance=ExtResource("2")]
+position = Vector3(0, 0.45, -1.25)
+mount_height = 3.8
+receiving_height = -0.45
+
+[node name="VisualScreen" parent="." instance=ExtResource("5")]
+position = Vector3(0, 0.45, -1.40)
+
+[node name="LeftSpeakers" parent="." instance=ExtResource("3")]
+position = Vector3(-4.12, 0, 0.05)
+rotation_degrees = Vector3(0, 12, 0)
+prop_seed = 113
+
+[node name="RightSpeakers" parent="." instance=ExtResource("3")]
+position = Vector3(4.12, 0, 0.05)
+rotation_degrees = Vector3(0, -12, 0)
+prop_seed = 117
+
+[node name="Audience" parent="." instance=ExtResource("4")]
+position = Vector3(0, 0, 3.0)
+count = 12
+crowd_seed = 94
+footprint = Vector2(9.0, 2.4)
+spacing = 0.75
+facing_degrees = 180.0
+facing_variation = 25.0
+empty_areas = Array[Rect2]([Rect2(-0.95, -2, 1.9, 4)])
+palette = 4
+clothing_colors = PackedColorArray(0.47, 0.38, 0.61, 1, 0.33, 0.60, 0.62, 1, 0.77, 0.61, 0.37, 1, 0.69, 0.37, 0.43, 1)
+pose_mix = 2
+motion_strength = 0.5

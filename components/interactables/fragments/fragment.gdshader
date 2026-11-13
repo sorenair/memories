@@ -1,7 +1,9 @@
 shader_type spatial;
-render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, shadows_disabled;
+render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, fog_disabled;
 uniform vec4 glow_color : source_color = vec4(1.0);
 uniform float speed = 1.0;
+// Guided wisps can share their route's clock; ordinary fragments use live TIME.
+uniform float time_override = -1.0;
 uniform float tap_feedback = 0.0;
 uniform float activity : hint_range(0.0, 1.0) = 0.0;
 uniform float seed = 1.0;
@@ -9,75 +11,103 @@ uniform int mote_count = 8;
 uniform float wisp_strength = 1.0;
 uniform float decay : hint_range(0.0, 1.0) = 0.0;
 uniform float interaction_outline : hint_range(0.0, 1.0) = 0.0;
+varying vec3 pigment_position;
+varying vec3 painted_normal;
+varying vec3 world_position;
+varying float family;
+varying float identity;
+varying float visibility;
+mat3 turn(float angle) {
+	float c = cos(angle);
+	float s = sin(angle);
+	return mat3(vec3(c, 0, s), vec3(0, 1, 0), vec3(-s, 0, c));
+}
+mat3 bank(float angle) {
+	float c = cos(angle);
+	float s = sin(angle);
+	return mat3(vec3(c, s, 0), vec3(-s, c, 0), vec3(0, 0, 1));
+}
 void vertex() {
-	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);
-	MODELVIEW_MATRIX[0] *= length(MODEL_MATRIX[0].xyz);
-	MODELVIEW_MATRIX[1] *= length(MODEL_MATRIX[1].xyz);
-	MODELVIEW_MATRIX[2] *= length(MODEL_MATRIX[2].xyz);
+	float t = (time_override >= 0.0 ? time_override : TIME) * speed;
+	family = UV2.x;
+	identity = UV2.y;
+	float id = identity;
+	float phase = id * 1.91 + seed * 1.71;
+	float release = smoothstep(0.0, 1.0, decay);
+	visibility = 1.0;
+	pigment_position = VERTEX;
+	if (family > 1.5) {
+		float age = fract(t * (0.08 + fract(id * 0.37) * 0.04) + fract(id * 0.618 + seed * 0.13));
+		float angle = t * 0.19 + id * 2.39996 + seed;
+		float radius = 1.10 + 0.42 * sin(id * 3.0 + age * 3.0);
+		vec3 center = vec3(cos(angle) * radius, mix(-1.65, 2.2, age), sin(angle) * radius);
+		center += normalize(vec3(cos(phase), 1.0, sin(phase))) * release * 2.0 * wisp_strength;
+		visibility = smoothstep(0.0, 0.18, age) * (1.0 - smoothstep(0.73, 1.0, age));
+		visibility *= (id < float(mote_count) ? 1.0 : 0.0) * (1.0 - decay);
+		VERTEX = turn(angle) * VERTEX * mix(0.6, 1.0, activity) + center;
+		NORMAL = turn(angle) * NORMAL;
+	} else if (family > 0.5) {
+		// A full orbit takes about 20–26 seconds. Different rates and phase-lagged
+		// currents let the veils overtake one another without abrupt reversals.
+		float orbit = t * (0.24 + id * 0.024) + sin(t * 0.33 + phase) * 0.12;
+		float twist = sin(UV.y * 4.8 - t * 0.62 + phase) * 0.17;
+		mat3 rotation = turn(orbit + twist) * bank(sin(t * 0.27 + phase) * 0.10);
+		VERTEX.xz *= 1.0 + sin(t * 0.46 + phase + UV.y * 3.2) * 0.075;
+		VERTEX = rotation * VERTEX;
+		VERTEX.y += sin(t * 0.41 + phase) * 0.11;
+		vec3 outward = vec3(cos(phase), 0.65, sin(phase));
+		VERTEX += outward * release * 1.1 * wisp_strength;
+		VERTEX.y += release * 1.2;
+		VERTEX *= 1.0 + tap_feedback * 0.08;
+		NORMAL = rotation * NORMAL;
+	} else {
+		VERTEX *= (1.0 + sin(t * 1.45 + seed) * 0.10 + tap_feedback * 0.30) * (1.0 - smoothstep(0.0, 0.65, decay));
+		VERTEX.x += sin(t * 0.8 + seed) * 0.045;
+		VERTEX.y += sin(t * 1.1 + seed) * 0.07;
+	}
+	painted_normal = normalize(MODEL_NORMAL_MATRIX * NORMAL);
+	world_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 void fragment() {
-	vec2 p = (UV - 0.5) * vec2(6.0, 8.0);
-	p.y = -p.y;
-	float t = TIME * speed;
-	float burst = 1.0 - pow(1.0 - decay, 3.0);
-	float puff = 0.0;
-	// Broad, irregular brush puffs accelerate outward, then soften and disperse.
-	if (decay > 0.0) {
-		for (int i = 0; i < 7; i++) {
-			float f = float(i);
-			float angle = f * 0.8976 + seed * 1.7;
-			vec2 direction = vec2(cos(angle), sin(angle));
-			vec2 tangent = vec2(-direction.y, direction.x);
-			float reach = mix(0.55, 2.1 + 0.3 * sin(f * 4.0), burst);
-			vec2 center = direction * reach + tangent * sin(decay * 5.0 + f) * decay * 0.2;
-			vec2 q = p - center;
-			vec2 brush = vec2(dot(q, direction), dot(q, tangent));
-			brush /= vec2(0.42 + burst * 0.38, 0.28 + burst * 0.22);
-			float edge = length(brush) + 0.12 * sin(brush.x * 5.0 + f) * sin(brush.y * 4.0 + f);
-			puff += (1.0 - smoothstep(0.35, 1.15 + decay * 0.3, edge)) * (0.65 + 0.15 * sin(f));
-		}
-	}
-	float motes = 0.0;
-	for (int i = 0; i < 16; i++) {
-		if (i >= mote_count) { break; }
-		float f = float(i);
-		float cycle = fract(t * (0.10 + fract(f * 0.37) * 0.06) + fract(f * 0.618 + seed * 0.13));
-		float y = mix(-1.6, 2.7, cycle);
-		float x = sin(f * 5.4 + seed + cycle * 3.0) * (0.6 + 0.6 * cycle) + sin(t * 0.5 + f) * 0.18;
-		vec2 drift = vec2(x, y);
-		vec2 scatter = vec2(cos(f * 2.4 + seed), sin(f * 2.4 + seed));
-		drift = mix(drift, scatter * (0.8 + 1.8 * burst), smoothstep(0.0, 0.22, decay));
-		vec2 q = (p - drift) / vec2(1.0, 1.1);
-		float radius = 0.055 + 0.05 * fract(f * 0.73);
-		float fade = smoothstep(0.0, 0.18, cycle) * (1.0 - smoothstep(0.7, 1.0, cycle));
-		motes += (1.0 - smoothstep(radius * 0.25, radius + 0.035, length(q))) * fade;
-	}
-	// A breathing silhouette and broad painted light regions, not a surface pattern.
-	float angle = atan(p.y, p.x);
-	float contour = 1.0 + 0.035 * sin(angle * 3.0 + t * 0.9 + seed)
-		+ 0.025 * sin(angle * 5.0 - t * 0.7) + 0.025 * sin(t * 1.2 + seed);
-	vec2 shape = p / vec2(1.0, 1.04);
-	float r = length(shape) / (contour * (1.0 + 0.18 * sin(min(decay * 4.0, 1.0) * 3.14159265)));
-	float body = 1.0 - smoothstep(0.92, 1.06, r);
-	float shade = dot(shape, normalize(vec2(-0.6, 0.8)));
-	float middle = smoothstep(-0.44, -0.35, shade + 0.045 * sin(p.x * 4.0 + t * 0.35));
-	float light = smoothstep(0.20, 0.30, shade + 0.03 * sin(p.y * 5.0 - t * 0.25));
-	float tone = mix(0.77, 0.91, middle);
-	tone = mix(tone, 1.0, light);
-	// Uneven, softly brushed rim catches light around the floating volume.
-	float rim = smoothstep(0.65, 0.84, r) * (1.0 - smoothstep(0.93, 1.04, r));
-	float rim_light = 0.45 + 0.35 * sin(angle + 1.0);
-	tone = mix(tone, 1.0, rim * rim_light);
-	tone = mix(tone, 1.0, tap_feedback * 0.4);
-	float orb_alpha = body * mix(0.56, 0.93, activity) * (1.0 - smoothstep(0.04, 0.32, decay));
-	float wisps = puff * wisp_strength * smoothstep(0.0, 0.08, decay) * pow(1.0 - decay, 1.4);
-	float particles = motes * mix(0.18, 0.85, activity) * (1.0 - decay);
-	// Follow the undulating orb, not the rectangular effect card.
-	float pixel = max(fwidth(r), 0.0001);
-	float outline = (1.0 - smoothstep(pixel, pixel * 2.0, abs(r - 1.0)))
-		* interaction_outline * (1.0 - smoothstep(0.0, 0.1, decay));
-	float total = orb_alpha + wisps + particles + outline;
-	ALBEDO = glow_color.rgb * mix(0.82, 1.0, activity) * mix(1.0, tone, orb_alpha / max(total, 0.001));
-	ALBEDO = mix(ALBEDO, vec3(1.0), outline);
-	ALPHA = clamp(total, 0.0, 0.97);
+	if (visibility < 0.01 || decay >= 0.999) { discard; }
+	float t = (time_override >= 0.0 ? time_override : TIME) * speed;
+	vec3 p = pigment_position;
+	vec3 eye = normalize(CAMERA_POSITION_WORLD - world_position);
+	float facing = abs(dot(normalize(painted_normal), eye));
+	float core = 1.0 - step(0.5, family);
+	float fleck = step(1.5, family);
+	float veil = 1.0 - core - fleck;
+	// Pale opalescent washes drift along the strands. No hard shell, glass shine,
+	// surface perforation, or camera-facing symbol supplies the silhouette.
+	float brush = sin(UV.y * 10.0 - t * 0.43 + identity * 2.0 + seed)
+		* sin(UV.x * 4.0 + UV.y * 4.0 + identity);
+	float pigment = smoothstep(-0.65, 0.65, brush);
+	vec3 cool = mix(vec3(0.36, 0.45, 0.68), vec3(0.59, 0.52, 0.74), 0.5 + 0.5 * sin(identity * 2.0));
+	vec3 ivory = vec3(1.0, 0.97, 0.86);
+	vec3 paint = mix(cool, ivory, 0.24 + pigment * 0.52);
+	paint = mix(paint, ivory, core * 0.95 + fleck * 0.70);
+	paint = mix(paint, vec3(1.0, 0.99, 0.95), tap_feedback * 0.5);
+	float across = abs(UV.x * 2.0 - 1.0);
+	float feather = 1.0 - smoothstep(0.18 + brush * 0.06, 1.0, across);
+	float ends = pow(max(sin(UV.y * 3.14159), 0.0), 0.65);
+	// Soft lavender underpainting follows the actual curved strands. It remains
+	// visible on pale scenery, while the feathered outer edge stays translucent.
+	float stroke = exp(-pow((across - 0.64 + brush * 0.035) / 0.17, 2.0));
+	float core_stroke = exp(-pow((facing - 0.30) / 0.16, 2.0));
+	float ink = veil * stroke * 0.88 + core * core_stroke * 0.66;
+	paint = mix(paint, vec3(0.25, 0.28, 0.42), clamp(ink, 0.0, 1.0));
+	// A moving luminous thread sits inside a much softer painted veil.
+	float thread = exp(-pow((UV.x - 0.48 - sin(UV.y * 7.0 + identity) * 0.07) * 11.0, 2.0));
+	float traveling = 0.72 + 0.28 * sin(UV.y * 7.0 - t * 0.8 + identity * 2.0);
+	float alpha = veil * feather * ends * (0.22 + pigment * 0.16 + thread * 0.18) * traveling;
+	alpha *= mix(0.58, 1.0, activity) * (0.6 + facing * 0.4);
+	alpha += core * smoothstep(0.02, 0.80, facing) * 0.92 * mix(0.65, 1.0, activity)
+		+ fleck * 0.75 * mix(0.45, 1.0, activity);
+	alpha += (veil * stroke * ends * 0.46 + core * core_stroke * 0.32) * mix(0.65, 1.0, activity);
+	alpha *= visibility * (1.0 - smoothstep(0.0, 1.0, decay));
+	alpha *= 1.0 + tap_feedback * 0.30;
+	ALBEDO = paint * glow_color.rgb;
+	EMISSION = glow_color.rgb * (core * (0.18 + activity * 0.30) * (0.88 + 0.12 * sin(t * 1.45 + seed)) + thread * veil * 0.08 + fleck * 0.20
+		+ interaction_outline * veil * feather * 0.12) * (1.0 - decay) * (1.0 - ink * 0.95);
+	ALPHA = clamp(alpha, 0.0, 0.96);
 }

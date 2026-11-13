@@ -17,6 +17,7 @@ Endpoint edits update the shader and culling bounds without rebuilding geometry.
 | Arc Height / Curve Bend | Gentle rise and lateral sweep; both ends stay anchored. |
 | Stroke Width | Full ribbon width in local meters. Default 0.42 m. |
 | Pigment / Edge / Highlight Color | Body pigment, shaded paint, and warm bristle accents. |
+| Outline Strength | Feathered pigment contour for pale backgrounds. Default 0 on standalone decoration; 0.9 on HUD guidance. |
 | Opacity | Overall pigment strength; the newest paint receives a small local lift. |
 | Glow Strength | White emission and a soft local halo. Works on Mobile without scene-wide bloom; 0 removes both. |
 | Evolution Strength | Amount of gathering, blooming, changing pressure, and filament breakup from start to end. 0 holds a consistent shape; default 1. |
@@ -50,3 +51,29 @@ Set `MemoryScene.guidance_fragments` to an `Array[NodePath]` relative to the mem
 `fragment_brushstroke_guide.tscn` defines an authored safe route using **Start Anchor**, **End Anchor**, and local-space **Waypoints**. These route definitions stay hidden at runtime until the controller requests a hint. The controller joins the player's starting position to the route backbone or uses a bounded obstacle-aware fallback. The rendered hint starts at the captured player position even if the player moves afterward. Anchor references follow moved fragment instances at their mean orb height; adjust waypoints when changing scenery. **Meters Per Second**, **Trail Duration**, **Stroke Width**, and the inherited paint appearance controls remain editable. `wait_for_start_note` and `gesture_interval` are no longer part of memory guidance.
 
 First Meeting authors `Environment/Guidance/ArrivalBrushstroke` from Entry to HouseFragment and `HouseToArcade` through the open gate, sidewalk, foreground, and arcade center. The fragment order is HouseFragment, then ArcadeFragment. The routes add no collision or gameplay lock. Use `tests/first_meeting_guidance.gd` to validate requests, completion order, cleanup, and safe routing against the memory scenery.
+
+## HUD guide appearance
+
+The requested guide uses a fuller **0.34 m** stroke at **0.92 opacity**, with a
+soft lavender-gray painted contour around its white pigment. Emission is reduced
+along that edge so it stays visible against the pale void and snow. First Meeting,
+the museum and the Christmas market use the stronger settings on their authored
+routes; fallback routes use the same shared guide scene. Standalone decorative
+brushstrokes retain their original white defaults.
+
+The guide is a painted trail without a separate leading wisp. **Stroke Width**,
+**Edge Color**, **Outline Strength**, **Opacity** and **Glow Strength** control its
+appearance. A default active HUD guide uses 1,536 visible triangles in one
+transparent batch, with its planar surface wash disabled. Route movement does
+not upload meshes per frame.
+
+```sh
+godot --headless --path . --script tests/first_meeting_guidance.gd
+godot --path . --script tests/manual_guidance_render.gd
+```
+
+The HUD render check exercises an actual button request, onward guidance after
+reading, visibility over pale ground, frozen-clock stability, and complete removal
+when stopped.
+
+![Guide over pale scenery](../../../docs/previews/manual-guide-light-background.png)

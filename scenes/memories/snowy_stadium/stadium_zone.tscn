@@ -82,7 +82,7 @@ snow_seed = 113
 flake_count = 1800
 intensity = 0.72
 wind = Vector2(0.55, -0.2)
-flake_size = Vector2(0.07, 0.17)
+flake_size = Vector2(0.10, 0.24)
 visibility_distance = 120.0
 
 [node name="WalkableSnow" parent="Scenery" index="8" instance=ExtResource("ground_snow")]

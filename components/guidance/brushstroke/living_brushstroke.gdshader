@@ -8,6 +8,7 @@ uniform float curve_bend = 0.24;
 uniform float stroke_width = 0.42;
 uniform vec4 pigment_color : source_color = vec4(1.0);
 uniform vec4 edge_color : source_color = vec4(0.93, 0.93, 0.93, 1.0);
+uniform float outline_strength = 0.0;
 uniform vec4 highlight_color : source_color = vec4(1.0);
 uniform float opacity = 0.86;
 uniform float glow_strength = 1.0;
@@ -144,6 +145,10 @@ void fragment() {
 	color = mix(color, highlight_color.rgb, smoothstep(0.45, 0.76, long_brush) * 0.65);
 	float wet_head = 1.0 - smoothstep(0.4, 0.9, age);
 	float core = clamp(opacity * (1.0 + wet_head * 0.15) * edge * dry_brush * pigment, 0.0, 1.0);
+	// A feathered pigment edge anchors the white trail against bright ground.
+	float ink = exp(-pow((boundary - 0.78) / 0.16, 2.0)) * outline_strength;
+	color = mix(color, edge_color.rgb, ink * 0.90);
+	core = max(core, ink * opacity * 0.80);
 	float halo = exp(-v * v * 0.85) * (1.0 - smoothstep(2.1, 2.6, abs(v)))
 		* glow_strength * 0.22 * (0.65 + wet_head * 0.35);
 	float alpha = (core + halo * (1.0 - core)) * life * endpoints;
@@ -152,6 +157,6 @@ void fragment() {
 		color = mix(pigment_color.rgb, edge_color.rgb, 0.18);
 	}
 	ALBEDO = color;
-	EMISSION = color * glow_strength * (surface_layer ? 0.0 : 0.16 * edge);
+	EMISSION = color * glow_strength * (surface_layer ? 0.0 : 0.16 * edge) * (1.0 - ink * 0.95);
 	ALPHA = alpha * guide_opacity;
 }

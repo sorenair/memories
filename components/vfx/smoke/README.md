@@ -43,8 +43,8 @@ after discovery. Disabling recall restores full visibility.
 
 ## Test and rendering cost
 
-Open `res://tests/scenes/component_test.tscn` and press **F6**. Smoke / steam is
-the current subject. Use the floor presets to judge contrast and the recall
+Open `res://tests/scenes/component_test.tscn` and press **F6**. Set **Subject Scene** to
+`res://components/vfx/smoke/painterly_smoke.tscn`. Use the floor presets to judge contrast and the recall
 controls to replay its appearance.
 
 Two internal MultiMesh batches animate entirely in shaders. Default steam uses

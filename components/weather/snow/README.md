@@ -2,7 +2,7 @@
 
 Instance `painterly_snow.tscn` under a memory's Environment. Position its origin at the center of the weather area and its local ground level. The demo's `Environment/Winter/Snowfall` covers 11×13 m with 550 allocated flakes and Intensity 0.75.
 
-Soft, slightly irregular round flakes fall slowly, weaving through broad swirls and gentle wind. Size, speed, brightness, and phase vary between flakes. Smaller flakes dominate, with occasional larger flakes giving depth without a screen-wide curtain. Normal depth testing hides snow behind scenery; flakes fade at the top and near the ground to hide their looping motion.
+Soft, slightly irregular round flakes fall slowly, weaving through broad swirls and gentle wind. Size, speed, brightness, and phase vary between flakes. Medium flakes are prominent, with smaller flecks and occasional broad flakes giving depth. A cool painted edge, firmer opacity, and restrained tumbling keep them readable against both scenery and snow-covered ground. Normal depth testing hides snow behind scenery; flakes fade at the top and near the ground to hide their looping motion.
 
 | Inspector control | Purpose |
 | --- | --- |
@@ -13,9 +13,9 @@ Soft, slightly irregular round flakes fall slowly, weaving through broad swirls 
 | Fall Speed | Approximate downward meters/second, varied per flake. Zero freezes all animation. |
 | Wind | Bounded local X/Z drift strength, rather than unbounded lateral velocity. |
 | Flutter | Strength of lazy sideways swirls. |
-| Flake Size | Minimum/maximum diameter in meters; defaults 0.04–0.11. |
+| Flake Size | Minimum/maximum diameter in meters; defaults 0.08–0.20. |
 | Snow Color / Shade Color | Pale center and cool, restrained edges. |
-| Opacity | Overall translucency; zero hides the batch. |
+| Opacity | Overall translucency; defaults to 0.95. Zero hides the batch. |
 | Ground Height | Local flat ground level. |
 | Visibility Distance | Culling distance. |
 
@@ -35,3 +35,5 @@ godot --path . --script tests/snow_motion_render.gd
 Checks cover counts/budgets, bounds, live Inspector changes, ordered size ranges, persistence, generated-node isolation, zero-count/intensity modes, and captured frames for visible drift, freezing, and disabling.
 
 `docs/previews/snow-clearing.png` and `docs/previews/snow-motion.gif` show the fully populated memory for visual weather review; the saved memory's recall settings are unchanged.
+
+The stadium field uses 0.10–0.24 m flakes for its wider view; the Christmas market uses 0.07–0.17 m at 0.9 opacity. Particle counts are unchanged. Run the render check with `-- --capture` for neutral and pale-background captures in `/tmp/snowfall-*.png`.

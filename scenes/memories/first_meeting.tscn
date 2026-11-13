@@ -29,8 +29,8 @@ visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/House/Fragment")
 waypoints = PackedVector3Array()
-stroke_width = 0.18
-opacity = 0.68
+stroke_width = 0.34
+opacity = 0.92
 
 [node name="HouseToArcade" parent="Environment/Guidance" index="1" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("brush_guide")]
 visible = false

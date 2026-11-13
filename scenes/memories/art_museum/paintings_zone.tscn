@@ -1,13 +1,13 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://c21rxv62o7hio"]
 
-[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
-[ext_resource type="AudioStream" path="res://audio/samples/museum_room.wav" id="room"]
 [ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_gallery_display.tscn" id="display"]
+[ext_resource type="Texture2D" uid="uid://daru3tqq8fwe2" path="res://components/scenery/museum/art/monet_landscape.jpg" id="monet"]
+[ext_resource type="Texture2D" uid="uid://l0ffmxykal1w" path="res://components/scenery/museum/art/olive_trees.jpg" id="olive"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="Texture2D" uid="uid://do5tq36yflqkc" path="res://components/scenery/museum/art/lucretia.jpg" id="portrait"]
+[ext_resource type="AudioStream" uid="uid://b6ls2c3svvj1v" path="res://audio/samples/museum_room.wav" id="room"]
 [ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
-[ext_resource type="Texture2D" path="res://components/scenery/museum/art/olive_trees.jpg" id="olive"]
-[ext_resource type="Texture2D" path="res://components/scenery/museum/art/lucretia.jpg" id="portrait"]
-[ext_resource type="Texture2D" path="res://components/scenery/museum/art/monet_landscape.jpg" id="monet"]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 
 [node name="PaintingsZone" instance=ExtResource("zone")]
 zone_id = &"paintings"
@@ -17,46 +17,45 @@ ambience_volume_db = -24.0
 ambience_size = Vector2(15, 12)
 ambience_blend_distance = 4.0
 
-[node name="OliveTrees" parent="Scenery" instance=ExtResource("display")]
-position = Vector3(-3.5, 0, -2.4)
+[node name="OliveTrees" parent="Scenery" index="0" instance=ExtResource("display")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0137529, 0, -3.69224)
 artwork = ExtResource("olive")
 canvas_size = Vector2(2.8, 2.23)
-rotation_degrees = Vector3(0, 14, 0)
-[node name="Lucretia" parent="Scenery" instance=ExtResource("display")]
-position = Vector3(0, 0, -3.0)
+
+[node name="Lucretia" parent="Scenery" index="1" instance=ExtResource("display")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -3.60309, 0, -2.79554)
 artwork = ExtResource("portrait")
 canvas_size = Vector2(1.85, 2.23)
-rotation_degrees = Vector3(0, 0, 0)
-[node name="Grainstack" parent="Scenery" instance=ExtResource("display")]
-position = Vector3(3.5, 0, -2.5)
+
+[node name="Grainstack" parent="Scenery" index="2" instance=ExtResource("display")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 4.29694, 0, -3.07441)
 artwork = ExtResource("monet")
 canvas_size = Vector2(2.6, 1.57)
-rotation_degrees = Vector3(0, -18, 0)
-[node name="Bench" parent="Scenery" instance=ExtResource("display")]
-position = Vector3(3.9, 0, 3.8)
+
+[node name="Bench" parent="Scenery" index="3" instance=ExtResource("display")]
+transform = Transform3D(0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 3.9, 0, 3.8)
 display_type = 1
-rotation_degrees = Vector3(0, -20, 0)
-[node name="RememberedFloorboards" parent="Scenery" instance=ExtResource("paving")]
-position = Vector3(0, 0, 0)
-footprint = Vector2(5.4, 7.0)
+
+[node name="RememberedFloorboards" parent="Scenery" index="4" instance=ExtResource("paving")]
+footprint = Vector2(5.4, 7)
 slab_length = 1.9
+irregularity = 0.2
 paving_color = Color(0.87, 0.83, 0.77, 1)
 end_fade = Vector2(2.1, 2.1)
-irregularity = 0.2
-[node name="AfternoonWash" parent="Scenery" instance=ExtResource("wash")]
-position = Vector3(0, 0, 0)
+
+[node name="AfternoonWash" parent="Scenery" index="5" instance=ExtResource("wash")]
+wash_shape = 2
 footprint = Vector2(7, 5)
 light_color = Color(1, 0.89, 0.67, 1)
 intensity = 0.13
 softness = 0.8
-wash_shape = 2
 window_grid = Vector2i(3, 2)
 
 [node name="Fragment" parent="." index="1"]
-position = Vector3(-0.6, 0.04, -0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.04, -0.2)
 fragment_seed = 1213
 note_title = "Looking at paintings"
 notes = Array[String](["Placeholder: Write your memory of looking at the paintings together here."])
 
-[node name="ViewingFocus" type="Marker3D" parent="." groups=["museum_camera_focus"]]
-position = Vector3(0, 0, -2.5)
+[node name="ViewingFocus" type="Marker3D" parent="." index="3" groups=["museum_camera_focus"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)

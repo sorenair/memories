@@ -71,15 +71,16 @@ func _ready() -> void:
 	_material = ShaderMaterial.new()
 	_material.shader = PAINT
 	var core := MeshInstance3D.new()
-	var veil := QuadMesh.new()
-	veil.size = Vector2(6.0, 8.0)
-	core.mesh = veil
+	core.name = "LightAndVeils"
+	core.mesh = preload("res://components/interactables/fragments/fragment_geometry.gd").create()
+	core.custom_aabb = AABB(Vector3.ONE * -4.5, Vector3.ONE * 9.0)
 	core.material_override = _material
 	core.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_visual.add_child(core)
 	var halo := MeshInstance3D.new()
 	var quad := QuadMesh.new()
-	quad.size = Vector2(6.0, 6.0)
+	quad.size = Vector2(5.5, 5.5)
+	halo.name = "LightWash"
 	halo.mesh = quad
 	var halo_material := ShaderMaterial.new()
 	halo_material.shader = preload("res://components/interactables/fragments/fragment_halo.gdshader")
@@ -109,7 +110,9 @@ func _process(delta: float) -> void:
 	_cooldown = maxf(0.0, _cooldown - delta)
 	_visual.position = Vector3(sin(_time * 0.7 + fragment_seed) * bob_amount * 0.3,
 		float_height + sin(_time * 1.6 + fragment_seed) * bob_amount, 0.0)
-	_visual.rotation.y = _time * 0.22
+	# Keep the core settled. Wisps own their GPU orbits; turning this parent in
+	# the opposite direction would cancel their visible swirl.
+	_visual.rotation = Vector3(sin(_time * 0.31 + fragment_seed) * 0.10, 0.0, sin(_time * 0.27 + fragment_seed) * 0.08)
 	if state != State.DECAYING:
 		var nearby := Engine.is_editor_hint() or _reading
 		if not nearby and not collected:

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/concert/lights/painterly_rave_lights.gd" id="1"]
+[node name="PainterlyRaveLights" type="Node3D"]
+script = ExtResource("1")
+body_color = Color(0.25, 0.30, 0.36, 1)
+trim_color = Color(0.48, 0.54, 0.59, 1)
+contact_shadow_enabled = false

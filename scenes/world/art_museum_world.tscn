@@ -9,5 +9,5 @@ recalled_spawn_offset = Vector3(0,0,0)
 script = ExtResource("camera")
 entrance_focus = NodePath("../Memory/Environment/EntranceFocus")
 [node name="Camera3D" parent="CameraRig" index="0"]
-size = 9.5
+size = 3.5
 far = 180.0

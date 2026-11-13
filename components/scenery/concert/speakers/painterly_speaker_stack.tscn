@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/concert/speakers/painterly_speaker_stack.gd" id="1"]
+[node name="PainterlySpeakerStack" type="Node3D"]
+script = ExtResource("1")
+body_color = Color(0.22, 0.28, 0.32, 1)
+trim_color = Color(0.47, 0.55, 0.57, 1)

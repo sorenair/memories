@@ -1,8 +1,9 @@
 # Component test scenes
 
 `res://tests/scenes/component_test.tscn` is the reusable 3D test stage. Open it and
-press **F6**. Its current subject is the painterly smoke / steam emitter. Choose another
-component through Subject Scene.
+press **F6**. Its current subject is the painterly 3D memory fragment. Choose another
+component through Subject Scene. The stage includes the shared fragment note UI,
+so walking close, tapping, and dismissing a note also exercises collection.
 
 To test another component, select the **ComponentTest** root and drag its `.tscn`
 into **Subject → Subject Scene**. The component previews in the editor and spawns
@@ -37,3 +38,7 @@ New test scenes should live here and reuse/inherit this stage where possible. Th
 existing component-specific scripts in `tests/` remain useful for automated checks.
 `tests/light_wash.gd` exercises the generic stage, including swapping its subject to
 another component while preserving the camera and player.
+
+`concert_test.tscn` inherits this stage with the [concert kit](../../components/scenery/concert/README.md): stage/ramp, two speaker stacks, moving-head lights, an animated visual screen, and an audience with a central walking approach. It uses a warm-white floor and a wider three-quarter view. Run with F6, or assign one of the kit's four component scenes to the generic stage for an isolated study.
+
+`postcard_cabin_test.tscn` inherits the same stage for the [closed trailer cabin exterior](../../components/buildings/postcard_cabin/README.md), with a warm-white floor and an explorer for scale. Run with F6 to inspect the picture window, walk the entry steps and test recall.

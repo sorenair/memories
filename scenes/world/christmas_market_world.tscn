@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="PackedScene" path="res://scenes/world/memory_world_base.tscn" id="world"]
+[ext_resource type="PackedScene" path="res://scenes/memories/christmas_market.tscn" id="memory"]
+[ext_resource type="Script" path="res://scripts/christmas_market_camera.gd" id="camera"]
+[node name="MemoryWorld" instance=ExtResource("world")]
+recalled_spawn_offset = Vector3(0, 0, 0)
+[node name="Memory" parent="." index="4" instance=ExtResource("memory")]
+[node name="CameraRig" parent="." index="5" node_paths=PackedStringArray("gathering_focus")]
+script = ExtResource("camera")
+gathering_focus = NodePath("../Memory/Environment/GatheringFocus")
+[node name="Camera3D" parent="CameraRig" index="0"]
+size = 3.5
+far = 120.0

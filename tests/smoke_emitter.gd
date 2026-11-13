@@ -26,11 +26,12 @@ func capture(name: String) -> void:
 	root.get_texture().get_image().save_png("/tmp/painterly-smoke-%s.png" % name)
 func run() -> void:
 	var stage := load("res://tests/scenes/component_test.tscn").instantiate() as Node3D
+	stage.subject_scene = load("res://components/vfx/smoke/painterly_smoke.tscn")
 	root.add_child(stage)
 	await process_frame
 	await process_frame
 	var smoke := stage.subject as PainterlySmoke
-	check(smoke != null, "Generic stage must now load the smoke/steam emitter")
+	check(smoke != null, "Smoke fixture must load the smoke/steam emitter")
 	check(smoke.get_children().is_empty() and smoke.get_children(true).size() == 2, "Emitter must use two internal geometry batches")
 	check(not smoke.is_processing(), "Normal plume animation must not require CPU processing")
 	var triangles := 0

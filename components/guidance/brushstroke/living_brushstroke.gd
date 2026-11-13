@@ -42,6 +42,11 @@ const PAINT := preload("res://components/guidance/brushstroke/living_brushstroke
 	set(value):
 		edge_color = value
 		_update_materials()
+## Soft painted contour, useful for guidance over pale scenery.
+@export_range(0.0, 1.0, 0.05) var outline_strength: float = 0.0:
+	set(value):
+		outline_strength = clampf(value, 0.0, 1.0)
+		_update_materials()
 @export var highlight_color := Color.WHITE:
 	set(value):
 		highlight_color = value
@@ -172,7 +177,7 @@ func _update_path() -> void:
 
 func _update_materials() -> void:
 	for material in _materials:
-		for key in [&"start_point", &"end_point", &"arc_height", &"curve_bend", &"stroke_width", &"pigment_color", &"edge_color", &"highlight_color", &"opacity", &"glow_strength", &"evolution_strength", &"travel_duration", &"trail_duration", &"rest_duration", &"playback_speed", &"motion_amount", &"wash_height", &"wash_opacity"]:
+		for key in [&"start_point", &"end_point", &"arc_height", &"curve_bend", &"stroke_width", &"pigment_color", &"edge_color", &"outline_strength", &"highlight_color", &"opacity", &"glow_strength", &"evolution_strength", &"travel_duration", &"trail_duration", &"rest_duration", &"playback_speed", &"motion_amount", &"wash_height", &"wash_opacity"]:
 			material.set_shader_parameter(key, get(key))
 		material.set_shader_parameter("seed_phase", float(posmod(stroke_seed * 37, 997)) / 997.0)
 		material.set_shader_parameter("route_length", _route_length if _route_texture else maxf(0.05, start_point.distance_to(end_point)))

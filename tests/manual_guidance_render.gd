@@ -27,6 +27,43 @@ func brightened_pixels(a: Image,b: Image) -> int:
 			# Translucent white picks up the warm pigment beneath it; it needn't clip to pure white.
 			if second.r>0.75 and second.g>0.75 and second.b>0.75 and second.get_luminance()-first.get_luminance()>0.025: count += 1
 	return count
+func contrast_pixels(a: Image, b: Image) -> int:
+	var count := 0
+	for y in a.get_height():
+		for x in a.get_width():
+			if absf(a.get_pixel(x,y).get_luminance() - b.get_pixel(x,y).get_luminance()) > 0.04:
+				count += 1
+	return count
+
+func check_pale_background() -> void:
+	var scene := Node3D.new()
+	root.add_child(scene)
+	var environment := WorldEnvironment.new()
+	environment.environment = Environment.new()
+	environment.environment.background_mode = Environment.BG_COLOR
+	environment.environment.background_color = Color("efeee8")
+	scene.add_child(environment)
+	var camera := Camera3D.new()
+	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+	camera.size = 5.8
+	scene.add_child(camera)
+	camera.position = Vector3(0,3.5,7)
+	camera.look_at(Vector3(0,1,0))
+	var guide := load("res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn").instantiate() as FragmentBrushstrokeGuide
+	scene.add_child(guide)
+	var blank := await snapshot()
+	guide.play_route(PackedVector3Array([Vector3(-2,1,0),Vector3(2,1,0)]))
+	guide.set_process(false)
+	guide._process(guide.travel_duration * 0.55)
+	var painted := await snapshot("res://docs/previews/manual-guide-light-background.png")
+	var contrast := contrast_pixels(blank,painted)
+	check(contrast > 500, "The painted trail must retain contrast over pale ground")
+	var frozen := await snapshot()
+	check(contrast_pixels(painted,frozen) == 0, "The painted trail must respect the paused route clock")
+	guide.stop()
+	check(contrast_pixels(blank,await snapshot()) == 0, "Stopping must hide the painted trail")
+	print("Pale guide contrast pixels: ", contrast)
+	scene.free()
 func press(button: Control) -> void:
 	var event := InputEventScreenTouch.new()
 	event.index = 1
@@ -77,7 +114,7 @@ func run() -> void:
 	world.get_node("CameraRig").global_position = actor.global_position
 	press(button)
 	guide = guidance.active_guide
-	check(is_instance_valid(guide) and guidance.active_destination.name == &"ArcadeFragment","A fresh request must now point from the player to the arcade")
+	check(is_instance_valid(guide) and guidance.active_destination == world.get_node("Memory/Zones/Arcade/Fragment"),"A fresh request must now point from the player to the arcade")
 	guide.set_process(false)
 	guide._process(minf(1.2,guide.travel_duration*0.3))
 	await snapshot("res://docs/previews/manual-guide-onward.png")
@@ -85,5 +122,6 @@ func run() -> void:
 	await process_frame
 	await process_frame
 	await create_timer(0.35).timeout
+	await check_pale_background()
 	print("Manual guide GPU: ","PASS" if failures==0 else "FAIL"," | readable brightened pixels ",pixels)
 	quit(failures)

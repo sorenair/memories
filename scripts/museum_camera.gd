@@ -5,17 +5,22 @@ extends "res://scripts/follow_camera.gd"
 @export var gallery_size := 3.5
 @export var exhibit_size := 4.8
 @export var gallery_offset := Vector3(0,1.65,-1.25)
+## Local Z in front of EntranceFocus: keep arrival close until the explorer
+## has walked 1.5 m, then open the view over the approach to the columns.
+@export var portico_reveal_start := 4.5
+@export var portico_reveal_end := 1.5
 var _exhibit_focuses: Array[Node] = []
 func _ready() -> void:
 	_exhibit_focuses = get_tree().get_nodes_in_group(&"museum_camera_focus")
-	framing_offset = entrance_focus.global_position-target.global_position if entrance_focus and target else gallery_offset
-	$Camera3D.size = entrance_size
+	framing_offset = gallery_offset*0.48
+	$Camera3D.size = gallery_size
 	super._ready()
 func _process(delta: float) -> void:
 	if is_instance_valid(target) and is_instance_valid(entrance_focus):
 		var at := target.get_global_transform_interpolated().origin
 		var local := entrance_focus.to_local(at)
-		var weight := (1.0-smoothstep(2.0,7.0,-local.z)) * (1.0-smoothstep(5.0,9.0,absf(local.x)))
+		var approach := 1.0-smoothstep(portico_reveal_end,portico_reveal_start,local.z)
+		var weight := approach * (1.0-smoothstep(2.0,7.0,-local.z)) * (1.0-smoothstep(5.0,9.0,absf(local.x)))
 		var exhibit_weight := 0.0
 		for focus: Node3D in _exhibit_focuses:
 			var offset := focus.global_position-at

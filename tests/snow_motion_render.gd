@@ -44,6 +44,14 @@ func run() -> void:
 	var c: Image=await snapshot()
 	await create_timer(0.7).timeout
 	var d: Image=await snapshot()
+	if "--capture" in OS.get_cmdline_user_args():
+		root.get_texture().get_image().save_png("/tmp/snowfall-noticeable.png")
+		var background := env.environment.background_color
+		env.environment.background_color = Color("efeee8")
+		await process_frame
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("/tmp/snowfall-light-background.png")
+		env.environment.background_color = background
 	snow.intensity=0.0
 	var hidden_a: Image=await snapshot()
 	await create_timer(0.3).timeout

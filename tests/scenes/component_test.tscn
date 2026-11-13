@@ -1,9 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://cjxw4gwen533n"]
+[gd_scene load_steps=13 format=3 uid="uid://cjxw4gwen533n"]
 
 [ext_resource type="Script" path="res://tests/scenes/component_test.gd" id="1"]
-[ext_resource type="PackedScene" path="res://components/vfx/smoke/painterly_smoke.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/interactables/fragments/memory_fragment.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://xkovxofvhuc5" path="res://scenes/player/explorer.tscn" id="3"]
 [ext_resource type="Script" uid="uid://dfv70ixt0xorv" path="res://scripts/exploration_input.gd" id="4"]
+
+[ext_resource type="PackedScene" path="res://UI/fragments/fragment_interaction.tscn" id="5_notes"]
 
 [sub_resource type="Environment" id="Environment"]
 resource_local_to_scene = true
@@ -100,7 +102,7 @@ offset_left = 28.0
 offset_top = 24.0
 offset_right = 800.0
 offset_bottom = 58.0
-text = "Component test / PainterlySmoke"
+text = "Component test / MemoryFragment"
 label_settings = SubResource("LabelSettings")
 
 [node name="Hint" type="Label" parent="Controls"]
@@ -163,3 +165,5 @@ popup/item_1/text = "Recall: enabled"
 popup/item_1/id = 1
 popup/item_2/text = "Recall: disabled"
 popup/item_2/id = 2
+
+[node name="FragmentInteraction" parent="Controls" instance=ExtResource("5_notes")]

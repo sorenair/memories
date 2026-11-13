@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/concert/display/painterly_concert_screen.gd" id="1"]
+[node name="PainterlyConcertScreen" type="Node3D"]
+script = ExtResource("1")
+body_color = Color(0.24, 0.28, 0.34, 1)
+accent_color = Color(0.43, 0.35, 0.52, 1)
+trim_color = Color(0.55, 0.60, 0.62, 1)

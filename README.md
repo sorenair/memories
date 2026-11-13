@@ -6,7 +6,7 @@ Designing a new memory? Start with the [memory design guide](docs/MEMORY_DESIGN_
 
 ## Play
 
-Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
+Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
 
 - **WASD / arrow keys:** walk, relative to the screen.
 - **Controller left stick:** analog movement.
@@ -49,6 +49,10 @@ Open `scenes/world/snowy_stadium_world.tscn` to play it directly. Its field and 
 
 The third authored memory is **Minneapolis Institute of Art — December 4, 2025**. Its isolated six-column portico leads through the white void to marble sculpture studies, a painting gallery with Mia collection reproductions, and a room of 34 painterly visitors. Four standard zones each own a fragment and ambient bed, connected by one finite floor. See [the museum guide](scenes/memories/art_museum/README.md), or run `scenes/world/art_museum_world.tscn` with F6.
 
+## Christmas market
+
+The fourth authored memory is **Christmas market — December 19, 2025**: two snowy zones connect a lane of six wooden market huts to a tree-and-music gathering with three acoustic performers. It reuses continuous footprint snow, pine trees, visitors, warm light washes, and the shared memory framework. See [the market guide](scenes/memories/christmas_market/README.md), or run `scenes/world/christmas_market_world.tscn`.
+
 ## Seasonal demo layout
 
 The content is grouped under `Environment/SummerSpring`, `Environment/Autumn`, and `Environment/Winter` in `scenes/memories/foliage_demo.tscn`. Their centers are at world X=-13, 0, and 13 m. Entry starts in spring/summer, and Exit is inside winter. The open walking lane follows local Z=-1.2 across the three clearings; the front ponds and perimeter groves leave it clear.
@@ -77,7 +81,11 @@ Use **Foliage Colors → Palette Preset** on any grass, tree, or bush instance f
 
 ## Scenery components
 
+The [postcard cabin](components/buildings/postcard_cabin/README.md) is a reusable closed trailer-cabin exterior with charcoal siding, a sloping roof, large painted windows, a warm porch lamp, wheels and entry steps. Dimensions, colors and optional details are editable. Run `tests/scenes/postcard_cabin_test.tscn` with F6 for a playable component study.
+
 Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, painterly stone with six varied shape profiles, stone palettes, and convex collision. See [the boulder guide](components/scenery/boulders/README.md). The demo contains boulders and a reusable rock cluster beside the pond.
+
+The [concert kit](components/scenery/concert/README.md) adds a walkable stage with an access ramp, modular speaker stacks with subtle cone motion, moving-head rave lights with painted shafts and floor pools, and a large animated visual screen. The screen mixes six GPU-driven graphic families with brush wipes and editable tempo, colors, dimensions, and glow. Run `tests/scenes/concert_test.tscn` with F6 for a playable arrangement using the existing crowd and component test framework.
 
 ## Create another memory
 
