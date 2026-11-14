@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, fog_disabled;
+#include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
 uniform vec4 root_color : source_color;
 uniform vec4 shade_color : source_color;
 uniform vec4 leaf_color : source_color;
@@ -17,6 +18,7 @@ varying float haze;
 vec3 disturbance(vec3 origin, vec4 explorer) {
 	vec2 away = origin.xz - explorer.xz;
 	float influence = (1.0 - smoothstep(0.0, 0.85, length(away))) * explorer.w;
+	influence *= 1.0 - smoothstep(0.65, 1.5, abs(origin.y - explorer.y));
 	return vec3(away.x, -0.1, away.y) / sqrt(dot(away, away) + 0.09) * influence * 0.16;
 }
 void vertex() {
@@ -40,7 +42,11 @@ void vertex() {
 		paint = mix(center_color.rgb, mix(bloom_a.rgb, bloom_b.rgb, INSTANCE_CUSTOM.r), 0.45) * mix(0.87, 1.0, light);
 	}
 	haze = smoothstep(25.0, 60.0, length((VIEW_MATRIX * vec4(origin, 1.0)).xyz));
+	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 void fragment() {
 	ALBEDO = mix(paint, vec3(0.87, 0.86, 0.77), haze);
+	float assembly = assembly_clarity(assembly_position);
+	if (assembly <= 0.001) { discard; }
+	ALBEDO = mix(vec3(0.94, 0.935, 0.89), ALBEDO, smoothstep(0.0, 1.0, assembly));
 }

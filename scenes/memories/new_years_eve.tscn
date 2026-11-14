@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://scenes/memories/new_years_eve/concert_zone.tscn" id="concert"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="AudioStream" path="res://audio/samples/new_years_eve_electronic.wav" id="music"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+
+[sub_resource type="Curve2D" id="ConcertOutline"]
+_data = {"points": PackedVector2Array(0, 0, 0, 0, -3.2, 18, 0, 0, 0, 0, -4.4, 16, 0, 0, 0, 0, -8, 14, 0, 0, 0, 0, -10.6, 10.5, 0, 0, 0, 0, -11, 2, 0, 0, 0, 0, -10, -4, 0, 0, 0, 0, -7.8, -7, 0, 0, 0, 0, -7.8, -14.7, 0, 0, 0, 0, -5.8, -16, 0, 0, 0, 0, 5.8, -16, 0, 0, 0, 0, 7.8, -14.7, 0, 0, 0, 0, 7.8, -7, 0, 0, 0, 0, 10, -4, 0, 0, 0, 0, 11, 2, 0, 0, 0, 0, 10.6, 10.5, 0, 0, 0, 0, 8, 14, 0, 0, 0, 0, 4.4, 16, 0, 0, 0, 0, 3.2, 18, 0, 0, 0, 0, -3.2, 18)}
+point_count = 19
+
+[node name="Memory" instance=ExtResource("base")]
+memory_id = &"new_years_eve"
+display_name = "New Year's Eve"
+
+[node name="Entry" parent="."]
+position = Vector3(0, 0.04, 14.2)
+
+[node name="Exit" parent="."]
+position = Vector3(-3, 0.5, -11)
+
+[node name="ConcertFloor" parent="Environment" instance=ExtResource("platform")]
+visible = false
+custom_outline = SubResource("ConcertOutline")
+outline_detail = 96
+pillar_depth = 9.0
+fade_start = 0.0
+fade_depth = 2.5
+top_color = Color(0.85, 0.845, 0.86, 1)
+side_color = Color(0.94, 0.935, 0.89, 1)
+pigment_strength = 0.012
+edge_inset = 0.2
+
+[node name="WornAisle" parent="Environment" instance=ExtResource("paving")]
+position = Vector3(0, 0, 4.8)
+footprint = Vector2(1.8, 22)
+paving_seed = 311225
+paving_color = Color(0.80, 0.79, 0.83, 1)
+end_fade = Vector2(2.5, 3.5)
+irregularity = 0.3
+slab_length = 3.0
+
+[node name="Guidance" type="Node3D" parent="Environment"]
+
+[node name="Audio" parent="."]
+music_stream = ExtResource("music")
+music_volume_db = -15.0
+fragment_sound = ExtResource("chime")
+
+[node name="Concert" parent="Zones" instance=ExtResource("concert")]
+
+[node name="ThroughTheCrowd" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/Concert/Fragment")
+waypoints = PackedVector3Array(0, 0.76, 11, 0, 0.76, 6, 0, 0.76, 0, 0, 0.76, -4.5)
+stroke_width = 0.34
+opacity = 0.92

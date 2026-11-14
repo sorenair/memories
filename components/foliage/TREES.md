@@ -51,7 +51,7 @@ Evergreens reuse the same volume placement and shader with a cached 24-triangle 
 
 ## Rendering budget
 
-The default deciduous tree has **25,914 triangles**, plus a two-triangle shadow plane, and **three geometry surfaces**: merged wood, one foliage MultiMesh, and shadow. A shared 30-triangle leaf-spray mesh is instanced 840 times at the default settings. At the same default density, pine has **20,874 triangles** and cypress has **20,874**, using the shared evergreen spray. All variants retain the same three geometry surfaces. The only transparent surface is the ground shadow; foliage is opaque, double-sided geometry with depth writes. There are no alpha cards, per-leaf nodes, shadow-map passes, or per-frame script updates or mesh uploads.
+The default deciduous tree has **25,914 triangles**, plus a two-triangle shadow plane, and **three geometry surfaces**: merged wood, one foliage MultiMesh, and shadow. A shared 30-triangle leaf-spray mesh is instanced 840 times at the default settings. At the same default density, pine has **20,874 triangles** and cypress has **20,874**, using the shared evergreen spray. All variants retain the same three geometry surfaces. The only transparent surface is the ground shadow; foliage is opaque, double-sided geometry with depth writes. There are no alpha cards, per-leaf nodes, shadow-map passes, or per-frame mesh uploads. Player response updates two shader positions per frame; leaf movement remains on the GPU.
 
 This uses more geometry than the earlier sphere canopy to make leaves form the silhouette and volume. It also removes a separate canopy draw surface. The demo measured **13 total draw calls and about 63,900 primitives**, including grass, player, and world, on Godot 4.4.1's Metal Mobile renderer. These are rendering counts, not an iOS frame-rate guarantee. For many trees, start with 50–80 sprays per cluster and profile on the target phone. Each tree is culled as one component; forest-wide batching and distance LOD are not implemented.
 
@@ -97,6 +97,12 @@ godot --path . --script tests/falling_leaves_render.gd
 Checks cover controls, palette updates, persistence, all tree types, bare trees, and preservation of canopy nodes. Captured-frame checks confirm falling motion with canopy wind disabled, and no motion when Rate is zero. `docs/previews/falling-leaves.png` shows a denser single-tree preview (32 leaves, rate 4) than the demo uses.
 
 ## Proximity recall
+
+**Player Response → React to Explorers** enables gentle displacement where low
+leaves are near either player. **Disturbance Strength** controls its magnitude.
+Height filtering leaves tall crowns unaffected; their ordinary wind continues.
+Hidden/departing explorers are excluded, and LAN replicas use the separate
+`foliage_explorers` group so they cannot drive local controls or interactions.
 
 Enable **Recall → Recall Enabled** on a tree instance's root. It defaults to off,
 with complete editor previews. All 11 demo trees enable it and discover explorers

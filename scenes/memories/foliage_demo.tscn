@@ -265,6 +265,7 @@ flame_size = Vector2(0.65, 1.1)
 animation_speed = 1.4
 ember_count = 12
 glow_strength = 0.25
+recall_enabled = true
 
 [node name="Rain" parent="Environment/SummerSpring" index="19" instance=ExtResource("10")]
 footprint = Vector2(11.5, 13)
@@ -289,6 +290,7 @@ crown_height = 0.17
 bloom_radius = 0.065
 foliage_palette = 1
 ground_exclusions = Array[NodePath]([NodePath("../Pond")])
+recall_enabled = true
 
 [node name="RoseFlowers" parent="Environment/SummerSpring" index="22" instance=ExtResource("15")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0, -2.5)
@@ -299,6 +301,7 @@ crown_height = 0.18
 bloom_palette = 1
 foliage_palette = 1
 ground_exclusions = Array[NodePath]([NodePath("../Pond")])
+recall_enabled = true
 
 [node name="LavenderFlowers" parent="Environment/SummerSpring" index="23" instance=ExtResource("15")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3, 0, 0.2)
@@ -309,6 +312,7 @@ crown_height = 0.165
 bloom_radius = 0.055
 bloom_palette = 2
 ground_exclusions = Array[NodePath]([NodePath("../Pond")])
+recall_enabled = true
 
 [node name="VineWall" type="StaticBody3D" parent="Environment/SummerSpring" index="24"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 1.05, -4)
@@ -326,6 +330,7 @@ footprint = Vector2(2.5, 1.95)
 leaf_spray_count = 280
 palette_preset = 0
 palette = SubResource("Resource_whmme")
+recall_enabled = true
 
 [node name="LivingBrushstroke" parent="Environment/SummerSpring" index="26" instance=ExtResource("19_brush")]
 visible = false
@@ -347,6 +352,7 @@ palette = 1
 clothing_colors = PackedColorArray(0.447059, 0.568627, 0.47451, 1, 0.670588, 0.509804, 0.396078, 1, 0.439216, 0.580392, 0.666667, 1, 0.705882, 0.627451, 0.447059, 1)
 skin_colors = PackedColorArray(0.831373, 0.682353, 0.54902, 1, 0.678431, 0.490196, 0.360784, 1, 0.470588, 0.329412, 0.270588, 1, 0.890196, 0.768627, 0.65098, 1)
 hair_colors = PackedColorArray(0.282353, 0.258824, 0.231373, 1, 0.462745, 0.360784, 0.270588, 1, 0.670588, 0.592157, 0.431373, 1, 0.572549, 0.564706, 0.521569, 1)
+recall_enabled = true
 
 [node name="Autumn" type="Node3D" parent="Environment" index="4"]
 
@@ -549,6 +555,7 @@ animation_speed = 1.4
 fire_seed = 130
 ember_count = 12
 glow_strength = 0.25
+recall_enabled = true
 
 [node name="Winter" type="Node3D" parent="Environment" index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 0)
@@ -746,6 +753,7 @@ animation_speed = 1.4
 fire_seed = 187
 ember_count = 12
 glow_strength = 0.25
+recall_enabled = true
 
 [node name="Snowfall" parent="Environment/Winter" index="19" instance=ExtResource("12")]
 footprint = Vector2(11, 13)

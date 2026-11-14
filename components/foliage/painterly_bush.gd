@@ -269,7 +269,7 @@ func _process(delta: float) -> void:
 	if _scan_timer <= 0.0:
 		_scan_timer = 0.25
 		# Preserve source slots so join/leave events never exchange player positions.
-		var explorers := get_tree().get_nodes_in_group("explorers")
+		var explorers := RECALL.explorers(self)
 		for index in range(2):
 			if not is_instance_valid(_sources[index]) or not _sources[index] in explorers:
 				_sources[index] = null

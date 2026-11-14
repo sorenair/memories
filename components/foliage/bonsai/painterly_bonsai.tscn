@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://components/foliage/bonsai/painterly_bonsai.gd" id="1"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/conservatory.tres" id="2"]
+[node name="PainterlyBonsai" type="Node3D"]
+script = ExtResource("1")
+palette = ExtResource("2")
+palette_preset = 0
+tree_height = 1.5
+crown_width = 1.5
+wind_strength = 0.02
+bark_shadow = Color(0.28, 0.24, 0.21, 1)
+bark_light = Color(0.61, 0.54, 0.41, 1)

@@ -1,0 +1,1167 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="trail"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/conservatory.tres" id="greens"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="water"]
+[ext_resource type="AudioStream" path="res://audio/samples/conservatory_jungle.wav" id="bed"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_tropical_broadleaf.tscn" id="broad"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="palm"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_bamboo.tscn" id="bamboo"]
+
+[sub_resource type="Curve3D" id="JungleTrail"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -2, 0, 0, 6, 0.1, 0, 1.8, -0.1, 0, -1.8, 2.5, 0, 2.8, 0, 0, 1.8, 0, 0, -1.8, -2.4, 0, -0.6, -2, 0, 0.2, 2, 0, -0.2, 0.2, 0, -4.5, -2.2, 0, 0, 0, 0, 0, 6.6, 0, -4.5), "tilts": PackedFloat32Array(0, 0, 0, 0, 0)}
+point_count = 5
+
+[node name="JungleRoom" instance=ExtResource("zone")]
+zone_id = &"jungle"
+display_name = "A little world of green"
+ambience_stream = ExtResource("bed")
+ambience_volume_db = -25.0
+ambience_size = Vector2(15, 17)
+ambience_blend_distance = 3.0
+
+
+
+
+
+
+[node name="JunglePool" parent="Scenery" instance=ExtResource("water")]
+position = Vector3(-5.0000, 0.0250, 0.1000)
+footprint = Vector2(2.8, 3.7)
+water_seed = 14501
+palette_preset = 2
+flow_speed = 0.045
+foam_amount = 0.18
+caustic_strength = 0.2
+wave_height = 0.003
+recall_enabled = true
+
+[node name="LushTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-4.8, 0, 4)
+tree_seed = 14530
+tree_type = 0
+tree_height = 5.3
+crown_width = 4.3
+trunk_radius = 0.14
+trunk_bend = 0.11
+branch_count = 6
+leaf_sprays_per_cluster = 80
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LushTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.7, 0, 2.5)
+tree_seed = 14531
+tree_type = 0
+tree_height = 5.8
+crown_width = 3.4
+trunk_radius = 0.14
+trunk_bend = 0.11
+branch_count = 6
+leaf_sprays_per_cluster = 80
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LushTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.6000, 0.0000, -3.5000)
+tree_seed = 14532
+tree_type = 3
+tree_height = 6.1
+crown_width = 3.8
+trunk_radius = 0.14
+trunk_bend = 0.11
+branch_count = 6
+leaf_sprays_per_cluster = 80
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LushTree4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.7, 0, -2.2)
+tree_seed = 14533
+tree_type = 0
+tree_height = 5.3
+crown_width = 3.4
+trunk_radius = 0.14
+trunk_bend = 0.11
+branch_count = 6
+leaf_sprays_per_cluster = 80
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LushTree5" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.4, 0, -5.4)
+tree_seed = 14534
+tree_type = 0
+tree_height = 5.0
+crown_width = 4
+trunk_radius = 0.14
+trunk_bend = 0.11
+branch_count = 6
+leaf_sprays_per_cluster = 80
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LushTree6" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.3, 0, -5.6)
+tree_seed = 14535
+tree_type = 3
+tree_height = 5.5
+crown_width = 3.8
+trunk_radius = 0.14
+trunk_bend = 0.11
+branch_count = 6
+leaf_sprays_per_cluster = 80
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.7, 0, 5.3)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14600
+bush_height = 1.5
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.9000, 0.0000, 4.6000)
+footprint = Vector2(1.5, 1.5)
+bush_seed = 14601
+bush_height = 0.8
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.3, 0, 5.8)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14602
+bush_height = 1.3
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.8000, 0.0000, 2.8000)
+footprint = Vector2(1.5, 1.5)
+bush_seed = 14603
+bush_height = 1.0
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.6, 0, 2.1)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14604
+bush_height = 1.2
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.6000, 0.0000, -2.4000)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14605
+bush_height = 1.4
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(0.1000, 0.0000, -0.4000)
+footprint = Vector2(1.5, 1.5)
+bush_seed = 14606
+bush_height = 0.6
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.6, 0, 0.1)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14607
+bush_height = 1.5
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.6, 0, -2)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14608
+bush_height = 1.5
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.8000, 0.0000, -1.4000)
+footprint = Vector2(1.5, 1.5)
+bush_seed = 14609
+bush_height = 0.7
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.5000, 0.0000, -3.8000)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14610
+bush_height = 1.1
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.0000, 0.0000, -5.4000)
+footprint = Vector2(1.5, 1.5)
+bush_seed = 14611
+bush_height = 0.8
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth13" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(0.7, 0, -6)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14612
+bush_height = 1.3
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth14" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.4, 0, -5.2)
+footprint = Vector2(1.8, 1.5)
+bush_seed = 14613
+bush_height = 1.5
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth15" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(1, 0, -6.8)
+footprint = Vector2(1.5, 1.5)
+bush_seed = 14614
+bush_height = 0.7
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Undergrowth16" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.8, 0, -2.2)
+footprint = Vector2(1.5, 1.5)
+bush_seed = 14615
+bush_height = 0.9
+mass_count = 3
+sprays_per_mass = 40
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.035
+wind_speed = 0.55
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LowLeaves1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.6, 0, 3.6)
+patch_size = Vector2(3, 3.6)
+patch_seed = 14700
+tufts_per_square_meter = 15.0
+leaves_per_square_meter = 12.0
+grass_height = 0.36
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../JunglePool"), NodePath("../WindingPath")])
+
+[node name="LowLeaves2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(4.3, 0, 3)
+patch_size = Vector2(3, 4)
+patch_seed = 14701
+tufts_per_square_meter = 15.0
+leaves_per_square_meter = 12.0
+grass_height = 0.36
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../JunglePool"), NodePath("../WindingPath")])
+
+[node name="LowLeaves3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.3, 0, -4.7)
+patch_size = Vector2(3.2, 3.5)
+patch_seed = 14702
+tufts_per_square_meter = 15.0
+leaves_per_square_meter = 12.0
+grass_height = 0.36
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../JunglePool"), NodePath("../WindingPath")])
+
+[node name="LowLeaves4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.3, 0, -5.2)
+patch_size = Vector2(3, 3)
+patch_seed = 14703
+tufts_per_square_meter = 15.0
+leaves_per_square_meter = 12.0
+grass_height = 0.36
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../JunglePool"), NodePath("../WindingPath")])
+
+[node name="LowLeaves5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.8, 0, -0.1)
+patch_size = Vector2(2.3, 3.1)
+patch_seed = 14704
+tufts_per_square_meter = 15.0
+leaves_per_square_meter = 12.0
+grass_height = 0.36
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../JunglePool"), NodePath("../WindingPath")])
+
+[node name="LowLeaves6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(4.9, 0, -1.8)
+patch_size = Vector2(2.8, 3)
+patch_seed = 14705
+tufts_per_square_meter = 15.0
+leaves_per_square_meter = 12.0
+grass_height = 0.36
+palette_preset = 0
+palette = ExtResource("greens")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../JunglePool"), NodePath("../WindingPath")])
+
+[node name="Fragment" parent="."]
+position = Vector3(0.6, 0.04, -2.5)
+fragment_seed = 140127
+note_title = "A little world of green"
+notes = Array[String](["Placeholder: Write your memory of the warm jungle room and being surrounded by green here."])
+
+[node name="WindingPath" parent="Scenery" instance=ExtResource("trail") ]
+curve = SubResource("JungleTrail")
+path_width = 2.15
+sample_spacing = 0.22
+slab_length = 1.5
+paving_seed = 140126
+paving_color = Color(0.85, 0.83, 0.76, 1)
+end_fade = Vector2(0.45, 0.6)
+irregularity = 0.55
+
+[node name="TropicalUnderstory1" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-6.1149, 0.0000, -2.9661)
+rotation_degrees = Vector3(0.0000, -95.3069, 0.0000)
+plant_form = 2
+plant_seed = 15100
+plant_height = 1.04
+spread = 1.50
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory2" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(4.4178, 0.0000, 0.8986)
+rotation_degrees = Vector3(0.0000, -140.9906, 0.0000)
+plant_form = 5
+plant_seed = 15101
+plant_height = 0.66
+spread = 1.63
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory3" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-5.0715, 0.0000, 3.0496)
+rotation_degrees = Vector3(0.0000, 17.6287, 0.0000)
+plant_form = 4
+plant_seed = 15102
+plant_height = 1.38
+spread = 1.81
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory4" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-3.9067, 0.0000, 6.6568)
+rotation_degrees = Vector3(0.0000, 15.9537, 0.0000)
+plant_form = 5
+plant_seed = 15103
+plant_height = 1.24
+spread = 1.90
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory5" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(4.8170, 0.0000, -1.2550)
+rotation_degrees = Vector3(0.0000, -50.3026, 0.0000)
+plant_form = 5
+plant_seed = 15104
+plant_height = 0.69
+spread = 1.43
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory6" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(4.9155, 0.0000, 3.1399)
+rotation_degrees = Vector3(0.0000, 8.6112, 0.0000)
+plant_form = 5
+plant_seed = 15105
+plant_height = 0.55
+spread = 1.55
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory7" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-1.7096, 0.0000, 4.4934)
+rotation_degrees = Vector3(0.0000, -113.6457, 0.0000)
+plant_form = 4
+plant_seed = 15106
+plant_height = 1.00
+spread = 1.73
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory8" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(5.8133, 0.0000, 0.4913)
+rotation_degrees = Vector3(0.0000, 5.9434, 0.0000)
+plant_form = 5
+plant_seed = 15107
+plant_height = 0.58
+spread = 1.57
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory9" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-1.6733, 0.0000, 2.9301)
+rotation_degrees = Vector3(0.0000, -27.4149, 0.0000)
+plant_form = 5
+plant_seed = 15108
+plant_height = 0.73
+spread = 1.41
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory10" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(0.8134, 0.0000, -6.7772)
+rotation_degrees = Vector3(0.0000, -29.0843, 0.0000)
+plant_form = 3
+plant_seed = 15109
+plant_height = 1.63
+spread = 1.99
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory11" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-4.7113, 0.0000, -4.9978)
+rotation_degrees = Vector3(0.0000, -73.1377, 0.0000)
+plant_form = 4
+plant_seed = 15110
+plant_height = 1.57
+spread = 1.79
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory12" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(4.8414, 0.0000, 0.0048)
+rotation_degrees = Vector3(0.0000, -39.4290, 0.0000)
+plant_form = 5
+plant_seed = 15111
+plant_height = 0.62
+spread = 1.31
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory13" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-4.3990, 0.0000, -3.5742)
+rotation_degrees = Vector3(0.0000, 169.6546, 0.0000)
+plant_form = 2
+plant_seed = 15112
+plant_height = 1.43
+spread = 1.50
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory14" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(6.1654, 0.0000, 3.1202)
+rotation_degrees = Vector3(0.0000, 45.9256, 0.0000)
+plant_form = 5
+plant_seed = 15113
+plant_height = 0.72
+spread = 1.55
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory15" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(2.7558, 0.0000, -6.6488)
+rotation_degrees = Vector3(0.0000, 50.6416, 0.0000)
+plant_form = 4
+plant_seed = 15114
+plant_height = 1.15
+spread = 1.69
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory16" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(1.4057, 0.0000, -2.3101)
+rotation_degrees = Vector3(0.0000, 175.9593, 0.0000)
+plant_form = 4
+plant_seed = 15115
+plant_height = 0.68
+spread = 1.46
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory17" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(0.6198, 0.0000, -1.4707)
+rotation_degrees = Vector3(0.0000, 13.0623, 0.0000)
+plant_form = 2
+plant_seed = 15116
+plant_height = 1.08
+spread = 1.63
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory18" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(3.4082, 0.0000, -1.8058)
+rotation_degrees = Vector3(0.0000, 115.1854, 0.0000)
+plant_form = 5
+plant_seed = 15117
+plant_height = 0.51
+spread = 1.26
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory19" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-3.3587, 0.0000, -4.5425)
+rotation_degrees = Vector3(0.0000, -69.2553, 0.0000)
+plant_form = 4
+plant_seed = 15118
+plant_height = 1.47
+spread = 1.67
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory20" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-1.9911, 0.0000, 5.4696)
+rotation_degrees = Vector3(0.0000, -47.3749, 0.0000)
+plant_form = 5
+plant_seed = 15119
+plant_height = 1.58
+spread = 1.71
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory21" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-2.5063, 0.0000, 3.9778)
+rotation_degrees = Vector3(0.0000, -40.8807, 0.0000)
+plant_form = 2
+plant_seed = 15120
+plant_height = 1.36
+spread = 1.77
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory22" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(6.3739, 0.0000, -0.6999)
+rotation_degrees = Vector3(0.0000, -115.3206, 0.0000)
+plant_form = 4
+plant_seed = 15121
+plant_height = 0.69
+spread = 1.64
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory23" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(6.2614, 0.0000, 4.9101)
+rotation_degrees = Vector3(0.0000, -146.2489, 0.0000)
+plant_form = 5
+plant_seed = 15122
+plant_height = 0.67
+spread = 1.29
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory24" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(3.8862, 0.0000, 4.8460)
+rotation_degrees = Vector3(0.0000, 87.3596, 0.0000)
+plant_form = 5
+plant_seed = 15123
+plant_height = 0.55
+spread = 1.58
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory25" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-0.3541, 0.0000, -7.0458)
+rotation_degrees = Vector3(0.0000, 82.7336, 0.0000)
+plant_form = 2
+plant_seed = 15124
+plant_height = 1.51
+spread = 1.70
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory26" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(4.8982, 0.0000, 5.6710)
+rotation_degrees = Vector3(0.0000, -143.8983, 0.0000)
+plant_form = 5
+plant_seed = 15125
+plant_height = 0.44
+spread = 1.49
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory27" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(3.3259, 0.0000, 0.7119)
+rotation_degrees = Vector3(0.0000, 103.1881, 0.0000)
+plant_form = 4
+plant_seed = 15126
+plant_height = 1.03
+spread = 1.81
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory28" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(1.7787, 0.0000, -6.7994)
+rotation_degrees = Vector3(0.0000, -165.3191, 0.0000)
+plant_form = 5
+plant_seed = 15127
+plant_height = 1.57
+spread = 1.87
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory29" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-2.4894, 0.0000, -5.9382)
+rotation_degrees = Vector3(0.0000, -51.6462, 0.0000)
+plant_form = 2
+plant_seed = 15128
+plant_height = 1.14
+spread = 1.51
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory30" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-3.3705, 0.0000, 1.8338)
+rotation_degrees = Vector3(0.0000, -39.8776, 0.0000)
+plant_form = 5
+plant_seed = 15129
+plant_height = 0.75
+spread = 1.46
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory31" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-0.4671, 0.0000, 2.9016)
+rotation_degrees = Vector3(0.0000, -105.3437, 0.0000)
+plant_form = 4
+plant_seed = 15130
+plant_height = 0.46
+spread = 1.58
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory32" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-2.9728, 0.0000, -6.9196)
+rotation_degrees = Vector3(0.0000, -164.1892, 0.0000)
+plant_form = 5
+plant_seed = 15131
+plant_height = 1.58
+spread = 1.51
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory33" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(4.5771, 0.0000, 6.5787)
+rotation_degrees = Vector3(0.0000, -60.8823, 0.0000)
+plant_form = 5
+plant_seed = 15132
+plant_height = 0.53
+spread = 1.48
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory34" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-3.9620, 0.0000, 4.5354)
+rotation_degrees = Vector3(0.0000, -7.4172, 0.0000)
+plant_form = 3
+plant_seed = 15133
+plant_height = 1.52
+spread = 1.51
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory35" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-3.3869, 0.0000, 3.0032)
+rotation_degrees = Vector3(0.0000, 127.1824, 0.0000)
+plant_form = 5
+plant_seed = 15134
+plant_height = 0.59
+spread = 1.57
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory36" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-4.4581, 0.0000, -6.1841)
+rotation_degrees = Vector3(0.0000, 9.4527, 0.0000)
+plant_form = 5
+plant_seed = 15135
+plant_height = 1.42
+spread = 1.87
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory37" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(5.3615, 0.0000, 4.5510)
+rotation_degrees = Vector3(0.0000, 175.1525, 0.0000)
+plant_form = 4
+plant_seed = 15136
+plant_height = 0.41
+spread = 1.26
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory38" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(4.4350, 0.0000, 1.9715)
+rotation_degrees = Vector3(0.0000, -93.8800, 0.0000)
+plant_form = 5
+plant_seed = 15137
+plant_height = 0.69
+spread = 1.46
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory39" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(5.7284, 0.0000, 1.8957)
+rotation_degrees = Vector3(0.0000, -161.4737, 0.0000)
+plant_form = 5
+plant_seed = 15138
+plant_height = 0.56
+spread = 1.57
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory40" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(3.6791, 0.0000, 6.1494)
+rotation_degrees = Vector3(0.0000, -141.4576, 0.0000)
+plant_form = 4
+plant_seed = 15139
+plant_height = 0.52
+spread = 1.51
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory41" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-1.1812, 0.0000, -6.6477)
+rotation_degrees = Vector3(0.0000, -137.1862, 0.0000)
+plant_form = 2
+plant_seed = 15140
+plant_height = 1.45
+spread = 1.63
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory42" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(2.4733, 0.0000, 6.7375)
+rotation_degrees = Vector3(0.0000, 162.8477, 0.0000)
+plant_form = 5
+plant_seed = 15141
+plant_height = 0.66
+spread = 1.53
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory43" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(6.3160, 0.0000, -6.9400)
+rotation_degrees = Vector3(0.0000, 40.8044, 0.0000)
+plant_form = 4
+plant_seed = 15142
+plant_height = 1.45
+spread = 1.96
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory44" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-4.0827, 0.0000, 3.5802)
+rotation_degrees = Vector3(0.0000, -14.9488, 0.0000)
+plant_form = 5
+plant_seed = 15143
+plant_height = 0.42
+spread = 1.36
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory45" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(-6.2612, 0.0000, -2.0321)
+rotation_degrees = Vector3(0.0000, 43.9763, 0.0000)
+plant_form = 2
+plant_seed = 15144
+plant_height = 1.29
+spread = 1.88
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory46" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(2.0557, 0.0000, -1.6326)
+rotation_degrees = Vector3(0.0000, -105.4408, 0.0000)
+plant_form = 4
+plant_seed = 15145
+plant_height = 0.74
+spread = 1.54
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory47" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(5.3412, 0.0000, -2.0569)
+rotation_degrees = Vector3(0.0000, -23.2363, 0.0000)
+plant_form = 5
+plant_seed = 15146
+plant_height = 0.41
+spread = 1.33
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory48" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(-3.2445, 0.0000, 5.2200)
+rotation_degrees = Vector3(0.0000, -75.0160, 0.0000)
+plant_form = 5
+plant_seed = 15147
+plant_height = 1.06
+spread = 1.77
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory49" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(5.0610, 0.0000, -6.9392)
+rotation_degrees = Vector3(0.0000, 135.0774, 0.0000)
+plant_form = 2
+plant_seed = 15148
+plant_height = 1.56
+spread = 1.98
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory50" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(2.2558, 0.0000, -0.0910)
+rotation_degrees = Vector3(0.0000, 46.4173, 0.0000)
+plant_form = 3
+plant_seed = 15149
+plant_height = 1.65
+spread = 1.62
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory51" parent="Scenery" instance=ExtResource("fern") ]
+position = Vector3(4.3629, 0.0000, 4.0426)
+rotation_degrees = Vector3(0.0000, -47.2878, 0.0000)
+plant_form = 5
+plant_seed = 15150
+plant_height = 0.50
+spread = 1.65
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TropicalUnderstory52" parent="Scenery" instance=ExtResource("broad") ]
+position = Vector3(6.3710, 0.0000, -2.0649)
+rotation_degrees = Vector3(0.0000, 95.9337, 0.0000)
+plant_form = 4
+plant_seed = 15151
+plant_height = 0.72
+spread = 1.52
+fullness = 0.45
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalmCanopy1" parent="Scenery" instance=ExtResource("palm") ]
+position = Vector3(-5.7000, 0.0000, 5.3000)
+plant_form = 0
+plant_seed = 15200
+plant_height = 5.1
+spread = 3.3
+fullness = 0.6
+growth_curve = 0.18
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalmCanopy2" parent="Scenery" instance=ExtResource("palm") ]
+position = Vector3(-5.3000, 0.0000, -5.8000)
+plant_form = 1
+plant_seed = 15201
+plant_height = 3.6
+spread = 2.8
+fullness = 0.6
+growth_curve = 0.18
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalmCanopy3" parent="Scenery" instance=ExtResource("palm") ]
+position = Vector3(3.5000, 0.0000, -6.6000)
+plant_form = 0
+plant_seed = 15202
+plant_height = 4.6
+spread = 3.1
+fullness = 0.6
+growth_curve = 0.18
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalmCanopy4" parent="Scenery" instance=ExtResource("palm") ]
+position = Vector3(5.9000, 0.0000, 5.8000)
+plant_form = 1
+plant_seed = 15203
+plant_height = 3.3
+spread = 2.4
+fullness = 0.6
+growth_curve = 0.18
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BambooScreen1" parent="Scenery" instance=ExtResource("bamboo") ]
+position = Vector3(-6.4000, 0.0000, 2.7000)
+plant_seed = 15220
+plant_height = 3.5
+spread = 2.0
+fullness = 0.5
+growth_curve = 0.1
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BambooScreen2" parent="Scenery" instance=ExtResource("bamboo") ]
+position = Vector3(-0.4000, 0.0000, -7.2000)
+plant_seed = 15221
+plant_height = 3.5
+spread = 2.0
+fullness = 0.5
+growth_curve = 0.1
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BambooScreen3" parent="Scenery" instance=ExtResource("bamboo") ]
+position = Vector3(6.7000, 0.0000, -1.3000)
+plant_seed = 15222
+plant_height = 3.5
+spread = 2.0
+fullness = 0.5
+growth_curve = 0.1
+recall_enabled = true
+react_to_explorers = true

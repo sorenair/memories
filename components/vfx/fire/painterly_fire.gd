@@ -53,6 +53,25 @@ const GLOW_SHADER = preload("res://components/vfx/fire/ground_glow.gdshader")
 var _queued: bool = false
 var _materials: Array[ShaderMaterial] = []
 
+
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+@export_group("Recall")
+@export var recall_enabled: bool = false:
+	set(value):
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint(): _sync_recall()
+var _recall: Node
+func get_recall_controller() -> Node:
+	return _recall
+func _sync_recall() -> void:
+	_recall = RECALL.configure(self, "res://components/effects/recall/fade_recall.gd", _recall)
+	if not recall_enabled:
+		for material in _materials: material.set_shader_parameter("recall_visibility", 1.0)
+func recall_materials() -> Array[ShaderMaterial]:
+	return _materials
+var footprint: Vector2:
+	get: return Vector2.ONE * flame_size.x
+
 func _ready() -> void:
 	rebuild()
 
@@ -139,3 +158,5 @@ func rebuild() -> void:
 		_generated(embers)
 	_update_materials()
 	_update_bounds()
+
+	_sync_recall()

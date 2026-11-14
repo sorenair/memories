@@ -138,10 +138,27 @@ var _falling_origins: Array[Vector3] = []
 var _canopy_material: ShaderMaterial
 var _variant: Dictionary = VARIANTS.DEFINITIONS[0]
 
+const RESPONSE = preload("res://components/foliage/shared/canopy_response.gd")
+var _response = RESPONSE.new()
+@export_group("Player Response")
+@export var react_to_explorers: bool = true:
+	set(value):
+		react_to_explorers = value
+		if is_inside_tree(): set_process(not Engine.is_editor_hint() and value)
+		if _canopy_material: _canopy_material.set_shader_parameter("disturbance_strength", disturbance_strength if value else 0.0)
+		if not value: _response.clear(_canopy_material)
+@export_range(0.0, 0.3, 0.01) var disturbance_strength: float = 0.12:
+	set(value):
+		disturbance_strength = value
+		if _canopy_material: _canopy_material.set_shader_parameter("disturbance_strength", value if react_to_explorers else 0.0)
+func _process(delta: float) -> void:
+	if react_to_explorers: _response.update(self, _canopy_material, delta)
+
 func _ready() -> void:
 	if palette and not palette.changed.is_connected(_on_palette_changed):
 		palette.changed.connect(_on_palette_changed)
 	rebuild()
+	set_process(not Engine.is_editor_hint() and react_to_explorers)
 
 func _validate_property(property: Dictionary) -> void:
 	# Presets recreate their own local resource on load. Only Custom stores it,
@@ -176,6 +193,8 @@ func _material(shader: Shader, colors: GrassPalette) -> ShaderMaterial:
 		if shader == CANOPY_SHADER or shader == FALLING_SHADER or key == &"root_color":
 			material.set_shader_parameter(key, colors.get(key))
 	if shader == CANOPY_SHADER:
+		material.set_shader_parameter("disturbance_strength", disturbance_strength if react_to_explorers else 0.0)
+		material.set_shader_parameter("disturbance_radius", 1.0)
 		material.set_shader_parameter("tree_height", tree_height)
 		material.set_shader_parameter("tree_phase", float(posmod(tree_seed, 1000)) * 0.173)
 	_palette_materials.append(material)

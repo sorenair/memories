@@ -48,10 +48,12 @@ func _ready() -> void:
 		arrival.begin(self)
 
 func begin_departure() -> void:
+	player.remove_from_group(&"explorers")
 	# Announce exit as our own reverse scan starts, so observers see it together.
 	LanSession.exit_memory(memory.memory_id, _visit_id)
 
 func cancel_departure() -> void:
+	player.add_to_group(&"explorers")
 	_visit_id = LanSession.enter_memory(memory.memory_id)
 
 func _physics_process(delta: float) -> void:
@@ -81,6 +83,7 @@ func _update_lan() -> void:
 		return
 	if is_instance_valid(_remote):
 		_remote.collision_layer = 0
+		_remote.remove_from_group(&"foliage_explorers")
 		# Detach from active presence immediately; its last pose can dissolve while
 		# a new visit creates its own replica and fresh motion buffer.
 		_remote.name = "DepartingPartner"
@@ -105,6 +108,7 @@ func _receive_snapshot(time: float, point: Vector3, heading: float, walking: boo
 		# A network-driven obstacle: local movement collides with it, but it never
 		# simulates input or collides back against its delayed copy of the world.
 		_remote.remove_from_group(&"explorers")
+		_remote.add_to_group(&"foliage_explorers")
 		_remote.collision_layer = 2
 		_remote.collision_mask = 0
 		_remote.position = to_local(point)

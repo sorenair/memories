@@ -51,6 +51,7 @@ Use a zone for a distinct place/beat with its own fragment and ambience. **A cam
 - Block out arrival, fragment, approaches, and connecting paths before dressing the scene. Leave room to pass another explorer and operate props without standing inside foliage or collision.
 - Use **MemoryPlatform** for finite supported ground. The world discovers it, disables infinite ground, and matches its dissolve to the void. Keep safe boundaries aligned with visible railings, fences, or edges.
 - For connected landings/aisles, prefer **one custom-outline platform**. Separate platforms have closed safety rims that can block their joins. A concave outline preserves both narrow routes and surrounding empty space.
+- For winding routes, reuse [PainterlyCurvedPath](../components/groundcover/paving/README.md#curved-paths). Its editable Curve3D drives the painted ribbon, continuous collision, foliage exclusion and sampled guidance points; keep walking routes attached to that curve when editing it.
 - Place Entry on the actual floor, including elevated decks. Allow the LAN guest's fallback spawn **1.2 m to the right**. Set the wrapper's `recalled_spawn_offset` deliberately; both authored memories use zero instead of the base world's 10 m offset.
 - Check paths with the actual explorer: gates, stairs, benches, prop controls, fragments, and turnarounds. Decorative stadium tiers and field need no walking collision.
 - Start with the inherited near-isometric orthographic camera. **Size 3.5** is the close exploration reference. Keep the explorer and nearby fragment readable without foreground objects hiding them.
@@ -93,7 +94,7 @@ Reuse components before creating new ones. Favor seeded procedural meshes, share
 
 Use shader motion for background life: leaves, weather, and Football's individually phased crowd bounce. A small number of scenic actors can use instanced animated poses, as the 22 field players do. Avoid per-person nodes or per-frame mesh regeneration for a distant crowd. Include animation displacement in culling bounds; judge cost in the real Mobile renderer.
 
-Enable proximity recall per instance where approaching a component should assemble the memory, as in First Meeting. Keep ground/routes readable and collision safe during recall. Distant stadium scenery stays visible so the overlook works. See [component recall](../components/effects/recall/README.md).
+Enable proximity recall on each recallable scenery instance, including nested decorations, and player response on foliage. Keep ground/routes readable and collision safe during recall. Scenic pieces outside the walkable area can use a reachable recall anchor; the stadium field triggers from its viewing platform. Run the [all-memory audit](MEMORY_EFFECTS_AUDIT.md) after registering a memory. See [component recall](../components/effects/recall/README.md).
 
 LAN currently shares **avatar choice and player movement/contact** when both devices occupy the same memory ID. Notes, interactions, recall, audio, and scenic animation remain local; design any required shared event explicitly rather than assuming it replicates. See [network behavior](../scripts/network/README.md).
 

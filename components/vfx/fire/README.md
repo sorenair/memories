@@ -14,6 +14,7 @@ The flame uses a warm pale core, yellow body, orange/red tips, three connected c
 | Core / Flame / Tip Color | Three editable palette colors, with the innermost heart slightly lightened automatically. |
 | Ember Count | Allocated ember pool, 0–64; zero removes that batch. |
 | Glow Strength | Halo and ground-wash strength; zero hides the ground wash. |
+| Recall Enabled | Starts hidden, then smoothly manifests over 1.8 seconds when either explorer approaches using the shared recall distance. |
 
 Size, colors, speed, wind, glow, and intensity update uniforms without regenerating geometry. Seed and ember count rebuild the small batches. Generated children stay internal; the scene saves only authoring controls. Use Flame Size for dimensions and keep the root upright. The flame is an upright camera-facing graphic, while embers face the camera fully. It is intended for the game's elevated camera and normal side views, rather than an exactly overhead camera.
 

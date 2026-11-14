@@ -17,6 +17,25 @@ const PAINT = preload("res://components/scenery/stadium/stadium_paint.gdshader")
 var _queued := false
 var _material: ShaderMaterial
 
+
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+@export_group("Recall")
+@export var recall_enabled: bool = false:
+	set(value):
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint(): _sync_recall()
+## Scenic objects outside the walkable area can be discovered at a lookout.
+@export var recall_anchor: Node3D
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
+var _recall: Node
+func get_recall_controller() -> Node:
+	return _recall
+func _sync_recall() -> void:
+	_recall = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall)
+	if not recall_enabled and not Engine.is_editor_hint():
+		preload("res://components/effects/recall/assembled_recall.gd").restore_component(self)
+
 func _ready() -> void:
 	rebuild()
 
@@ -53,6 +72,7 @@ func rebuild() -> void:
 	mesh.material_override = _material
 	mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_generated(mesh)
+	_sync_recall()
 
 func _build(_builder: RefCounted) -> void:
 	pass

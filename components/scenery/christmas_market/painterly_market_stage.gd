@@ -29,6 +29,7 @@ func rebuild() -> void:
 	_hand_mesh = _make_hand_mesh()
 	for i in 3: _performer(i)
 	_apply_performance(_time)
+	_sync_recall()
 	ground_exclusion_changed.emit()
 
 func _build(b: RefCounted) -> void:

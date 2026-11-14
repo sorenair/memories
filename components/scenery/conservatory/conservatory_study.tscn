@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3]
+[ext_resource type="PackedScene" path="res://components/scenery/conservatory/fountain/painterly_marble_fountain.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/scenery/conservatory/walls/painterly_stone_wall.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/foliage/bonsai/painterly_bonsai.tscn" id="4"]
+
+[node name="ConservatoryStudy" type="Node3D"]
+
+[node name="Fountain" parent="." instance=ExtResource("1")]
+
+[node name="StackedWall" parent="." instance=ExtResource("2")]
+position = Vector3(-1.5, 0, -2.5)
+length = 3.2
+wall_height = 0.65
+curve_degrees = 35.0
+
+[node name="BlockWall" parent="." instance=ExtResource("2")]
+position = Vector3(1.8, 0, -2.5)
+length = 2.8
+wall_height = 0.65
+masonry_style = 1
+stone_color = Color(0.68, 0.70, 0.65, 1)
+
+[node name="SlabWall" parent="." instance=ExtResource("2")]
+position = Vector3(4.1, 0, 0.1)
+rotation_degrees = Vector3(0, 90, 0)
+length = 2.3
+wall_height = 0.6
+masonry_style = 2
+stone_color = Color(0.76, 0.74, 0.66, 1)
+
+[node name="OpenFlowers" parent="." instance=ExtResource("3")]
+position = Vector3(-2.85, 0, -0.35)
+footprint = Vector2(1.7, 1.45)
+bush_height = 0.72
+bush_seed = 136
+flower_size = 0.105
+flower_count = 70
+react_to_explorers = true
+
+[node name="Rosettes" parent="." instance=ExtResource("3")]
+position = Vector3(-3.15, 0, 1.55)
+footprint = Vector2(1.6, 1.2)
+bush_height = 0.65
+bush_seed = 195
+flower_style = 1
+flower_count = 58
+flower_color = Color(0.82, 0.36, 0.42, 1)
+flower_highlight = Color(0.98, 0.72, 0.62, 1)
+
+[node name="Florets" parent="." instance=ExtResource("3")]
+position = Vector3(-1.8, 0, 2.85)
+footprint = Vector2(1.65, 1.35)
+bush_height = 0.65
+bush_seed = 223
+flower_style = 2
+flower_count = 50
+flower_size = 0.125
+flower_color = Color(0.56, 0.42, 0.72, 1)
+flower_highlight = Color(0.86, 0.74, 0.94, 1)
+
+[node name="TwistedBonsai" parent="." instance=ExtResource("4")]
+position = Vector3(2.65, 0, -1.2)
+pedestal_height = 0.4
+tree_seed = 84
+
+[node name="WindsweptBonsai" parent="." instance=ExtResource("4")]
+position = Vector3(2.75, 0, 0.95)
+bonsai_form = 1
+pedestal_height = 0.5
+tree_seed = 116
+trunk_curve = 0.6
+pot_color = Color(0.68, 0.49, 0.36, 1)
+
+[node name="CascadeBonsai" parent="." instance=ExtResource("4")]
+position = Vector3(2.1, 0, 2.8)
+bonsai_form = 2
+pedestal_height = 0.65
+tree_seed = 215
+spread = 1.1
+pot_color = Color(0.48, 0.61, 0.48, 1)

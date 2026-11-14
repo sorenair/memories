@@ -22,6 +22,7 @@ ambience_size = Vector2(16, 21)
 ambience_blend_distance = 4.0
 
 [node name="BakeryHut" parent="Scenery" instance=ExtResource("hut")]
+recall_enabled = true
 position = Vector3(-4, 0, 2)
 rotation_degrees = Vector3(0, 55, 0)
 goods = 0
@@ -29,6 +30,7 @@ trim_color = Color(0.40, 0.47, 0.38, 1)
 paint_seed = 1300
 
 [node name="BakeryHutWarmth" parent="Scenery" instance=ExtResource("wash")]
+recall_enabled = true
 position = Vector3(-2.4436111158509157, 0.07, 2)
 footprint = Vector2(3.2, 3.0)
 light_color = Color(1, 0.79, 0.46, 1)
@@ -38,6 +40,7 @@ motion = 1
 motion_amount = 0.035
 
 [node name="OrnamentHut" parent="Scenery" instance=ExtResource("hut")]
+recall_enabled = true
 position = Vector3(4, 0, -1)
 rotation_degrees = Vector3(0, -20, 0)
 goods = 1
@@ -45,6 +48,7 @@ trim_color = Color(0.59, 0.37, 0.32, 1)
 paint_seed = 1318
 
 [node name="OrnamentHutWarmth" parent="Scenery" instance=ExtResource("wash")]
+recall_enabled = true
 position = Vector3(3.3501617276812294, 0.07, -1)
 footprint = Vector2(3.2, 3.0)
 light_color = Color(1, 0.79, 0.46, 1)
@@ -54,6 +58,7 @@ motion = 1
 motion_amount = 0.035
 
 [node name="CocoaHut" parent="Scenery" instance=ExtResource("hut")]
+recall_enabled = true
 position = Vector3(-4, 0, -4)
 rotation_degrees = Vector3(0, 55, 0)
 goods = 2
@@ -61,6 +66,7 @@ trim_color = Color(0.54, 0.39, 0.32, 1)
 paint_seed = 1291
 
 [node name="CocoaHutWarmth" parent="Scenery" instance=ExtResource("wash")]
+recall_enabled = true
 position = Vector3(-2.4436111158509157, 0.07, -4)
 footprint = Vector2(3.2, 3.0)
 light_color = Color(1, 0.79, 0.46, 1)
@@ -70,6 +76,7 @@ motion = 1
 motion_amount = 0.035
 
 [node name="GiftHut" parent="Scenery" instance=ExtResource("hut")]
+recall_enabled = true
 position = Vector3(4, 0, -7)
 rotation_degrees = Vector3(0, -20, 0)
 goods = 1
@@ -77,6 +84,7 @@ trim_color = Color(0.37, 0.47, 0.43, 1)
 paint_seed = 1282
 
 [node name="GiftHutWarmth" parent="Scenery" instance=ExtResource("wash")]
+recall_enabled = true
 position = Vector3(3.3501617276812294, 0.07, -7)
 footprint = Vector2(3.2, 3.0)
 light_color = Color(1, 0.79, 0.46, 1)
@@ -86,18 +94,21 @@ motion = 1
 motion_amount = 0.035
 
 [node name="LaneLights1" parent="Scenery" instance=ExtResource("lights")]
+recall_enabled = true
 position = Vector3(0, 0, 4.5)
 span = 3.8
 height = 3.6
 sag = 0.38
 
 [node name="LaneLights2" parent="Scenery" instance=ExtResource("lights")]
+recall_enabled = true
 position = Vector3(0, 0, -1.5)
 span = 3.8
 height = 3.7
 sag = 0.38
 
 [node name="LaneLights3" parent="Scenery" instance=ExtResource("lights")]
+recall_enabled = true
 position = Vector3(0, 0, -5.8)
 span = 3.8
 height = 3.8000000000000003
@@ -114,6 +125,7 @@ scale = Vector3(0.53, 0.53, 0.53)
 rotation_degrees = Vector3(0, -18, 0)
 
 [node name="BakeryVisitors" parent="Scenery" instance=ExtResource("crowd")]
+recall_enabled = true
 position = Vector3(-1.55, 0, 2.0)
 count = 2
 footprint = Vector2(0.6, 1.6)
@@ -127,6 +139,7 @@ pose_mix = 2
 motion_strength = 0.25
 
 [node name="BrowsingVisitors" parent="Scenery" instance=ExtResource("crowd")]
+recall_enabled = true
 position = Vector3(1.55, 0, -4)
 count = 2
 footprint = Vector2(0.6, 2.2)
@@ -149,6 +162,8 @@ notes = Array[String](["Placeholder: Write your memory of browsing the snowy Chr
 [node name="WinterFoliage" type="Node3D" parent="Scenery"]
 
 [node name="SnowPineAtArrival" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+recall_enabled = true
+react_to_explorers = true
 position = Vector3(4.8, 0, 5.6)
 palette_preset = 5
 tree_type = 4
@@ -164,6 +179,8 @@ wind_speed = 0.6
 
 
 [node name="FrostBirchAtArrival" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+recall_enabled = true
+react_to_explorers = true
 position = Vector3(-2.8, 0, 6.8)
 palette_preset = 5
 tree_type = 2
@@ -179,6 +196,8 @@ wind_speed = 0.6
 
 
 [node name="SnowPineBetweenLeftHuts" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+recall_enabled = true
+react_to_explorers = true
 position = Vector3(-6, 0, -0.7)
 palette_preset = 5
 tree_type = 4
@@ -194,6 +213,8 @@ wind_speed = 0.6
 
 
 [node name="SnowPineBetweenRightHuts" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+recall_enabled = true
+react_to_explorers = true
 position = Vector3(5.8, 0, -3.9)
 palette_preset = 5
 tree_type = 4
@@ -209,6 +230,8 @@ wind_speed = 0.6
 
 
 [node name="FrostBirchAtBend" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+recall_enabled = true
+react_to_explorers = true
 position = Vector3(-6, 0, -8.6)
 palette_preset = 5
 tree_type = 2
@@ -224,6 +247,7 @@ wind_speed = 0.6
 
 
 [node name="ArrivalLeftBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(-5.7, 0, 5)
 palette_preset = 5
 bush_seed = 19201
@@ -232,10 +256,11 @@ bush_height = 0.48
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 
 [node name="ArrivalRightBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(5.7, 0, 4.8)
 palette_preset = 5
 bush_seed = 19202
@@ -244,10 +269,11 @@ bush_height = 0.5
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 
 [node name="LeftLaneBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(-5.8, 0, -0.6)
 palette_preset = 5
 bush_seed = 19203
@@ -256,10 +282,11 @@ bush_height = 0.54
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 
 [node name="RightLaneBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(5.8, 0, -4)
 palette_preset = 5
 bush_seed = 19204
@@ -268,10 +295,11 @@ bush_height = 0.55
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 
 [node name="BendBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(-5.5, 0, -7.5)
 palette_preset = 5
 bush_seed = 19205
@@ -280,10 +308,11 @@ bush_height = 0.44
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 
 [node name="LaneEndBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(0.8, 0, -7.7)
 palette_preset = 5
 bush_seed = 19206
@@ -292,10 +321,11 @@ bush_height = 0.33
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 
 [node name="ArrivalLeftGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(-4.5, 0, 6.4)
 palette_preset = 5
 patch_seed = 19301
@@ -305,11 +335,12 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
 
 
 [node name="ArrivalRightGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(4.9, 0, 3.8)
 palette_preset = 5
 patch_seed = 19302
@@ -319,11 +350,12 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
 
 
 [node name="LeftLaneGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(-5.7, 0, -0.8)
 palette_preset = 5
 patch_seed = 19303
@@ -333,11 +365,12 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
 
 
 [node name="RightLaneGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(5.7, 0, -4)
 palette_preset = 5
 patch_seed = 19304
@@ -347,11 +380,12 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
 
 
 [node name="BendGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(-5, 0, -8.3)
 palette_preset = 5
 patch_seed = 19305
@@ -361,11 +395,12 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
 
 
 [node name="BakeryApproachBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(-2.7, 0, 4.5)
 palette_preset = 5
 bush_seed = 19701
@@ -374,9 +409,10 @@ bush_height = 0.34
 mass_count = 3
 sprays_per_mass = 32
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 [node name="OrnamentApproachBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(2.3, 0, 2.8)
 palette_preset = 5
 bush_seed = 19702
@@ -385,9 +421,10 @@ bush_height = 0.32
 mass_count = 3
 sprays_per_mass = 32
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 [node name="BetweenLeftCountersBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(-2.5, 0, -0.7)
 palette_preset = 5
 bush_seed = 19703
@@ -396,9 +433,10 @@ bush_height = 0.36
 mass_count = 3
 sprays_per_mass = 32
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 [node name="BetweenRightCountersBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+recall_enabled = true
 position = Vector3(2.55, 0, -3.9)
 palette_preset = 5
 bush_seed = 19704
@@ -407,9 +445,10 @@ bush_height = 0.32
 mass_count = 3
 sprays_per_mass = 32
 wind_strength = 0.025
-react_to_explorers = false
+react_to_explorers = true
 
 [node name="BakeryApproachGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(-3.0, 0, 4.7)
 palette_preset = 5
 patch_seed = 19801
@@ -419,10 +458,11 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
 
 [node name="OrnamentApproachGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(2.5, 0, 2.4)
 palette_preset = 5
 patch_seed = 19802
@@ -432,10 +472,11 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
 
 [node name="BetweenLeftCountersGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(-2.65, 0, -1.0)
 palette_preset = 5
 patch_seed = 19803
@@ -445,10 +486,11 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
 
 [node name="BetweenRightCountersGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+recall_enabled = true
 position = Vector3(2.7, 0, -3.7)
 palette_preset = 5
 patch_seed = 19804
@@ -458,5 +500,19 @@ leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = false
+react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../BakeryHut"), NodePath("../../OrnamentHut"), NodePath("../../CocoaHut"), NodePath("../../GiftHut")])
+
+[node name="Pine" parent="Scenery/ArrivalPine"]
+react_to_explorers = true
+recall_enabled = true
+
+[node name="Trimming" parent="Scenery/ArrivalPine"]
+recall_enabled = true
+
+[node name="Pine" parent="Scenery/LaneEndPine"]
+react_to_explorers = true
+recall_enabled = true
+
+[node name="Trimming" parent="Scenery/LaneEndPine"]
+recall_enabled = true

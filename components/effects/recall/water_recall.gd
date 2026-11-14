@@ -60,7 +60,7 @@ func restore_state() -> void:
 	_update_shore_collision()
 
 func _explorer_inside() -> bool:
-	for explorer in get_tree().get_nodes_in_group(&"explorers"):
+	for explorer in preload("res://components/effects/recall/component_recall.gd").explorers(patch):
 		if explorer is Node3D:
 			var point := patch.to_local(explorer.global_position)
 			if absf(explorer.global_position.y - patch.global_position.y) < 1.5 and Geometry2D.is_point_in_polygon(Vector2(point.x, point.z), patch._shape_data.outline):

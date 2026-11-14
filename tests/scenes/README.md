@@ -42,3 +42,7 @@ another component while preserving the camera and player.
 `concert_test.tscn` inherits this stage with the [concert kit](../../components/scenery/concert/README.md): stage/ramp, two speaker stacks, moving-head lights, an animated visual screen, and an audience with a central walking approach. It uses a warm-white floor and a wider three-quarter view. Run with F6, or assign one of the kit's four component scenes to the generic stage for an isolated study.
 
 `postcard_cabin_test.tscn` inherits the same stage for the [closed trailer cabin exterior](../../components/buildings/postcard_cabin/README.md), with a warm-white floor and an explorer for scale. Run with F6 to inspect the picture window, walk the entry steps and test recall.
+
+`conservatory_test.tscn` previews the [conservatory component library](../../components/scenery/conservatory/README.md): flowering bushes, straight/curved stone walls, an animated marble fountain, and potted bonsai. Three flower treatments, three masonry styles and three bonsai forms sit beside the explorer. Run with F6; use the generic stage with one component for isolated recall/parameter checks.
+
+`jungle_test.tscn` previews the [jungle foliage library](../../components/foliage/jungle/README.md): feather/fan palms, tropical broadleaf clumps, ferns and bamboo, layered with existing groundcover and shrubs around the conservatory fountain. Run with F6 to walk the central approach, or test an individual plant in the generic stage.

@@ -95,6 +95,21 @@ var _batch: MultiMeshInstance3D
 var _player_positions: Array[Vector3] = [Vector3.ZERO, Vector3.ZERO]
 var _weights := PackedFloat32Array([0.0, 0.0])
 
+
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+@export_group("Recall")
+@export var recall_enabled: bool = false:
+	set(value):
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint(): _sync_recall()
+var _recall: Node
+func get_recall_controller() -> Node:
+	return _recall
+func _sync_recall() -> void:
+	_recall = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall)
+	if not recall_enabled and not Engine.is_editor_hint():
+		preload("res://components/effects/recall/assembled_recall.gd").restore_component(self)
+
 func _ready() -> void:
 	set_notify_transform(true)
 	rebuild()
@@ -195,11 +210,12 @@ func rebuild() -> void:
 	var top := crown_height * 1.1 + bloom_radius * 0.4 + 0.2
 	_batch.custom_aabb = AABB(Vector3(-footprint.x * 0.5 - reach, -0.2, -footprint.y * 0.5 - reach), Vector3(footprint.x + reach * 2, top + 0.2, footprint.y + reach * 2))
 	add_child(_batch, false, Node.INTERNAL_MODE_BACK)
+	_sync_recall()
 
 func _process(delta: float) -> void:
 	if not _material:
 		return
-	var explorers := get_tree().get_nodes_in_group(&"explorers") if react_to_explorers else []
+	var explorers := RECALL.explorers(self) if react_to_explorers else []
 	for index in range(2):
 		var valid := index < explorers.size() and explorers[index].get_viewport() == get_viewport()
 		var weight := 1.0 if valid else 0.0

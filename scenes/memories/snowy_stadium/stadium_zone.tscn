@@ -35,13 +35,16 @@ top_color = Color(0.77, 0.78, 0.75, 1)
 side_color = Color(0.76, 0.77, 0.74, 1)
 edge_inset = 0.12
 
-[node name="Field" parent="Scenery" index="1" instance=ExtResource("field")]
+[node name="Field" parent="Scenery" index="1" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("field")]
+recall_anchor = NodePath("../ViewingPlatform")
+recall_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10.5, -38)
 turf_color = Color(0.322, 0.486, 0.376, 1)
 end_zone_color = Color(0.478431, 0, 0.0980392, 1)
 minnesota_branding = true
 
 [node name="Stands" parent="Scenery" index="2" instance=ExtResource("stands")]
+recall_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10.5, -12)
 seat_color = Color(0.478431, 0, 0.0980392, 1)
 minnesota_branding = true
@@ -55,12 +58,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 9.5)
 
 [node name="Landing" type="Node3D" parent="Scenery/ArrivalSection" index="0"]
 script = ExtResource("concourse")
+recall_enabled = true
 
 [node name="ConnectingAisle" type="Node3D" parent="Scenery" index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4.5)
 
 [node name="Railings" type="Node3D" parent="Scenery/ConnectingAisle" index="0"]
 script = ExtResource("concourse")
+recall_enabled = true
 bridge_only = true
 
 [node name="StandSnowfall" parent="Scenery" index="6" instance=ExtResource("snowfall")]

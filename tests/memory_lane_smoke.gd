@@ -38,7 +38,7 @@ func run() -> void:
 			if Geometry2D.segment_intersects_segment(recall_paths[0][segment], recall_paths[0][segment + 1], recall_paths[1][wing], recall_paths[1][wing + 1]) != null:
 				head_is_clear = false
 	check(head_is_clear, "The Recall curve must not cross either arrowhead wing")
-	check(menu.MEMORIES.size() == 5, "Timeline must contain four authored memories and Seasonal Demo")
+	check(menu.MEMORIES.size() == 7, "Timeline must contain six authored memories and Seasonal Demo")
 	check(menu.MEMORIES[0].title == "First Meeting" and menu.MEMORIES[0].date == "NOV 12, 2025", "First memory must have the requested title and date")
 	menu.set_process(false)
 	menu._entrance_time = 0.0
@@ -91,7 +91,7 @@ func run() -> void:
 	key.keycode = KEY_LEFT
 	key.pressed = true
 	menu._unhandled_key_input(key)
-	check(menu.selected_index == 3, "Keyboard left should select Christmas market before Seasonal Demo")
+	check(menu.selected_index == 5, "Keyboard left should select Como Conservatory before Seasonal Demo")
 	menu.select_memory(0)
 	menu.size = Vector2(390, 844)
 	menu._layout()

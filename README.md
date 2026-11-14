@@ -6,7 +6,7 @@ Designing a new memory? Start with the [memory design guide](docs/MEMORY_DESIGN_
 
 ## Play
 
-Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
+Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, **New Year's Eve — December 31, 2025**, **Como Conservatory — January 14, 2026**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
 
 - **WASD / arrow keys:** walk, relative to the screen.
 - **Controller left stick:** analog movement.
@@ -53,6 +53,14 @@ The third authored memory is **Minneapolis Institute of Art — December 4, 2025
 
 The fourth authored memory is **Christmas market — December 19, 2025**: two snowy zones connect a lane of six wooden market huts to a tree-and-music gathering with three acoustic performers. It reuses continuous footprint snow, pine trees, visitors, warm light washes, and the shared memory framework. See [the market guide](scenes/memories/christmas_market/README.md), or run `scenes/world/christmas_market_world.tscn`.
 
+## New Year's Eve
+
+The fifth authored memory is **New Year's Eve — December 31, 2025**: one concert zone with 200 animated visitors, a clear aisle from the back of the crowd to a ramped DJ stage, moving painted lights, an animated screen, haze, and original electronic placeholder music. See [the concert memory guide](scenes/memories/new_years_eve/README.md), or run `scenes/world/new_years_eve_world.tscn`.
+
+## Como Conservatory
+
+The sixth authored memory is **Como Conservatory — January 14, 2026**: three zones move from a two-lane flower garden beside a reflecting rill and fountain, through a lush jungle room, to three minimal bonsai displays. The flower garden retains open teal roof ribs; the jungle uses a continuous curved trail through dense tropical planting, and the bonsai room stays open and minimal. Close exploration cameras, one fragment and ambient bed per room, and supported paths preserve the shared memory framework. See [the conservatory guide](scenes/memories/como_conservatory/README.md), or run `scenes/world/como_conservatory_world.tscn`.
+
 ## Seasonal demo layout
 
 The content is grouped under `Environment/SummerSpring`, `Environment/Autumn`, and `Environment/Winter` in `scenes/memories/foliage_demo.tscn`. Their centers are at world X=-13, 0, and 13 m. Entry starts in spring/summer, and Exit is inside winter. The open walking lane follows local Z=-1.2 across the three clearings; the front ponds and perimeter groves leave it clear.
@@ -71,6 +79,8 @@ The common 46×26 m platform contains all scenery, the walking lane, and the rec
 
 ## Foliage components
 
+The [jungle foliage kit](components/foliage/jungle/README.md) adds palms, broadleaf clumps, ferns and bamboo with seven selectable forms, shared seasonal palettes, GPU wind and smooth player response. Run `tests/scenes/jungle_test.tscn` with F6 for a layered garden around the conservatory fountain.
+
 Instance `components/foliage/painterly_grass_patch.tscn` in a memory to add grass. Size, seed, density, height, palette, wind, and culling distance are editable in the Inspector with live editor previews. See [the foliage authoring guide](components/foliage/README.md) for controls and rendering budgets. The demo is `scenes/memories/foliage_demo.tscn`.
 
 Instance `components/foliage/painterly_tree.tscn` to add a single tree. Choose Broadleaf, Spreading Oak, Slender Birch, Weeping Willow, Layered Pine, or Columnar Cypress under **Tree Shape → Tree Type**. Seeds, proportions, branches, canopy detail, bark, wind, and trunk collision are editable with live previews. Trees share the grass palette resources. See [the tree authoring guide](components/foliage/TREES.md).
@@ -80,6 +90,8 @@ Instance `components/foliage/painterly_bush.tscn` to add a low, spreading shrub.
 Use **Foliage Colors → Palette Preset** on any grass, tree, or bush instance for seasonal and dreamlike color schemes. See [the palette guide](components/foliage/PALETTES.md).
 
 ## Scenery components
+
+The [conservatory component kit](components/scenery/conservatory/README.md) adds flowering bushes, modular stone/brick/slab walls, an animated marble fountain and potted bonsai. It reuses the foliage, wood, paint and water library; variants, colors and proportions preview in the editor. Run `tests/scenes/conservatory_test.tscn` with F6 to inspect them beside the explorer.
 
 The [postcard cabin](components/buildings/postcard_cabin/README.md) is a reusable closed trailer-cabin exterior with charcoal siding, a sloping roof, large painted windows, a warm porch lamp, wheels and entry steps. Dimensions, colors and optional details are editable. Run `tests/scenes/postcard_cabin_test.tscn` with F6 for a playable component study.
 

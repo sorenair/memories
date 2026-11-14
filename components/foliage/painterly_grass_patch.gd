@@ -89,6 +89,7 @@ func _sync_recall() -> void:
 			set_process(not Engine.is_editor_hint() and value)
 		if not value and _foliage_material:
 			_foliage_material.set_shader_parameter("explorer_position", Vector3(0, -1000, 0))
+			_foliage_material.set_shader_parameter("explorer_position_2", Vector3(0, -1000, 0))
 @export_range(10.0, 150.0, 1.0) var visibility_distance: float = 45.0:
 	set(value):
 		visibility_distance = value
@@ -111,6 +112,9 @@ var _foliage_material: ShaderMaterial
 var _explorer: Node3D
 var _smoothed_explorer_position := Vector3.ZERO
 var _interaction_initialized: bool = false
+var _second_explorer: Node3D
+var _second_position := Vector3.ZERO
+var _second_initialized := false
 
 func _ready() -> void:
 	if palette and not palette.changed.is_connected(_on_palette_changed):
@@ -317,8 +321,10 @@ func _vertex(surface: SurfaceTool, position: Vector3, uv: Vector2, color: Color)
 	surface.add_vertex(position)
 
 func _process(delta: float) -> void:
-	if not is_instance_valid(_explorer):
-		_explorer = get_tree().get_first_node_in_group("explorers") as Node3D
+	var actors := RECALL.explorers(self)
+	if not is_instance_valid(_explorer) or not actors.has(_explorer):
+		_explorer = actors[0] if not actors.is_empty() else null
+		_interaction_initialized = false
 	var position_to_send := Vector3(0, -1000, 0)
 	if react_to_explorer and is_instance_valid(_explorer):
 		# Match the displayed character between fixed physics ticks.
@@ -334,3 +340,24 @@ func _process(delta: float) -> void:
 	else:
 		_interaction_initialized = false
 	_foliage_material.set_shader_parameter("explorer_position", position_to_send)
+
+	var second: Node3D
+	for actor in actors:
+		if actor != _explorer:
+			second = actor
+			break
+	if second != _second_explorer:
+		_second_explorer = second
+		_second_initialized = false
+	var second_to_send := Vector3(0, -1000, 0)
+	if react_to_explorer and is_instance_valid(second):
+		var target := second.get_global_transform_interpolated().origin
+		if not _second_initialized or _second_position.distance_squared_to(target) > 16.0:
+			_second_position = target
+			_second_initialized = true
+		else:
+			_second_position = _second_position.lerp(target, 1.0 - exp(-10.0 * delta))
+		second_to_send = _second_position
+	else:
+		_second_initialized = false
+	_foliage_material.set_shader_parameter("explorer_position_2", second_to_send)

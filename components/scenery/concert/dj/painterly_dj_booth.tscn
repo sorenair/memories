@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/concert/dj/painterly_dj_booth.gd" id="dj"]
+[node name="PainterlyDJBooth" type="Node3D"]
+script = ExtResource("dj")
+body_color = Color(0.34, 0.37, 0.43, 1)
+accent_color = Color(0.48, 0.40, 0.55, 1)
+trim_color = Color(0.72, 0.68, 0.59, 1)

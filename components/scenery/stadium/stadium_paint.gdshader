@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, fog_disabled;
+#include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
 // The same vertex-color workflow, broad pigment pools and soft stepped lighting
 // as the First Meeting house and arcade; longer haze range for stadium scale.
 uniform float pigment_strength = 0.65;
@@ -53,6 +54,7 @@ void vertex() {
 	paint = COLOR.rgb * shade;
 	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	haze = smoothstep(70.0, 155.0, length((VIEW_MATRIX * vec4(world, 1.0)).xyz));
+	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 void fragment() {
 	float wash = sin(p.x * 1.65 + sin(p.z * 1.9) + paint_phase) * sin(p.z * 2.2 + sin(p.y * 1.4));
@@ -81,4 +83,8 @@ void fragment() {
 	float glow = 1.0 - smoothstep(0.1, 0.3, abs(kind - 3.0));
 	ALBEDO = mix(color, void_color, haze);
 	EMISSION = COLOR.rgb * glow * 0.22 * (1.0 - haze);
+	float assembly = assembly_clarity(assembly_position);
+	if (assembly <= 0.001) { discard; }
+	ALBEDO = mix(vec3(0.94, 0.935, 0.89), ALBEDO, smoothstep(0.0, 1.0, assembly));
+	EMISSION *= assembly;
 }

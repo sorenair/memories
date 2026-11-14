@@ -18,21 +18,25 @@ ambience_size = Vector2(15, 12)
 ambience_blend_distance = 4.0
 
 [node name="OliveTrees" parent="Scenery" index="0" instance=ExtResource("display")]
+recall_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0137529, 0, -3.69224)
 artwork = ExtResource("olive")
 canvas_size = Vector2(2.8, 2.23)
 
 [node name="Lucretia" parent="Scenery" index="1" instance=ExtResource("display")]
+recall_enabled = true
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -3.60309, 0, -2.79554)
 artwork = ExtResource("portrait")
 canvas_size = Vector2(1.85, 2.23)
 
 [node name="Grainstack" parent="Scenery" index="2" instance=ExtResource("display")]
+recall_enabled = true
 transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 4.29694, 0, -3.07441)
 artwork = ExtResource("monet")
 canvas_size = Vector2(2.6, 1.57)
 
 [node name="Bench" parent="Scenery" index="3" instance=ExtResource("display")]
+recall_enabled = true
 transform = Transform3D(0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 3.9, 0, 3.8)
 display_type = 1
 
@@ -44,6 +48,7 @@ paving_color = Color(0.87, 0.83, 0.77, 1)
 end_fade = Vector2(2.1, 2.1)
 
 [node name="AfternoonWash" parent="Scenery" index="5" instance=ExtResource("wash")]
+recall_enabled = true
 wash_shape = 2
 footprint = Vector2(7, 5)
 light_color = Color(1, 0.89, 0.67, 1)

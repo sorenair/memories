@@ -1,6 +1,6 @@
 # Painterly concert components
 
-Four reusable components for an open concert/rave memory. All preview in the
+Five reusable components for an open concert/rave memory. All preview in the
 editor, store exported parameters rather than generated geometry, face local +Z,
 and use meters. Their roots sit on the supporting floor.
 
@@ -10,6 +10,7 @@ and use meters. Their roots sit on the supporting floor.
 | Speaker stack | `speakers/painterly_speaker_stack.tscn` | Cabinet Count/Width/Depth, Subwoofer Enabled, colors, cone motion, BPM/phase |
 | Rave lights | `lights/painterly_rave_lights.tscn` | Light Count, Rig Width/Height, Supports Enabled, palette, intensity, sweep/rhythm |
 | Visual screen | `display/painterly_concert_screen.tscn` | Display Size, Bottom Height, Supports Enabled, graphic family, visual tempo, palette, brightness/glow |
+| DJ console and performer | `dj/painterly_dj_booth.tscn` | Shared painted colors/seed, visual BPM, Performance Strength, collision/recall |
 
 ## Library review and composition
 
@@ -51,6 +52,22 @@ vertex shader; zero BPM or zero Cone Motion holds it still. Cabinets stay still.
 
 Music/ambience belongs to the memory/zone's existing Audio routing. BPM here is a
 visual tempo, not audio analysis or automatic synchronization to a music track.
+
+## DJ console
+
+`dj/painterly_dj_booth.tscn` adds two turntable decks, a simple mixer, and a
+headphone-wearing performer. It reuses the existing crowd person geometry and
+painted prop builder. Connected two-bone arms scratch the two platters with
+different phases; hands follow contact points on the rotating records. Eight
+small mesh instances update their transforms without rebuilding geometry, with
+physics interpolation disabled on the animated parts. **Performance Strength**
+controls the arc; zero strength or BPM holds the pose. `seek_time(seconds)` gives
+deterministic authoring/test poses. Small console lights pulse in the shared
+shader. `Controls` is a local placement anchor. Its collider keeps explorers
+outside the console and performer.
+
+See [New Year's Eve](../../../scenes/memories/new_years_eve/README.md) for a complete
+one-zone memory using this kit, a large traversable crowd, and the shared audio.
 
 ## Moving-head lights
 
@@ -106,6 +123,9 @@ and Recall Enabled. Add its node path to a grass patch's Ground Exclusions;
 Recall defaults off. If enabled, hardware resolves through the existing assembled
 recall adapter; beams and pools turn on after it completes. Rebuilds preserve
 progress, disabling recall restores the complete prop, and collision stays safe.
+Set **Recall Anchor** to a shared approach marker when distant/elevated hardware
+should appear together before an explorer reaches its footprint, as on the New
+Year's Eve stage. Leaving it empty uses the component's own bounds.
 Generated children are internal. Use dimension exports rather than nonuniform
 Node3D scaling. Appearance/tempo edits update materials; shape/color edits rebuild
 the appropriate mesh, never per frame.

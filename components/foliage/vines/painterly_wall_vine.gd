@@ -258,7 +258,7 @@ func _stem(surface: SurfaceTool, path: PackedVector3Array) -> void:
 func _process(delta: float) -> void:
 	if not _leaf_material:
 		return
-	var explorers: Array = get_tree().get_nodes_in_group(&"explorers") if react_to_explorers else []
+	var explorers: Array = RECALL.explorers(self) if react_to_explorers else []
 	var sources := PackedVector4Array()
 	for index in range(2):
 		var valid: bool = index < explorers.size() and explorers[index].get_viewport() == get_viewport()

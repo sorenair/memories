@@ -10,6 +10,9 @@ uniform float tree_height = 3.8;
 uniform float wind_strength = 0.09;
 uniform float wind_speed = 0.8;
 uniform float tree_phase = 0.0;
+// Opt-in for blossom batches; ordinary foliage keeps its existing pigments.
+uniform bool flower_centers = false;
+uniform vec4 flower_center_color : source_color = vec4(0.95, 0.77, 0.39, 1.0);
 // Disabled by default; bushes enable this without affecting tree wind.
 uniform float disturbance_strength = 0.0;
 uniform float disturbance_radius = 0.8;
@@ -57,6 +60,9 @@ void vertex() {
 	color = mix(color, leaf_color.rgb, smoothstep(0.28, 0.70, tint));
 	color = mix(color, sun_color.rgb, smoothstep(0.60, 0.95, tint) * 0.75);
 	painted_color = color * mix(0.97, 1.03, INSTANCE_CUSTOM.g);
+	if (flower_centers && COLOR.r > 0.75) {
+		painted_color = mix(flower_center_color.rgb * 0.86, flower_center_color.rgb, tint);
+	}
 	paint_position = world;
 	haze = smoothstep(25.0, 60.0, length((VIEW_MATRIX * vec4(world, 1.0)).xyz));
 	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;

@@ -8,6 +8,7 @@ uniform vec4 sun_color : source_color;
 uniform float wind_strength = 0.10;
 uniform float wind_speed = 0.8;
 uniform vec3 explorer_position = vec3(0.0, -1000.0, 0.0);
+uniform vec3 explorer_position_2 = vec3(0.0, -1000.0, 0.0);
 uniform float bend_radius = 0.65;
 varying vec3 paint;
 varying float height_mix;
@@ -33,15 +34,21 @@ void vertex() {
 	float anchored = UV.y * UV.y;
 	VERTEX.x += (wave + flutter) * wind_strength * anchored;
 	VERTEX.z += cos(TIME * wind_speed * 0.7 + phase) * wind_strength * 0.35 * anchored;
-	vec2 away = origin.xz - explorer_position.xz;
-	float distance_to_player = length(away);
-	float influence = 1.0 - smoothstep(0.0, bend_radius, distance_to_player);
-	// Ease through the center instead of abruptly flipping the bend direction.
-	vec3 world_push = vec3(away.x, 0.0, away.y) / sqrt(dot(away, away) + 0.0144);
+	vec3 world_push = vec3(0.0);
+	float combined = 0.0;
+	for (int i = 0; i < 2; i++) {
+		vec3 actor = i == 0 ? explorer_position : explorer_position_2;
+		vec2 away = origin.xz - actor.xz;
+		float influence = 1.0 - smoothstep(0.0, bend_radius, length(away));
+		influence *= 1.0 - smoothstep(0.65, 1.5, abs(origin.y - actor.y));
+		world_push += vec3(away.x, 0.0, away.y) / sqrt(dot(away, away) + 0.0144) * influence;
+		combined += influence;
+	}
+	world_push /= max(1.0, length(world_push));
 	vec3 local_push = vec3(dot(normalize(MODEL_MATRIX[0].xyz), world_push), 0.0,
 		dot(normalize(MODEL_MATRIX[2].xyz), world_push));
-	VERTEX += local_push * influence * anchored * 0.23;
-	VERTEX.y -= influence * anchored * 0.10;
+	VERTEX += local_push * anchored * 0.23;
+	VERTEX.y -= min(combined, 1.0) * anchored * 0.10;
 	// Deform first, then grow about the instance root. Hidden grass cannot sway.
 	VERTEX.y *= recall_growth;
 	VERTEX.xz *= recall_groundcover ? recall_growth : mix(0.25, 1.0, recall_growth);

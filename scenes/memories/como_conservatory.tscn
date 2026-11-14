@@ -1,0 +1,100 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/flower_garden_zone.tscn" id="garden"]
+[ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/jungle_zone.tscn" id="jungle"]
+[ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/bonsai_zone.tscn" id="bonsai"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="Script" path="res://scripts/conservatory_memory.gd" id="route"]
+
+[sub_resource type="Curve2D" id="RoomsOutline"]
+_data = {"points": PackedVector2Array(0, 0, 0, 0, -6.8, 12, 0, 0, 0, 0, 6.8, 12, 0, 0, 0, 0, 7.3, 10.5, 0, 0, 0, 0, 7.3, -8.5, 0, 0, 0, 0, 6.5, -10, 0, 0, 0, 0, 2, -10, 0, 0, 0, 0, 2, -13, 0, 0, 0, 0, 4.5, -13, 0, 0, 0, 0, 4.5, -22.5, 0, 0, 0, 0, 8, -22.5, 0, 0, 0, 0, 8, -19.3, 0, 0, 0, 0, 18.5, -19.3, 0, 0, 0, 0, 19, -20, 0, 0, 0, 0, 19, -28.5, 0, 0, 0, 0, 18.3, -29.3, 0, 0, 0, 0, 8.6, -29.3, 0, 0, 0, 0, 8, -28.5, 0, 0, 0, 0, 8, -26.5, 0, 0, 0, 0, 4.5, -26.5, 0, 0, 0, 0, 4.5, -28, 0, 0, 0, 0, 3.5, -28.5, 0, 0, 0, 0, -9.5, -28.5, 0, 0, 0, 0, -10.5, -27.5, 0, 0, 0, 0, -10.5, -14, 0, 0, 0, 0, -9.5, -13, 0, 0, 0, 0, -2, -13, 0, 0, 0, 0, -2, -10, 0, 0, 0, 0, -6.5, -10, 0, 0, 0, 0, -7.3, -8.5, 0, 0, 0, 0, -7.3, 10.5, 0, 0, 0, 0, -6.8, 12)}
+point_count = 31
+
+[node name="Memory" instance=ExtResource("base")]
+script = ExtResource("route")
+memory_id = &"como_conservatory"
+display_name = "Como Conservatory"
+
+[node name="Entry" parent="."]
+position = Vector3(0, 0.04, 10.3)
+
+[node name="Exit" parent="."]
+position = Vector3(13, 0.04, -23.3)
+
+[node name="ConservatoryFloor" parent="Environment" instance=ExtResource("platform")]
+visible = false
+custom_outline = SubResource("RoomsOutline")
+outline_detail = 96
+pillar_depth = 9.0
+edge_inset = 0.16
+
+[node name="GardenToJungle" parent="Environment" instance=ExtResource("paving")]
+position = Vector3(0, 0, -10.8)
+rotation_degrees = Vector3(0, 180, 0)
+footprint = Vector2(2.4, 4.4)
+paving_color = Color(0.86, 0.84, 0.77, 1)
+paving_seed = 140158
+end_fade = Vector2(0.6, 0.6)
+slab_length = 1.35
+irregularity = 0.5
+
+[node name="BentThreshold" parent="Environment" instance=ExtResource("paving")]
+position = Vector3(-1.5, 0, -13.7)
+rotation_degrees = Vector3(0, -128.66, 0)
+footprint = Vector2(2.4, 4.292)
+paving_color = Color(0.86, 0.84, 0.77, 1)
+paving_seed = 140168
+end_fade = Vector2(0.6, 0.6)
+slab_length = 1.35
+irregularity = 0.5
+
+[node name="ToBonsai" parent="Environment" instance=ExtResource("paving")]
+position = Vector3(5.9, 0, -24.5)
+rotation_degrees = Vector3(0, 90, 0)
+footprint = Vector2(2.2, 6.25)
+paving_color = Color(0.86, 0.84, 0.77, 1)
+paving_seed = 140178
+end_fade = Vector2(0.6, 0.6)
+slab_length = 1.35
+irregularity = 0.5
+
+[node name="Guidance" type="Node3D" parent="Environment"]
+
+[node name="Audio" parent="."]
+fragment_sound = ExtResource("chime")
+
+[node name="FlowerGarden" parent="Zones" instance=ExtResource("garden")]
+
+[node name="Jungle" parent="Zones" instance=ExtResource("jungle")]
+position = Vector3(-3, 0, -20)
+
+[node name="Bonsai" parent="Zones" instance=ExtResource("bonsai")]
+position = Vector3(13, 0, -24.5)
+
+[node name="AlongTheRill" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/FlowerGarden/Fragment")
+waypoints = PackedVector3Array(2.7, 0.76, 9.4, 2.7, 0.76, 5, 2.7, 0.76, 0, 2.7, 0.76, -4.5)
+stroke_width = 0.34
+opacity = 0.92
+
+[node name="IntoTheGreen" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/FlowerGarden/Fragment")
+end_anchor = NodePath("../../../Zones/Jungle/Fragment")
+waypoints = PackedVector3Array()
+stroke_width = 0.34
+opacity = 0.92
+
+[node name="ToSmallWorlds" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Jungle/Fragment")
+end_anchor = NodePath("../../../Zones/Bonsai/Fragment")
+waypoints = PackedVector3Array()
+stroke_width = 0.34
+opacity = 0.92

@@ -51,7 +51,15 @@ The original `Environment`, `Interactions`, `RevealClusters`, and `SignatureInte
 
 ## Verify
 
+Enable **Recall Enabled** on recallable Scenery instances, including nested foliage
+and decorations with their own controllers. Enable **React to Explorer(s)** on
+grass, bushes, trees, vines and flowers. Components share the global proximity
+distance and support both local and LAN explorers. Keep ground/routes and fragment
+beacons available. See [component recall](../../components/effects/recall/README.md)
+and the [current audit](../../docs/MEMORY_EFFECTS_AUDIT.md).
+
 ```sh
+godot --headless --path . --script tests/memory_effects.gd
 godot --headless --path . --script tests/memory_zones.gd
 godot --headless --path . --script tests/first_meeting_guidance.gd
 godot --headless --path . --script tests/memory_audio.gd
@@ -60,3 +68,7 @@ godot --headless --path . --script tests/memory_audio.gd
 These checks cover the two real zones, template structure, story order, local-player audio blending and silence outside bounds, fragment guidance, and audio/scene lifetime.
 
 The fourth authored example is [Christmas market](christmas_market/README.md), dated December 19, 2025: two zones, six huts, a small acoustic performance, and one continuous floor/snow outline.
+
+The fifth is [New Year's Eve](new_years_eve/README.md), dated December 31, 2025: one concert zone, a large animated audience with a central walking aisle, a ramped stage, DJ, painted lights/screen, and electronic music.
+
+The sixth is [Como Conservatory](como_conservatory/README.md), dated January 14, 2026: three zones, a two-lane flower garden and reflecting rill, a densely planted jungle route, and three quiet bonsai displays.

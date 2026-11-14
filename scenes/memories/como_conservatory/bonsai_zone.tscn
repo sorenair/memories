@@ -1,0 +1,73 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://components/foliage/bonsai/painterly_bonsai.tscn" id="bonsai"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_room.wav" id="bed"]
+
+[node name="BonsaiRoom" instance=ExtResource("zone")]
+zone_id = &"bonsai"
+display_name = "Three small worlds"
+ambience_stream = ExtResource("bed")
+ambience_volume_db = -31.0
+ambience_size = Vector2(12, 11)
+ambience_blend_distance = 3.0
+
+
+[node name="QuietApproach" parent="Scenery" instance=ExtResource("paving")]
+position = Vector3(-2.6, 0, 0)
+rotation_degrees = Vector3(0, 90, 0)
+footprint = Vector2(2, 5.65)
+paving_color = Color(0.86, 0.84, 0.77, 1)
+paving_seed = 140156
+end_fade = Vector2(0.6, 0.6)
+slab_length = 1.35
+irregularity = 0.5
+
+[node name="Upright" parent="Scenery" instance=ExtResource("bonsai")]
+position = Vector3(-2.7, 0, -1.5)
+rotation_degrees = Vector3(0, -12, 0)
+bonsai_form = 0
+tree_seed = 14801
+pedestal_height = 0.65
+bonsai_height = 1.1
+spread = 1.25
+canopy_fullness = 0.65
+pot_color = Color(0.46, 0.58, 0.58, 1)
+wind_strength = 0.012
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Windswept" parent="Scenery" instance=ExtResource("bonsai")]
+position = Vector3(0, 0, -2.4)
+rotation_degrees = Vector3(0, -18, 0)
+bonsai_form = 1
+tree_seed = 14802
+pedestal_height = 0.55
+bonsai_height = 1.0
+spread = 1.4
+canopy_fullness = 0.65
+pot_color = Color(0.66, 0.49, 0.37, 1)
+wind_strength = 0.012
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Cascade" parent="Scenery" instance=ExtResource("bonsai")]
+position = Vector3(2.8, 0, -1.3)
+rotation_degrees = Vector3(0, 155, 0)
+bonsai_form = 2
+tree_seed = 14803
+pedestal_height = 0.75
+bonsai_height = 0.9
+spread = 1.35
+canopy_fullness = 0.65
+pot_color = Color(0.47, 0.57, 0.43, 1)
+wind_strength = 0.012
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Fragment" parent="."]
+position = Vector3(0, 0.04, 1.2)
+fragment_seed = 140128
+note_title = "Three small worlds"
+notes = Array[String](["Placeholder: Write your memory of slowing down together to look at the bonsai here."])

@@ -43,6 +43,8 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 		visibility_distance = clampf(value, 10, 160)
 		_request_rebuild()
 @export_group("Recall")
+## Optional shared approach point, useful for elevated stage hardware seen from afar.
+@export var recall_anchor: Node3D
 @export var recall_enabled: bool = false:
 	set(value):
 		recall_enabled = value
@@ -159,6 +161,9 @@ func get_anchor(id: StringName) -> Marker3D:
 
 func get_recall_controller() -> Node:
 	return _recall_effect
+
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
 
 func _sync_recall() -> void:
 	_recall_effect = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall_effect)

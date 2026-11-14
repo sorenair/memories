@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://components/foliage/jungle/painterly_jungle_plant.gd" id="1"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/conservatory.tres" id="2"]
+[node name="PainterlyTropicalBroadleaf" type="Node3D"]
+script = ExtResource("1")
+palette = ExtResource("2")
+palette_preset = 0
+plant_form = 2
+plant_height = 1.45
+spread = 1.8
+plant_seed = 221
+trunk_collision = false
+wind_strength = 0.045

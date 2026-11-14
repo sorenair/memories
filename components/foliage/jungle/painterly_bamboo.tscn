@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://components/foliage/jungle/painterly_jungle_plant.gd" id="1"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/conservatory.tres" id="2"]
+[node name="PainterlyBamboo" type="Node3D"]
+script = ExtResource("1")
+palette = ExtResource("2")
+palette_preset = 0
+plant_form = 6
+plant_height = 2.9
+spread = 1.9
+plant_seed = 425
+wind_strength = 0.055

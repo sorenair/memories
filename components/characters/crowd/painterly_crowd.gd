@@ -173,6 +173,21 @@ var _hitbox_shapes: Array[CollisionShape3D] = []
 var _batch_count: int = 0
 var _triangle_count: int = 0
 
+
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+@export_group("Recall")
+@export var recall_enabled: bool = false:
+	set(value):
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint(): _sync_recall()
+var _recall: Node
+func get_recall_controller() -> Node:
+	return _recall
+func _sync_recall() -> void:
+	_recall = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall)
+	if not recall_enabled and not Engine.is_editor_hint():
+		preload("res://components/effects/recall/assembled_recall.gd").restore_component(self)
+
 func _ready() -> void:
 	rebuild()
 	set_process(false)
@@ -356,6 +371,7 @@ func rebuild() -> void:
 			_add_batch("Contact_%s_%s" % [cell.x, cell.y], plane, contact_material, shadows[cell])
 	_rebuild_hitboxes()
 	update_configuration_warnings()
+	_sync_recall()
 
 func _rebuild_hitboxes() -> void:
 	if is_instance_valid(_hitboxes):

@@ -55,10 +55,11 @@ func bind_materials() -> void:
 		if has_scan(material):
 			if not _materials.has(material):
 				_materials.append(material)
-			var bounds: AABB = patch.global_transform.affine_inverse() * visual.global_transform * visual.get_aabb()
+			var local_bounds: AABB = visual.custom_aabb if visual.custom_aabb.has_volume() else visual.get_aabb()
+			var bounds: AABB = patch.global_transform.affine_inverse() * visual.global_transform * local_bounds
 			_bounds = bounds if first else _bounds.merge(bounds)
 			first = false
-		elif visual.name == &"ContactShadow" and material:
+		elif (visual.name == &"ContactShadow" or str(visual.name).begins_with("Contact_")) and material:
 			if not visual.has_meta(&"recall_shadow_color"):
 				visual.set_meta(&"recall_shadow_color", material.get_shader_parameter("shadow_color"))
 			_shadows.append({"material": material, "color": visual.get_meta(&"recall_shadow_color")})
@@ -111,10 +112,14 @@ func _process(delta: float) -> void:
 			finished.emit()
 
 func _explorer_near() -> bool:
+	if patch.has_method("get_recall_anchor"):
+		var anchor: Node3D = patch.get_recall_anchor()
+		if is_instance_valid(anchor):
+			return RECALL.explorer_near(anchor, Vector2.ZERO)
 	var world: AABB = patch.global_transform * _bounds
 	var center := world.get_center()
 	var reach := Vector2(world.size.x, world.size.z) * 0.5 + Vector2.ONE * RECALL.proximity_distance()
-	for explorer in get_tree().get_nodes_in_group(&"explorers"):
+	for explorer in RECALL.explorers(patch):
 		if explorer is Node3D:
 			var point: Vector3 = explorer.global_position - center
 			if Vector2(point.x / maxf(reach.x, 0.001), point.z / maxf(reach.y, 0.001)).length() <= 1.0:

@@ -14,6 +14,7 @@ ambience_size = Vector2(18, 14)
 ambience_blend_distance = 4.0
 
 [node name="Portico" parent="Scenery" index="0" instance=ExtResource("portico")]
+recall_enabled = true
 
 [node name="Forecourt" parent="Scenery" index="1" instance=ExtResource("paving")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.8)

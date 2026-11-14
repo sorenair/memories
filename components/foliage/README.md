@@ -1,5 +1,9 @@
 # Painterly grass patches
 
+For tropical planting, see the [jungle foliage kit](jungle/README.md): feather/fan
+palms, broadleaf clumps, ferns and bamboo share this foliage palette and response
+language. The kit includes a dense conservatory garden preview.
+
 Instance `painterly_grass_patch.tscn` beneath any memory's `Environment`, place it on the ground, and tune its Inspector fields. A preview is generated in the editor and regenerated after parameter changes; **Regenerate patch** also rebuilds it manually. Generated children are internal, so only authoring parameters are saved in the scene. Enable **Recall → Recall Enabled** on the root to recall the patch on approach. It defaults to off; editor previews stay visible. The demo enables this checkbox; each patch recalls independently when either explorer nears its footprint; see [the recall study](../../scenes/effects/README.md) for controls and integration.
 
 ## Shape and palette

@@ -10,6 +10,12 @@ Pose updates remain 20 Hz with buffered 100 ms playback in `remote_motion.gd`. U
 
 ## Remote arrival and departure
 
+Visible replicas join `foliage_explorers` while staying outside the local input
+group. Shared component recall and foliage response use both actor groups, so
+either player can discover scenery or brush nearby plants. Recall progress is
+still local to each world visit. Departure removes the replica from the foliage
+group immediately; the local explorer also stops contributing during its exit.
+
 `remote_presence.gd` uses the same `solid_recall.gdshaderinc` height scan and cream-white edge as recalled solid scenery. After the first valid pose, a remote avatar resolves upward over 1.25 seconds, with its contact shadow fading in. On memory exit or connection loss, the scan reverses over 0.95 seconds and the shadow fades out. Disconnecting mid-arrival reverses from the current progress.
 
 The same effect wraps remote and local explorers. Skinned surfaces on both character variants receive private temporary paint materials; finishing arrival restores their authored materials. Normal movement continues through the existing snapshot buffer while arriving. Departure clears that buffer and collision immediately, stops walking, renames the replica away from `Partner`, and lets its own effect free it. A rapid new visit can spawn a fresh `Partner` while an older visual is dissolving. Neither old snapshots nor the old effect's cleanup can affect the new replica. Freeing the whole world also frees its pending effects. Local Recall uses the same scan instead of a drop-in; `memory_arrival.gd` owns the input lock and paper veil. Local departure retains the player until navigation completes, while the reverse scan is also triggered on observers by announcing memory exit at its start.

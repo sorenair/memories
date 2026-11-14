@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_never, fog_disabled;
+uniform float recall_visibility = 1.0;
 uniform vec2 flame_size = vec2(0.9,1.5);
 uniform float intensity = 1.0;
 uniform float animation_speed = 1.0;
@@ -27,4 +28,5 @@ void fragment() {
 	ALBEDO=mix(core_color.rgb,flame_color.rgb,smoothstep(0.1,0.5,age));
 	ALBEDO=mix(ALBEDO,tip_color.rgb,smoothstep(0.5,1.0,age));
 	ALPHA=fade*intensity;
+	ALPHA *= recall_visibility;
 }

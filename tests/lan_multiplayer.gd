@@ -72,6 +72,7 @@ func shared() -> void:
 	if remote:
 		check(await wait_for(func(): return remote.visible), "Buffered partner playback must become visible")
 		check(remote.avatar == session.partner_avatar and remote.collision_layer == 2, "Partner must have the chosen avatar and local collision")
+		check(remote.is_in_group(&"foliage_explorers") and not remote.is_in_group(&"explorers"), "Remote presence must affect foliage without acting as local input")
 
 func solo() -> void:
 	check(await wait_for(func(): return not session.shares_memory() and current_scene.get_node_or_null("Partner") == null), "Different memories/menus must remove the partner")

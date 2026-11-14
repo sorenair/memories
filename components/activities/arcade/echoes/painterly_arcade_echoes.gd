@@ -39,6 +39,23 @@ const WASH = preload("res://components/lighting/light_wash/painterly_light_wash.
 @export_tool_button("Regenerate echoes") var regenerate = rebuild
 var _queued := false
 
+
+const RECALL = preload("res://components/effects/recall/component_recall.gd")
+@export_group("Recall")
+@export var recall_enabled: bool = false:
+	set(value):
+		recall_enabled = value
+		if is_node_ready() and not Engine.is_editor_hint(): _sync_recall()
+var _recall: Node
+func get_recall_controller() -> Node:
+	return _recall
+func _sync_recall() -> void:
+	for child in get_children(true):
+		if child is PainterlyLightWash: child.recall_enabled = recall_enabled
+	_recall = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall)
+	if not recall_enabled and not Engine.is_editor_hint():
+		preload("res://components/effects/recall/assembled_recall.gd").restore_component(self)
+
 func _ready() -> void:
 	rebuild()
 	set_process(false)
@@ -174,3 +191,5 @@ func rebuild() -> void:
 	_wash(Vector3(-3.1,0,-0.7),Vector2(3.3,2.8),Color("d6c8ad"),0.13)
 	_wash(Vector3(-0.3,0,-2.9),Vector2(2.7,2.4),Color("e8d5bd"),0.10)
 	_wash(Vector3(2.3,0,0.3),Vector2(5,3.9),Color("e8d8bc"),0.10)
+
+	_sync_recall()

@@ -1,6 +1,13 @@
 extends RefCounted
 ## Runtime lifecycle and shared proximity settings for all recallable components.
 static var settings: Resource = preload("res://components/effects/recall/recall_settings.tres")
+static func explorers(component: Node) -> Array[Node3D]:
+	var result: Array[Node3D] = []
+	for group in [&"explorers", &"foliage_explorers"]:
+		for explorer in component.get_tree().get_nodes_in_group(group):
+			if explorer is Node3D and explorer.is_inside_tree() and explorer.is_visible_in_tree() and explorer.get_viewport() == component.get_viewport() and not result.has(explorer):
+				result.append(explorer)
+	return result
 static func configure(component: Node3D, adapter_path: String, current: Node) -> Node:
 	if Engine.is_editor_hint():
 		return null
@@ -30,7 +37,7 @@ static func local_margin(component: Node3D) -> Vector2:
 		settings.proximity_distance / maxf(component.global_basis.z.length(), 0.001))
 
 static func explorer_near(component: Node3D, footprint: Vector2, center: Vector2 = Vector2.ZERO) -> bool:
-	for explorer in component.get_tree().get_nodes_in_group(&"explorers"):
+	for explorer in explorers(component):
 		if explorer is Node3D:
 			var point := component.to_local(explorer.global_position)
 			var radius := footprint * 0.5 + local_margin(component)
@@ -39,7 +46,7 @@ static func explorer_near(component: Node3D, footprint: Vector2, center: Vector2
 	return false
 
 static func explorer_near_outline(component: Node3D, outline: PackedVector2Array) -> bool:
-	for explorer in component.get_tree().get_nodes_in_group(&"explorers"):
+	for explorer in explorers(component):
 		if not explorer is Node3D or absf(explorer.global_position.y - component.global_position.y) >= 1.5:
 			continue
 		var point: Vector3 = component.to_local(explorer.global_position)

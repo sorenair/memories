@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_never, fog_disabled;
+uniform float recall_visibility = 1.0;
 uniform vec2 flame_size = vec2(0.9,1.5);
 uniform float intensity = 1.0;
 uniform float animation_speed = 1.0;
@@ -63,4 +64,5 @@ void fragment() {
 	float halo=exp(-max(d,0.0)*18.0)*0.12*glow_strength*(1.0-flame);
 	ALBEDO=mix(flame_color.rgb,color,flame);
 	ALPHA=clamp(flame+halo,0.0,1.0)*smoothstep(0.0,0.02,p.y)*intensity;
+	ALPHA *= recall_visibility;
 }

@@ -8,6 +8,8 @@ uniform float edge_softness = 0.18;
 uniform float breakup_size = 0.48;
 uniform float irregularity = 0.7;
 uniform float paint_phase = 0.0;
+// Curved ribbons supply across/along meters through UV; straight strips retain XZ.
+uniform bool use_path_uv = false;
 varying vec2 position_on_strip;
 varying vec3 surface_normal;
 varying float paint_layer;
@@ -20,7 +22,7 @@ float noise(vec2 p) {
 }
 
 void vertex() {
-	position_on_strip = VERTEX.xz;
+	position_on_strip = use_path_uv ? UV : VERTEX.xz;
 	surface_normal = MODEL_NORMAL_MATRIX*NORMAL;
 	paint_layer = UV2.x;
 }

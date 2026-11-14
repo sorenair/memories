@@ -15,14 +15,17 @@ ambience_size = Vector2(14, 13)
 ambience_blend_distance = 4.0
 
 [node name="Athlete" parent="Scenery" instance=ExtResource("statue")]
+recall_enabled = true
 position = Vector3(-3.5, 0, -2.7)
 figure = 0
 rotation_degrees = Vector3(0, 18, 0)
 [node name="DrapedFigure" parent="Scenery" instance=ExtResource("statue")]
+recall_enabled = true
 position = Vector3(0, 0, -3.0)
 figure = 1
 rotation_degrees = Vector3(0, -12, 0)
 [node name="PortraitBust" parent="Scenery" instance=ExtResource("statue")]
+recall_enabled = true
 position = Vector3(3.5, 0, -2.7)
 figure = 2
 rotation_degrees = Vector3(0, -22, 0)
@@ -34,6 +37,7 @@ paving_color = Color(0.91, 0.90, 0.86, 1)
 end_fade = Vector2(2.0, 2.0)
 irregularity = 0.2
 [node name="CoolDaylight" parent="Scenery" instance=ExtResource("wash")]
+recall_enabled = true
 position = Vector3(-1, 0, -1)
 footprint = Vector2(6.5, 4.0)
 light_color = Color(0.86, 0.91, 1.0, 1)
