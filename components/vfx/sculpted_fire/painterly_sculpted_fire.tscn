@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvht250l8bxor"]
+
+[ext_resource type="Script" uid="uid://hdc52gocjld3" path="res://components/vfx/sculpted_fire/painterly_sculpted_fire.gd" id="1"]
+
+[node name="PainterlySculptedFire" type="Node3D"]
+script = ExtResource("1")
+animation_speed = 0.7
+edge_color = Color(0.87451, 0.278431, 0.12549, 1)

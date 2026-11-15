@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="1"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/cherry_blossom.tres" id="2"]
+[node name="CherryBlossomTree" instance=ExtResource("1")]
+tree_type=0
+tree_seed=237
+tree_height=3.9
+crown_width=4.2
+trunk_radius=0.12
+trunk_bend=0.105
+branch_count=7
+leaf_sprays_per_cluster=150
+palette_preset=0
+palette=ExtResource("2")
+bark_shadow=Color(0.25,0.20,0.22,1)
+bark_light=Color(0.53,0.42,0.39,1)
+wind_strength=0.065
+falling_leaf_count=18
+falling_leaf_rate=0.55

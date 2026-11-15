@@ -37,6 +37,10 @@ trim keep the engineered shape consistent with the painted scenery. The optional
 front access ramp has continuous convex collision matching its visible slope.
 The default width is 1.6 m, leaving room for both explorers.
 
+**Edge Finish** selects the original Fabric Apron or a plain Timber Skirt. The
+timber option and warm wood colors also make this same component suitable for a
+scenic viewing deck; Vineyard composes it with separate wooden railing spans.
+
 Use `get_anchor()` with `DeckCenter`, `Performer`, `LightingRig`, or `Approach`
 (the last exists when the ramp is enabled). These are local placement hooks, not
 interaction controllers. Stage collision does not replace MemoryPlatform: place

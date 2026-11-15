@@ -1,0 +1,92 @@
+[gd_scene load_steps=7 format=3]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/stage/painterly_commencement_stage.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/lectern/painterly_lectern.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/diplomas/painterly_diploma_table.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/seating/painterly_ceremony_seating.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/graduates/painterly_graduate_crowd.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="6"]
+[node name="GraduationSetup" type="Node3D"]
+
+[node name="CommencementStage" parent="." instance=ExtResource("1")]
+
+[node name="Lectern" parent="." instance=ExtResource("2")]
+position=Vector3(-0.65,0.465,0.05)
+
+[node name="DiplomaTable" parent="." instance=ExtResource("3")]
+position=Vector3(1.8,0.465,-0.2)
+
+[node name="Chairs" parent="." instance=ExtResource("4")]
+position=Vector3(0,0,5.4)
+aisle_width=1.8
+
+[node name="SeatedGraduates" parent="." node_paths=PackedStringArray("seating") instance=ExtResource("5")]
+position=Vector3(0,0,5.4)
+count=24
+crowd_seed=614
+person_scale=1.3
+silhouette_variation=0.0
+seating=NodePath("../Chairs")
+
+[node name="Presenter" parent="." instance=ExtResource("5")]
+position=Vector3(-0.65,0.465,-0.60)
+count=1
+footprint=Vector2(0.7,0.7)
+spacing=0.7
+layout=1
+height_variation=0.0
+facing_variation=0.0
+silhouette_variation=0.25
+gown_color=Color(0.42,0.28,0.34,1)
+crowd_seed=19
+
+[node name="WaitingGraduates" parent="." instance=ExtResource("5")]
+position=Vector3(-4.65,0,2.7)
+count=4
+footprint=Vector2(1.2,2.4)
+spacing=0.78
+layout=1
+facing_degrees=120.0
+facing_variation=18.0
+crowd_seed=255
+
+[node name="FrontFlowersLeft" parent="." instance=ExtResource("6")]
+position=Vector3(-3.55,0,2.35)
+bush_height=0.53
+footprint=Vector2(1.4,1.2)
+flower_color=Color(0.87,0.74,0.54,1)
+flower_highlight=Color(0.98,0.93,0.78,1)
+flower_count=38
+flower_size=0.075
+sprays_per_mass=28
+bush_seed=177
+
+[node name="FrontFlowersRight" parent="." instance=ExtResource("6")]
+position=Vector3(3.9,0,2.1)
+bush_height=0.63
+footprint=Vector2(1.65,1.4)
+flower_color=Color(0.87,0.74,0.54,1)
+flower_highlight=Color(0.98,0.93,0.78,1)
+flower_count=44
+flower_size=0.085
+sprays_per_mass=28
+bush_seed=178
+
+[node name="BackFlowersLeft" parent="." instance=ExtResource("6")]
+position=Vector3(-4.1,0,-1.5)
+bush_height=0.8
+footprint=Vector2(1.6,1.3)
+flower_color=Color(0.85,0.68,0.69,1)
+flower_highlight=Color(0.97,0.86,0.80,1)
+flower_count=45
+sprays_per_mass=28
+bush_seed=312
+
+[node name="BackFlowersRight" parent="." instance=ExtResource("6")]
+position=Vector3(4.35,0,-1.3)
+bush_height=0.7
+footprint=Vector2(1.7,1.4)
+flower_color=Color(0.85,0.68,0.69,1)
+flower_highlight=Color(0.97,0.86,0.80,1)
+flower_count=48
+sprays_per_mass=28
+bush_seed=366

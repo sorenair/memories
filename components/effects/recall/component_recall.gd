@@ -37,6 +37,12 @@ static func local_margin(component: Node3D) -> Vector2:
 		settings.proximity_distance / maxf(component.global_basis.z.length(), 0.001))
 
 static func explorer_near(component: Node3D, footprint: Vector2, center: Vector2 = Vector2.ZERO) -> bool:
+	if component.has_method("get_recall_anchor"):
+		var anchor: Node3D = component.get_recall_anchor()
+		if is_instance_valid(anchor) and anchor!=component:
+			component = anchor
+			footprint = Vector2.ZERO
+			center = Vector2.ZERO
 	for explorer in explorers(component):
 		if explorer is Node3D:
 			var point := component.to_local(explorer.global_position)

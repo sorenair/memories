@@ -21,6 +21,12 @@ Types apply proportion multipliers to your authored dimensions, rather than repl
 
 ## Authoring controls
 
+For a ready-to-use pink flowering crown, instance
+`presets/cherry_blossom_tree.tscn`. It reuses the Broadleaf generator with a wider
+crown, dark bark, a custom pink/cream `palettes/cherry_blossom.tres` palette and
+quiet falling pink petals. All existing dimensions, seed, wind and falling-leaf
+controls remain editable. See the [campus landmark study](../scenery/graduation/LANDMARKS.md).
+
 | Inspector field | Effect |
 | --- | --- |
 | Palette Preset / Palette | Shared seasonal and dreamlike foliage palette choices, or a custom `GrassPalette`. |

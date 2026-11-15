@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/graduation/stage/painterly_commencement_stage.gd" id="1"]
+[node name="PainterlyCommencementStage" type="Node3D"]
+script=ExtResource("1")
+footprint=Vector2(8,4)
+body_color=Color(0.59,0.51,0.42,1)
+accent_color=Color(0.26,0.35,0.39,1)
+trim_color=Color(0.81,0.69,0.44,1)

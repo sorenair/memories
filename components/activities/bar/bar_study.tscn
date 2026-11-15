@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://components/activities/bar/pool/painterly_pool_table.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/activities/bar/jukebox/painterly_jukebox.tscn" id="2"]
+[node name="BarStudy" type="Node3D"]
+
+[node name="PoolTable" parent="." instance=ExtResource("1")]
+position = Vector3(-0.7, 0, 0)
+
+[node name="Jukebox" parent="." instance=ExtResource("2")]
+position = Vector3(1.8, 0, -0.5)
+rotation_degrees = Vector3(0, -12, 0)

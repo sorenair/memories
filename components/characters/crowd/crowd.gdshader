@@ -22,6 +22,11 @@ uniform float motion_strength : hint_range(0.0, 1.0) = 0.45;
 uniform float motion_speed : hint_range(0.0, 2.0) = 0.75;
 // A non-negative value freezes the shader clock for deterministic previews/tests.
 uniform float preview_time = -1.0;
+// Optional academic geometry uses reserved material tags; ordinary crowds are unchanged.
+uniform vec4 gown_color : source_color = vec4(0.24, 0.32, 0.38, 1.0);
+uniform vec4 stole_color : source_color = vec4(0.80, 0.65, 0.36, 1.0);
+uniform vec4 tassel_color : source_color = vec4(0.91, 0.80, 0.53, 1.0);
+uniform bool seated_posture = false;
 varying vec3 pigment;
 varying vec3 smooth_normal;
 varying vec3 local_position;
@@ -92,6 +97,19 @@ void vertex() {
 	VERTEX = relative + vec3(0.0, 1.055 + 0.53 * (leg_length - 1.0), 0.0);
 	normal.xz = turning * normal.xz;
 	normal.xy = tilting * normal.xy;
+	if (seated_posture) {
+		// Fold the common standing mesh over a chair. Blend joints, including the
+		// gown drape; feet stay planted and hands remain on/above the lap.
+		vec3 upright = VERTEX - vec3(0.0, 0.21, 0.0);
+		vec3 thigh = vec3(VERTEX.x, 0.32 + VERTEX.z, 0.53 - VERTEX.y);
+		vec3 shin = vec3(VERTEX.x, VERTEX.y * (0.32 / 0.27), VERTEX.z + 0.26);
+		float hip = smoothstep(0.48, 0.56, VERTEX.y);
+		float knee = smoothstep(0.235, 0.30, VERTEX.y);
+		VERTEX = mix(mix(shin, thigh, knee), upright, hip);
+		vec3 lap_normal = vec3(normal.x, normal.z, -normal.y);
+		vec3 shin_normal = normalize(vec3(normal.x, normal.y * (0.27 / 0.32), normal.z));
+		normal = normalize(mix(mix(shin_normal, lap_normal, knee), normal, hip));
+	}
 	vec3 clothes = pick_color(INSTANCE_CUSTOM.r, clothing_a.rgb, clothing_b.rgb, clothing_c.rgb, clothing_d.rgb);
 	vec3 second = pick_color(choice(identity, 10.0), clothing_a.rgb, clothing_b.rgb, clothing_c.rgb, clothing_d.rgb);
 	vec3 skin = pick_color(INSTANCE_CUSTOM.g, skin_a.rgb, skin_b.rgb, skin_c.rgb, skin_d.rgb);
@@ -102,6 +120,10 @@ void vertex() {
 	if (UV2.x > 2.5) { pigment = hair; }
 	if (UV2.x > 3.5) { pigment = mix(hair * 0.62, clothes * 0.47, 0.5); }
 	if (UV2.x > 4.5) { pigment = mix(second, atmosphere_color.rgb, 0.12); }
+	if (UV2.x > 5.5) { pigment = gown_color.rgb; }
+	if (UV2.x > 6.5) { pigment = stole_color.rgb; }
+	if (UV2.x > 7.5) { pigment = gown_color.rgb; }
+	if (UV2.x > 8.5) { pigment = tassel_color.rgb; }
 	pigment *= mix(0.89, 1.08, fract(INSTANCE_CUSTOM.r * 7.37));
 	smooth_normal = normalize(MODEL_NORMAL_MATRIX * normal);
 	local_position = rest_position;

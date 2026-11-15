@@ -1,5 +1,9 @@
 # Painterly fire
 
+For the separate mesh-volume redesign with smoke and additional controls, see
+[sculpted painterly fire](../sculpted_fire/README.md). This original component and
+its current memory instances remain available.
+
 Instance `painterly_fire.tscn` with its origin at the flame's base. Each seasonal demo zone contains a small `Fire` instance. It is a visual effect; a log pile, fire bowl, torch, collision, heat, and damage are separate scenery/gameplay choices.
 
 The flame uses a warm pale core, yellow body, orange/red tips, three connected curling tongues, and broad rising cutouts. Curved, moving color bands supply the painted character. Small round embers rise, drift, and cool toward red. A subtle ground wash and narrow silhouette halo suggest warmth without requiring bloom or changing the world's lighting.
@@ -15,6 +19,7 @@ The flame uses a warm pale core, yellow body, orange/red tips, three connected c
 | Ember Count | Allocated ember pool, 0–64; zero removes that batch. |
 | Glow Strength | Halo and ground-wash strength; zero hides the ground wash. |
 | Recall Enabled | Starts hidden, then smoothly manifests over 1.8 seconds when either explorer approaches using the shared recall distance. |
+| Recall Anchor | Optional reachable Node3D used for proximity; empty uses the effect's ground footprint. Useful when the fire belongs to a larger prop that resolves from an approach marker. |
 
 Size, colors, speed, wind, glow, and intensity update uniforms without regenerating geometry. Seed and ember count rebuild the small batches. Generated children stay internal; the scene saves only authoring controls. Use Flame Size for dimensions and keep the root upright. The flame is an upright camera-facing graphic, while embers face the camera fully. It is intended for the game's elevated camera and normal side views, rather than an exactly overhead camera.
 

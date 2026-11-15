@@ -54,6 +54,9 @@ door remains decorative.
 groundcover exclusion lists, including when the cabin moves or rotates. Optional
 recall uses the existing assembled adapter, preserves solid collision/progress on
 rebuild, and fades the soft contact shadow with the shell.
+An optional **Recall Anchor** selects a reachable marker for manifestation;
+leaving it empty uses the cabin's own origin. The winter memory points it at the
+clearing arrival, allowing the cabin to appear before reaching its solid walls.
 
 This component contains the building only. Trees, groundcover, chairs and firepits
 remain separate components for composing a memory.

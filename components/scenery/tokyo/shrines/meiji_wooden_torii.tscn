@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/tokyo/shrines/painterly_torii.gd" id="1"]
+[node name="MeijiWoodenTorii" type="Node3D"]
+script=ExtResource("1")
+body_color=Color(0.42,0.34,0.26,1)
+accent_color=Color(0.57,0.43,0.29,1)
+trim_color=Color(0.80,0.67,0.37,1)

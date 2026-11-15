@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://components/scenery/camp/fire_pit/painterly_fire_pit.gd" id="pit"]
+[ext_resource type="PackedScene" path="res://components/vfx/fire/painterly_fire.tscn" id="fire"]
+[node name="PainterlyFirePit" type="Node3D"]
+script = ExtResource("pit")
+[node name="Fire" parent="." instance=ExtResource("fire")]
+position = Vector3(0, 0.21, 0)
+flame_size = Vector2(0.65, 0.85)
+intensity = 0.85
+animation_speed = 0.7
+ember_count = 12
+glow_strength = 0.0

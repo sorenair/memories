@@ -36,6 +36,8 @@ It does not change the project's main scene or load a memory/timeline.
 
 New test scenes should live here and reuse/inherit this stage where possible. The
 existing component-specific scripts in `tests/` remain useful for automated checks.
+
+`sculpted_fire_test.tscn` previews the separate [3D painterly fire](../../components/vfx/sculpted_fire/README.md), with curved flame volumes, rolling smoke and sparks. Its source scene exposes grouped fire/smoke/spark controls; the stage supplies light/dark backgrounds and recall replay.
 `tests/light_wash.gd` exercises the generic stage, including swapping its subject to
 another component while preserving the camera and player.
 
@@ -46,3 +48,16 @@ another component while preserving the camera and player.
 `conservatory_test.tscn` previews the [conservatory component library](../../components/scenery/conservatory/README.md): flowering bushes, straight/curved stone walls, an animated marble fountain, and potted bonsai. Three flower treatments, three masonry styles and three bonsai forms sit beside the explorer. Run with F6; use the generic stage with one component for isolated recall/parameter checks.
 
 `jungle_test.tscn` previews the [jungle foliage library](../../components/foliage/jungle/README.md): feather/fan palms, tropical broadleaf clumps, ferns and bamboo, layered with existing groundcover and shrubs around the conservatory fountain. Run with F6 to walk the central approach, or test an individual plant in the generic stage.
+
+`bar_test.tscn` previews the [bar props](../../components/activities/bar/README.md): an interactive pool table and modern electronic jukebox. Walk near any side of the table and tap the felt/cabinet to break the rack; wait for the balls to settle before tapping again. This inherited stage includes the shared tap controller and in-range outline. The jukebox is an animated visual prop, with music playback left for later.
+
+`neighborhood_house_test.tscn` provides an F6 study for the reusable bungalow,
+front-gable, side-gable and stacked-porch house family. Select its source component
+for profile and proportion editing; `tests/neighborhood_house.gd` covers its
+geometry, stairs, exclusion footprint and solid exterior collision.
+
+`graduation_test.tscn` previews the [commencement kit](../../components/scenery/graduation/README.md): an open draped stage, animated banners, lectern, diploma presentation table, folding chair rows, seated graduates and a waiting group. Run with F6 to walk the clear central aisle and stage ramp. Each prop and the graduate crowd can also be studied individually in the generic stage.
+
+`campus_landmarks_test.tscn` previews the [graduation landmarks](../../components/scenery/graduation/LANDMARKS.md): freestanding twin stone arches, an inherited cherry blossom tree preset and an open classical portico with broad stairs. Walk through either arch and climb the center of the stairs to the columned landing. The original museum portico remains available in its own memory.
+
+`tokyo_temples_test.tscn` previews the [Tokyo landmark kit](../../components/scenery/tokyo/README.md): Meiji's wooden torii and worship hall, plus Sensō-ji's main hall, five-story pagoda and Hōzōmon lantern gate. Walk through the gates or climb the hall steps to their closed fronts. `tokyo_city_test.tscn` studies the same kit's scramble crossing and five varied modular towers, with animated billboards and the existing standing crowd. Both inherit the shared F6 component stage; they are separate studies, not timeline memories.

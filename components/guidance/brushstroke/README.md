@@ -77,3 +77,9 @@ reading, visibility over pale ground, frozen-clock stability, and complete remov
 when stopped.
 
 ![Guide over pale scenery](../../../docs/previews/manual-guide-light-background.png)
+
+Raised walking surfaces are supported by the route planner: authored `Deck`,
+`AccessRamp` and `StairRamp` shapes supply their actual support height. Cabinets,
+closed house shells and tables remain obstacles. Vineyard exercises guidance from
+a ground-level aisle onto its timber deck; First Meeting's guidance regression
+continues to cover gates, house approaches and blocked shortcuts.

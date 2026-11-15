@@ -388,7 +388,7 @@ func mechanical_band() -> void:
 	collider(Vector3(0,0.42,1.43),Vector3(1.98,0.84,0.52),"Console")
 	anchors["Play"] = Vector3(0,0.8,2.2)
 
-func bar_corner() -> void:
+func bar_corner(sign_title: String = "ARCADE") -> void:
 	# Roofless cutaway: back/left walls frame the activities without hiding them.
 	soft_box(Vector3(0,0.018,0),Vector3(10.8,0.036,8.2),Color("a79073"),0.08)
 	for i in range(27):
@@ -401,7 +401,7 @@ func bar_corner() -> void:
 	box(Vector3(0,0.48,-3.75),Vector3(10.6,0.055,0.1),brass)
 	soft_box(Vector3(0,2.15,-3.79),Vector3(2.8,0.54,0.12),wood,0.1)
 	soft_box(Vector3(0,2.15,-3.712),Vector3(2.64,0.40,0.025),ivory,0.07)
-	text("ARCADE",Vector3(0,2.095,-3.689),0.25,body)
+	text(sign_title,Vector3(0,2.095,-3.689),0.25,body)
 	for side in [-1.0,1.0]:
 		rod(Vector3(side*4.8,0.02,-3.5),Vector3(side*4.8,3.15,-3.5),0.05,wood)
 	var wire: Array[Vector3] = []
@@ -447,7 +447,7 @@ func create(kind: StringName, config: Dictionary) -> Dictionary:
 		&"pinball": pinball()
 		&"punching_bag": punching_bag()
 		&"mechanical_band": mechanical_band()
-		&"bar_corner": bar_corner()
+		&"bar_corner": bar_corner(config.get("corner_sign","ARCADE"))
 	for part in parts.values():
 		part["mesh"] = part.tool.commit()
 		part.erase("tool")

@@ -1,0 +1,1542 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="Resource" path="res://scenes/memories/postcard_cabin/winter_pines.tres" id="pines"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="trail"]
+[ext_resource type="PackedScene" path="res://components/scenery/water/painterly_frozen_water.tscn" id="ice"]
+[ext_resource type="AudioStream" path="res://audio/samples/autumn_wind.wav" id="wind"]
+
+[sub_resource type="Curve3D" id="ForestTrail"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -2.6, 0, 0, 9, 0.2, 0, 2.4, -0.2, 0, -2.4, 3.2, 0, 3.5, 0, 0, 2.6, 0, 0, -2.6, -3, 0, -3.5, -2.3, 0, 0.5, 2.3, 0, -0.5, -1, 0, -11, -1.6, 0, 1.8, 1.6, 0, -1.8, 4.5, 0, -16, 0, 0, 2.7, 0, 0, 0, 7, 0, -23), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)}
+point_count = 6
+
+[sub_resource type="Curve3D" id="FrozenCreek"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0, 0, 0, -1, 0, -2.2, 0, 0, 7, 0, 0, 2.3, 0, 0, -2.3, -1.2, 0, 1, -0.3, 0, 3, 0, 0, 0, 1, 0, -10), "tilts": PackedFloat32Array(0, 0, 0)}
+point_count = 3
+
+[node name="HikeZone" instance=ExtResource("zone")]
+zone_id = &"winter_hike"
+display_name = "Through the quiet pines"
+ambience_stream = ExtResource("wind")
+ambience_volume_db = -26.0
+ambience_size = Vector2(24, 44)
+ambience_blend_distance = 5.0
+
+[node name="Trail" parent="Scenery" instance=ExtResource("trail")]
+visible = false
+curve = SubResource("ForestTrail")
+path_width = 2.4
+sample_spacing = 0.25
+end_fade = Vector2(0.8, 0.8)
+
+[node name="FrozenPond" parent="Scenery" instance=ExtResource("ice")]
+position = Vector3(-7.1000, 0.0250, -5.0000)
+footprint = Vector2(4.6, 6.2)
+water_seed = 21026
+irregularity = 0.10
+crack_strength = 0.32
+recall_enabled = true
+
+[node name="FrozenStream" parent="Scenery" instance=ExtResource("ice")]
+position = Vector3(6.0000, 0.0250, -2.0000)
+shape = 1
+footprint = Vector2(1.5, 17)
+stream_path = SubResource("FrozenCreek")
+cap_stream_ends = true
+outline_detail = 64
+water_seed = 21027
+crack_strength = 0.22
+recall_enabled = true
+
+[node name="WinterTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.1496, 0.0000, 9.6207)
+tree_type = 4
+tree_seed = 21001
+tree_height = 3.22
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(0.0050, 0.0000, -18.2380)
+tree_type = 4
+tree_seed = 21002
+tree_height = 4.27
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.1720, 0.0000, -19.3580)
+tree_type = 4
+tree_seed = 21003
+tree_height = 4.06
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-7.3347, 0.0000, -9.3633)
+tree_type = 2
+tree_seed = 21004
+tree_height = 4.87
+crown_width = 4.5
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree5" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(9.2188, 0.0000, -13.1635)
+tree_type = 4
+tree_seed = 21005
+tree_height = 2.63
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree6" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6.0640, 0.0000, 2.5263)
+tree_type = 4
+tree_seed = 21006
+tree_height = 5.28
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree7" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.2660, 0.0000, -11.1271)
+tree_type = 4
+tree_seed = 21007
+tree_height = 4.98
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree8" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.6210, 0.0000, 9.6304)
+tree_type = 2
+tree_seed = 21008
+tree_height = 5.15
+crown_width = 4.5
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree9" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-4.9448, 0.0000, 5.4678)
+tree_type = 4
+tree_seed = 21009
+tree_height = 5.31
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree10" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(0.1805, 0.0000, -3.1003)
+tree_type = 4
+tree_seed = 21010
+tree_height = 4.33
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree11" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-1.4741, 0.0000, 3.1269)
+tree_type = 4
+tree_seed = 21011
+tree_height = 3.13
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree12" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.0089, 0.0000, -14.7089)
+tree_type = 2
+tree_seed = 21012
+tree_height = 4.93
+crown_width = 4.5
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree13" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6.2643, 0.0000, 0.4280)
+tree_type = 4
+tree_seed = 21013
+tree_height = 5.04
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree14" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(6.5127, 0.0000, 6.7275)
+tree_type = 4
+tree_seed = 21014
+tree_height = 3.27
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree15" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.6254, 0.0000, -4.1059)
+tree_type = 4
+tree_seed = 21015
+tree_height = 4.42
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree16" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(1.1694, 0.0000, -16.3177)
+tree_type = 2
+tree_seed = 21016
+tree_height = 5.21
+crown_width = 4.5
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree17" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.3383, 0.0000, -14.9908)
+tree_type = 4
+tree_seed = 21017
+tree_height = 4.96
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree18" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.7230, 0.0000, -10.9094)
+tree_type = 4
+tree_seed = 21018
+tree_height = 3.20
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree19" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(1.3264, 0.0000, -8.2450)
+tree_type = 4
+tree_seed = 21019
+tree_height = 2.84
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree20" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-7.8203, 0.0000, -12.4875)
+tree_type = 2
+tree_seed = 21020
+tree_height = 4.34
+crown_width = 4.5
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree21" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-2.7533, 0.0000, 7.2329)
+tree_type = 4
+tree_seed = 21021
+tree_height = 4.35
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree22" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.8603, 0.0000, 5.4090)
+tree_type = 4
+tree_seed = 21022
+tree_height = 2.87
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree23" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(6.5591, 0.0000, -13.6032)
+tree_type = 4
+tree_seed = 21023
+tree_height = 2.71
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree24" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(7.0148, 0.0000, 9.3445)
+tree_type = 2
+tree_seed = 21024
+tree_height = 3.10
+crown_width = 3.0
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree25" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.3037, 0.0000, -16.1256)
+tree_type = 4
+tree_seed = 21025
+tree_height = 3.22
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree26" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-2.2330, 0.0000, -17.5177)
+tree_type = 4
+tree_seed = 21026
+tree_height = 4.17
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree27" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.0152, 0.0000, 0.9761)
+tree_type = 4
+tree_seed = 21027
+tree_height = 3.28
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree28" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(9.7549, 0.0000, -20.9067)
+tree_type = 2
+tree_seed = 21028
+tree_height = 2.91
+crown_width = 3.0
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree29" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.6470, 0.0000, -8.4932)
+tree_type = 4
+tree_seed = 21029
+tree_height = 2.89
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree30" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(1.9652, 0.0000, -6.2079)
+tree_type = 4
+tree_seed = 21030
+tree_height = 2.66
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree31" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(6.4024, 0.0000, 0.0638)
+tree_type = 4
+tree_seed = 21031
+tree_height = 3.28
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree32" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(7.0768, 0.0000, 2.8115)
+tree_type = 2
+tree_seed = 21032
+tree_height = 3.25
+crown_width = 3.0
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree33" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.5499, 0.0000, 0.5924)
+tree_type = 4
+tree_seed = 21033
+tree_height = 2.87
+crown_width = 3.0
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree34" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(2.3815, 0.0000, -1.4314)
+tree_type = 4
+tree_seed = 21034
+tree_height = 4.86
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree35" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.3520, 0.0000, -8.4119)
+tree_type = 4
+tree_seed = 21035
+tree_height = 5.39
+crown_width = 4.5
+trunk_radius = 0.14
+branch_count = 5
+leaf_sprays_per_cluster = 64
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTree36" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-0.6090, 0.0000, -14.4842)
+tree_type = 2
+tree_seed = 21036
+tree_height = 5.17
+crown_width = 4.5
+trunk_radius = 0.105
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+wind_speed = 0.5
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.7572, 0.0000, 4.9289)
+bush_seed = 21101
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.53
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.4906, 0.0000, 8.4844)
+bush_seed = 21102
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.57
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.4049, 0.0000, 2.9630)
+bush_seed = 21103
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.52
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.3721, 0.0000, 9.0541)
+bush_seed = 21104
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.46
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.6917, 0.0000, -15.3759)
+bush_seed = 21105
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.59
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.6748, 0.0000, 5.1889)
+bush_seed = 21106
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.44
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.2286, 0.0000, 10.4884)
+bush_seed = 21107
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.64
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.0344, 0.0000, 3.5894)
+bush_seed = 21108
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.44
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.5189, 0.0000, 2.1142)
+bush_seed = 21109
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.50
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.7154, 0.0000, -12.9166)
+bush_seed = 21110
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.57
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.7429, 0.0000, -16.7492)
+bush_seed = 21111
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.49
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.7433, 0.0000, -9.0409)
+bush_seed = 21112
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.42
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush13" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.4045, 0.0000, -14.2183)
+bush_seed = 21113
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.56
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush14" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.2558, 0.0000, -7.2562)
+bush_seed = 21114
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.46
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush15" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.5474, 0.0000, 3.8299)
+bush_seed = 21115
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.44
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush16" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.1406, 0.0000, 1.9741)
+bush_seed = 21116
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.58
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush17" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.2279, 0.0000, -0.7614)
+bush_seed = 21117
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.46
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush18" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.4428, 0.0000, 5.4874)
+bush_seed = 21118
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.48
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush19" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.1755, 0.0000, -7.8640)
+bush_seed = 21119
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.41
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush20" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.9462, 0.0000, 1.0261)
+bush_seed = 21120
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.60
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush21" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.0241, 0.0000, 6.3757)
+bush_seed = 21121
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.43
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush22" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.0933, 0.0000, -5.1159)
+bush_seed = 21122
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.64
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush23" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(0.1463, 0.0000, -15.0432)
+bush_seed = 21123
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.44
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush24" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.0989, 0.0000, -13.8627)
+bush_seed = 21124
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.62
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush25" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.8016, 0.0000, -12.7143)
+bush_seed = 21125
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.57
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush26" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.3969, 0.0000, -11.6771)
+bush_seed = 21126
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.56
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush27" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.4781, 0.0000, -17.9331)
+bush_seed = 21127
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.47
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush28" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.6658, 0.0000, -14.3086)
+bush_seed = 21128
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.39
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush29" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.0876, 0.0000, 7.5300)
+bush_seed = 21129
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.62
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush30" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.2352, 0.0000, -9.7353)
+bush_seed = 21130
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.45
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush31" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.3483, 0.0000, 6.0865)
+bush_seed = 21131
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.57
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush32" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.0749, 0.0000, 0.6209)
+bush_seed = 21132
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.65
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush33" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.7371, 0.0000, -0.6019)
+bush_seed = 21133
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.59
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush34" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.5274, 0.0000, -18.6575)
+bush_seed = 21134
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.55
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush35" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.5751, 0.0000, -4.5999)
+bush_seed = 21135
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.42
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush36" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.1518, 0.0000, 4.0357)
+bush_seed = 21136
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.60
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush37" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.5932, 0.0000, -10.2196)
+bush_seed = 21137
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.40
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush38" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.5338, 0.0000, -1.0192)
+bush_seed = 21138
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush39" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.5884, 0.0000, 6.9715)
+bush_seed = 21139
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.65
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush40" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(1.0781, 0.0000, -21.2847)
+bush_seed = 21140
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.60
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush41" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.6003, 0.0000, 4.1266)
+bush_seed = 21141
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.50
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush42" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.9444, 0.0000, -10.6245)
+bush_seed = 21142
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.43
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush43" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.6628, 0.0000, -10.3513)
+bush_seed = 21143
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.38
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush44" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.2669, 0.0000, -7.2544)
+bush_seed = 21144
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.49
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush45" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.1889, 0.0000, 8.0777)
+bush_seed = 21145
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SnowBush46" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(0.9977, 0.0000, -6.4360)
+bush_seed = 21146
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.39
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WinterTufts1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(8.7572, 0.0000, 4.9289)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21200
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.6748, 0.0000, 5.1889)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21201
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(2.7429, 0.0000, -16.7492)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21202
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(8.1406, 0.0000, 1.9741)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21203
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(5.0241, 0.0000, 6.3757)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21204
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.3969, 0.0000, -11.6771)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21205
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.3483, 0.0000, 6.0865)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21206
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts8" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.1518, 0.0000, 4.0357)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21207
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts9" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-1.6003, 0.0000, 4.1266)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21208
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="WinterTufts10" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(0.9977, 0.0000, -6.4360)
+patch_size = Vector2(2.5, 3.2)
+patch_seed = 21209
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../FrozenStream"), NodePath("../Trail")])
+
+[node name="Fragment" parent="."]
+position = Vector3(-2.7000, 0.0400, -4.0000)
+fragment_seed = 21026
+note_title = "Through the quiet pines"
+notes = Array[String](["Placeholder: Write your memory of the snowy hike and frozen water together here."])
+[node name="TrailPine1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(9.8508, 0.0000, -18.1753)
+tree_type = 4
+tree_seed = 21601
+tree_height = 2.77
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.3365, 0.0000, -0.7578)
+tree_type = 4
+tree_seed = 21602
+tree_height = 2.65
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.2979, 0.0000, 8.1541)
+tree_type = 4
+tree_seed = 21603
+tree_height = 2.13
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-0.3576, 0.0000, -5.2914)
+tree_type = 4
+tree_seed = 21604
+tree_height = 2.77
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine5" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.4033, 0.0000, -20.9552)
+tree_type = 4
+tree_seed = 21605
+tree_height = 2.37
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine6" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-1.9851, 0.0000, -13.4268)
+tree_type = 4
+tree_seed = 21606
+tree_height = 2.55
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine7" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-1.5403, 0.0000, 5.7205)
+tree_type = 4
+tree_seed = 21607
+tree_height = 2.60
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine8" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.2514, 0.0000, -12.5881)
+tree_type = 4
+tree_seed = 21608
+tree_height = 2.47
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine9" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-2.8937, 0.0000, 2.5743)
+tree_type = 4
+tree_seed = 21609
+tree_height = 2.37
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine10" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-0.2267, 0.0000, -6.8013)
+tree_type = 4
+tree_seed = 21610
+tree_height = 2.36
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine11" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.7885, 0.0000, -13.0882)
+tree_type = 4
+tree_seed = 21611
+tree_height = 2.65
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine12" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(2.1351, 0.0000, -3.0837)
+tree_type = 4
+tree_seed = 21612
+tree_height = 2.76
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine13" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(2.1227, 0.0000, 10.7395)
+tree_type = 4
+tree_seed = 21613
+tree_height = 2.11
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine14" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-2.2856, 0.0000, 10.6087)
+tree_type = 4
+tree_seed = 21614
+tree_height = 2.71
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine15" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-0.3391, 0.0000, 4.3660)
+tree_type = 4
+tree_seed = 21615
+tree_height = 2.72
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="TrailPine16" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.1460, 0.0000, -9.9288)
+tree_type = 4
+tree_seed = 21616
+tree_height = 2.37
+crown_width = 2.8
+trunk_radius = 0.10
+branch_count = 5
+leaf_sprays_per_cluster = 60
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true

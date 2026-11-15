@@ -1,0 +1,760 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/scenery/vineyard/painterly_vineyard_detail.tscn" id="detail"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/flowers/painterly_flower_patch.tscn" id="flowers"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="Resource" path="res://scenes/memories/vineyard/vine_leaves.tres" id="leaves"]
+[ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="wind"]
+
+[sub_resource type="Curve3D" id="VineTrail"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -1.8, 0, 0, 14, 0, 0, 1.8, 0, 0, -1.8, 0.2, 0, 8, 0, 0, 1.8, 0, 0, -1.8, 0, 0, 2.2, 0, 0, 1.8, 0, 0, -1.8, -0.2, 0, -4, 0, 0, 1.8, 0, 0, 0, 0, 0, -10.7), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+
+[node name="RowsZone" instance=ExtResource("zone")]
+zone_id = &"grape_rows"
+display_name = "Between the grape rows"
+ambience_stream = ExtResource("wind")
+ambience_volume_db = -25.0
+ambience_size = Vector2(24,27)
+ambience_blend_distance = 4.0
+
+[node name="Trail" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("VineTrail")
+path_width = 2.15
+paving_color = Color(0.81569, 0.77647, 0.64314, 1)
+irregularity = 0.75
+slab_length = 3.0
+end_fade = Vector2(1.7000, 1.7000)
+edge_softness = 0.35
+
+[node name="Trellis1" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(-9.4000, 0.0000, 2.0000)
+length = 18.0
+paint_seed = 801260
+recall_enabled = true
+
+[node name="GrapeBush1_1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9.4463, 0.1200, 10.0000)
+rotation = Vector3(0.0000, -0.0368, 0.0000)
+bush_seed = 801300
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.13
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush1_2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9.4046, 0.1200, 6.6000)
+rotation = Vector3(0.0000, -0.0112, 0.0000)
+bush_seed = 801301
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.06
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush1_3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9.4009, 0.1200, 3.2000)
+rotation = Vector3(0.0000, 0.0154, 0.0000)
+bush_seed = 801302
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.04
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush1_4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9.3854, 0.1200, -0.2000)
+rotation = Vector3(0.0000, 0.0187, 0.0000)
+bush_seed = 801303
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.21
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush1_5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9.3606, 0.1200, -3.6000)
+rotation = Vector3(0.0000, 0.0316, 0.0000)
+bush_seed = 801304
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.05
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush1_6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9.4083, 0.1200, -6.4000)
+rotation = Vector3(0.0000, 0.0668, 0.0000)
+bush_seed = 801305
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.12
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="Trellis2" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(-5.8000, 0.0000, 2.0000)
+length = 18.0
+paint_seed = 801261
+recall_enabled = true
+
+[node name="GrapeBush2_1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.7561, 0.1200, 10.0000)
+rotation = Vector3(0.0000, 0.0757, 0.0000)
+bush_seed = 801307
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.18
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush2_2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.7458, 0.1200, 6.6000)
+rotation = Vector3(0.0000, -0.0852, 0.0000)
+bush_seed = 801308
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.05
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush2_3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.8379, 0.1200, 3.2000)
+rotation = Vector3(0.0000, 0.1014, 0.0000)
+bush_seed = 801309
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.03
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush2_4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.8476, 0.1200, -0.2000)
+rotation = Vector3(0.0000, 0.0633, 0.0000)
+bush_seed = 801310
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.17
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush2_5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.7645, 0.1200, -3.6000)
+rotation = Vector3(0.0000, 0.0011, 0.0000)
+bush_seed = 801311
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.2
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush2_6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.8006, 0.1200, -6.4000)
+rotation = Vector3(0.0000, -0.0095, 0.0000)
+bush_seed = 801312
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.2
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="Trellis3" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(-2.2000, 0.0000, 2.0000)
+length = 18.0
+paint_seed = 801262
+recall_enabled = true
+
+[node name="GrapeBush3_1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.2499, 0.1200, 10.0000)
+rotation = Vector3(0.0000, -0.0039, 0.0000)
+bush_seed = 801314
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.22
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush3_2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.1841, 0.1200, 6.6000)
+rotation = Vector3(0.0000, 0.0420, 0.0000)
+bush_seed = 801315
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.2
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush3_3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.2777, 0.1200, 3.2000)
+rotation = Vector3(0.0000, -0.0966, 0.0000)
+bush_seed = 801316
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.03
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush3_4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.2301, 0.1200, -0.2000)
+rotation = Vector3(0.0000, -0.0495, 0.0000)
+bush_seed = 801317
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.09
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush3_5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.2108, 0.1200, -3.6000)
+rotation = Vector3(0.0000, -0.0932, 0.0000)
+bush_seed = 801318
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.16
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush3_6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.1430, 0.1200, -6.4000)
+rotation = Vector3(0.0000, 0.0658, 0.0000)
+bush_seed = 801319
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.15
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="Trellis4" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(2.2000, 0.0000, 2.0000)
+length = 18.0
+paint_seed = 801263
+recall_enabled = true
+
+[node name="GrapeBush4_1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.2750, 0.1200, 10.0000)
+rotation = Vector3(0.0000, -0.0957, 0.0000)
+bush_seed = 801321
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.04
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush4_2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.2721, 0.1200, 6.6000)
+rotation = Vector3(0.0000, 0.0250, 0.0000)
+bush_seed = 801322
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.2
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush4_3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.1577, 0.1200, 3.2000)
+rotation = Vector3(0.0000, -0.0339, 0.0000)
+bush_seed = 801323
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.18
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush4_4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.1094, 0.1200, -0.2000)
+rotation = Vector3(0.0000, 0.0175, 0.0000)
+bush_seed = 801324
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.13
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush4_5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.2309, 0.1200, -3.6000)
+rotation = Vector3(0.0000, 0.0996, 0.0000)
+bush_seed = 801325
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.24
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush4_6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.1686, 0.1200, -6.4000)
+rotation = Vector3(0.0000, 0.0199, 0.0000)
+bush_seed = 801326
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.15
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="Trellis5" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(5.8000, 0.0000, 2.0000)
+length = 18.0
+paint_seed = 801264
+recall_enabled = true
+
+[node name="GrapeBush5_1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.8362, 0.1200, 10.0000)
+rotation = Vector3(0.0000, -0.0288, 0.0000)
+bush_seed = 801328
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.14
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush5_2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.7189, 0.1200, 6.6000)
+rotation = Vector3(0.0000, 0.0238, 0.0000)
+bush_seed = 801329
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.17
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush5_3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.7755, 0.1200, 3.2000)
+rotation = Vector3(0.0000, 0.0221, 0.0000)
+bush_seed = 801330
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.07
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush5_4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.8614, 0.1200, -0.2000)
+rotation = Vector3(0.0000, 0.0297, 0.0000)
+bush_seed = 801331
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.1
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush5_5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.8688, 0.1200, -3.6000)
+rotation = Vector3(0.0000, -0.0358, 0.0000)
+bush_seed = 801332
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.23
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush5_6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.8632, 0.1200, -6.4000)
+rotation = Vector3(0.0000, -0.0148, 0.0000)
+bush_seed = 801333
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.18
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="Trellis6" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(9.4000, 0.0000, 2.0000)
+length = 18.0
+paint_seed = 801265
+recall_enabled = true
+
+[node name="GrapeBush6_1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.3500, 0.1200, 10.0000)
+rotation = Vector3(0.0000, 0.0148, 0.0000)
+bush_seed = 801335
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.16
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush6_2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.3170, 0.1200, 6.6000)
+rotation = Vector3(0.0000, -0.0048, 0.0000)
+bush_seed = 801336
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.1
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush6_3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.3691, 0.1200, 3.2000)
+rotation = Vector3(0.0000, 0.0847, 0.0000)
+bush_seed = 801337
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.13
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush6_4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.3595, 0.1200, -0.2000)
+rotation = Vector3(0.0000, -0.0141, 0.0000)
+bush_seed = 801338
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.03
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush6_5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.4894, 0.1200, -3.6000)
+rotation = Vector3(0.0000, 0.0574, 0.0000)
+bush_seed = 801339
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.11
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="GrapeBush6_6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.4781, 0.1200, -6.4000)
+rotation = Vector3(0.0000, -0.0519, 0.0000)
+bush_seed = 801340
+footprint = Vector2(1.0500, 3.3500)
+bush_height = 1.14
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+react_to_explorers = true
+recall_enabled = true
+
+[node name="RowGrass1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-7.6000, 0.0030, 8.5000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801400
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-7.6000, 0.0030, -1.8000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801401
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.0000, 0.0030, 8.5000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801402
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.0000, 0.0030, -1.8000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801403
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(0.0000, 0.0030, 8.5000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801404
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(0.0000, 0.0030, -1.8000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801405
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(4.0000, 0.0030, 8.5000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801406
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass8" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(4.0000, 0.0030, -1.8000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801407
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass9" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.6000, 0.0030, 8.5000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801408
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass10" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.6000, 0.0030, -1.8000)
+patch_size = Vector2(2.8000, 8.2000)
+patch_seed = 801409
+grass_height = 0.19
+tufts_per_square_meter = 6
+leaves_per_square_meter = 18
+palette_preset = 0
+palette = ExtResource("leaves")
+ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="BorderTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-10.7000, 0.0000, 13.0000)
+rotation = Vector3(0.0000, -1.5653, 0.0000)
+tree_seed = 801450
+tree_height = 3.5
+crown_width = 3.2
+leaf_count = 70
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BorderTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(10.7000, 0.0000, 13.0000)
+rotation = Vector3(0.0000, 0.1617, 0.0000)
+tree_seed = 801451
+tree_height = 3.75
+crown_width = 3.2
+leaf_count = 70
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BorderTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-10.8000, 0.0000, -7.8000)
+rotation = Vector3(0.0000, -1.6307, 0.0000)
+tree_seed = 801452
+tree_height = 4.0
+crown_width = 3.2
+leaf_count = 70
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BorderTree4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(10.8000, 0.0000, -7.8000)
+rotation = Vector3(0.0000, -0.5095, 0.0000)
+tree_seed = 801453
+tree_height = 4.25
+crown_width = 3.2
+leaf_count = 70
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Fragment" parent="."]
+position = Vector3(0,0.04,2.7)
+note_title = "Between the vines"
+notes = PackedStringArray("[Placeholder] The green rows, the quiet walk, and a summer afternoon together. Replace this with our vineyard memory from August 1, 2026.")

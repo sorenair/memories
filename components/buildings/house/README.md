@@ -32,3 +32,7 @@ This kit is appropriate for variations on this bungalow: proportions, colors, ro
 Run `godot --headless --path . --script res://tests/house.gd` for deterministic generation, optional details, vertex validity, triangle budget, ground exclusions, walkable stairs, and exterior collision checks.
 
 Plaster, roofing, glass, and lamp paint are tagged within the shared mesh so the broad pigment washes do not muddy the window details. Shingle variation changes tiny course edges and pigment while preserving the structural roof contour. The lamp uses a small fixed emission value and does not require bloom or additional passes.
+
+For a broader exterior family, use [neighborhood houses](../neighborhood/README.md).
+They extend this component with gabled one-to-three-storey profiles and covered
+porches, while the original First Meeting bungalow keeps its existing defaults.

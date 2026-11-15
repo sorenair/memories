@@ -98,6 +98,9 @@ var _weights := PackedFloat32Array([0.0, 0.0])
 
 const RECALL = preload("res://components/effects/recall/component_recall.gd")
 @export_group("Recall")
+@export var recall_anchor: Node3D
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
 @export var recall_enabled: bool = false:
 	set(value):
 		recall_enabled = value

@@ -102,6 +102,8 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 		_request_rebuild()
 
 @export_group("Collision and Recall")
+## Optional clearing approach, so the exterior can resolve before reaching its wall.
+@export var recall_anchor: Node3D
 @export var collision_enabled: bool = true:
 	set(value):
 		collision_enabled = value
@@ -238,6 +240,9 @@ func get_anchor(id: StringName) -> Marker3D:
 
 func get_recall_controller() -> Node:
 	return _recall
+
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
 
 func _sync_recall() -> void:
 	_recall = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall)

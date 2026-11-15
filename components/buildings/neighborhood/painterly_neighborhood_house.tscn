@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/buildings/neighborhood/painterly_neighborhood_house.gd" id="house"]
+[node name="NeighborhoodHouse" type="Node3D"]
+script = ExtResource("house")

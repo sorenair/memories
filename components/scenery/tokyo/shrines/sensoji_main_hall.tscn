@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/tokyo/shrines/painterly_japanese_hall.gd" id="1"]
+[node name="SensojiMainHall" type="Node3D"]
+script=ExtResource("1")
+hall_style=1
+footprint=Vector2(10.0,5.4)
+wall_height=3.0
+roof_rise=2.7
+body_color=Color(0.64,0.26,0.20,1)
+accent_color=Color(0.72,0.34,0.24,1)
+trim_color=Color(0.78,0.65,0.38,1)
+roof_color=Color(0.49,0.53,0.52,1)

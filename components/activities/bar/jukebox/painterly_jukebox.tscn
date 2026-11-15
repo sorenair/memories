@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/activities/bar/jukebox/painterly_jukebox.gd" id="1"]
+[node name="PainterlyJukebox" type="Node3D"]
+script = ExtResource("1")
+cabinet_color = Color(0.25, 0.30, 0.32, 1)
+accent_color = Color(0.47, 0.77, 0.73, 1)
+metal_color = Color(0.69, 0.46, 0.62, 1)

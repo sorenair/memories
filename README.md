@@ -6,7 +6,7 @@ Designing a new memory? Start with the [memory design guide](docs/MEMORY_DESIGN_
 
 ## Play
 
-Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, **New Year's Eve — December 31, 2025**, **Como Conservatory — January 14, 2026**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
+Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, **New Year's Eve — December 31, 2025**, **Como Conservatory — January 14, 2026**, **Postcard Cabin — February 10, 2026**, **Mifflin Block Party — April 25, 2026**, **Vineyard — August 1, 2026**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
 
 - **WASD / arrow keys:** walk, relative to the screen.
 - **Controller left stick:** analog movement.
@@ -39,6 +39,12 @@ First Meeting continues beyond the house into an ethereal arcade glade: pinball,
 
 [Expanded memory](docs/previews/first-meeting-expanded.png) · [Arcade area](docs/previews/first-meeting-arcade.png) · [Mechanical band](docs/previews/arcade-mechanical_band.png)
 
+The [bar prop kit](components/activities/bar/README.md) adds an interactive pool table and a modern electronic jukebox. Tap the table nearby to launch a cue ball into a fresh rack, with ball/cushion collisions, pockets and sound. The jukebox has an animated portrait display and illuminated trim. Run `tests/scenes/bar_test.tscn` with F6 to inspect both beside the explorer.
+
+The [commencement kit](components/scenery/graduation/README.md) adds a walkable ceremony stage and banners, lectern, diploma table, folding chair rows, and configurable graduates in caps and gowns. Graduates support standing groups or exact chair occupancy. Run `tests/scenes/graduation_test.tscn` with F6 to explore the ceremony study and center aisle.
+
+Its [campus landmarks](components/scenery/graduation/LANDMARKS.md) include twin St. Thomas stone arches, a pink cherry blossom tree preset and a classical portico/stair flight. Run `tests/scenes/campus_landmarks_test.tscn` with F6 to inspect and walk through them.
+
 ## Football in the snow
 
 The second timeline memory, **Football in the snow**, places both explorers high in a snowy college-stadium seating section. Its compact upper cross-aisle has safe guardrails, benches, and a fragment, with existing ground snow/footprints and falling snow. Approaching the railing gently opens the camera across the painted football field and distant stands; walking back returns to closer exploration framing. The field and bowl are scenic, while the upper deck is walkable.
@@ -60,6 +66,34 @@ The fifth authored memory is **New Year's Eve — December 31, 2025**: one conce
 ## Como Conservatory
 
 The sixth authored memory is **Como Conservatory — January 14, 2026**: three zones move from a two-lane flower garden beside a reflecting rill and fountain, through a lush jungle room, to three minimal bonsai displays. The flower garden retains open teal roof ribs; the jungle uses a continuous curved trail through dense tropical planting, and the bonsai room stays open and minimal. Close exploration cameras, one fragment and ambient bed per room, and supported paths preserve the shared memory framework. See [the conservatory guide](scenes/memories/como_conservatory/README.md), or run `scenes/world/como_conservatory_world.tscn`.
+
+## Postcard Cabin
+
+The seventh authored memory is **Postcard Cabin — February 10, 2026**: a winding
+snowy forest hike with frozen water leads to a sheltered cabin clearing, two
+Adirondack chairs and a steel fire ring. Continuous footprint snow, falling flakes,
+close cameras, independent recall and two blended ambient beds join the two
+exterior zones. See [the cabin memory guide](scenes/memories/postcard_cabin/README.md),
+or run `scenes/world/postcard_cabin_world.tscn`.
+
+## Mifflin Block Party
+
+The eighth authored memory is **Mifflin Block Party — April 25, 2026**: a spring
+street party and an open bar cluster. A continuous configurable asphalt road
+runs between six varied houses; guests scatter across its center as well as the
+sides, with winding gaps through the gathering. The second zone reuses the pool
+table, electronic jukebox and a freestanding counter with stools in the void. Both zones have a fragment and an
+ambient bed. See [the Mifflin guide](scenes/memories/mifflin/README.md),
+or run `scenes/world/mifflin_world.tscn`.
+
+## Vineyard
+
+The ninth authored memory is **Vineyard — August 1, 2026**: a close walk between
+six grape rows leads onto a wooden deck overlooking a broad summer meadow. The
+scene reuses bushes, grass, flowers, trees, chairs and the stage's ramp/deck, with
+small trellis and railing details. Both zones have a fragment and breeze ambience;
+the camera opens toward the field from the viewing rail. See [the vineyard guide](scenes/memories/vineyard/README.md),
+or run `scenes/world/vineyard_world.tscn`.
 
 ## Seasonal demo layout
 
@@ -90,6 +124,8 @@ Instance `components/foliage/painterly_bush.tscn` to add a low, spreading shrub.
 Use **Foliage Colors → Palette Preset** on any grass, tree, or bush instance for seasonal and dreamlike color schemes. See [the palette guide](components/foliage/PALETTES.md).
 
 ## Scenery components
+
+The [Tokyo scenery kit](components/scenery/tokyo/README.md) adds a Meiji wooden torii and worship hall, Sensō-ji main hall, Hōzōmon gate and five-story pagoda, plus a modular city tower and scramble crossing. Curved roofs, matte pigment, configurable colors and GPU-driven billboards share the existing component framework. Run `tests/scenes/tokyo_temples_test.tscn` or `tests/scenes/tokyo_city_test.tscn` with F6 to inspect them beside the explorer.
 
 The [conservatory component kit](components/scenery/conservatory/README.md) adds flowering bushes, modular stone/brick/slab walls, an animated marble fountain and potted bonsai. It reuses the foliage, wood, paint and water library; variants, colors and proportions preview in the editor. Run `tests/scenes/conservatory_test.tscn` with F6 to inspect them beside the explorer.
 

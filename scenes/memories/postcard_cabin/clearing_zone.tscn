@@ -1,0 +1,606 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="Resource" path="res://scenes/memories/postcard_cabin/winter_pines.tres" id="pines"]
+[ext_resource type="PackedScene" path="res://components/buildings/postcard_cabin/painterly_postcard_cabin.tscn" id="cabin"]
+[ext_resource type="PackedScene" path="res://components/scenery/camp/adirondack/painterly_adirondack_chair.tscn" id="chair"]
+[ext_resource type="PackedScene" path="res://components/scenery/camp/fire_pit/painterly_fire_pit.tscn" id="pit"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+[ext_resource type="AudioStream" path="res://audio/samples/cabin_clearing.wav" id="bed"]
+
+[node name="CabinClearing" instance=ExtResource("zone")]
+zone_id = &"cabin_clearing"
+display_name = "A warm place in the woods"
+ambience_stream = ExtResource("bed")
+ambience_volume_db = -23.0
+ambience_size = Vector2(21, 20)
+ambience_blend_distance = 5.0
+
+[node name="Cabin" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cabin")]
+recall_anchor = NodePath("../Arrival")
+position = Vector3(0.0000, 0.0000, -2.8000)
+rotation_degrees = Vector3(0.0000, 90.0000, 0.0000)
+roof_color = Color(0.90, 0.93, 0.93, 1)
+siding_color = Color(0.25, 0.29, 0.28, 1)
+window_warmth = 0.88
+window_glow = 0.32
+recall_enabled = true
+
+[node name="FirePit" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("pit")]
+recall_anchor = NodePath("../Arrival")
+position = Vector3(0.0000, 0.0000, 2.7000)
+paint_seed = 21026
+recall_enabled = true
+
+[node name="LeftAdirondack" parent="Scenery" instance=ExtResource("chair")]
+position = Vector3(-1.6000, 0.0000, 4.7000)
+rotation_degrees = Vector3(0.0000, 141.3402, 0.0000)
+chair_color = Color(0.47, 0.54, 0.51, 1)
+paint_seed = 21254
+recall_enabled = true
+
+[node name="RightAdirondack" parent="Scenery" instance=ExtResource("chair")]
+position = Vector3(1.6000, 0.0000, 4.7000)
+rotation_degrees = Vector3(0.0000, -141.3402, 0.0000)
+chair_color = Color(0.58, 0.62, 0.59, 1)
+paint_seed = 21286
+recall_enabled = true
+
+[node name="FireWarmth" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(0.0000, 0.0850, 2.7000)
+footprint = Vector2(4.2, 3.8)
+light_color = Color(1.0, 0.77, 0.47, 1)
+intensity = 0.20
+softness = 0.9
+motion = 1
+motion_amount = 0.04
+recall_enabled = true
+
+[node name="PorchWarmth" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(2.0000, 0.0800, -4.4000)
+footprint = Vector2(2.6, 2.5)
+light_color = Color(1.0, 0.84, 0.59, 1)
+intensity = 0.15
+softness = 0.9
+recall_enabled = true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[node name="Arrival" type="Marker3D" parent="Scenery"]
+position = Vector3(0.0000, 0.0000, 7.0000)
+
+[node name="Fragment" parent="."]
+position = Vector3(-2.2000, 0.0400, 2.2000)
+fragment_seed = 21027
+note_title = "A warm place in the woods"
+notes = Array[String](["Placeholder: Write your memory of the cabin, snowy clearing, and fire together here."])
+[node name="ClearingTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.7252, 0.0000, 8.3135)
+tree_seed = 21301
+tree_type = 4
+tree_height = 2.37
+crown_width = 2.8
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.9063, 0.0000, -7.5337)
+tree_seed = 21302
+tree_type = 4
+tree_height = 2.26
+crown_width = 2.8
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.0920, 0.0000, -2.3871)
+tree_seed = 21303
+tree_type = 4
+tree_height = 2.46
+crown_width = 2.8
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-7.0474, 0.0000, -0.4561)
+tree_seed = 21304
+tree_type = 4
+tree_height = 4.41
+crown_width = 4.2
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree5" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.1369, 0.0000, -3.7178)
+tree_seed = 21305
+tree_type = 2
+tree_height = 2.38
+crown_width = 2.8
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree6" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(2.9695, 0.0000, -5.8064)
+tree_seed = 21306
+tree_type = 4
+tree_height = 4.70
+crown_width = 4.2
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree7" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.1119, 0.0000, -0.5104)
+tree_seed = 21307
+tree_type = 4
+tree_height = 2.61
+crown_width = 2.8
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree8" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.9354, 0.0000, 7.8898)
+tree_seed = 21308
+tree_type = 4
+tree_height = 2.55
+crown_width = 2.8
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree9" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-7.1763, 0.0000, 6.7115)
+tree_seed = 21309
+tree_type = 4
+tree_height = 5.15
+crown_width = 4.2
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree10" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6.0262, 0.0000, 8.1078)
+tree_seed = 21310
+tree_type = 2
+tree_height = 2.85
+crown_width = 2.8
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 0
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree11" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.0882, 0.0000, -8.3831)
+tree_seed = 21311
+tree_type = 4
+tree_height = 4.65
+crown_width = 4.2
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree12" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-0.3592, 0.0000, -7.9020)
+tree_seed = 21312
+tree_type = 4
+tree_height = 4.47
+crown_width = 4.2
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree13" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.6028, 0.0000, -4.4955)
+tree_seed = 21313
+tree_type = 4
+tree_height = 4.32
+crown_width = 4.2
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTree14" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.7257, 0.0000, -0.3260)
+tree_seed = 21314
+tree_type = 4
+tree_height = 4.84
+crown_width = 4.2
+trunk_radius = 0.12
+branch_count = 5
+leaf_sprays_per_cluster = 70
+palette_preset = 0
+palette = ExtResource("pines")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.1998, 0.0000, -4.6252)
+bush_seed = 21401
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.55
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.3829, 0.0000, -5.4794)
+bush_seed = 21402
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.58
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.6804, 0.0000, -0.6650)
+bush_seed = 21403
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.43
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-8.0190, 0.0000, -6.6908)
+bush_seed = 21404
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.67
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.4076, 0.0000, -1.7766)
+bush_seed = 21405
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.50
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.1524, 0.0000, -0.9851)
+bush_seed = 21406
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.52
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.7754, 0.0000, 8.3410)
+bush_seed = 21407
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.59
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.3859, 0.0000, 5.9579)
+bush_seed = 21408
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.45
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.2692, 0.0000, 2.3976)
+bush_seed = 21409
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.48
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(0.6386, 0.0000, -6.9613)
+bush_seed = 21410
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.62
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.7254, 0.0000, 4.7114)
+bush_seed = 21411
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.44
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.8261, 0.0000, -3.8809)
+bush_seed = 21412
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.43
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush13" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.4768, 0.0000, 3.2286)
+bush_seed = 21413
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.46
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush14" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.2657, 0.0000, -7.5799)
+bush_seed = 21414
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.63
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush15" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.9461, 0.0000, 2.1132)
+bush_seed = 21415
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.46
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush16" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.6458, 0.0000, 6.3084)
+bush_seed = 21416
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.61
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush17" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.7633, 0.0000, 2.8348)
+bush_seed = 21417
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.60
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush18" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.7778, 0.0000, -8.6796)
+bush_seed = 21418
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.47
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush19" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.7626, 0.0000, -2.4117)
+bush_seed = 21419
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.63
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush20" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.1410, 0.0000, -6.2128)
+bush_seed = 21420
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.55
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush21" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.7182, 0.0000, -5.2208)
+bush_seed = 21421
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingSnowBush22" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.9824, 0.0000, -6.9186)
+bush_seed = 21422
+footprint = Vector2(2.0, 1.9)
+bush_height = 0.42
+mass_count = 3
+sprays_per_mass = 48
+palette_preset = 5
+wind_strength = 0.02
+recall_enabled = true
+react_to_explorers = true
+[node name="ClearingTufts1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.1998, 0.0000, -4.6252)
+patch_size = Vector2(2.4, 2.7)
+patch_seed = 21500
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+recall_enabled = true
+react_to_explorer = true
+[node name="ClearingTufts2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.1524, 0.0000, -0.9851)
+patch_size = Vector2(2.4, 2.7)
+patch_seed = 21501
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+recall_enabled = true
+react_to_explorer = true
+[node name="ClearingTufts3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(6.7254, 0.0000, 4.7114)
+patch_size = Vector2(2.4, 2.7)
+patch_seed = 21502
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+recall_enabled = true
+react_to_explorer = true
+[node name="ClearingTufts4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.6458, 0.0000, 6.3084)
+patch_size = Vector2(2.4, 2.7)
+patch_seed = 21503
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+recall_enabled = true
+react_to_explorer = true
+[node name="ClearingTufts5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(8.7182, 0.0000, -5.2208)
+patch_size = Vector2(2.4, 2.7)
+patch_seed = 21504
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 0.0
+grass_height = 0.22
+palette_preset = 5
+recall_enabled = true
+react_to_explorer = true

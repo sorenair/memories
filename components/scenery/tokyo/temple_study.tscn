@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/meiji_worship_hall.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/meiji_wooden_torii.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/sensoji_main_hall.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/sensoji_hozomon_gate.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/sensoji_pagoda.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="6"]
+[node name="TokyoTempleStudy" type="Node3D"]
+[node name="MeijiHall" parent="." instance=ExtResource("1")]
+position=Vector3(-10,0,0)
+[node name="MeijiTorii" parent="." instance=ExtResource("2")]
+position=Vector3(-10,0,9)
+[node name="SensoHall" parent="." instance=ExtResource("3")]
+position=Vector3(8,0,0)
+[node name="HozomonGate" parent="." instance=ExtResource("4")]
+position=Vector3(8,0,10)
+[node name="Pagoda" parent="." instance=ExtResource("5")]
+position=Vector3(17,0,0.3)
+[node name="MeijiTreeLeft" parent="." instance=ExtResource("6")]
+position=Vector3(-16,0,1)
+tree_type=5
+tree_height=5.8
+crown_width=3.0
+leaf_sprays_per_cluster=65
+falling_leaf_count=0
+palette_preset=1
+tree_seed=343
+[node name="MeijiTreeRight" parent="." instance=ExtResource("6")]
+position=Vector3(-3.5,0,-2)
+tree_type=1
+tree_height=4.7
+crown_width=3.4
+leaf_sprays_per_cluster=65
+falling_leaf_count=0
+palette_preset=1
+tree_seed=355

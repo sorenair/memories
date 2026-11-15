@@ -20,6 +20,9 @@ const MEMORIES: Array[Dictionary] = [
 	{"title": "Christmas market", "date": "DEC 19, 2025", "short": "DEC 19", "scene": "res://scenes/world/christmas_market_world.tscn"},
 	{"title": "New Year's Eve", "date": "DEC 31, 2025", "short": "DEC 31", "scene": "res://scenes/world/new_years_eve_world.tscn"},
 	{"title": "Como Conservatory", "date": "JAN 14, 2026", "short": "JAN 14", "scene": "res://scenes/world/como_conservatory_world.tscn"},
+	{"title": "Postcard Cabin", "date": "FEB 10, 2026", "short": "FEB 10", "scene": "res://scenes/world/postcard_cabin_world.tscn"},
+	{"title": "Mifflin Block Party", "date": "APR 25, 2026", "short": "APR 25", "scene": "res://scenes/world/mifflin_world.tscn"},
+	{"title": "Vineyard", "date": "AUG 1, 2026", "short": "AUG 1", "scene": "res://scenes/world/vineyard_world.tscn"},
 	{"title": "Seasonal Demo", "date": "DEMO", "short": "DEMO", "scene": "res://scenes/world/memory_world.tscn"},
 ]
 

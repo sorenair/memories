@@ -18,22 +18,7 @@ func _build(b: RefCounted) -> void:
 	_steps(b,stone)
 	for x in [-5.0,-3.2,-1.4,1.4,3.2,5.0]:
 		var foot := Vector3(x,0.3,0)
-		b.box(foot+Vector3.UP*0.1,Vector3(0.86,0.2,0.86),stone,1.0)
-		b.disc(foot+Vector3.UP*0.27,0.37,0.16,stone,Vector3.UP,1.0,20)
-		b.disc(foot+Vector3.UP*2.7,0.29,4.7,stone,Vector3.UP,1.0,20)
-		for flute in 16:
-			var angle := TAU*flute/16.0
-			var offset := Vector3(cos(angle)*0.285,0,sin(angle)*0.285)
-			b.rod(foot+offset+Vector3.UP*0.4,foot+offset+Vector3.UP*4.98,0.028,stone.lightened(0.055),6)
-		b.disc(foot+Vector3.UP*5.05,0.37,0.16,stone,Vector3.UP,1.0,20)
-		b.box(foot+Vector3.UP*5.23,Vector3(1.0,0.21,0.69),stone,1.0)
-		for side in [-1.0,1.0]:
-			var points: Array[Vector3] = []
-			for segment in 17:
-				var angle := float(segment)/16.0*TAU*1.3
-				var radius := lerpf(0.17,0.025,float(segment)/16.0)
-				points.append(foot+Vector3(side*0.35+cos(angle)*radius,5.21+sin(angle)*radius,0.39))
-			b.tube(points,0.045,stone.lightened(0.04),6)
+		build_ionic_column(b,foot,stone)
 		_box_collision("Column",foot+Vector3.UP*2.8,Vector3(0.7,5.6,0.7))
 	# Broad entablature and a quiet triangular tympanum. No building wings/walls.
 	for layer in [Vector3(11.95,0.22,1.1),Vector3(12.35,0.6,1.25),Vector3(12.65,0.18,1.45)]:
@@ -46,6 +31,26 @@ func _build(b: RefCounted) -> void:
 	for index in 32:
 		b.box(Vector3(-5.95+index*0.385,6.5,0.72),Vector3(0.1,0.12,0.12),stone.darkened(0.05),1.0)
 	_landing_collision()
+
+## Shared column detail for open classical landmarks; caller owns placement/collision.
+static func build_ionic_column(b: RefCounted,foot: Vector3,stone: Color) -> void:
+	b.box(foot+Vector3.UP*0.1,Vector3(0.86,0.2,0.86),stone,1.0)
+	b.disc(foot+Vector3.UP*0.27,0.37,0.16,stone,Vector3.UP,1.0,20)
+	b.disc(foot+Vector3.UP*2.7,0.29,4.7,stone,Vector3.UP,1.0,20)
+	for flute in 16:
+		var angle := TAU*flute/16.0
+		var offset := Vector3(cos(angle)*0.285,0,sin(angle)*0.285)
+		b.rod(foot+offset+Vector3.UP*0.4,foot+offset+Vector3.UP*4.98,0.028,stone.lightened(0.055),6)
+	b.disc(foot+Vector3.UP*5.05,0.37,0.16,stone,Vector3.UP,1.0,20)
+	b.box(foot+Vector3.UP*5.23,Vector3(1.0,0.21,0.69),stone,1.0)
+	for side in [-1.0,1.0]:
+		var points: Array[Vector3] = []
+		for segment in 17:
+			var angle := float(segment)/16.0*TAU*1.3
+			var radius := lerpf(0.17,0.025,float(segment)/16.0)
+			points.append(foot+Vector3(side*0.35+cos(angle)*radius,5.21+sin(angle)*radius,0.39))
+		b.tube(points,0.045,stone.lightened(0.04),6)
+
 func _landing_collision() -> void:
 	var body := StaticBody3D.new()
 	body.name = "PorticoSteps"

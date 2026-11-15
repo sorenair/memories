@@ -10,6 +10,10 @@ around people. There is no locomotion, interaction, seating, or per-person AI.
 Leave walking space for Soren and Vivian using **Empty Areas**, an array of local
 X/Z rectangles; body clearance is included automatically.
 
+The [commencement kit](../../scenery/graduation/README.md) adds a subclass with caps,
+gowns and stoles. It reuses this crowd system for standing graduates and can bind to
+ceremony chair rows for a seated audience, with shared GPU animation and hitboxes.
+
 ## Main controls
 
 - **Count / Crowd Seed:** requested population and deterministic variation.
@@ -34,6 +38,11 @@ X/Z rectangles; body clearance is included automatically.
   dimensions follow individual width/height; static bodies are grouped by chunk.
   Use Person Scale rather than non-uniformly scaling the component's Node3D.
 - **Contact Shadows / Chunk Size / Visibility Distance:** rendering controls.
+- **Ground Exclusions:** paths or props implementing `excludes_ground_point()`.
+  This supports winding passages using an existing hidden PainterlyCurvedPath,
+  rather than reserving a broad rectangular aisle. Make the path wide enough for
+  explorer and guest body clearance. Crowd placement rebuilds when an exclusion
+  emits `ground_exclusion_changed`; references are relative to the crowd root.
 
 ## Preview
 

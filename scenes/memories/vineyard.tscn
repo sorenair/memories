@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="PackedScene" path="res://scenes/memories/vineyard/rows_zone.tscn" id="rows"]
+[ext_resource type="PackedScene" path="res://scenes/memories/vineyard/overlook_zone.tscn" id="overlook"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="Script" path="res://scripts/vineyard_memory.gd" id="route"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+
+[sub_resource type="Curve2D" id="WalkOutline"]
+_data = {"points": PackedVector2Array(0, 0, 0, 0, -5, 17, 0, 0, 0, 0, 5, 17, 0, 0, 0, 0, 11.5, 14.5, 0, 0, 0, 0, 12.4, 8, 0, 0, 0, 0, 12.2, -5.8, 0, 0, 0, 0, 10.8, -9, 0, 0, 0, 0, 3.0, -10.8, 0, 0, 0, 0, 2.5, -12.4, 0, 0, 0, 0, 5, -13, 0, 0, 0, 0, 5, -19.2, 0, 0, 0, 0, 3.8, -20, 0, 0, 0, 0, -3.8, -20, 0, 0, 0, 0, -5, -19.2, 0, 0, 0, 0, -5, -13, 0, 0, 0, 0, -2.5, -12.4, 0, 0, 0, 0, -3, -10.8, 0, 0, 0, 0, -10.8, -9, 0, 0, 0, 0, -12.2, -5.8, 0, 0, 0, 0, -12.4, 8, 0, 0, 0, 0, -11.5, 14.5, 0, 0, 0, 0, -5, 17)}
+point_count = 21
+
+[node name="Memory" instance=ExtResource("base")]
+script = ExtResource("route")
+memory_id = &"vineyard"
+display_name = "Vineyard"
+
+[node name="Entry" parent="."]
+position = Vector3(0.0000, 0.0400, 14.0000)
+
+[node name="Exit" parent="."]
+position = Vector3(0.0000, 0.5800, -17.8000)
+
+[node name="VineyardFloor" parent="Environment" instance=ExtResource("floor")]
+visible = false
+custom_outline = SubResource("WalkOutline")
+outline_detail = 96
+edge_inset = 0.18
+
+[node name="Guidance" type="Node3D" parent="Environment"]
+
+[node name="Audio" parent="."]
+fragment_sound = ExtResource("chime")
+
+[node name="Rows" parent="Zones" instance=ExtResource("rows")]
+
+[node name="Overlook" parent="Zones" instance=ExtResource("overlook")]
+position = Vector3(0.0000, 0.0000, -16.0000)
+
+[node name="BetweenTheVines" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/Rows/Fragment")
+stroke_width = 0.34
+
+[node name="OntoTheDeck" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Rows/Fragment")
+end_anchor = NodePath("../../../Zones/Overlook/Fragment")
+stroke_width = 0.34
+

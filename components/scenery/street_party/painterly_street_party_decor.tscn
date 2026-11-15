@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/street_party/painterly_street_party_decor.gd" id="decor"]
+[node name="StreetPartyDecor" type="Node3D"]
+script = ExtResource("decor")

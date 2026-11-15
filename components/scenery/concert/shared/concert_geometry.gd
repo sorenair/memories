@@ -35,7 +35,8 @@ func stage(config: Dictionary) -> Dictionary:
 		var x := -width * 0.5 + 0.10 + board_width * (float(index) + 0.5)
 		flat_deck(Vector3(x, height + 0.004, 0), board_width - 0.012, depth - 0.18, 0.008,
 			body.lightened(rng.randf_range(-0.045, 0.045)), 0.025)
-	# A lightly scalloped painted apron suggests fabric without enclosing the venue.
+	# Keep the original performance finish; timber also serves scenic viewing decks.
+	var timber: bool = config.get("timber_skirt",false)
 	var pleats := maxi(6, roundi(width / 0.32))
 	for index in range(pleats):
 		var x0 := -width * 0.5 + width * float(index) / float(pleats)
@@ -43,8 +44,11 @@ func stage(config: Dictionary) -> Dictionary:
 		var xm := (x0 + x1) * 0.5
 		var hem := 0.055 + sin(float(index) * 1.9) * 0.015
 		var color := accent.lightened(rng.randf_range(-0.035, 0.045))
-		quad(Vector3(x0, hem, front - 0.04), Vector3(xm, hem - 0.012, front + 0.015), Vector3(xm, height - 0.09, front + 0.015), Vector3(x0, height - 0.09, front - 0.04), color)
-		quad(Vector3(xm, hem - 0.012, front + 0.015), Vector3(x1, hem, front - 0.04), Vector3(x1, height - 0.09, front - 0.04), Vector3(xm, height - 0.09, front + 0.015), color.darkened(0.06))
+		if timber:
+			box(Vector3(xm,(height-0.09)*0.5,front-0.015),Vector3(x1-x0-0.012,height-0.09,0.045),color)
+		else:
+			quad(Vector3(x0, hem, front - 0.04), Vector3(xm, hem - 0.012, front + 0.015), Vector3(xm, height - 0.09, front + 0.015), Vector3(x0, height - 0.09, front - 0.04), color)
+			quad(Vector3(xm, hem - 0.012, front + 0.015), Vector3(x1, hem, front - 0.04), Vector3(x1, height - 0.09, front - 0.04), Vector3(xm, height - 0.09, front + 0.015), color.darkened(0.06))
 	for side: float in [-1.0, 1.0]:
 		soft_box(Vector3(side * (width * 0.5 - 0.065), height * 0.46, 0), Vector3(0.12, height * 0.82, depth - 0.12), accent, 0.035)
 		rod(Vector3(side * (width * 0.5 - 0.13), height + 0.02, -front + 0.12), Vector3(side * (width * 0.5 - 0.13), height + 0.02, front - 0.12), 0.016, brass, 8)

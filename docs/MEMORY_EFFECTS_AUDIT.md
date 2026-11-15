@@ -1,6 +1,6 @@
 # Memory recall and foliage audit
 
-Verified against every world in `UI/memory_lane/memory_lane.gd` on November 13,
+Verified against every world in `UI/memory_lane/memory_lane.gd` on November 14,
 2026. Counts include generated child components, such as arcade light washes.
 
 | Timeline memory | Recall components | Foliage responding to players |
@@ -11,8 +11,11 @@ Verified against every world in `UI/memory_lane/memory_lane.gd` on November 13,
 | Christmas market | 77 | 47 |
 | New Year's Eve | 14 | 0 |
 | Como Conservatory | 140 | 130 |
+| Postcard Cabin | 158 | 149 |
+| Mifflin Block Party | 76 | 48 |
+| Vineyard | 86 | 72 |
 | Seasonal Demo | 62 | 46 |
-| **Total** | **356** | **247** |
+| **Total** | **676** | **516** |
 
 The stadium, museum and New Year's Eve currently contain no reactive foliage.
 Their scenery, displays, crowds and lighting still recall. Library studies and
@@ -46,7 +49,10 @@ checks every recall controller, far/near triggers for both actors, completion,
 hidden-player filtering, and two-player inputs on each reactive foliage component.
 The graphical pass captures hidden, midway and nearby-completed states across all
 six earlier worlds. Como's additional scene walkthrough captures its garden,
-jungle and bonsai views; the headless catalog audit passes for all seven worlds.
+jungle and bonsai views; Postcard Cabin's walkthrough captures its winter trail,
+ice and fireside clearing. Mifflin adds street, porch and bar views, with its complete
+two-zone composition shown in a fully recalled overview. Vineyard adds vine-aisle,
+deck and field views; its headless catalog audit passes alongside all ten worlds.
 Existing grass, bush, shared-distance, fire and smoke checks pass.
 Two separate LAN host/guest processes also pass, including remote foliage-group
 membership while remaining outside the local input/interaction group.

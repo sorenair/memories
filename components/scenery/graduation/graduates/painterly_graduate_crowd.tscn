@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/graduation/graduates/painterly_graduate_crowd.gd" id="1"]
+[node name="PainterlyGraduateCrowd" type="Node3D"]
+script=ExtResource("1")
+count=16
+person_scale=1.3
+height_variation=0.09
+build_variation=0.12
+silhouette_variation=0.45
+pose_mix=1
+motion_strength=0.32
+facing_variation=12.0

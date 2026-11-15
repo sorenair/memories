@@ -1,5 +1,21 @@
 # Painterly modular water
 
+## Frozen ponds and streams
+
+Instance `painterly_frozen_water.tscn` for still winter water. It inherits the same
+pond outlines, curved/variable-width stream geometry, shoreline barriers,
+groundcover exclusion and proximity recall. **Ice Color**, **Frost Color** and
+**Crack Strength** tune its opaque matte blue surface. Water Seed varies the broad
+paint and delicate fracture pattern. The ice shader has no time-driven motion;
+flow and liquid-palette controls are hidden for this variant.
+
+Use it as scenery with shore collision, as in
+[Postcard Cabin](../../../scenes/memories/postcard_cabin/README.md). It does not
+create a walkable ice collider or simulate freezing/breakage. Add it to a snow
+patch's **Ground Exclusions** to expose ice within continuous snow banks.
+
+## Liquid water
+
 Instance `painterly_water.tscn` at ground level in a memory. The component previews fully in the editor. Enable **Recall → Recall Enabled** to reveal it on approach; this defaults to off. It uses layered wave normals, broad painted pigment, separate shallow caustics, and a view-dependent sky-light cue. One white shoreline band fades inward and breaks into animated cells; there is no colored bank or secondary foam ribbon.
 
 Each seasonal demo pond uses Calm Pond settings, with foliage framing the shore and registered rocks contributing foam. Run `scenes/memories/water_study.tscn` with F6 for an uncluttered custom-outline pond and a curved, variable-width stream.

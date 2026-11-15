@@ -93,6 +93,11 @@ func _update_material() -> void:
 		_material.set_shader_parameter("pigment_strength", pigment_strength)
 		_material.set_shader_parameter("paint_phase", float(posmod(prop_seed,997))*0.073)
 
+## New activity props can reuse this lifecycle with their own geometry builder.
+func _build_geometry() -> Dictionary:
+	var config := {"cabinet_color":cabinet_color,"accent_color":accent_color,"metal_color":metal_color,"cream_color":cream_color,"prop_seed":prop_seed}
+	return GEOMETRY.new().create(_kind(), config)
+
 func rebuild() -> void:
 	_queued = false
 	if not is_inside_tree(): return
@@ -100,8 +105,7 @@ func rebuild() -> void:
 		if child.get_meta(&"arcade_generated",false):
 			remove_child(child)
 			child.free()
-	var config := {"cabinet_color":cabinet_color,"accent_color":accent_color,"metal_color":metal_color,"cream_color":cream_color,"prop_seed":prop_seed}
-	var result: Dictionary = GEOMETRY.new().create(_kind(),config)
+	var result: Dictionary = _build_geometry()
 	_outline_mesh = result.get("outline_mesh")
 	_collision_boxes.assign(result.colliders)
 	_material = ShaderMaterial.new()

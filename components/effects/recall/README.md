@@ -56,3 +56,9 @@ The catalog audit loads every current timeline world, including nested/generated
 components, and checks distant/nearby triggers, completion, hidden actors, and
 two-player foliage inputs. The render check captures hidden, held-halfway overview,
 and nearby-completed states to `/tmp/memory-effects-{memory_id}-{phase}.png`.
+
+Grass, trees and flower patches expose an optional **Recall Anchor** for scenic
+foliage beyond an accessible overlook. Discovery still uses the shared proximity
+distance and either visible explorer; animation remains rooted in each plant or
+patch. Empty anchors preserve normal local discovery. Vineyard uses this for its
+field, without requiring players to enter the scenic terrain.

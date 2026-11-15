@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/water/painterly_frozen_water.gd" id="ice"]
+[node name="PainterlyFrozenWater" type="Node3D"]
+script = ExtResource("ice")
+flow_speed = 0.0
+wave_activity = 0.0
+wave_height = 0.0
+foam_amount = 0.0

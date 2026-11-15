@@ -11,6 +11,7 @@ var _query := PhysicsShapeQueryParameters3D.new()
 var _platforms: Array[MemoryPlatform] = []
 var _point_cache := {}
 var _segment_cache := {}
+var _support_cache := {}
 var _capsule_y := 0.68
 var _stroke_y := 0.72
 var _bounds := Rect2()
@@ -18,6 +19,7 @@ var _bounds := Rect2()
 func build(memory: MemoryScene, actor: Node3D, destination: MemoryFragment, routes: Array[Node3D]) -> PackedVector3Array:
 	_point_cache.clear()
 	_segment_cache.clear()
+	_support_cache.clear()
 	_platforms.clear()
 	_space = null
 	if not is_instance_valid(memory) or not is_instance_valid(actor) or not is_instance_valid(destination):
@@ -100,7 +102,23 @@ func _on_platform(point: Vector3) -> bool:
 	return false
 
 func _ground(point: Vector3) -> Vector3:
-	return Vector3(point.x, _capsule_y, point.z)
+	var key := Vector2(point.x,point.z)
+	if not _support_cache.has(key):
+		var base := _capsule_y-0.68
+		var ray := PhysicsRayQueryParameters3D.create(Vector3(point.x,base+5.0,point.z),Vector3(point.x,base-0.8,point.z))
+		ray.exclude = _query.exclude
+		var hit := _space.intersect_ray(ray)
+		var support := base
+		if not hit.is_empty():
+			var body := hit.get("collider") as CollisionObject3D
+			var owner_id := body.shape_find_owner(int(hit["shape"]))
+			var shape := body.shape_owner_get_owner(owner_id) as Node
+			# Only authored walking surfaces elevate navigation. Cabinets, roofs
+			# and tables remain obstacles rather than becoming alternative floors.
+			if shape and (shape.name in [&"StairRamp",&"AccessRamp",&"Deck"] or body.name==&"WalkingSurface"):
+				support = hit.position.y
+		_support_cache[key] = support+0.68
+	return Vector3(point.x,_support_cache[key],point.z)
 
 func _is_ramp(hit: Dictionary) -> bool:
 	var body := hit.get("collider") as CollisionObject3D
@@ -108,7 +126,7 @@ func _is_ramp(hit: Dictionary) -> bool:
 		return false
 	var owner_id := body.shape_find_owner(int(hit["shape"]))
 	var owner := body.shape_owner_get_owner(owner_id) as Node
-	return is_instance_valid(owner) and owner.name == &"StairRamp"
+	return is_instance_valid(owner) and owner.name in [&"StairRamp",&"AccessRamp"]
 
 func _point_status(point: Vector3) -> int:
 	var key := Vector2(point.x, point.z)

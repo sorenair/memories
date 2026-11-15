@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/activities/bar/counter/painterly_bar_counter.tscn" id="counter"]
+[ext_resource type="PackedScene" path="res://components/activities/bar/pool/painterly_pool_table.tscn" id="pool"]
+[ext_resource type="PackedScene" path="res://components/activities/bar/jukebox/painterly_jukebox.tscn" id="jukebox"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="room"]
+
+[node name="BarZone" instance=ExtResource("zone")]
+zone_id = &"bar"
+display_name = "Pool, music and the bar"
+ambience_stream = ExtResource("room")
+ambience_volume_db = -27.0
+ambience_size = Vector2(11, 9)
+ambience_blend_distance = 3.0
+
+[node name="BarCounter" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("counter")]
+position = Vector3(-3.2,0,-0.2)
+rotation = Vector3(0,1.570796,0)
+counter_length = 4.2
+stool_count = 3
+recall_anchor = NodePath("../..")
+recall_enabled = true
+
+[node name="PoolTable" parent="Scenery" instance=ExtResource("pool")]
+position = Vector3(0.2, 0, -0.4)
+cloth_color = Color(0.36,0.51,0.47,1)
+recall_enabled = true
+
+[node name="Jukebox" parent="Scenery" instance=ExtResource("jukebox")]
+position = Vector3(2.8, 0, -0.7)
+rotation = Vector3(0, -0.20, 0)
+screen_title = "MUSIC"
+screen_brightness = 0.8
+recall_enabled = true
+
+[node name="Fragment" parent="."]
+position = Vector3(2.4,0.08,1.4)
+note_title = "A quieter corner"
+notes = PackedStringArray("[Placeholder] A quieter corner after the party, with the pool table and music nearby. Replace this with our memory of the bar.")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/landmarks/painterly_campus_arches.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/landmarks/painterly_classical_portico.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/foliage/presets/cherry_blossom_tree.tscn" id="3"]
+[node name="CampusLandmarksSetup" type="Node3D"]
+
+[node name="CampusArches" parent="." instance=ExtResource("1")]
+position=Vector3(-6.8,0,-0.5)
+
+[node name="CherryBlossomTree" parent="." instance=ExtResource("3")]
+position=Vector3(-12,0,-1.8)
+
+[node name="ClassicalPortico" parent="." instance=ExtResource("2")]
+position=Vector3(6.5,0,-1)

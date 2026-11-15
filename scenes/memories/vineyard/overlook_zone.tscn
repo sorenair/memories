@@ -1,0 +1,440 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/scenery/concert/stage/painterly_stage.tscn" id="deck"]
+[ext_resource type="PackedScene" path="res://components/scenery/vineyard/painterly_vineyard_detail.tscn" id="detail"]
+[ext_resource type="PackedScene" path="res://components/scenery/camp/adirondack/painterly_adirondack_chair.tscn" id="chair"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/flowers/painterly_flower_patch.tscn" id="flowers"]
+[ext_resource type="Resource" path="res://scenes/memories/vineyard/august_field.tres" id="field"]
+[ext_resource type="Resource" path="res://scenes/memories/vineyard/vine_leaves.tres" id="leaves"]
+[ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="wind"]
+
+[node name="OverlookZone" instance=ExtResource("zone")]
+zone_id = &"field_overlook"
+display_name = "The field beyond the deck"
+ambience_stream = ExtResource("wind")
+ambience_volume_db = -26.0
+ambience_size = Vector2(13,13)
+ambience_blend_distance = 4.0
+
+[node name="Arrival" type="Marker3D" parent="Scenery"]
+position = Vector3(0.0000, 0.0000, 5.4000)
+
+[node name="Lookout" type="Marker3D" parent="Scenery"]
+position = Vector3(0.0000, 0.5700, -1.8000)
+
+[node name="TimberDeck" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("deck")]
+footprint = Vector2(9.0000, 5.4000)
+deck_height = 0.55
+ramp_width = 2.4
+ramp_length = 2.8
+edge_finish = 1
+body_color = Color(0.71765, 0.61569, 0.47059, 1)
+accent_color = Color(0.56471, 0.47843, 0.36863, 1)
+trim_color = Color(0.61176, 0.52549, 0.40392, 1)
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="ViewingRail" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("detail")]
+position = Vector3(0.0000, 0.5500, -2.5000)
+rotation = Vector3(0.0000, 0.0000, 0.0000)
+layout = 1
+length = 8.65
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="WestRail" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("detail")]
+position = Vector3(-4.3000, 0.5500, 0.0000)
+rotation = Vector3(0.0000, 1.5708, 0.0000)
+layout = 1
+length = 4.95
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="EastRail" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("detail")]
+position = Vector3(4.3000, 0.5500, 0.0000)
+rotation = Vector3(0.0000, 1.5708, 0.0000)
+layout = 1
+length = 4.95
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="WestEntryRail" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("detail")]
+position = Vector3(-2.9000, 0.5500, 2.5000)
+rotation = Vector3(0.0000, 0.0000, 0.0000)
+layout = 1
+length = 2.65
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="EastEntryRail" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("detail")]
+position = Vector3(2.9000, 0.5500, 2.5000)
+rotation = Vector3(0.0000, 0.0000, 0.0000)
+layout = 1
+length = 2.65
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="DeckChair1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("chair")]
+position = Vector3(-2.8000, 0.5600, 0.7000)
+rotation = Vector3(0.0000, 3.1416, 0.0000)
+chair_color = Color(0.72157, 0.69804, 0.60784, 1)
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="DeckChair2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("chair")]
+position = Vector3(2.8000, 0.5600, 0.7000)
+rotation = Vector3(0.0000, 3.1416, 0.0000)
+chair_color = Color(0.72157, 0.69804, 0.60784, 1)
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="FieldGrass1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-10.0000, -0.5500, -7.0000)
+rotation = Vector3(0.0000, 0.1499, 0.0000)
+patch_size = Vector2(13.0000, 10.0000)
+patch_seed = 801500
+grass_height = 0.42
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldGrass2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(0.0000, -0.5800, -8.0000)
+rotation = Vector3(0.0000, -0.1207, 0.0000)
+patch_size = Vector2(13.0000, 11.0000)
+patch_seed = 801501
+grass_height = 0.4
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldGrass3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(10.0000, -0.5400, -8.0000)
+rotation = Vector3(0.0000, -0.0420, 0.0000)
+patch_size = Vector2(14.0000, 10.0000)
+patch_seed = 801502
+grass_height = 0.36
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldGrass4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-14.0000, -0.6500, -20.0000)
+rotation = Vector3(0.0000, -0.0818, 0.0000)
+patch_size = Vector2(12.0000, 13.0000)
+patch_seed = 801503
+grass_height = 0.38
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldGrass5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-4.0000, -0.6000, -20.0000)
+rotation = Vector3(0.0000, -0.0191, 0.0000)
+patch_size = Vector2(14.0000, 14.0000)
+patch_seed = 801504
+grass_height = 0.48
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldGrass6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(7.0000, -0.6200, -21.0000)
+rotation = Vector3(0.0000, -0.0497, 0.0000)
+patch_size = Vector2(14.0000, 13.0000)
+patch_seed = 801505
+grass_height = 0.34
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldGrass7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(16.0000, -0.6800, -20.0000)
+rotation = Vector3(0.0000, -0.0474, 0.0000)
+patch_size = Vector2(10.0000, 12.0000)
+patch_seed = 801506
+grass_height = 0.36
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldGrass8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-8.0000, -0.7000, -28.0000)
+rotation = Vector3(0.0000, 0.1450, 0.0000)
+patch_size = Vector2(14.0000, 11.0000)
+patch_seed = 801507
+grass_height = 0.36
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldGrass9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(5.0000, -0.6500, -29.0000)
+rotation = Vector3(0.0000, 0.1073, 0.0000)
+patch_size = Vector2(15.0000, 12.0000)
+patch_seed = 801508
+grass_height = 0.48
+tufts_per_square_meter = 8.0
+leaves_per_square_meter = 3.0
+palette_preset = 0
+palette = ExtResource("field")
+ground_leaf_scale = 0.32
+wind_strength = 0.09
+wind_speed = 0.55
+visibility_distance = 100.0
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldFlowers1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(-13.0000, -0.5400, -10.0000)
+footprint = Vector2(5.8000, 4.4000)
+flower_count = 55
+patch_seed = 801550
+crown_height = 0.35
+bloom_radius = 0.06
+bloom_palette = 1
+foliage_palette = 0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldFlowers2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(-4.0000, -0.5400, -11.0000)
+footprint = Vector2(5.8000, 4.4000)
+flower_count = 55
+patch_seed = 801551
+crown_height = 0.35
+bloom_radius = 0.06
+bloom_palette = 0
+foliage_palette = 0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldFlowers3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(7.0000, -0.5400, -11.0000)
+footprint = Vector2(5.8000, 4.4000)
+flower_count = 55
+patch_seed = 801552
+crown_height = 0.35
+bloom_radius = 0.06
+bloom_palette = 0
+foliage_palette = 0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldFlowers4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(14.0000, -0.5400, -17.0000)
+footprint = Vector2(5.8000, 4.4000)
+flower_count = 55
+patch_seed = 801553
+crown_height = 0.35
+bloom_radius = 0.06
+bloom_palette = 1
+foliage_palette = 0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldFlowers5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(-9.0000, -0.5400, -19.0000)
+footprint = Vector2(5.8000, 4.4000)
+flower_count = 55
+patch_seed = 801554
+crown_height = 0.35
+bloom_radius = 0.06
+bloom_palette = 0
+foliage_palette = 0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldFlowers6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(2.0000, -0.5400, -22.0000)
+footprint = Vector2(5.8000, 4.4000)
+flower_count = 55
+patch_seed = 801555
+crown_height = 0.35
+bloom_radius = 0.06
+bloom_palette = 0
+foliage_palette = 0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldFlowers7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(9.0000, -0.5400, -27.0000)
+footprint = Vector2(5.8000, 4.4000)
+flower_count = 55
+patch_seed = 801556
+crown_height = 0.35
+bloom_radius = 0.06
+bloom_palette = 1
+foliage_palette = 0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-17.0000, -0.5500, -18.0000)
+rotation = Vector3(0.0000, -2.4763, 0.0000)
+tree_seed = 801600
+tree_type = 0
+tree_height = 3.38
+crown_width = 3.54
+leaf_count = 60
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-13.0000, -0.5500, -24.0000)
+rotation = Vector3(0.0000, 1.1620, 0.0000)
+tree_seed = 801601
+tree_type = 1
+tree_height = 3.58
+crown_width = 3.63
+leaf_count = 60
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.0000, -0.5500, -28.0000)
+rotation = Vector3(0.0000, 2.1440, 0.0000)
+tree_seed = 801602
+tree_type = 2
+tree_height = 3.59
+crown_width = 3.44
+leaf_count = 60
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(13.0000, -0.5500, -25.0000)
+rotation = Vector3(0.0000, -1.9643, 0.0000)
+tree_seed = 801603
+tree_type = 0
+tree_height = 4.5
+crown_width = 2.89
+leaf_count = 60
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(18.0000, -0.5500, -20.0000)
+rotation = Vector3(0.0000, 1.5946, 0.0000)
+tree_seed = 801604
+tree_type = 1
+tree_height = 3.58
+crown_width = 3.07
+leaf_count = 60
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="FieldTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(5.0000, -0.5500, -31.0000)
+rotation = Vector3(0.0000, -0.2754, 0.0000)
+tree_seed = 801605
+tree_type = 2
+tree_height = 3.07
+crown_width = 3.46
+leaf_count = 60
+palette_preset = 0
+palette = ExtResource("leaves")
+falling_leaf_rate = 0.0
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../Lookout")
+
+[node name="Fragment" parent="."]
+position = Vector3(-1.5,0.58,0.65)
+note_title = "Beyond the rows"
+notes = PackedStringArray("[Placeholder] A pause on the wooden deck, looking out over the field together. Replace this with our memory of the view.")

@@ -76,6 +76,11 @@ const PALETTES := [
 	set(value):
 		empty_areas = value
 		_request_rebuild()
+## Optional path/prop regions implementing excludes_ground_point(world_point).
+@export var ground_exclusions: Array[NodePath] = []:
+	set(value):
+		ground_exclusions = value
+		_request_rebuild()
 
 @export_group("Painterly Colors")
 @export_enum("Quiet Neutrals", "Summer Gathering", "Autumn Gathering", "Winter Gathering", "Custom") var palette: int = 0:
@@ -172,6 +177,7 @@ var _hitboxes: Node3D
 var _hitbox_shapes: Array[CollisionShape3D] = []
 var _batch_count: int = 0
 var _triangle_count: int = 0
+var _exclusion_regions: Array[Node] = []
 
 
 const RECALL = preload("res://components/effects/recall/component_recall.gd")
@@ -231,13 +237,7 @@ func _standing_points(rng: RandomNumberGenerator) -> PackedVector2Array:
 		for column in range(columns):
 			var point := Vector2(float(column) - float(columns - 1) * 0.5, float(row) - float(rows - 1) * 0.5) * step
 			point = point.clamp(-available * 0.5, available * 0.5)
-			var excluded := false
-			for area in empty_areas:
-				# Expand by body radius so shoulders cannot project into an authored aisle.
-				if area.abs().grow(margin).has_point(point):
-					excluded = true
-					break
-			if not excluded:
+			if _point_is_clear(point,margin):
 				result.append(point)
 	# Local RNG only; changing a crowd never perturbs another component's seed.
 	for index in range(result.size() - 1, 0, -1):
@@ -246,6 +246,14 @@ func _standing_points(rng: RandomNumberGenerator) -> PackedVector2Array:
 		result[index] = result[other]
 		result[other] = swap
 	return result
+
+func _point_is_clear(point: Vector2,margin: float) -> bool:
+	for area in empty_areas:
+		if area.abs().grow(margin).has_point(point): return false
+	var world := to_global(Vector3(point.x,0,point.y))
+	for region in _exclusion_regions:
+		if is_instance_valid(region) and region.excludes_ground_point(world): return false
+	return true
 
 func _scatter_points(rng: RandomNumberGenerator, available: Vector2, margin: float) -> PackedVector2Array:
 	# Seeded blue-noise spacing avoids the first pass's jittered-but-visible grid.
@@ -258,13 +266,9 @@ func _scatter_points(rng: RandomNumberGenerator, available: Vector2, margin: flo
 		if points.size() >= target:
 			break
 		var point := Vector2(rng.randf_range(-0.5, 0.5), rng.randf_range(-0.5, 0.5)) * available
-		var valid := true
-		for area in empty_areas:
-			if area.abs().grow(margin).has_point(point):
-				valid = false
-				break
-		if not valid:
+		if not _point_is_clear(point,margin):
 			continue
+		var valid := true
 		var cell := Vector2i(floori(point.x / spacing), floori(point.y / spacing))
 		for row in range(-1, 2):
 			for column in range(-1, 2):
@@ -279,10 +283,36 @@ func _scatter_points(rng: RandomNumberGenerator, available: Vector2, margin: flo
 			cells[cell].append(point)
 	return points
 
+## Alternate attire reuses placement, variation, chunking, hitboxes and idle motion.
+func _body_mesh(variant: int) -> ArrayMesh:
+	return GEOMETRY.get_body(variant)
+
+func _head_mesh(variant: int) -> ArrayMesh:
+	return GEOMETRY.get_head(variant)
+
+func _pose_options() -> Array:
+	return POSE_MIXES[pose_mix]
+
+func _person_transform(point: Vector2, _index: int, rng: RandomNumberGenerator) -> Transform3D:
+	var height := person_scale * rng.randf_range(1.0 - height_variation, 1.0 + height_variation)
+	var width := person_scale * rng.randf_range(1.0 - build_variation, 1.0 + build_variation)
+	var basis := Basis(Vector3.UP, deg_to_rad(facing_degrees + rng.randf_range(-facing_variation, facing_variation))).scaled(Vector3(width, height, width))
+	return Transform3D(basis, Vector3(point.x, 0, point.y))
+
 func rebuild() -> void:
 	_queued = false
 	if not is_inside_tree():
 		return
+	for region in _exclusion_regions:
+		if is_instance_valid(region) and region.has_signal("ground_exclusion_changed") and region.ground_exclusion_changed.is_connected(_request_rebuild):
+			region.ground_exclusion_changed.disconnect(_request_rebuild)
+	_exclusion_regions.clear()
+	for path in ground_exclusions:
+		var region := get_node_or_null(path)
+		if region and region.has_method("excludes_ground_point"):
+			_exclusion_regions.append(region)
+			if region.has_signal("ground_exclusion_changed") and not region.ground_exclusion_changed.is_connected(_request_rebuild):
+				region.ground_exclusion_changed.connect(_request_rebuild)
 	if is_instance_valid(_generated):
 		remove_child(_generated)
 		_generated.free()
@@ -312,17 +342,16 @@ func rebuild() -> void:
 	var pose_bag: Array[int] = []
 	for index in range(generated_count):
 		var point := points[index]
-		var height := person_scale * rng.randf_range(1.0 - height_variation, 1.0 + height_variation)
-		var width := person_scale * rng.randf_range(1.0 - build_variation, 1.0 + build_variation)
-		var basis := Basis(Vector3.UP, deg_to_rad(facing_degrees + rng.randf_range(-facing_variation, facing_variation))).scaled(Vector3(width, height, width))
-		var pose := Transform3D(basis, Vector3(point.x, 0, point.y))
+		var pose := _person_transform(point, index, rng)
+		var size := pose.basis.get_scale()
+		var width := maxf(size.x, size.z)
 		_placements.append(pose)
 		# Independently shuffled bags use the complete vocabulary before repeating.
 		# Heads are not permanently married to an outfit or a resting pose.
 		var body := _draw_choice(body_bag, GEOMETRY.BODY_COUNT, rng)
 		var head := _draw_choice(head_bag, GEOMETRY.HEAD_COUNT, rng)
 		var shirt := _draw_choice(clothing_bag, 4, rng)
-		var pose_options: Array = POSE_MIXES[pose_mix]
+		var pose_options: Array = _pose_options()
 		var stance: int = pose_options[_draw_choice(pose_bag, pose_options.size(), rng)]
 		_pose_indices.append(stance)
 		# Avoid exact head/outfit twins standing directly beside one another.
@@ -354,11 +383,11 @@ func rebuild() -> void:
 				shadows[cell] = []
 			shadows[cell].append([Transform3D(Basis.IDENTITY.scaled(Vector3(width, 1, width)), Vector3(point.x, 0.014, point.y)), Color.WHITE])
 	for key: Vector3i in bodies:
-		var mesh: ArrayMesh = GEOMETRY.get_body(key.z)
+		var mesh: ArrayMesh = _body_mesh(key.z)
 		_add_batch("Bodies_%s_%s_%s" % [key.x, key.y, key.z], mesh, _material, bodies[key])
 		_triangle_count += mesh.surface_get_array_index_len(0) / 3 * bodies[key].size()
 	for key: Vector3i in heads:
-		var mesh: ArrayMesh = GEOMETRY.get_head(key.z)
+		var mesh: ArrayMesh = _head_mesh(key.z)
 		_add_batch("Heads_%s_%s_%s" % [key.x, key.y, key.z], mesh, _material, heads[key])
 		_triangle_count += mesh.surface_get_array_index_len(0) / 3 * heads[key].size()
 	if contact_shadows and not shadows.is_empty():

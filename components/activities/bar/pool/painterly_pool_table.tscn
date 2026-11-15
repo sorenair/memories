@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/activities/bar/pool/painterly_pool_table.gd" id="1"]
+[node name="PainterlyPoolTable" type="Node3D"]
+script = ExtResource("1")
+cabinet_color = Color(0.40, 0.29, 0.27, 1)
+accent_color = Color(0.61, 0.38, 0.29, 1)
+metal_color = Color(0.72, 0.61, 0.41, 1)

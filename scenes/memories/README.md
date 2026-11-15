@@ -72,3 +72,18 @@ The fourth authored example is [Christmas market](christmas_market/README.md), d
 The fifth is [New Year's Eve](new_years_eve/README.md), dated December 31, 2025: one concert zone, a large animated audience with a central walking aisle, a ramped stage, DJ, painted lights/screen, and electronic music.
 
 The sixth is [Como Conservatory](como_conservatory/README.md), dated January 14, 2026: three zones, a two-lane flower garden and reflecting rill, a densely planted jungle route, and three quiet bonsai displays.
+
+The seventh is [Postcard Cabin](postcard_cabin/README.md), dated February 10, 2026:
+two exterior zones connect a winding winter forest hike with frozen water to a
+cozy cabin clearing, Adirondack chairs and a fire pit. A single footprint-snow
+surface joins both places; camera framing stays close along the trail.
+
+The eighth is [Mifflin Block Party](mifflin/README.md), dated April 25, 2026: two
+zones connect a crowded spring street to a minimal bar with a playable pool table
+and electronic jukebox. Continuous asphalt and narrow winding gaps replace the
+former tiled road and empty central aisle.
+
+The ninth is [Vineyard](vineyard/README.md), dated August 1, 2026: two zones connect
+six grape-bush rows to a raised wooden deck and scenic summer field. The field's
+foliage recalls from a reachable lookout anchor, and guidance follows the real
+ramp onto the deck.

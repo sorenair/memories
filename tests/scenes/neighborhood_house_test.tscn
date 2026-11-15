@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://tests/scenes/component_test.tscn" id="stage"]
+[ext_resource type="PackedScene" path="res://components/buildings/neighborhood/painterly_neighborhood_house.tscn" id="house"]
+[node name="NeighborhoodHouseTest" instance=ExtResource("stage")]
+subject_scene = ExtResource("house")
+camera_size = 9.5
+camera_focus = Vector3(0, 2.2, 0.7)
+[node name="Explorer" parent="." index="6"]
+position = Vector3(0, 0.02, 6.5)

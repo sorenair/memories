@@ -8,7 +8,7 @@ Three activity props for memories, sharing a muted painted palette, broad pigmen
 | `punching_bag/painterly_punching_bag.tscn` | Vintage boxing cabinet, animated stitched leather speed bag, painted impact, and live strength counter. | 577 + 1,442 moving/display |
 | `mechanical_band/painterly_mechanical_band.tscn` | One complete rig: guitar and mechanical pick, kick and pedal beater, snare and striker, upright piano with mechanical fingers, gears, cables, and a four-button console. | 9,415 |
 
-`bar_corner/painterly_arcade_corner.tscn` provides an optional roofless room setting: painted plank floor, back/left walls, warm bulbs, a bar ledge, bottles, and stools. It adds 4,965 triangles and one opaque draw. Its front and right side stay open for the elevated camera. This optional room is retained in the library; First Meeting uses the wallless glade described below.
+`bar_corner/painterly_arcade_corner.tscn` provides an optional roofless room setting: painted plank floor, back/left walls, warm bulbs, a bar ledge, bottles, and stools. It adds 4,965 triangles and one opaque draw. Its front and right side stay open for the elevated camera. **Sign Title** changes the wall nameplate (default ARCADE); Mifflin's bar uses BAR. This optional room is retained in the library; First Meeting uses the wallless glade described below.
 
 ## Inspector
 

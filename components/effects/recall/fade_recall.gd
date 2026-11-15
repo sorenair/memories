@@ -28,7 +28,11 @@ func replay() -> void:
 	reset()
 	play()
 func _process(delta: float) -> void:
-	if auto_discover and not playing and progress == 0.0 and RECALL.explorer_near(patch, patch.footprint):
+	var near := false
+	if auto_discover and not playing and progress == 0.0:
+		var anchor: Node3D = patch.get_recall_anchor() if patch.has_method("get_recall_anchor") else null
+		near = RECALL.explorer_near(anchor,Vector2.ZERO) if is_instance_valid(anchor) else RECALL.explorer_near(patch,patch.footprint)
+	if near:
 		play()
 	if playing:
 		seek(progress + delta / duration)

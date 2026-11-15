@@ -16,6 +16,9 @@ const PALETTES = preload("res://components/foliage/shared/foliage_palettes.gd")
 const RECALL = preload("res://components/effects/recall/component_recall.gd")
 
 @export_group("Recall")
+@export var recall_anchor: Node3D
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
 ## Hide at runtime and recall this component independently on approach.
 @export var recall_enabled: bool = false:
 	set(value):

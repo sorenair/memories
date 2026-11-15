@@ -3,6 +3,10 @@ class_name PainterlyStage
 extends PainterlyConcertComponent
 ## Low open deck with a generous sloping approach. All dimensions are local meters.
 @export_group("Stage")
+@export_enum("Fabric Apron", "Timber Skirt") var edge_finish := 0:
+	set(value):
+		edge_finish = clampi(value,0,1)
+		_request_rebuild()
 @export var footprint := Vector2(6.8, 3.6):
 	set(value):
 		footprint = value.clamp(Vector2(3, 2), Vector2(18, 12))
@@ -30,4 +34,5 @@ func _build_geometry() -> Dictionary:
 	for key in ["footprint", "deck_height", "ramp_enabled", "ramp_length"]:
 		config[key] = get(key)
 	config.ramp_width = minf(ramp_width, footprint.x - 0.3)
+	config.timber_skirt = edge_finish==1
 	return GEOMETRY.new().stage(config)

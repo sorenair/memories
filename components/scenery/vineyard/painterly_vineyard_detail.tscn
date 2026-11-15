@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/vineyard/painterly_vineyard_detail.gd" id="detail"]
+[node name="VineyardDetail" type="Node3D"]
+script = ExtResource("detail")
