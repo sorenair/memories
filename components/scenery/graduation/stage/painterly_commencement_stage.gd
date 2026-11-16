@@ -9,6 +9,27 @@ const FABRIC = preload("res://components/scenery/graduation/shared/ceremony_fabr
 	set(value):
 		banners_enabled=value
 		_request_rebuild()
+## When disabled, both banners keep the stage's Accent / Trim palette.
+@export var individual_banner_colors := false:
+	set(value):
+		individual_banner_colors=value
+		_request_rebuild()
+@export var left_banner_color := Color("425963"):
+	set(value):
+		left_banner_color=value
+		_request_rebuild()
+@export var left_banner_trim := Color("cfb070"):
+	set(value):
+		left_banner_trim=value
+		_request_rebuild()
+@export var right_banner_color := Color("425963"):
+	set(value):
+		right_banner_color=value
+		_request_rebuild()
+@export var right_banner_trim := Color("cfb070"):
+	set(value):
+		right_banner_trim=value
+		_request_rebuild()
 @export_range(0.0,0.12,0.005) var banner_wind: float = 0.045:
 	set(value):
 		banner_wind=clampf(value,0,0.12)
@@ -19,6 +40,8 @@ var _fabric_material: ShaderMaterial
 func _ceremony_config() -> Dictionary:
 	var c := _config()
 	c.merge({"footprint":footprint,"deck_height":deck_height,"ramp_enabled":ramp_enabled,"ramp_width":minf(ramp_width,footprint.x-0.3),"banners_enabled":banners_enabled})
+	if individual_banner_colors:
+		c.merge({"left_banner_color":left_banner_color,"left_banner_trim":left_banner_trim,"right_banner_color":right_banner_color,"right_banner_trim":right_banner_trim})
 	return c
 
 func _build_geometry() -> Dictionary:

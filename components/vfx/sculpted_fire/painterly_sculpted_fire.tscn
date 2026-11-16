@@ -6,3 +6,9 @@
 script = ExtResource("1")
 animation_speed = 0.7
 edge_color = Color(0.87451, 0.278431, 0.12549, 1)
+smoke_amount = 0.75
+smoke_turbulence = 0.5
+spark_amount = 0.25
+spark_height = 2.0
+spark_size = 0.045
+spark_variation = 1.0

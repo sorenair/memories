@@ -83,7 +83,17 @@ zones connect a crowded spring street to a minimal bar with a playable pool tabl
 and electronic jukebox. Continuous asphalt and narrow winding gaps replace the
 former tiled road and empty central aisle.
 
-The ninth is [Vineyard](vineyard/README.md), dated August 1, 2026: two zones connect
+The ninth is [Graduation](graduation/README.md), dated May 14, 2026: three zones
+connect cherry-lined St. Thomas arches to the Minnesota portico and a ceremony
+using the existing commencement kit. Supported stairs, a descending curved path
+and the occupied chair aisle join all three fragments.
+
+The tenth is [Tokyo](tokyo/README.md), dated May 28, 2026: three zones connect
+a leafy Meiji Shrine approach, the planted Sensō-ji courtyard and Shibuya Crossing.
+Existing gates, halls, pagoda, towers and crowds are linked by supported walking
+routes, two veranda stair flights and a clear diagonal through the crossing.
+
+The eleventh is [Vineyard](vineyard/README.md), dated August 1, 2026: two zones connect
 six grape-bush rows to a raised wooden deck and scenic summer field. The field's
 foliage recalls from a reachable lookout anchor, and guidance follows the real
 ramp onto the deck.

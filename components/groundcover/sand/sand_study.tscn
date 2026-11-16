@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="2"]
+[node name="SandStudy" type="Node3D"]
+[node name="WindDunes" parent="." instance=ExtResource("1")]
+[node name="RollingHills" parent="." instance=ExtResource("1")]
+position = Vector3(14.5, 0, -0.8)
+patch_size = Vector2(10, 9)
+terrain_form = 1
+patch_seed = 186
+dune_height = 1.25
+dune_spacing = 7.5
+dune_direction = -30.0
+edge_feather = 1.8
+sand_color = Color(0.88, 0.72, 0.52, 1)
+shadow_color = Color(0.65, 0.48, 0.39, 1)
+[node name="EdgeStone" parent="." instance=ExtResource("2")]
+position = Vector3(-6.5, 0.025, 2.5)
+dimensions = Vector3(1.1, 0.65, 0.85)
+palette_preset = 2
+recall_enabled = false
+[node name="EdgeStoneSmall" parent="." instance=ExtResource("2")]
+position = Vector3(-6.8, 0.025, 3.3)
+dimensions = Vector3(0.55, 0.3, 0.48)
+boulder_seed = 197
+palette_preset = 2
+recall_enabled = false

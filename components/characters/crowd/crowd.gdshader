@@ -24,6 +24,7 @@ uniform float motion_speed : hint_range(0.0, 2.0) = 0.75;
 uniform float preview_time = -1.0;
 // Optional academic geometry uses reserved material tags; ordinary crowds are unchanged.
 uniform vec4 gown_color : source_color = vec4(0.24, 0.32, 0.38, 1.0);
+uniform vec4 cap_color : source_color = vec4(0.24, 0.32, 0.38, 1.0);
 uniform vec4 stole_color : source_color = vec4(0.80, 0.65, 0.36, 1.0);
 uniform vec4 tassel_color : source_color = vec4(0.91, 0.80, 0.53, 1.0);
 uniform bool seated_posture = false;
@@ -122,7 +123,7 @@ void vertex() {
 	if (UV2.x > 4.5) { pigment = mix(second, atmosphere_color.rgb, 0.12); }
 	if (UV2.x > 5.5) { pigment = gown_color.rgb; }
 	if (UV2.x > 6.5) { pigment = stole_color.rgb; }
-	if (UV2.x > 7.5) { pigment = gown_color.rgb; }
+	if (UV2.x > 7.5) { pigment = cap_color.rgb; }
 	if (UV2.x > 8.5) { pigment = tassel_color.rgb; }
 	pigment *= mix(0.89, 1.08, fract(INSTANCE_CUSTOM.r * 7.37));
 	smooth_normal = normalize(MODEL_NORMAL_MATRIX * normal);

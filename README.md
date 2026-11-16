@@ -6,7 +6,7 @@ Designing a new memory? Start with the [memory design guide](docs/MEMORY_DESIGN_
 
 ## Play
 
-Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, **New Year's Eve — December 31, 2025**, **Como Conservatory — January 14, 2026**, **Postcard Cabin — February 10, 2026**, **Mifflin Block Party — April 25, 2026**, **Vineyard — August 1, 2026**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
+Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, **New Year's Eve — December 31, 2025**, **Como Conservatory — January 14, 2026**, **Postcard Cabin — February 10, 2026**, **Mifflin Block Party — April 25, 2026**, **Graduation — May 14, 2026**, **Tokyo — May 28, 2026**, **Vineyard — August 1, 2026**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
 
 - **WASD / arrow keys:** walk, relative to the screen.
 - **Controller left stick:** analog movement.
@@ -86,9 +86,27 @@ table, electronic jukebox and a freestanding counter with stools in the void. Bo
 ambient bed. See [the Mifflin guide](scenes/memories/mifflin/README.md),
 or run `scenes/world/mifflin_world.tscn`.
 
+## Graduation
+
+The ninth authored memory is **Graduation — May 14, 2026**: cherry-lined St. Thomas
+stone arches lead through spring paths to the University of Minnesota portico and
+an open commencement ceremony. Three zones reuse the campus landmarks and graduation
+kit, with walkable stairs, a descending curved path, seated graduates, a stage ramp,
+close cameras, fragments and ambient audio. See [the graduation guide](scenes/memories/graduation/README.md),
+or run `scenes/world/graduation_world.tscn`.
+
+## Tokyo
+
+The tenth authored memory is **Tokyo — May 28, 2026**: a dense green forest approach
+to Meiji Shrine leads to Sensō-ji's lantern gate, planted courtyard, main hall and
+pagoda, then Shibuya Crossing with crowds and animated city screens. Three zones
+reuse the Tokyo kit, with supported paths and veranda stairs, fragments, local
+ambient beds and close cameras that widen at landmarks. See [the Tokyo guide](scenes/memories/tokyo/README.md),
+or run `scenes/world/tokyo_world.tscn`.
+
 ## Vineyard
 
-The ninth authored memory is **Vineyard — August 1, 2026**: a close walk between
+The eleventh authored memory is **Vineyard — August 1, 2026**: a close walk between
 six grape rows leads onto a wooden deck overlooking a broad summer meadow. The
 scene reuses bushes, grass, flowers, trees, chairs and the stage's ramp/deck, with
 small trellis and railing details. Both zones have a fragment and breeze ambience;
@@ -124,6 +142,10 @@ Instance `components/foliage/painterly_bush.tscn` to add a low, spreading shrub.
 Use **Foliage Colors → Palette Preset** on any grass, tree, or bush instance for seasonal and dreamlike color schemes. See [the palette guide](components/foliage/PALETTES.md).
 
 ## Scenery components
+
+The [lighthouse](components/scenery/lighthouse/README.md) adds a smooth white tower, arched windows, a closed entry with walkable steps, a lantern gallery and a copper-colored roof. Shape, colors and the restrained rotating beacon are configurable; recall and groundcover exclusions use the shared framework. Run `tests/scenes/lighthouse_test.tscn` with F6 to inspect it beside the explorer.
+
+The [sailing kit](components/scenery/sailing/README.md) adds a walkable wooden dock with straight/T/L layouts and a Pearson Ensign sailboat with a recessed teak cockpit, small forward cabin, two gently animated sails and no motor. Dimensions, colors, dock access and boat motion are editable. Run `tests/scenes/sailing_test.tscn` with F6 for a lakefront component study beside the explorer.
 
 The [Tokyo scenery kit](components/scenery/tokyo/README.md) adds a Meiji wooden torii and worship hall, Sensō-ji main hall, Hōzōmon gate and five-story pagoda, plus a modular city tower and scramble crossing. Curved roofs, matte pigment, configurable colors and GPU-driven billboards share the existing component framework. Run `tests/scenes/tokyo_temples_test.tscn` or `tests/scenes/tokyo_city_test.tscn` with F6 to inspect them beside the explorer.
 
@@ -212,6 +234,8 @@ Instance `components/vfx/fire/painterly_fire.tscn` for curling painted flames, a
 ## Winter groundcover
 
 Instance `components/groundcover/snow/painterly_snow_patch.tscn` for soft sculpted snow and temporary player footsteps. Footprint Linger and Fade Duration control how long impressions remain. Add it to grass Ground Exclusions to replace grass locally. The winter zone uses snow groundcover with temporary footsteps. See [the ground-snow guide](components/groundcover/snow/README.md).
+
+The [sand groundcover](components/groundcover/sand/README.md) reuses snow's footprint and outline systems to make real, walkable dunes and rolling hills. Height, spacing, direction, seed, colors, wind-ripple detail and footprint timing are editable; terrain collision matches the surface and pond exclusions carve physical openings. Run `tests/scenes/sand_test.tscn` with F6 for two configurations beside the explorer.
 
 ## Memory fragments
 

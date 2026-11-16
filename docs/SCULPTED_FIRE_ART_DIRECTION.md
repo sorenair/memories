@@ -1,6 +1,6 @@
 # Sculpted fire: art direction
 
-Updated 2026-11-14 after review of the spherical-body attempt. Scope:
+Updated 2026-11-15 after reworking flame motion and spark shapes. Scope:
 `components/vfx/sculpted_fire/`; the original fire remains a separate component.
 
 ## Target
@@ -18,23 +18,58 @@ Smoke rolls more slowly, and embers remain readable through its density.
 
 ## Current revision
 
-- Lowered the persistent body and enlarged the curling strokes. A bending,
-  tapered spine and three overlapping tongues now form the upper mass. Their
-  curls grow, turn over, thin and break away on staggered burst clocks.
-- **Body Fullness** now fills the lower portion, with a default of **0.72**.
-  Its full range stays below the upper tongues. It does not grow a tall orb.
-- Simplified the palette into elongated, rising heat shapes with a broad gold
-  heart and a smaller cream-hot center. Removed the strong round color patches.
+- Replaced literal ellipse-shaped tongues with a moving 3D curl/density field.
+  The old structure made the same handles repeat even when its timing varied.
+  A rising field now bends and pinches one tapered upper volume, creating
+  asymmetric tongues, fleeting gaps and detached pieces without prescribed loops.
+- **Body Fullness** fills the low root, with a default of **0.72**. The upper
+  envelope narrows in actual height so detached pieces do not become large balls.
+  The plume narrows into the rounded root at ground level, avoiding a flat,
+  cylindrical lower rim.
+- Red/orange edges surround nested gold and cream heat shapes derived from
+  interior thickness. This replaces the fixed highlight and normal-lit spots.
+- Three small field-driven flamelets provide brief accents, subordinate to the
+  main silhouette. All fires share one original offline-baked 64³ Texture3D;
+  animation and sampling run on the GPU.
 - Corrected an underlying projection error: orthographic cameras now trace
   parallel rays. Godot's `VIEW` is a fragment-to-camera vector for both camera
   types, so it cannot be used directly as an orthographic tracing direction.
   See the [spatial shader built-ins](https://docs.godotengine.org/en/4.4/tutorials/shaders/shader_reference/spatial_shader.html#fragment-built-ins).
 - Added an orthographic camera-dolly regression check. Surface stepping now
-  accounts for tongue taper and wind, with a bounded 128-step maximum.
+  uses bounded adaptive steps with a 128-step maximum and surface refinement.
 
-The smoke retains faint connecting volume and eroding, rolling brush billows.
-Three detached flame tips share the main tongues' profiles. Embers inherit the
-plume's drift and fade before shrinking into pixel dust.
+The field approach follows the upward distortion principle in the
+[Cyanilux breakdown](https://www.cyanilux.com/tutorials/fire-shader-breakdown/),
+extended here to an original 3D volume rather than a flat fire card. It trades
+perfectly art-directed loops for more varied flow; review the result over several
+cycles rather than approving a single pose.
+
+## Supporting-layer critique and revision — November 15
+
+**Fire:** regular handles were the main remaining mismatch, not just a timing
+issue. The current revision changes their construction as described above. Judge
+whether the upper flow stretches and folds convincingly while the base remains
+full. Watch for excessive detached blobs or tips that appear to hit a flat ceiling.
+
+**Sparks:** the previous mixture of faceted chips, pinpoints and long needles
+looked like confetti; tightly uniform rounded teardrops then looked like spheres.
+The current revision uses one pointed stroke language with thin cross sections,
+hot gold heads, orange/red trailing ends, and varied length, width and bend.
+**Spark Variation** defaults to **0.65**. Preserve readable short flecks alongside
+longer streaks; avoid both glowing beads and a uniform rain of needles. Default
+Burstiness remains **0.35**.
+
+**Smoke:** the previous soft, mottled dabs read as blurred stains; simply
+sharpening them exposed overlapping discs. The guide's connected plume and
+gameplay readability require larger, deliberate forms. Smoke now uses seven
+smoothly fused 3D billows, broad toon shading and a readable scalloped outline.
+Billows expand and roll together, then fade; faint upper wisps finish the edge.
+The base develops above the hottest body so the fire stays readable.
+**Smoke Definition** (default **0.8**) adjusts edge clarity and shading bands.
+
+Review these changes in motion on both backgrounds. The plume should look like
+one rolling cloud, with clear ember silhouettes through it. Avoid repeated solid
+balls, ghostly overlaps, noisy erosion and shading that makes the smoke rocky.
 
 ## Review the next pass against these criteria
 
@@ -71,4 +106,5 @@ Passing technical checks does not establish artistic approval.
 Review the [current close-up](previews/sculpted-fire-curl-detail.gif),
 [composite](previews/sculpted-fire-motion.gif),
 [isolated smoke](previews/sculpted-fire-smoke-motion.gif) and
-[previous/reworked comparison](previews/sculpted-fire-comparison.gif).
+[flame comparison](previews/sculpted-fire-flow-comparison.gif) and
+[revised sparks](previews/sculpted-fire-flow-sparks.gif).

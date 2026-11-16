@@ -1,0 +1,148 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/city/painterly_scramble_crossing.tscn" id="crossing"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/city/painterly_city_tower.tscn" id="tower"]
+[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+[ext_resource type="AudioStream" path="res://audio/samples/mifflin_street.wav" id="air"]
+
+[sub_resource type="Curve3D" id="CrossingRouteCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,1.0,0,-1.2,0,0,11.5,-1,0,1.2,0.5,0,-1.0,3.5,0,7.5,0,0,1.0,-1,0,-1,4.2,0,4.2,1.2,0,1.2,-1.2,0,-1.2,0,0,0,1.0,0,1.0,-0.35,0,-0.7,-4.4,0,-4.4,0,0,0.5,-0.6,0,-0.3,-4.7,0,-6.5,0.7,0,0.1,0,0,0,-6.6,0,-7.0), "tilts": PackedFloat32Array(0,0,0,0,0,0,0)}
+point_count = 7
+
+[node name="ShibuyaZone" instance=ExtResource("zone")]
+zone_id = &"shibuya_crossing"
+display_name = "Shibuya Crossing"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -27.0
+ambience_size = Vector2(29,29)
+ambience_blend_distance = 4.0
+
+[node name="Crossing" parent="Scenery" instance=ExtResource("crossing")]
+recall_enabled = true
+
+[node name="CityRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,10)
+
+[node name="CrossingRoute" parent="Scenery" instance=ExtResource("path")]
+visible = false
+curve = SubResource("CrossingRouteCurve")
+path_width = 1.9
+paving_color = Color(0.77,0.75,0.67,1)
+end_fade = Vector2(0,0)
+slab_length = 2.0
+edge_softness = 0.28
+collision_enabled = false
+
+[node name="BackLeftTower" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(-7.5,0,-11.5)
+rotation_degrees = Vector3(0,0,0)
+profile = 1
+floors = 13
+footprint = Vector2(4.8,4.2)
+prop_seed = 155
+accent_color = Color(0.67,0.5,0.74,1)
+sign_text = "MUSIC"
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="BackRightTower" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(6.5,0,-11.2)
+rotation_degrees = Vector3(0,0,0)
+profile = 2
+floors = 11
+footprint = Vector2(5.8,4.4)
+prop_seed = 394
+accent_color = Color(0.53,0.69,0.72,1)
+sign_text = "CITY"
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="SideLeftTower" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(-11.2,0,1.0)
+rotation_degrees = Vector3(0,90,0)
+profile = 0
+floors = 9
+footprint = Vector2(4.8,4.2)
+prop_seed = 128
+accent_color = Color(0.83,0.6,0.48,1)
+sign_text = "COFFEE"
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="SideRightTower" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(11.5,0,1.0)
+rotation_degrees = Vector3(0,-90,0)
+profile = 1
+floors = 7
+footprint = Vector2(4.8,4.2)
+prop_seed = 831
+accent_color = Color(0.72,0.47,0.64,1)
+sign_text = "TOKYO"
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="LowCornerTower" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(-10.0,0,9)
+rotation_degrees = Vector3(0,65,0)
+profile = 2
+floors = 4
+footprint = Vector2(3.5,3.6)
+prop_seed = 489
+accent_color = Color(0.65,0.67,0.5,1)
+sign_text = "CAFE"
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="CrossingCrowd" parent="Scenery" instance=ExtResource("crowd")]
+count = 96
+crowd_seed = 528262
+person_scale = 1.15
+footprint = Vector2(15,15)
+spacing = 1.05
+facing_variation = 85.0
+palette = 0
+pose_mix = 2
+motion_strength = 0.35
+recall_enabled = true
+ground_exclusions = Array[NodePath]([NodePath("../CrossingRoute")])
+
+[node name="WaitingCrowd" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(1,0,9.8)
+count = 12
+crowd_seed = 528263
+person_scale = 1.1
+footprint = Vector2(8,2.4)
+spacing = 1.0
+facing_degrees = 180.0
+facing_variation = 35.0
+palette = 0
+pose_mix = 1
+recall_enabled = true
+ground_exclusions = Array[NodePath]([NodePath("../CrossingRoute")])
+
+[node name="PinkSignWash" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(-5.8,0.025,-5)
+footprint = Vector2(5,3.5)
+light_color = Color(0.91,0.59,0.76,1)
+intensity = 0.18
+surface_offset = 0.012
+motion = 0
+recall_enabled = true
+
+[node name="BlueSignWash" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(5.9,0.025,-5.5)
+footprint = Vector2(5,3.5)
+light_color = Color(0.52,0.83,0.87,1)
+intensity = 0.18
+surface_offset = 0.012
+motion = 0
+recall_enabled = true
+
+[node name="Fragment" parent="."]
+position = Vector3(-6.6,0.07,-7)
+note_title = "Across the city"
+notes = PackedStringArray("Placeholder: add your memory of crossing Shibuya together, surrounded by people and the city screens.")

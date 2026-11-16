@@ -22,6 +22,8 @@ const MEMORIES: Array[Dictionary] = [
 	{"title": "Como Conservatory", "date": "JAN 14, 2026", "short": "JAN 14", "scene": "res://scenes/world/como_conservatory_world.tscn"},
 	{"title": "Postcard Cabin", "date": "FEB 10, 2026", "short": "FEB 10", "scene": "res://scenes/world/postcard_cabin_world.tscn"},
 	{"title": "Mifflin Block Party", "date": "APR 25, 2026", "short": "APR 25", "scene": "res://scenes/world/mifflin_world.tscn"},
+	{"title": "Graduation", "date": "MAY 14, 2026", "short": "MAY 14", "scene": "res://scenes/world/graduation_world.tscn"},
+	{"title": "Tokyo", "date": "MAY 28, 2026", "short": "MAY 28", "scene": "res://scenes/world/tokyo_world.tscn"},
 	{"title": "Vineyard", "date": "AUG 1, 2026", "short": "AUG 1", "scene": "res://scenes/world/vineyard_world.tscn"},
 	{"title": "Seasonal Demo", "date": "DEMO", "short": "DEMO", "scene": "res://scenes/world/memory_world.tscn"},
 ]

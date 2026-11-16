@@ -169,8 +169,8 @@ func run() -> void:
 	check(changes(moving_a, moving_b) > 900, "Fire, smoke and sparks must visibly animate")
 	# Inspect smoke on its own: an animated flame must not disguise a missing
 	# plume or a density control that does nothing.
-	camera.size = 3.4
-	camera.look_at(Vector3(0, 1.75, 0))
+	camera.size = 3.8
+	camera.look_at(Vector3(0, 2.1, 0))
 	fire.set_preview_time(1.3)
 	fire.smoke_amount = 0.25
 	for id in ["Flames", "Flamelets", "Sparks", "GroundGlow"]: fire.get_node(id).hide()
@@ -189,6 +189,59 @@ func run() -> void:
 	for id in ["Flames", "Flamelets", "Sparks", "GroundGlow"]: fire.get_node(id).hide()
 	var smoke_b := await snapshot()
 	check(changes(smoke_a, smoke_b) > 500, "Smoke must visibly billow and disperse independently")
+	fire.set_preview_time(1.3)
+	fire.smoke_definition = 0.0
+	for id in ["Flames", "Flamelets", "Sparks", "GroundGlow"]: fire.get_node(id).hide()
+	var soft_smoke := await snapshot()
+	fire.smoke_definition = 1.0
+	for id in ["Flames", "Flamelets", "Sparks", "GroundGlow"]: fire.get_node(id).hide()
+	var toon_smoke := await snapshot()
+	check(changes(soft_smoke, toon_smoke) > 500, "Smoke Definition must visibly change the edge and toon shading")
+	fire.smoke_definition = 0.8
+	for id in ["Flames", "Flamelets", "Sparks", "GroundGlow"]: fire.get_node(id).hide()
+	# A translucent ray-marched cloud must test its actual surface depth.
+	# Proxy-box depth would wrongly hide it behind nearby background scenery.
+	var smoke_blocker := MeshInstance3D.new()
+	smoke_blocker.mesh = QuadMesh.new()
+	smoke_blocker.mesh.size = Vector2(3.5, 5.0)
+	smoke_blocker.material_override = blocker_paint
+	scene.add_child(smoke_blocker)
+	var smoke_focus := Vector3(0, 2.1, 0)
+	var smoke_view := (camera.position-smoke_focus).normalized()
+	smoke_blocker.position = smoke_focus+smoke_view*1.7
+	smoke_blocker.look_at(camera.position, Vector3.UP, true)
+	var smoke_covered := await snapshot()
+	fire.smoke_amount = 0.0
+	for id in ["Flames", "Flamelets", "Sparks", "GroundGlow"]: fire.get_node(id).hide()
+	var foreground_only := await snapshot()
+	check(changes(smoke_covered, foreground_only)<20, "Foreground scenery must occlude the actual smoke volume")
+	smoke_blocker.position = smoke_focus-smoke_view*1.7
+	var background_only := await snapshot()
+	fire.smoke_amount = 0.65
+	for id in ["Flames", "Flamelets", "Sparks", "GroundGlow"]: fire.get_node(id).hide()
+	var smoke_in_front := await snapshot()
+	check(changes(smoke_in_front, background_only)>500, "Smoke must remain visible in front of background scenery")
+	smoke_blocker.free()
+	# Check sparks independently, so smoke and flame motion cannot conceal an
+	# invisible spark material or a broken density control.
+	fire.spark_amount = 0.65
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	var sparks_a := await snapshot("res://docs/previews/sculpted-fire-sparks.png")
+	fire.spark_amount = 0.0
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	var no_sparks := await snapshot()
+	check(changes(sparks_a,no_sparks)>100, "The cartoon embers must be independently visible")
+	fire.spark_amount = 0.65
+	fire.set_preview_time(1.7)
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	check(changes(sparks_a,await snapshot())>100, "The cartoon embers must visibly rise independently")
+	fire.spark_variation = 0.0
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	var even_sparks := await snapshot()
+	fire.spark_variation = 1.0
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	check(changes(even_sparks,await snapshot())>100, "Spark Variation must visibly change fleck proportions")
+	fire.spark_variation = 0.65
 	fire.set_preview_time(1.3)
 	camera.size = 5.6
 	camera.look_at(Vector3(0, 1.95, 0))
@@ -251,12 +304,19 @@ func run() -> void:
 				await snapshot("/tmp/sculpted-fire-detail-%03d.png" % index)
 		if "--smoke" in OS.get_cmdline_user_args():
 			fire.smoke_amount = 0.65
-			camera.size = 3.4
-			camera.look_at(Vector3(0, 1.75, 0))
+			camera.size = 3.8
+			camera.look_at(Vector3(0, 2.1, 0))
 			for index in 96:
 				fire.set_preview_time(1.25 + float(index) / 24.0)
 				for id in ["Flames", "Flamelets", "Sparks", "GroundGlow"]: fire.get_node(id).hide()
 				await snapshot("/tmp/sculpted-fire-smoke-%03d.png" % index)
+		if "--sparks" in OS.get_cmdline_user_args():
+			camera.size = 3.6
+			camera.look_at(Vector3(0, 1.95, 0))
+			for index in 96:
+				fire.set_preview_time(1.25+float(index)/24.0)
+				for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+				await snapshot("/tmp/sculpted-fire-sparks-%03d.png" % index)
 	scene.free()
 	var stage: Node3D = load("res://tests/scenes/sculpted_fire_test.tscn").instantiate()
 	root.add_child(stage)

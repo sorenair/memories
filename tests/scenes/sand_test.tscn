@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://tests/scenes/component_test.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/groundcover/sand/sand_study.tscn" id="2"]
+[node name="SandTest" instance=ExtResource("1")]
+subject_scene = ExtResource("2")
+floor_color = Color(0.94, 0.935, 0.89, 1)
+camera_size = 23.0
+camera_focus = Vector3(6, 0.6, 0)
+[node name="Explorer" parent="." index="6"]
+position = Vector3(-2, 0.03, 6.8)
+[node name="Camera3D" parent="." index="7"]
+position = Vector3(25, 18, 25)
+[node name="Hint" parent="Controls" index="2"]
+text = "WASD / arrows / joystick · Climb the dunes and leave footprints · R reload"

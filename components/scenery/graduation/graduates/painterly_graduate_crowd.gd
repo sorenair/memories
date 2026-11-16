@@ -3,10 +3,19 @@ class_name PainterlyGraduateCrowd
 extends PainterlyCrowd
 ## Existing crowd, with academic regalia and optional exact chair-row occupancy.
 const ACADEMIC = preload("res://components/scenery/graduation/shared/academic_geometry.gd")
+enum SeatingSide { ALL, LEFT, RIGHT }
 @export_group("Academic Regalia")
 @export var gown_color := Color("4c626e"):
 	set(value):
 		gown_color=value
+		_apply_paint()
+@export var cap_matches_gown := true:
+	set(value):
+		cap_matches_gown=value
+		_apply_paint()
+@export var cap_color := Color("ede9df"):
+	set(value):
+		cap_color=value
 		_apply_paint()
 @export var stole_color := Color("d0af70"):
 	set(value):
@@ -24,6 +33,11 @@ const ACADEMIC = preload("res://components/scenery/graduation/shared/academic_ge
 			seating.ground_exclusion_changed.disconnect(_request_rebuild)
 		seating=value
 		_bind_seating()
+		_request_rebuild()
+## Left/right use the chair block's local X, including when it is moved or rotated.
+@export var seating_side: SeatingSide = SeatingSide.ALL:
+	set(value):
+		seating_side=value
 		_request_rebuild()
 var _seat_poses: Array[Transform3D]=[]
 
@@ -48,6 +62,7 @@ func _apply_paint() -> void:
 	super._apply_paint()
 	if _material:
 		_material.set_shader_parameter("gown_color",gown_color)
+		_material.set_shader_parameter("cap_color",gown_color if cap_matches_gown else cap_color)
 		_material.set_shader_parameter("stole_color",stole_color)
 		_material.set_shader_parameter("tassel_color",tassel_color)
 		_material.set_shader_parameter("seated_posture",is_instance_valid(seating) and seating.has_method("get_seat_transforms"))
@@ -74,6 +89,8 @@ func _standing_points(rng: RandomNumberGenerator) -> PackedVector2Array:
 	var points := PackedVector2Array()
 	var from_seating := global_transform.affine_inverse()*seating.global_transform
 	for seat: Transform3D in seating.get_seat_transforms():
+		if seating_side==SeatingSide.LEFT and seat.origin.x>=0: continue
+		if seating_side==SeatingSide.RIGHT and seat.origin.x<=0: continue
 		var local := from_seating*seat
 		_seat_poses.append(local)
 		points.append(Vector2(local.origin.x,local.origin.z))

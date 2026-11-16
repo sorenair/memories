@@ -1,0 +1,276 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flowers"]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/landmarks/painterly_campus_arches.tscn" id="arches"]
+[ext_resource type="PackedScene" path="res://components/foliage/presets/cherry_blossom_tree.tscn" id="cherry"]
+[ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="air"]
+
+[sub_resource type="Curve3D" id="CampusRoute"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -2, -7.71, 0, 15, 0, 0, 2, 0, 0, -1, -7.71, 0, 8, 0, 0, 1, 0, 0, -1.5, -7.71, 0, 5, -1.8, 0, 1.2, 1.8, 0, -1.2, -4, 0, 1, -1.8, 0, 1.2, 0, 0, 0, 1, 0, -1.6), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+[sub_resource type="Curve3D" id="OtherPassage"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -1.1, -4.29, 0, 12, 0, 0, 1.2, 0, 0, -1.2, -4.29, 0, 7, 1.2, 0, 0, 0, 0, 0, -7.71, 0, 5), "tilts": PackedFloat32Array(0,0,0)}
+point_count = 3
+
+[node name="ArchesZone" instance=ExtResource("zone")]
+zone_id = &"st_thomas_arches"
+display_name = "St. Thomas arches"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -28.0
+ambience_size = Vector2(19,24)
+ambience_blend_distance = 4.0
+
+[node name="StoneArches" parent="Scenery" instance=ExtResource("arches")]
+position = Vector3(-6,0,8)
+recall_enabled = true
+
+[node name="CampusWalk" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("CampusRoute")
+path_width = 2.4
+paving_color = Color(0.79,0.77,0.70,1)
+end_fade = Vector2(1.1,4.0)
+slab_length = 2.0
+edge_softness = 0.28
+
+[node name="OtherPassage" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("OtherPassage")
+path_width = 2.0
+paving_color = Color(0.79,0.77,0.70,1)
+end_fade = Vector2(1.0,0.0)
+
+[node name="Cherry1" parent="Scenery" instance=ExtResource("cherry")]
+position = Vector3(-11.5, 0, 7.2)
+tree_seed = 237
+tree_height = 4.1
+crown_width = 4.3
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Cherry2" parent="Scenery" instance=ExtResource("cherry")]
+position = Vector3(-0.4, 0, 6.5)
+tree_seed = 346
+tree_height = 3.9
+crown_width = 4.1
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringGrass1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-11.1, 0, 10.8)
+patch_size = Vector2(4.8, 7.5)
+patch_seed = 51426
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../CampusWalk"),NodePath("../OtherPassage"),NodePath("../StoneArches")])
+
+[node name="SpringGrass2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-1.5, 0, 9.5)
+patch_size = Vector2(4.3, 7.0)
+patch_seed = 51427
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../CampusWalk"),NodePath("../OtherPassage"),NodePath("../StoneArches")])
+
+[node name="SpringGrass3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-8.9, 0, 3.5)
+patch_size = Vector2(4.5, 4.0)
+patch_seed = 51428
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../CampusWalk"),NodePath("../OtherPassage"),NodePath("../StoneArches")])
+
+[node name="SpringGrass4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-0.7, 0, -0.3)
+patch_size = Vector2(6.0, 3.6)
+patch_seed = 51429
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../CampusWalk"),NodePath("../OtherPassage"),NodePath("../StoneArches")])
+
+[node name="LilacFlowers1" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-11.8, 0, 9)
+bush_seed = 51440
+footprint = Vector2(1.5, 1.15)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 28
+flower_count = 42
+flower_size = 0.075
+flower_color = Color(0.67,0.50,0.71,1)
+flower_highlight = Color(0.97,0.89,0.89,1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LilacFlowers2" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-10.7, 0, 5.4)
+bush_seed = 51441
+footprint = Vector2(1.5, 1.15)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 28
+flower_count = 42
+flower_size = 0.075
+flower_color = Color(0.67,0.50,0.71,1)
+flower_highlight = Color(0.97,0.89,0.89,1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LilacFlowers3" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-0.1, 0, 8.8)
+bush_seed = 51442
+footprint = Vector2(1.5, 1.15)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 28
+flower_count = 42
+flower_size = 0.075
+flower_color = Color(0.67,0.50,0.71,1)
+flower_highlight = Color(0.97,0.89,0.89,1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LilacFlowers4" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-1.5, 0, 4.8)
+bush_seed = 51443
+footprint = Vector2(1.5, 1.15)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 28
+flower_count = 42
+flower_size = 0.075
+flower_color = Color(0.67,0.50,0.71,1)
+flower_highlight = Color(0.97,0.89,0.89,1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LilacFlowers5" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-10.0, 0, 3.4)
+bush_seed = 51444
+footprint = Vector2(1.5, 1.15)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 28
+flower_count = 42
+flower_size = 0.075
+flower_color = Color(0.67,0.50,0.71,1)
+flower_highlight = Color(0.97,0.89,0.89,1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LilacFlowers6" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-1.0, 0, 0.9)
+bush_seed = 51445
+footprint = Vector2(1.5, 1.15)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 28
+flower_count = 42
+flower_size = 0.075
+flower_color = Color(0.67,0.50,0.71,1)
+flower_highlight = Color(0.97,0.89,0.89,1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Fragment" parent="."]
+position = Vector3(-7.71,0.04,5)
+note_title = "Under the arches"
+notes = PackedStringArray("Placeholder: add your memory of graduation day at the St. Thomas stone arches, beneath the cherry blossoms.")
+
+[node name="ArrivalGrassLeft" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-9.6, 0, 14.4)
+patch_size = Vector2(2.5, 2.9)
+patch_seed = 51461
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../CampusWalk"),NodePath("../OtherPassage"),NodePath("../StoneArches")])
+
+[node name="ArrivalGrassRight" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.35, 0, 14.7)
+patch_size = Vector2(2, 2.8)
+patch_seed = 51462
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../CampusWalk"),NodePath("../OtherPassage"),NodePath("../StoneArches")])
+
+[node name="ArrivalFlowersLeft" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-9.8, 0, 14.8)
+bush_seed = 51463
+footprint = Vector2(1.15, 1.0)
+bush_height = 0.43
+mass_count = 3
+sprays_per_mass = 28
+flower_count = 42
+flower_size = 0.075
+flower_color = Color(0.67,0.50,0.71,1)
+flower_highlight = Color(0.97,0.89,0.89,1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ArrivalFlowersRight" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-5.25, 0, 14.9)
+bush_seed = 51464
+footprint = Vector2(1.1, 1.0)
+bush_height = 0.4
+mass_count = 3
+sprays_per_mass = 28
+flower_count = 42
+flower_size = 0.075
+flower_color = Color(0.67,0.50,0.71,1)
+flower_highlight = Color(0.97,0.89,0.89,1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ArrivalCherryLeft" parent="Scenery" instance=ExtResource("cherry")]
+position = Vector3(-11.3,0,13.2)
+tree_seed = 411
+tree_height = 3.5
+crown_width = 3.7
+falling_leaf_count = 14
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ArrivalCherryRight" parent="Scenery" instance=ExtResource("cherry")]
+position = Vector3(-2.6,0,12.0)
+tree_seed = 559
+tree_height = 3.65
+crown_width = 3.7
+falling_leaf_count = 14
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ArrivalCherryNear" parent="Scenery" instance=ExtResource("cherry")]
+position = Vector3(-10.2,0,16.1)
+tree_seed = 691
+tree_height = 3.2
+crown_width = 3.45
+falling_leaf_count = 14
+recall_enabled = true
+react_to_explorers = true

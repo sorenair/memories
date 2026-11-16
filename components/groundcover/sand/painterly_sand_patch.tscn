@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/groundcover/sand/painterly_sand_patch.gd" id="1"]
+[node name="PainterlySandPatch" type="Node3D"]
+script = ExtResource("1")
+patch_size = Vector2(16, 12)
+mesh_detail = 80
+footprint_quality = 2
+footprint_linger = 16.0
+footprint_fade_duration = 6.0
+footprint_depth = 0.025

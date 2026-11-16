@@ -4,6 +4,7 @@ extends Node3D
 ## Fused 3D fire, closed lifted wisps, rolling smoke and sparks.
 ## Generated geometry is internal; animation runs in the materials.
 const FLAME = preload("res://components/vfx/sculpted_fire/sculpted_flame.gdshader")
+const FLOW = preload("res://components/vfx/sculpted_fire/flame_flow.res")
 const FLAMELET = preload("res://components/vfx/sculpted_fire/flamelet.gdshader")
 const SMOKE = preload("res://components/vfx/sculpted_fire/rolling_smoke.gdshader")
 const SMOKE_FRAY = preload("res://components/vfx/sculpted_fire/smoke_fray.gdshader")
@@ -31,7 +32,7 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 	set(value):
 		animation_speed = clampf(value, 0.0, 3.0)
 		_appearance_changed()
-## How far rising tongues fold over before their tips break away.
+## Strength of the rolling flow that bends and folds the upper flame.
 @export_range(0.0, 1.0, 0.01) var curl_amount: float = 0.8:
 	set(value):
 		curl_amount = clampf(value, 0.0, 1.0)
@@ -84,7 +85,12 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 	set(value):
 		smoke_turbulence = clampf(value, 0.0, 1.0)
 		_appearance_changed()
-@export var smoke_color := Color("6c635e"):
+## Clarity of the scalloped edges and broad toon shading; lower softens the plume.
+@export_range(0.0, 1.0, 0.01) var smoke_definition: float = 0.8:
+	set(value):
+		smoke_definition = clampf(value, 0.0, 1.0)
+		_appearance_changed()
+@export var smoke_color := Color("7b7772"):
 	set(value):
 		smoke_color = value
 		_appearance_changed()
@@ -103,8 +109,13 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 	set(value):
 		spark_size = clampf(value, 0.01, 0.12)
 		_appearance_changed()
+## Variation between small pointed flecks and longer bent streaks.
+@export_range(0.0, 1.0, 0.01) var spark_variation: float = 0.65:
+	set(value):
+		spark_variation = clampf(value, 0.0, 1.0)
+		_appearance_changed()
 ## Zero distributes embers evenly; one emits overlapping small packets.
-@export_range(0.0, 1.0, 0.01) var spark_burstiness: float = 0.65:
+@export_range(0.0, 1.0, 0.01) var spark_burstiness: float = 0.35:
 	set(value):
 		spark_burstiness = clampf(value, 0.0, 1.0)
 		_appearance_changed()
@@ -118,9 +129,9 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 
 static var _tongue_mesh: ArrayMesh
 static var _volume_mesh: BoxMesh
-static var _smoke_mesh: ArrayMesh
+static var _smoke_mesh: BoxMesh
 static var _fray_mesh: QuadMesh
-static var _spark_mesh: SphereMesh
+static var _spark_mesh: ArrayMesh
 var _materials: Array[ShaderMaterial] = []
 var _queued := false
 var _recall: Node
@@ -154,18 +165,19 @@ func _request_rebuild() -> void:
 
 func _appearance_changed() -> void:
 	for material in _materials:
-		for key in [&"fire_size", &"body_fullness", &"intensity", &"animation_speed", &"curl_amount", &"wind", &"core_color", &"flame_color", &"edge_color", &"smoke_amount", &"smoke_height", &"smoke_spread", &"smoke_turbulence", &"smoke_color", &"spark_amount", &"spark_height", &"spark_size", &"spark_burstiness", &"glow_strength"]:
+		for key in [&"fire_size", &"body_fullness", &"intensity", &"animation_speed", &"curl_amount", &"wind", &"core_color", &"flame_color", &"edge_color", &"smoke_amount", &"smoke_height", &"smoke_spread", &"smoke_turbulence", &"smoke_definition", &"smoke_color", &"spark_amount", &"spark_height", &"spark_size", &"spark_variation", &"spark_burstiness", &"glow_strength"]:
 			material.set_shader_parameter(key, get(key))
 		material.set_shader_parameter("fire_phase", float(posmod(fire_seed, 997)) * 0.071)
 		material.set_shader_parameter("preview_time", _preview_time)
 		# The original ground wash is reused with its own private material.
 		material.set_shader_parameter("flame_size", fire_size)
 	if not is_inside_tree(): return
-	var side := fire_size.x * 1.8 + smoke_spread + wind.length() * 2.5
+	var side := maxf(fire_size.x * 1.8 + smoke_spread + wind.length() * 2.5, smoke_spread * 1.6 + 0.1 + wind.length() * 2.1)
+	var bottom := minf(-0.2, fire_size.y * lerpf(0.50, 0.62, body_fullness) - smoke_spread * 0.85)
 	var top := maxf(fire_size.y * 2.0, maxf(fire_size.y * 1.1 + smoke_height + smoke_spread * 2.0, fire_size.y * spark_height + spark_size * 5.0))
 	for child in get_children(true):
 		if not child.get_meta(&"sculpted_fire_generated", false): continue
-		child.custom_aabb = AABB(Vector3(-side, -0.2, -side), Vector3(side * 2.0, top + 0.4, side * 2.0))
+		child.custom_aabb = AABB(Vector3(-side, bottom, -side), Vector3(side * 2.0, top - bottom + 0.2, side * 2.0))
 		child.visible = intensity > 0.0
 		if child.name == &"Smoke" or child.name == &"SmokeFray":
 			child.visible = intensity > 0.0 and smoke_amount > 0.0
@@ -177,6 +189,7 @@ func _appearance_changed() -> void:
 func _material(shader: Shader) -> ShaderMaterial:
 	var result := ShaderMaterial.new()
 	result.shader = shader
+	if shader == FLAME or shader == FLAMELET: result.set_shader_parameter("flow_noise", FLOW)
 	_materials.append(result)
 	return result
 
@@ -206,7 +219,7 @@ func _batch(id: String, mesh: Mesh, count: int, shader: Shader, salt: int) -> Mu
 
 static func tongue_mesh() -> ArrayMesh:
 	if _tongue_mesh: return _tongue_mesh
-	_tongue_mesh = loft_mesh(24, 28)
+	_tongue_mesh = loft_mesh(12, 16)
 	return _tongue_mesh
 
 static func loft_mesh(sides: int, rings: int) -> ArrayMesh:
@@ -248,22 +261,21 @@ func rebuild() -> void:
 		data.r = float(index)
 		tips.multimesh.set_instance_custom_data(index, data)
 	if not _smoke_mesh:
-		_smoke_mesh = loft_mesh(32, 48)
+		_smoke_mesh = BoxMesh.new()
+		_smoke_mesh.size = Vector3.ONE
 	var smoke := MeshInstance3D.new()
 	smoke.name = "Smoke"
 	smoke.mesh = _smoke_mesh
 	smoke.material_override = _material(SMOKE)
+	smoke.material_override.render_priority = -2
 	_generated(smoke)
 	if not _fray_mesh:
 		_fray_mesh = QuadMesh.new()
 		_fray_mesh.size = Vector2.ONE
-	_batch("SmokeFray", _fray_mesh, 16, SMOKE_FRAY, 0x5A2)
+	var fray := _batch("SmokeFray", _fray_mesh, 16, SMOKE_FRAY, 0x5A2)
+	fray.material_override.render_priority = -1
 	if not _spark_mesh:
-		_spark_mesh = SphereMesh.new()
-		_spark_mesh.radius = 1.0
-		_spark_mesh.height = 2.0
-		_spark_mesh.radial_segments = 6
-		_spark_mesh.rings = 3
+		_spark_mesh = loft_mesh(8,12)
 	_batch("Sparks", _spark_mesh, 64, SPARK, 0x5A1)
 	var glow := MeshInstance3D.new()
 	glow.name = "GroundGlow"

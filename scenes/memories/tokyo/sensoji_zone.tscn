@@ -1,0 +1,609 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flowers"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="Resource" path="res://scenes/memories/tokyo/temple_green.tres" id="leaves"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/sensoji_hozomon_gate.tscn" id="gate"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/sensoji_main_hall.tscn" id="hall"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/sensoji_pagoda.tscn" id="pagoda"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="air"]
+
+[sub_resource type="Curve3D" id="TempleWalkCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0,0,-1.4,0,0,16.5,0,0,1.3,0,0,-1.3,0,0,12.5,0,0,1.3,0,0,0,0,0,6.3), "tilts": PackedFloat32Array(0,0,0)}
+point_count = 3
+[sub_resource type="Curve3D" id="ToShibuyaCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,1.7,0,0,0,0,6.3,-1.8,0,0.1,1.7,0,-0.6,6,0,6.2,-1.5,0,1.2,1.5,0,-1.2,13,0,2.8,-1.5,0,1.3,1.5,0,-1.3,19,0,-2.5,-1.4,0,1.4,0,0,0,24,0,-7.5), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+
+[node name="SensojiZone" instance=ExtResource("zone")]
+zone_id = &"sensoji"
+display_name = "Sensō-ji"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -31.0
+ambience_size = Vector2(25,32)
+ambience_blend_distance = 4.0
+
+[node name="Hozomon" parent="Scenery" instance=ExtResource("gate")]
+position = Vector3(0,0,12.5)
+recall_enabled = true
+
+[node name="MainHall" parent="Scenery" instance=ExtResource("hall")]
+recall_enabled = true
+
+[node name="TempleView" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,5.8)
+
+[node name="Pagoda" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("pagoda")]
+position = Vector3(8.7,0,-1.2)
+recall_enabled = true
+recall_anchor = NodePath("../TempleView")
+
+[node name="TempleWalk" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("TempleWalkCurve")
+path_width = 3.1
+paving_color = Color(0.77,0.75,0.67,1)
+end_fade = Vector2(1.0,0)
+slab_length = 2.0
+edge_softness = 0.28
+
+[node name="ToShibuya" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ToShibuyaCurve")
+path_width = 2.3
+paving_color = Color(0.77,0.75,0.67,1)
+end_fade = Vector2(0,2.6)
+slab_length = 2.0
+edge_softness = 0.28
+
+[node name="TempleTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.2,0,13.0)
+tree_seed = 529000
+tree_type = 0
+tree_height = 4.7
+crown_width = 3.8
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../GateGardenRecall")
+
+[node name="TempleTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(7.2,0,13.4)
+tree_seed = 529023
+tree_type = 4
+tree_height = 4.5
+crown_width = 3.6
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../GateGardenRecall")
+
+[node name="TempleTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.6,0,7.7)
+tree_seed = 529046
+tree_type = 4
+tree_height = 5.1
+crown_width = 3.6
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../HallGardenRecall")
+
+[node name="TempleTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(7.3,0,7.8)
+tree_seed = 529069
+tree_type = 0
+tree_height = 4.5
+crown_width = 3.9
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../HallGardenRecall")
+
+[node name="TempleTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.7,0,1.0)
+tree_seed = 529092
+tree_type = 0
+tree_height = 4.9
+crown_width = 4.1
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../HallGardenRecall")
+
+[node name="TempleTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-6.9,0,-3.8)
+tree_seed = 529115
+tree_type = 4
+tree_height = 5.3
+crown_width = 3.5
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../HallGardenRecall")
+
+[node name="TempleTree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(7.3,0,-5.0)
+tree_seed = 529138
+tree_type = 0
+tree_height = 4.5
+crown_width = 3.8
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../HallGardenRecall")
+
+[node name="TempleTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(11.7,0,-3.8)
+tree_seed = 529161
+tree_type = 4
+tree_height = 4.9
+crown_width = 3.4
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../HallGardenRecall")
+
+[node name="TempleTree9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(10.4,0,2.2)
+tree_seed = 529184
+tree_type = 4
+tree_height = 4.4
+crown_width = 3.3
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../HallGardenRecall")
+
+[node name="TempleTree10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(15.0,0,3.8)
+tree_seed = 529207
+tree_type = 0
+tree_height = 4.2
+crown_width = 3.8
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../HallGardenRecall")
+
+[node name="TempleBush1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.3,0,14)
+bush_seed = 529300
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.3,0,14.5)
+bush_seed = 529301
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.0,0,9)
+bush_seed = 529302
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.0,0,10)
+bush_seed = 529303
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.2,0,5.7)
+bush_seed = 529304
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.0,0,4.7)
+bush_seed = 529305
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.4,0,0.3)
+bush_seed = 529306
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.7,0,-3.5)
+bush_seed = 529307
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-7.8,0,-3.7)
+bush_seed = 529308
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(11.4,0,-1.0)
+bush_seed = 529309
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.8,0,3.0)
+bush_seed = 529310
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(13.4,0,4.7)
+bush_seed = 529311
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush13" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(16.2,0,0.8)
+bush_seed = 529312
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleBush14" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(19.7,0,-1.0)
+bush_seed = 529313
+footprint = Vector2(1.9,1.6)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TempleFlowers1" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-4.3,0,13.6)
+bush_seed = 529400
+footprint = Vector2(1.6,1.4)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 45
+flower_size = 0.065
+flower_color = Color(0.85,0.79,0.69,1)
+flower_highlight = Color(0.98,0.95,0.87,1)
+
+[node name="TempleFlowers2" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(4.5,0,13.7)
+bush_seed = 529401
+footprint = Vector2(1.6,1.4)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 45
+flower_size = 0.065
+flower_color = Color(0.85,0.79,0.69,1)
+flower_highlight = Color(0.98,0.95,0.87,1)
+
+[node name="TempleFlowers3" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-4.0,0,6.1)
+bush_seed = 529402
+footprint = Vector2(1.6,1.4)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 45
+flower_size = 0.065
+flower_color = Color(0.85,0.79,0.69,1)
+flower_highlight = Color(0.98,0.95,0.87,1)
+
+[node name="TempleFlowers4" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(4.4,0,4.6)
+bush_seed = 529403
+footprint = Vector2(1.6,1.4)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 45
+flower_size = 0.065
+flower_color = Color(0.85,0.79,0.69,1)
+flower_highlight = Color(0.98,0.95,0.87,1)
+
+[node name="TempleFlowers5" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-6.1,0,1.8)
+bush_seed = 529404
+footprint = Vector2(1.6,1.4)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 45
+flower_size = 0.065
+flower_color = Color(0.85,0.79,0.69,1)
+flower_highlight = Color(0.98,0.95,0.87,1)
+
+[node name="TempleFlowers6" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(6.0,0,1.0)
+bush_seed = 529405
+footprint = Vector2(1.6,1.4)
+bush_height = 0.5
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 45
+flower_size = 0.065
+flower_color = Color(0.85,0.79,0.69,1)
+flower_highlight = Color(0.98,0.95,0.87,1)
+
+[node name="TempleGrass1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-6.0,0,12)
+patch_seed = 529600
+patch_size = Vector2(5,6.5)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
+
+[node name="TempleGrass2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(6.0,0,12.0)
+patch_seed = 529601
+patch_size = Vector2(5,6.5)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
+
+[node name="TempleGrass3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-6.6,0,4.6)
+patch_seed = 529602
+patch_size = Vector2(5.3,5.0)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
+
+[node name="TempleGrass4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.0,0,3.6)
+patch_seed = 529603
+patch_size = Vector2(5.5,5.2)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
+
+[node name="TempleGrass5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-6.9,0,-2.5)
+patch_seed = 529604
+patch_size = Vector2(4.4,4.4)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
+
+[node name="TempleGrass6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(10,0,-3.0)
+patch_seed = 529605
+patch_size = Vector2(5.8,5.3)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
+
+[node name="TempleGrass7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(13.1,0,3.5)
+patch_seed = 529606
+patch_size = Vector2(5.5,4.8)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
+
+[node name="TempleGrass8" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(18.8,0,-0.9)
+patch_seed = 529607
+patch_size = Vector2(5,4.8)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
+
+[node name="Fragment" parent="."]
+position = Vector3(0,0.49,3.3125)
+note_title = "Through the red gate"
+notes = PackedStringArray("Placeholder: add your memory of Sensō-ji — the lantern gate, temple courtyard, and being there together.")
+
+[node name="GateGardenRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,15)
+[node name="HallGardenRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,6.3)

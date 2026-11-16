@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="PackedScene" path="res://scenes/world/memory_world_base.tscn" id="world"]
+[ext_resource type="PackedScene" path="res://scenes/memories/tokyo.tscn" id="memory"]
+[ext_resource type="Script" path="res://scripts/tokyo_camera.gd" id="camera"]
+[node name="MemoryWorld" instance=ExtResource("world")]
+recalled_spawn_offset = Vector3(0,0,0)
+[node name="Memory" parent="." index="4" instance=ExtResource("memory")]
+[node name="CameraRig" parent="." index="5" node_paths=PackedStringArray("meiji_gate","meiji_hall","senso_gate","senso_hall","crossing")]
+script = ExtResource("camera")
+meiji_gate = NodePath("../Memory/Zones/Meiji/Scenery/Torii")
+meiji_hall = NodePath("../Memory/Zones/Meiji/Scenery/WorshipHall")
+senso_gate = NodePath("../Memory/Zones/Sensoji/Scenery/Hozomon")
+senso_hall = NodePath("../Memory/Zones/Sensoji/Scenery/MainHall")
+crossing = NodePath("../Memory/Zones/Shibuya/Scenery/Crossing")
+[node name="Camera3D" parent="CameraRig" index="0"]
+size = 3.5
+far = 170.0

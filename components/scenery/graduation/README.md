@@ -16,11 +16,11 @@ blossom tree preset and a classical columned portico with broad stairs. Run
 
 | Component scene | Main controls / purpose |
 | --- | --- |
-| `stage/painterly_commencement_stage.tscn` | Stage footprint and height, central access ramp, banner toggle and wind, painted palette. |
+| `stage/painterly_commencement_stage.tscn` | Stage footprint and height, central access ramp, banner toggle/wind and optional independent left/right cloth and trim colors. |
 | `lectern/painterly_lectern.tscn` | Width and height; a sloped reading surface, notes, book medallion and gooseneck microphone. |
 | `diplomas/painterly_diploma_table.tscn` | Table width and diploma count; tied rolls on a softly pleated presentation table. |
 | `seating/painterly_ceremony_seating.tscn` | Rows, seats per row, chair spacing, row spacing, clear aisle width, colors, collision and seat shadows. |
-| `graduates/painterly_graduate_crowd.tscn` | Count, seed, robe/stole/tassel colors, inherited appearance and idle controls, optional Seating reference. |
+| `graduates/painterly_graduate_crowd.tscn` | Count, seed, robe/cap/stole/tassel colors, appearance/idle controls, optional Seating reference and side filter. |
 
 ## Reuse and placement
 
@@ -62,6 +62,12 @@ For a seated audience, assign a **PainterlyCeremonySeating** node to **Seating**
 It fills actual seat transforms in row order, up to Count; excess requests cap at
 available chairs and show an Inspector warning. Chair edits, movement and rotation
 regenerate the occupants to match. Clearing the reference restores standing layout.
+**Seating Side** selects all, left or right seats using the chair block's local X
+coordinate. Two crowd components can share one chair block with complementary side
+filters and independent school palettes; set Count to the capacity of each half.
+Both filters follow moved/rotated chairs. **Cap Matches Gown** defaults on to retain
+existing looks; disable it to set **Cap Color** independently.
+
 The seated mode uses four quiet arm poses and fixed leg/torso proportions for chair
 fit, retaining varied build widths, cached body/head shapes, complexion, hair and
 idle phases. Height Variation, standing layout/facing and Pose Mix apply in standing
@@ -85,6 +91,10 @@ component stage with one scene for isolated recall checks. Props also expose
 `excludes_ground_point()` for groundcover placement; chair exclusions follow the
 individual chair boxes, leaving the aisle clear. Graduate hitboxes are approximate,
 as in the base crowd. This kit is scenic, with no ceremony/diploma interaction yet.
+
+**Individual Banner Colors** on the stage enables separate **Left/Right Banner
+Color / Trim** controls. Its default off state keeps both banners on the stage's
+Accent/Trim colors. Banner deformation, batching and recall remain shared.
 
 The default study contains 24 seated graduates, four waiting graduates and one
 presenter. Bigger classes can use additional chair blocks and graduate components.

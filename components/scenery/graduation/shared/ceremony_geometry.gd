@@ -46,7 +46,11 @@ func banners(config: Dictionary) -> Dictionary:
 	begin(config)
 	var top: float = config.deck_height+3.10
 	var bottom := top-1.65
+	var base_accent := accent
+	var base_trim := brass
 	for side: float in [-1.0,1.0]:
+		accent=config.get("left_banner_color" if side<0 else "right_banner_color",base_accent)
+		brass=config.get("left_banner_trim" if side<0 else "right_banner_trim",base_trim)
 		var x: float = side*config.footprint.x*0.39
 		var z: float = -config.footprint.y*0.32+0.045
 		for column in range(12):

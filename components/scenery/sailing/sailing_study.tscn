@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3]
+[ext_resource type="PackedScene" path="res://components/scenery/sailing/dock/painterly_wooden_dock.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/scenery/sailing/ensign/painterly_ensign.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://components/scenery/rock_clusters/painterly_rock_cluster.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="7"]
+[node name="SailingStudy" type="Node3D"]
+[node name="Lake" parent="." instance=ExtResource("3")]
+position = Vector3(1, -0.015, -3.5)
+footprint = Vector2(20, 16)
+water_seed = 142
+behavior_preset = 3
+palette_preset = 2
+foam_amount = 0.28
+foam_width = 0.30
+block_water_entry = false
+[node name="Dock" parent="." instance=ExtResource("1")]
+[node name="Ensign" parent="." instance=ExtResource("2")]
+position = Vector3(3.95, 0, -1.8)
+sail_angle = 22.0
+[node name="BankGrassLeft" parent="." instance=ExtResource("4")]
+position = Vector3(-2.7, 0, 4.6)
+patch_size = Vector2(3.2, 3.0)
+ground_exclusions = Array[NodePath]([NodePath("../Lake"), NodePath("../Dock")])
+recall_enabled = false
+[node name="BankGrassRight" parent="." instance=ExtResource("4")]
+position = Vector3(3.8, 0, 6.0)
+patch_size = Vector2(4.0, 2.6)
+patch_seed = 164
+ground_exclusions = Array[NodePath]([NodePath("../Lake"), NodePath("../Dock")])
+recall_enabled = false
+[node name="ShoreBush" parent="." instance=ExtResource("5")]
+position = Vector3(-3.0, 0, 5.8)
+footprint = Vector2(1.5, 1.0)
+recall_enabled = false
+[node name="ShoreStones" parent="." instance=ExtResource("6")]
+position = Vector3(-2.6, 0.03, 4.0)
+cluster_footprint = Vector2(1.9, 0.8)
+rock_count = 4
+rock_scale = 0.38
+recall_enabled = false
+[node name="ShoreTree" parent="." instance=ExtResource("7")]
+position = Vector3(-5.7, 0, 4.1)
+tree_height = 4.2
+crown_width = 3.2
+leaf_sprays_per_cluster = 58
+falling_leaf_count = 0
+recall_enabled = false

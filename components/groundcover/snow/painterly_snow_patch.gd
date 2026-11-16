@@ -181,6 +181,10 @@ func rebuild() -> void:
 	_update_material()
 	_bake_coverage()
 	var arrays := _custom_mesh_arrays() if _custom_shape else _oval_mesh_arrays()
+	# Derived terrain surfaces can be completely carved away by exclusions.
+	if arrays[Mesh.ARRAY_VERTEX].is_empty():
+		ground_exclusion_changed.emit()
+		return
 	var mesh := ArrayMesh.new()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	var visual := MeshInstance3D.new()

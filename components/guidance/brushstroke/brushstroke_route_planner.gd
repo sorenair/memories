@@ -115,7 +115,7 @@ func _ground(point: Vector3) -> Vector3:
 			var shape := body.shape_owner_get_owner(owner_id) as Node
 			# Only authored walking surfaces elevate navigation. Cabinets, roofs
 			# and tables remain obstacles rather than becoming alternative floors.
-			if shape and (shape.name in [&"StairRamp",&"AccessRamp",&"Deck"] or body.name==&"WalkingSurface"):
+			if shape and (shape.name in [&"StairRamp",&"AccessRamp",&"Deck",&"Veranda"] or body.name in [&"WalkingSurface",&"PorticoStairs"]):
 				support = hit.position.y
 		_support_cache[key] = support+0.68
 	return Vector3(point.x,_support_cache[key],point.z)
@@ -126,7 +126,7 @@ func _is_ramp(hit: Dictionary) -> bool:
 		return false
 	var owner_id := body.shape_find_owner(int(hit["shape"]))
 	var owner := body.shape_owner_get_owner(owner_id) as Node
-	return is_instance_valid(owner) and owner.name in [&"StairRamp",&"AccessRamp"]
+	return is_instance_valid(owner) and (owner.name in [&"StairRamp",&"AccessRamp"] or body.name==&"PorticoStairs")
 
 func _point_status(point: Vector3) -> int:
 	var key := Vector2(point.x, point.z)
@@ -186,7 +186,9 @@ func _check_segment(a: Vector3, b: Vector3) -> bool:
 		if status == 0:
 			return false
 		ramp_seen = ramp_seen or status == 2
-	return ramp_seen
+	# A straight sweep can cut into a supported slope although every grounded
+	# sample is clear. Accept that height change only after the full capsule check.
+	return ramp_seen or not is_equal_approx(_ground(a).y,_ground(b).y)
 
 func _backbone_path(start: Vector3, finish: Vector3, routes: Array[Node3D]) -> PackedVector3Array:
 	var points := PackedVector3Array([start, finish])

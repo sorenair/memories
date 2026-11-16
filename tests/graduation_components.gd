@@ -58,6 +58,23 @@ func run() -> void:
 	await process_frame
 	var hip: Vector3=graduates.to_global(graduates._placements[0].origin+Vector3.UP*graduates.person_scale*0.32)
 	check(hip.distance_to(chairs.to_global(chairs.get_seat_transforms()[0].origin))<0.001,"Seated occupants must follow moved and rotated chair layouts")
+	graduates.count=6
+	for side in [PainterlyGraduateCrowd.SeatingSide.LEFT,PainterlyGraduateCrowd.SeatingSide.RIGHT]:
+		graduates.seating_side=side
+		await process_frame
+		await process_frame
+		check(graduates.generated_count==6,"Each half must contain only its own six seats")
+		for pose in graduates._placements:
+			var local := chairs.to_local(graduates.to_global(pose.origin))
+			check(local.x<0 if side==PainterlyGraduateCrowd.SeatingSide.LEFT else local.x>0,"Seat filtering must follow rotated chair-local coordinates")
+	graduates.seating_side=PainterlyGraduateCrowd.SeatingSide.ALL
+	graduates.count=24
+	graduates.cap_matches_gown=false
+	graduates.cap_color=Color.WHITE
+	graduates.gown_color=Color.PURPLE
+	check(graduates._material.get_shader_parameter("cap_color")==Color.WHITE,"Caps must support a separate paint color")
+	graduates.cap_matches_gown=true
+	check(graduates._material.get_shader_parameter("cap_color")==Color.PURPLE,"The default cap mode must continue following robe edits")
 	chairs.rotation.y=0
 	chairs.position.x=0
 	chairs.rows=3

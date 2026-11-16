@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="PackedScene" path="res://scenes/memories/graduation/arches_zone.tscn" id="arches"]
+[ext_resource type="PackedScene" path="res://scenes/memories/graduation/portico_zone.tscn" id="portico"]
+[ext_resource type="PackedScene" path="res://scenes/memories/graduation/ceremony_zone.tscn" id="ceremony"]
+[ext_resource type="Script" path="res://scripts/graduation_memory.gd" id="route"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+
+[sub_resource type="Curve2D" id="WalkOutline"]
+_data = {"points": PackedVector2Array(0, 0, 0, 0, -13, 17, 0, 0, 0, 0, -1, 17, 0, 0, 0, 0, 2, 12, 0, 0, 0, 0, 2, 4, 0, 0, 0, 0, 7, 2, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 11, -3, 0, 0, 0, 0, 11, -12, 0, 0, 0, 0, 8, -15, 0, 0, 0, 0, 3, -20, 0, 0, 0, 0, 1, -22, 0, 0, 0, 0, 1, -33, 0, 0, 0, 0, -1, -35, 0, 0, 0, 0, -12, -35, 0, 0, 0, 0, -14, -32, 0, 0, 0, 0, -14, -22, 0, 0, 0, 0, -12, -20, 0, 0, 0, 0, -7, -20, 0, 0, 0, 0, -2, -16, 0, 0, 0, 0, 0, -12, 0, 0, 0, 0, -3, -12, 0, 0, 0, 0, -3, -7, 0, 0, 0, 0, -1, -4, 0, 0, 0, 0, -5, -1, 0, 0, 0, 0, -10, 2, 0, 0, 0, 0, -14, 5, 0, 0, 0, 0, -15, 12, 0, 0, 0, 0, -13, 17)}
+point_count = 28
+
+[node name="Memory" instance=ExtResource("base")]
+script = ExtResource("route")
+memory_id = &"graduation"
+display_name = "Graduation"
+
+[node name="Entry" parent="."]
+position = Vector3(-7.71,0.04,15)
+
+[node name="Exit" parent="."]
+position = Vector3(-6,0.49,-29.1)
+
+[node name="CampusFloor" parent="Environment" instance=ExtResource("floor")]
+visible = false
+custom_outline = SubResource("WalkOutline")
+outline_detail = 96
+edge_inset = 0.18
+
+[node name="Guidance" parent="Environment" type="Node3D"]
+
+[node name="Audio" parent="."]
+fragment_sound = ExtResource("chime")
+
+[node name="Arches" parent="Zones" instance=ExtResource("arches")]
+
+[node name="Portico" parent="Zones" instance=ExtResource("portico")]
+position = Vector3(4,0,-9)
+
+[node name="Ceremony" parent="Zones" instance=ExtResource("ceremony")]
+position = Vector3(-6,0,-30)
+
+[node name="ThroughTheArches" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/Arches/Fragment")
+stroke_width = 0.32
+
+[node name="UpTheSteps" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Arches/Fragment")
+end_anchor = NodePath("../../../Zones/Portico/Fragment")
+stroke_width = 0.32
+
+[node name="ToTheCeremony" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Portico/Fragment")
+end_anchor = NodePath("../../../Zones/Ceremony/Fragment")
+stroke_width = 0.32

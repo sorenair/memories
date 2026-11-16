@@ -1,0 +1,196 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flowers"]
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/graduation_setup.tscn" id="setup"]
+[ext_resource type="PackedScene" path="res://components/foliage/presets/cherry_blossom_tree.tscn" id="cherry"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="air"]
+
+[ext_resource type="PackedScene" path="res://components/scenery/graduation/graduates/painterly_graduate_crowd.tscn" id="graduates"]
+
+[sub_resource type="Curve3D" id="AisleRoute"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -1.3, 0, 0, 8.6, 0, 0, 1.3, 0, 0, 0, 0, 0, 4.2), "tilts": PackedFloat32Array(0,0)}
+point_count = 2
+
+[node name="CeremonyZone" instance=ExtResource("zone")]
+zone_id = &"commencement"
+display_name = "Graduation ceremony"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -29.0
+ambience_size = Vector2(17,18)
+ambience_blend_distance = 4.0
+
+[node name="Setup" parent="Scenery" instance=ExtResource("setup")]
+
+[node name="CommencementStage" parent="Scenery/Setup"]
+recall_enabled = true
+ramp_width = 2.0
+individual_banner_colors = true
+left_banner_color = Color(0.29,0.16,0.47,1)
+left_banner_trim = Color(0.96,0.95,0.92,1)
+right_banner_color = Color(0.45,0.07,0.16,1)
+right_banner_trim = Color(0.94,0.70,0.22,1)
+
+[node name="Lectern" parent="Scenery/Setup"]
+recall_enabled = true
+
+[node name="DiplomaTable" parent="Scenery/Setup"]
+recall_enabled = true
+
+[node name="Chairs" parent="Scenery/Setup"]
+recall_enabled = true
+aisle_width = 2.2
+
+[node name="SeatedGraduates" parent="Scenery/Setup"]
+recall_enabled = true
+count = 12
+seating_side = 1
+gown_color = Color(0.29,0.16,0.47,1)
+cap_matches_gown = false
+cap_color = Color(0.96,0.95,0.92,1)
+stole_color = Color(0.96,0.95,0.92,1)
+tassel_color = Color(0.80,0.76,0.86,1)
+
+
+[node name="Presenter" parent="Scenery/Setup"]
+recall_enabled = true
+
+[node name="WaitingGraduates" parent="Scenery/Setup"]
+recall_enabled = true
+count = 2
+gown_color = Color(0.29,0.16,0.47,1)
+cap_matches_gown = false
+cap_color = Color(0.96,0.95,0.92,1)
+stole_color = Color(0.96,0.95,0.92,1)
+tassel_color = Color(0.80,0.76,0.86,1)
+
+
+[node name="FrontFlowersLeft" parent="Scenery/Setup"]
+recall_enabled = true
+react_to_explorers = true
+
+[node name="FrontFlowersRight" parent="Scenery/Setup"]
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BackFlowersLeft" parent="Scenery/Setup"]
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BackFlowersRight" parent="Scenery/Setup"]
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Aisle" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("AisleRoute")
+path_width = 2.1
+paving_color = Color(0.83,0.80,0.73,1)
+end_fade = Vector2(0,0)
+
+[node name="CeremonyGrass1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.5, 0, 6.5)
+patch_size = Vector2(3.6, 5.8)
+patch_seed = 51570
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../Aisle"),NodePath("../Setup/CommencementStage"),NodePath("../Setup/Chairs"),NodePath("../Setup/WaitingGraduates")])
+
+[node name="CeremonyGrass2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(5.2, 0, 6.2)
+patch_size = Vector2(3.6, 5.4)
+patch_seed = 51571
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../Aisle"),NodePath("../Setup/CommencementStage"),NodePath("../Setup/Chairs"),NodePath("../Setup/WaitingGraduates")])
+
+[node name="CeremonyGrass3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.0, 0, -1.8)
+patch_size = Vector2(3.0, 3.2)
+patch_seed = 51572
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../Aisle"),NodePath("../Setup/CommencementStage"),NodePath("../Setup/Chairs"),NodePath("../Setup/WaitingGraduates")])
+
+[node name="CeremonyGrass4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(5.0, 0, -1.8)
+patch_size = Vector2(3.0, 3.2)
+patch_seed = 51573
+palette_preset = 2
+grass_height = 0.18
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 30.0
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../Aisle"),NodePath("../Setup/CommencementStage"),NodePath("../Setup/Chairs"),NodePath("../Setup/WaitingGraduates")])
+
+[node name="Cherry1" parent="Scenery" instance=ExtResource("cherry")]
+position = Vector3(-6.0, 0, 1.0)
+tree_seed = 810
+tree_height = 3.4
+crown_width = 3.6
+falling_leaf_count = 12
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Cherry2" parent="Scenery" instance=ExtResource("cherry")]
+position = Vector3(5.9, 0, -0.3)
+tree_seed = 841
+tree_height = 3.4
+crown_width = 3.6
+falling_leaf_count = 12
+recall_enabled = true
+react_to_explorers = true
+
+[node name="Fragment" parent="."]
+position = Vector3(0,0.49,0.9)
+note_title = "A new beginning"
+notes = PackedStringArray("Placeholder: add your memory of the graduation ceremony — the gowns, the applause, and being there together.")
+
+
+[node name="MinnesotaGraduates" parent="Scenery/Setup" node_paths=PackedStringArray("seating") instance=ExtResource("graduates")]
+position = Vector3(0,0,5.4)
+count = 12
+crowd_seed = 627
+person_scale = 1.3
+silhouette_variation = 0.0
+seating = NodePath("../Chairs")
+seating_side = 2
+recall_enabled = true
+gown_color = Color(0.45,0.07,0.16,1)
+cap_matches_gown = false
+cap_color = Color(0.94,0.70,0.22,1)
+stole_color = Color(0.94,0.70,0.22,1)
+tassel_color = Color(0.98,0.84,0.43,1)
+
+[node name="MinnesotaWaiting" parent="Scenery/Setup" instance=ExtResource("graduates")]
+position = Vector3(4.65,0,2.7)
+count = 2
+footprint = Vector2(1.2,2.4)
+spacing = 0.78
+layout = 1
+facing_degrees = -120.0
+facing_variation = 18.0
+crowd_seed = 256
+recall_enabled = true
+gown_color = Color(0.45,0.07,0.16,1)
+cap_matches_gown = false
+cap_color = Color(0.94,0.70,0.22,1)
+stole_color = Color(0.94,0.70,0.22,1)
+tassel_color = Color(0.98,0.84,0.43,1)
+
+[editable path="Scenery/Setup"]

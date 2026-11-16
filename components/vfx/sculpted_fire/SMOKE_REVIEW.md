@@ -1,67 +1,69 @@
-# Smoke critique and redesign
+# Smoke and spark review — 2026-11-15
 
-The supplied campfire reference reads as a connected plume: small, hot forms
-close to the flame roll into larger gray masses above it, while embers remain
-visible through the smoke. Its silhouette is uneven, its internal motion is
-slower than the fire, and its boundaries soften as it disperses.
+The supplied campfire reference has a connected gray plume with readable billows
+and bright, fairly consistent ember marks. The guide also calls for slower smoke
+motion, legibility at gameplay scale and a coherent palette with the flame.
 
-The previous close-up missed those qualities:
+The preceding implementation missed that shape language:
 
-- **Countable solid puffs.** Eight opaque, shaded spheres exposed their joins.
-  Stacked silhouettes and three-tone lighting made them resemble rocks.
-- **Shrinking instead of dissipating.** Each puff changed scale at the end of
-  its life, but retained a solid surface and a recognizably separate identity.
-- **Uniform material and rhythm.** Purple-gray paint, similarly sized cells and
-  regular upward movement made the column feel arranged rather than turbulent.
-- **Weak connection to the fire.** The smoke appeared above the flame rather
-  than developing from its hot upper region. Warmth was a small tint on isolated
-  puffs; embers did not feel embedded in one shared flow.
+- Soft opacity and mottled interior erosion made smoke look like blurred stains.
+  Its large billows were difficult to read, especially on the light background.
+- Making the surrounding dabs sharper exposed translucent discs. Lighting the
+  continuous loft instead exposed a folded tube. Neither gave a coherent cloud.
+- Sparks mixed faceted chips, long needles and tiny dots. Their broad variation
+  and fast flicker made them resemble confetti rather than drawn embers.
 
-## Implemented replacement
+## Current construction
 
-The current pass retains a continuous loft as a faint connecting density. Its
-surface no longer carries strong normal lighting: that exposed folded tubing in
-the first replacement. Smaller geometric deformation and broken interior opacity
-keep the connection without defining a smooth outer skin.
+The main smoke is one fused 3D volume. Seven expanding billows follow the shared
+rise/wind path and blend smoothly into each other, producing a single scalloped
+surface without particle intersections. Their animation is prepared at the proxy
+vertices. A bounded ray trace finds the surface, and its normal supplies three
+broad painted tones. The proxy fits the active billows to limit empty work.
 
-Sixteen soft brush dabs now carry the visible billows. Unequal lobes roll within
-each dab, expand through shared 3D flow, and erode internally before fading away.
-The lower column stays connected while upper lobes separate into thinning wisps.
-The palette remains neutral brown-gray with restrained warmth at the fire. A
-feathered UV boundary prevents the procedural lobes from exposing quad edges.
-Both smoke layers depth-test without writing depth, so embers remain visible
-through their translucent density. Embers inherit the plume's drift.
+Opacity approximates the strongest billow chord along the view ray, including
+billows behind a fading foreground lobe. Using only the first lobe's opacity
+exposed thin dark seams at joins. The base fades in above the hottest fire;
+older billows lose density before their birth clock wraps. They dissipate rather
+than shrinking as separate solid objects. Faint upper brush wisps finish the edge.
 
-**Smoke Amount** controls optical density; **Smoke Turbulence** controls rolling
-billows and meander. Height, Spread, Color and Wind remain direct art controls.
-The smoke intentionally moves more slowly than the new rapid flame bursts.
+The volume tests its actual surface depth against scenery without writing to the
+depth buffer. The smoke layers render before the sparks, so the embers remain
+readable through the stylized plume while opaque scenery still occludes them.
 
-The surrounding fire now has sharper, more strongly tapered hooks, staggered
-roughly one-second bursts, a localized bright heart, and red/orange outer paint.
-Rising heat parcels thin before detaching to avoid large floating blobs. Sparks
-mix small ember heads with velocity-aligned trails, grouped emissions, changing
-launch directions, flicker, and delayed red cooling.
+The initial spark revision overcorrected toward consistency: short rounded
+teardrops with ±8% width variation read as glowing beads. The follow-up uses
+thin, pointed strokes with hot heads, bent orange/red tails and controlled
+variation in width and length. Velocity alignment supplies their direction;
+camera-facing broad sides keep the closed 3D flecks readable. They rise and slow
+along the plume, with restrained flicker and a tail-first fade.
 
-## Review and verification
+## Authoring and verification
 
-Open `res://tests/scenes/sculpted_fire_test.tscn` and press F6. Use both dark and
-warm-white floors. Inspect the smoke with the flame hidden as well as in context;
-a bright fire can otherwise conceal an empty or weak plume.
+**Smoke Definition** controls silhouette softness and toon-band transitions.
+Its default is **0.8**. Amount controls optical density; Height, Spread, Turbulence,
+Color and Wind retain their roles. Spark Amount, Size, Height, Burstiness and
+the new **Spark Variation** (default **0.65**) control the embers. Animation stays
+on the GPU in six batches.
 
-The render check tests smoke density and movement independently, freezes all
-layers, checks the main flame across time and curl settings, verifies four views
-and perspective, and places scenery in front of and behind the fire. Component
-checks cover saved controls, shared geometry/private materials, layer disabling,
-bounds and recall/rebuild continuity.
+Open `res://tests/scenes/sculpted_fire_test.tscn` with F6. Inspect the whole effect,
+smoke alone and sparks alone, using dark and warm-white backgrounds. Check for
+countable hard puffs, faded discs, clipped proxy edges, rocky shading or missing
+embers. The follow-up flame revision replaces regular oval loops with a rising
+3D curl/density field; the connected toon smoke is retained.
+
+The render check covers separate layer visibility/motion, smoke density and
+Definition, foreground/background occlusion of the cloud, freeze, four angles,
+perspective, orthographic invariance, fullness, wind and partial recall. Component
+checks cover exported control persistence, bounds, shared geometry/private
+materials and recall/rebuild continuity.
 
 ```sh
 godot --headless --path . --script tests/sculpted_fire.gd
-godot --path . --script tests/sculpted_fire_render.gd -- --animation --detail --smoke
+godot --path . --script tests/sculpted_fire_render.gd -- --animation --detail --smoke --sparks
 ```
 
-![Isolated connected plume](../../../docs/previews/sculpted-fire-smoke.png)
+![Toon smoke](../../../docs/previews/sculpted-fire-smoke.png)
 
-The [isolated smoke animation](../../../docs/previews/sculpted-fire-smoke-motion.gif)
-shows its independent billowing and dissipation without the flame obscuring it.
-
-![Fire and smoke in motion](../../../docs/previews/sculpted-fire-motion.gif)
+See the [smoke animation](../../../docs/previews/sculpted-fire-smoke-motion.gif)
+and [isolated embers](../../../docs/previews/sculpted-fire-sparks.png).

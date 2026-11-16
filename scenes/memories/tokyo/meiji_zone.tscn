@@ -1,0 +1,678 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flowers"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="Resource" path="res://scenes/memories/tokyo/forest_green.tres" id="leaves"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/meiji_wooden_torii.tscn" id="torii"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/meiji_worship_hall.tscn" id="hall"]
+[ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="air"]
+
+[sub_resource type="Curve3D" id="ForestWalkCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0,0,-1.5,0,0,14,0,0,1.3,0,0,-1.3,0.25,0,9,0,0,1,0,0,-1,0,0,6,0,0,1.5,0,0,0,0,0,1.85), "tilts": PackedFloat32Array(0,0,0,0)}
+point_count = 4
+[sub_resource type="Curve3D" id="ToAsakusaCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,1.6,0,0,0,0,1.85,-1.5,0,0.1,1.5,0,-0.6,4.5,0,2.1,-1.7,0,1.1,1.7,0,-1.1,10.5,0,-1.5,-1.8,0,1,1,0,-0.7,18,0,-6,-0.8,0,0.7,0,0,0,20,0,-5.5), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+
+[node name="MeijiZone" instance=ExtResource("zone")]
+zone_id = &"meiji_shrine"
+display_name = "Meiji Shrine"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -27.0
+ambience_size = Vector2(23,32)
+ambience_blend_distance = 4.0
+
+[node name="Torii" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("torii")]
+position = Vector3(0,0,6)
+recall_enabled = true
+recall_anchor = NodePath("../ToriiRecall")
+
+[node name="WorshipHall" parent="Scenery" instance=ExtResource("hall")]
+position = Vector3(0,0,-4)
+recall_enabled = true
+
+[node name="ForestWalk" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ForestWalkCurve")
+path_width = 2.5
+paving_color = Color(0.77,0.75,0.67,1)
+end_fade = Vector2(1.3,0)
+slab_length = 2.0
+edge_softness = 0.28
+
+[node name="ToAsakusa" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ToAsakusaCurve")
+path_width = 2.3
+paving_color = Color(0.77,0.75,0.67,1)
+end_fade = Vector2(0.5,1.8)
+slab_length = 2.0
+edge_softness = 0.28
+
+[node name="ForestTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-6.8,0,13.8)
+tree_seed = 528260
+tree_type = 5
+tree_height = 5.7
+crown_width = 2.9
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallNorth")
+
+[node name="ForestTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(6.6,0,14.8)
+tree_seed = 528279
+tree_type = 4
+tree_height = 5.0
+crown_width = 3.3
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallNorth")
+
+[node name="ForestTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-4.5,0,10.8)
+tree_seed = 528298
+tree_type = 0
+tree_height = 4.6
+crown_width = 3.6
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestTree4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.7,0,10.5)
+tree_seed = 528317
+tree_type = 5
+tree_height = 5.8
+crown_width = 2.9
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.6,0,8.0)
+tree_seed = 528336
+tree_type = 4
+tree_height = 5.2
+crown_width = 3.4
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallNorth")
+
+[node name="ForestTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(7.8,0,7.0)
+tree_seed = 528355
+tree_type = 0
+tree_height = 4.9
+crown_width = 3.7
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallNorth")
+
+[node name="ForestTree7" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-4.8,0,5.0)
+tree_seed = 528374
+tree_type = 5
+tree_height = 6.1
+crown_width = 2.8
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestTree8" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.9,0,4.5)
+tree_seed = 528393
+tree_type = 4
+tree_height = 5.4
+crown_width = 3.4
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestTree9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-8.3,0,1.8)
+tree_seed = 528412
+tree_type = 0
+tree_height = 4.6
+crown_width = 4.0
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallGate")
+
+[node name="ForestTree10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(7.6,0,1.0)
+tree_seed = 528431
+tree_type = 5
+tree_height = 5.9
+crown_width = 2.8
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallGate")
+
+[node name="ForestTree11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-6.7,0,-3.8)
+tree_seed = 528450
+tree_type = 4
+tree_height = 5.3
+crown_width = 3.5
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallHall")
+
+[node name="ForestTree12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(6.8,0,-5.2)
+tree_seed = 528469
+tree_type = 0
+tree_height = 4.9
+crown_width = 3.6
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallHall")
+
+[node name="ForestTree13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-8.8,0,-6.0)
+tree_seed = 528488
+tree_type = 5
+tree_height = 5.8
+crown_width = 2.7
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallHall")
+
+[node name="ForestTree14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(8.8,0,-3.0)
+tree_seed = 528507
+tree_type = 4
+tree_height = 5.3
+crown_width = 3.3
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../ForestRecallHall")
+
+[node name="ForestTree15" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.9,0,15.5)
+tree_seed = 528526
+tree_type = 5
+tree_height = 4.9
+crown_width = 2.6
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestTree16" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.6,0,16.0)
+tree_seed = 528545
+tree_type = 0
+tree_height = 4.2
+crown_width = 3.1
+leaf_sprays_per_cluster = 75
+branch_count = 6
+trunk_radius = 0.14
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("leaves")
+wind_strength = 0.045
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.0,0,14)
+bush_seed = 528600
+footprint = Vector2(2.1,1.85)
+bush_height = 0.94
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.1,0,13)
+bush_seed = 528601
+footprint = Vector2(1.67,1.64)
+bush_height = 0.72
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.4,0,10)
+bush_seed = 528602
+footprint = Vector2(1.83,1.59)
+bush_height = 0.72
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.5,0,8.8)
+bush_seed = 528603
+footprint = Vector2(2.27,1.71)
+bush_height = 0.74
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.3,0,7)
+bush_seed = 528604
+footprint = Vector2(2.46,1.75)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.6,0,6.5)
+bush_seed = 528605
+footprint = Vector2(1.84,1.95)
+bush_height = 0.56
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.3,0,3.5)
+bush_seed = 528606
+footprint = Vector2(1.96,2.06)
+bush_height = 0.71
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.4,0,3.2)
+bush_seed = 528607
+footprint = Vector2(1.66,1.95)
+bush_height = 0.9
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-7.0,0,0.5)
+bush_seed = 528608
+footprint = Vector2(1.72,1.57)
+bush_height = 0.93
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.3,0,-1.1)
+bush_seed = 528609
+footprint = Vector2(1.85,1.56)
+bush_height = 0.67
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.5,0,-2.1)
+bush_seed = 528610
+footprint = Vector2(1.85,2.04)
+bush_height = 0.83
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.9,0,-4.2)
+bush_seed = 528611
+footprint = Vector2(1.79,1.9)
+bush_height = 0.91
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush13" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-8.1,0,11.4)
+bush_seed = 528612
+footprint = Vector2(2.28,1.75)
+bush_height = 0.66
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush14" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.0,0,11.7)
+bush_seed = 528613
+footprint = Vector2(2.41,1.72)
+bush_height = 0.7
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush15" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.4,0,15)
+bush_seed = 528614
+footprint = Vector2(1.7,1.87)
+bush_height = 0.91
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush16" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.5,0,16)
+bush_seed = 528615
+footprint = Vector2(2.28,1.89)
+bush_height = 0.67
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush17" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.2,0,0)
+bush_seed = 528616
+footprint = Vector2(1.74,2.06)
+bush_height = 0.59
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush18" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.7,0,-1.4)
+bush_seed = 528617
+footprint = Vector2(2.35,1.84)
+bush_height = 0.77
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush19" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(10.8,0,1.0)
+bush_seed = 528618
+footprint = Vector2(1.77,1.86)
+bush_height = 0.77
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestBush20" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(12.8,0,-0.2)
+bush_seed = 528619
+footprint = Vector2(1.77,1.82)
+bush_height = 0.88
+mass_count = 3
+sprays_per_mass = 32
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestFloor1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.2,0,13)
+patch_seed = 528800
+patch_size = Vector2(6.5,7)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
+
+[node name="ForestFloor2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(4.5,0,13.0)
+patch_seed = 528801
+patch_size = Vector2(6,7.0)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
+
+[node name="ForestFloor3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.6,0,6.2)
+patch_seed = 528802
+patch_size = Vector2(6,6)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
+
+[node name="ForestFloor4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(5.2,0,5.8)
+patch_seed = 528803
+patch_size = Vector2(6,6)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
+
+[node name="ForestFloor5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-7,0,-1.8)
+patch_seed = 528804
+patch_size = Vector2(5,6)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
+
+[node name="ForestFloor6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.0,0,-2.2)
+patch_seed = 528805
+patch_size = Vector2(5,6)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
+
+[node name="ForestFloor7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(9.4,0,0)
+patch_seed = 528806
+patch_size = Vector2(5.8,3.4)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
+
+[node name="ForestFloor8" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(15.5,0,-3.8)
+patch_seed = 528807
+patch_size = Vector2(5.3,3.6)
+grass_height = 0.19
+tufts_per_square_meter = 17.0
+leaves_per_square_meter = 40.0
+palette_preset = 0
+palette = ExtResource("leaves")
+recall_enabled = true
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
+
+[node name="Fragment" parent="."]
+position = Vector3(0,0.49,-1.1375)
+note_title = "Beneath the trees"
+notes = PackedStringArray("Placeholder: add your memory of Meiji Shrine together on May 28, 2026.")
+
+[node name="ToriiRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,8.5)
+[node name="ForestRecallNorth" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,11)
+[node name="ForestRecallGate" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,4.4)
+[node name="ForestRecallHall" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,1.4)

@@ -147,9 +147,9 @@ func run() -> void:
 	change_scene_to_file("res://UI/memory_lane/memory_lane.tscn")
 	await process_frame
 	await process_frame
-	check(current_scene.MEMORIES[8].date=="AUG 1, 2026" and current_scene.MEMORIES[8].scene==WORLD,"Vineyard must be the dated ninth authored memory")
+	check(current_scene.MEMORIES[10].date=="AUG 1, 2026" and current_scene.MEMORIES[10].scene==WORLD,"Vineyard must follow Tokyo in the dated timeline")
 	MemoryExplorer.preferred_avatar = MemoryExplorer.Avatar.VIVIAN
-	current_scene.select_memory(8)
+	current_scene.select_memory(10)
 	current_scene.recall()
 	while current_scene==null or current_scene.scene_file_path!=WORLD: await process_frame
 	if current_scene.has_node("MemoryArrival"): await current_scene.get_node("MemoryArrival").finished

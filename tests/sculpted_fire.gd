@@ -19,11 +19,14 @@ func run() -> void:
 	fire.wind = Vector2(-0.5, 0.4)
 	fire.smoke_height = 4.0
 	fire.smoke_turbulence = 0.9
+	fire.smoke_definition = 0.95
 	fire.body_fullness = 0.6
 	fire.spark_burstiness = 0.8
+	fire.spark_variation = 0.9
 	fire.core_color = Color("e5ffce")
 	check(flame.mesh == mesh and flame.material_override == material, "Size/wind/palette controls must preserve geometry/materials")
 	check(material.get_shader_parameter("core_color") == fire.core_color, "Palette must reach the shader")
+	check(fire.get_node("Sparks").material_override.get_shader_parameter("spark_variation") == fire.spark_variation, "Spark variation must update without rebuilding")
 	check(flame.custom_aabb.has_point(Vector3(-1.0, 7.0, 1.0)), "Bounds must include smoke/spark rise and wind")
 	fire.smoke_amount = 0.0
 	fire.spark_amount = 0.0
@@ -41,8 +44,9 @@ func run() -> void:
 	packed.pack(fire)
 	var copy := packed.instantiate() as PainterlySculptedFire
 	root.add_child(copy)
-	check(copy.fire_size == fire.fire_size and copy.wind == fire.wind and copy.smoke_amount == fire.smoke_amount and copy.core_color == fire.core_color and copy.smoke_turbulence == fire.smoke_turbulence and copy.spark_burstiness == fire.spark_burstiness and copy.body_fullness == fire.body_fullness, "Export controls must survive scene persistence")
+	check(copy.fire_size == fire.fire_size and copy.wind == fire.wind and copy.smoke_amount == fire.smoke_amount and copy.core_color == fire.core_color and copy.smoke_turbulence == fire.smoke_turbulence and copy.smoke_definition == fire.smoke_definition and copy.spark_burstiness == fire.spark_burstiness and copy.spark_variation == fire.spark_variation and copy.body_fullness == fire.body_fullness, "Export controls must survive scene persistence")
 	check(copy.get_node("Flames").mesh == mesh and copy.get_node("Flames").material_override != material, "Instances must share geometry and keep independent materials")
+	check(copy.get_node("Flames").material_override.get_shader_parameter("flow_noise") == material.get_shader_parameter("flow_noise"), "Instances must share the baked flow texture")
 	copy.free()
 	fire.recall_enabled = true
 	var effect := fire.get_recall_controller()
