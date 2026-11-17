@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="PackedScene" path="res://components/vehicles/four_runner/painterly_four_runner.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/scenery/camp/tent/painterly_stormbreak_tent.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/scenery/camp/stove/painterly_backpacking_stove.tscn" id="3"]
+[node name="BackpackingStudy" type="Node3D"]
+[node name="FourRunner" parent="." instance=ExtResource("1")]
+position=Vector3(-2.65,0,-1.0)
+rotation_degrees=Vector3(0,20,0)
+[node name="Tent" parent="." instance=ExtResource("2")]
+position=Vector3(2.3,0,-0.6)
+rotation_degrees=Vector3(0,-18,0)
+[node name="Stove" parent="." instance=ExtResource("3")]
+position=Vector3(1.75,0,2.6)
+rotation_degrees=Vector3(0,15,0)

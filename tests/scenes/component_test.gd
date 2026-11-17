@@ -28,7 +28,7 @@ extends Node3D
 		show_wall = value
 		if has_node("BackWall"):
 			$BackWall.visible = value
-@export_range(3.0, 30.0, 0.5) var camera_size: float = 10.0:
+@export_range(3.0, 120.0, 0.5) var camera_size: float = 10.0:
 	set(value):
 		camera_size = value
 		if has_node("Camera3D"):

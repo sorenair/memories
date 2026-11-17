@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/urban_paver_path.tscn" id="path"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
 [ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flowers"]
@@ -47,18 +47,20 @@ recall_anchor = NodePath("../TempleView")
 [node name="TempleWalk" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("TempleWalkCurve")
 path_width = 3.1
-paving_color = Color(0.77,0.75,0.67,1)
+paving_color = Color(0.572549,0.596078,0.560784,1)
 end_fade = Vector2(1.0,0)
-slab_length = 2.0
-edge_softness = 0.28
+edge_softness = 0.18
+stone_color = Color(0.776471,0.772549,0.717647,1)
+stone_size = 0.85
 
 [node name="ToShibuya" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ToShibuyaCurve")
 path_width = 2.3
-paving_color = Color(0.77,0.75,0.67,1)
+paving_color = Color(0.572549,0.596078,0.560784,1)
 end_fade = Vector2(0,2.6)
-slab_length = 2.0
-edge_softness = 0.28
+edge_softness = 0.18
+stone_color = Color(0.776471,0.772549,0.717647,1)
+stone_size = 0.85
 
 [node name="TempleTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
 position = Vector3(-7.2,0,13.0)

@@ -1,8 +1,9 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://c5mmf5qbufow3"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c5mmf5qbufow3"]
+
+[ext_resource type="Shader" path="res://characters/materials/character_paint.gdshader" id="1_paint"]
 
 [resource]
-resource_name = "Toon Cloth - White"
-shading_mode = 0
-specular_mode = 2
-disable_fog = true
-albedo_color = Color(0.94, 0.925, 0.89, 1)
+resource_name = "Painted Cloth - Warm White"
+shader = ExtResource("1_paint")
+shader_parameter/base_color = Color(0.87, 0.844, 0.784, 1)
+shader_parameter/tone_strength = 0.55

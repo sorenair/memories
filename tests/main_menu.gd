@@ -78,9 +78,20 @@ func run() -> void:
 	check(not current_scene._returning, "Main menu entry must play the full timeline unfolding")
 	check(not root.has_meta(&"timeline_from_main_menu"), "Timeline must consume the transition request")
 	check(MemoryExplorer.preferred_avatar == MemoryExplorer.Avatar.VIVIAN, "Avatar choice must survive entry")
-	current_scene.return_to_main_menu()
+	current_scene.show_story()
+	await create_timer(1.25).timeout
+	var timeline := current_scene
+	var back: Button = timeline.get_node("MainMenu")
+	check(back.tooltip_text == "Main menu", "Overview Back must indicate the main menu destination")
+	for pressed in [true, false]:
+		var event := InputEventScreenTouch.new()
+		event.position = back.get_global_rect().get_center()
+		event.index = 1
+		event.pressed = pressed
+		root.push_input(event, true)
+	check(timeline._travelling, "Overview Back must start returning to the main menu immediately")
 	await create_timer(0.9).timeout
-	check(current_scene.scene_file_path == "res://UI/main_menu/main_menu.tscn", "Timeline back control must return to the main menu")
+	check(current_scene.scene_file_path == "res://UI/main_menu/main_menu.tscn", "Timeline back control must return directly from overview to the main menu")
 	check(current_scene.get_node("CharacterPicker/Vivian").button_pressed, "Main menu must retain the selected avatar on return")
 	var menu := current_scene
 	menu.size = Vector2(390, 844)

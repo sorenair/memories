@@ -1,5 +1,10 @@
 # Painterly paving
 
+For natural trails, gravel, field tracks, irregular flagstones or urban setts, use
+the new [surface-path family](../paths/README.md). It inherits the curved path's
+Curve3D/guidance API while supplying different ground geometry and paint. This
+original component remains the sidewalk/slab treatment.
+
 Instance `painterly_paving.tscn` for a soft, remembered sidewalk or house approach. Local Z follows the path. First Meeting uses a rotated strip for the sidewalk and a short strip leading to the stairs.
 
 The mesh has gently varied slab widths, rounded worn corners, slight misalignment, broad pigment washes, and quiet joints. A shared shader dissolves the sides and ends through large brush cells. A faint underpainting softens the seams. All visuals share one small mesh/material per strip, with no runtime frame callbacks or shadow passes.

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StonePalette" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/scenery/boulders/stone_palette.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+base_color = Color(0.2471, 0.2824, 0.302, 1)
+shadow_color = Color(0.3255, 0.3608, 0.3765, 1)
+mid_color = Color(0.4941, 0.5216, 0.5059, 1)
+highlight_color = Color(0.6667, 0.6627, 0.5843, 1)

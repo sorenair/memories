@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/painterly_surface_path.tscn" id="1"]
+
+[node name="EarthTrail" instance=ExtResource("1")]
+surface_style = 0
+paving_color = Color(0.713725,0.631373,0.509804,1)
+shoulder_color = Color(0.588235,0.576471,0.431373,1)
+stone_color = Color(0.694118,0.666667,0.580392,1)
+width_variation = 0.16
+detail_density = 0.45

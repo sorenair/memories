@@ -1,8 +1,8 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://qpao8yu20fi2"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://qpao8yu20fi2"]
+
+[ext_resource type="Shader" path="res://characters/materials/character_paint.gdshader" id="1_paint"]
 
 [resource]
-resource_name = "Toon Skin - Soren"
-diffuse_mode = 3
-specular_mode = 1
-disable_fog = true
-albedo_color = Color(0.883605, 0.662238, 0.551316, 1)
+resource_name = "Painted Skin"
+shader = ExtResource("1_paint")
+shader_parameter/base_color = Color(0.81, 0.648, 0.552, 1)

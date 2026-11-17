@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://tests/scenes/component_test.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/animals/mountain_goat/mountain_goat_study.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/player/explorer.tscn" id="3"]
+[ext_resource type="Script" path="res://tests/scenes/elk_test.gd" id="4"]
+
+[node name="MountainGoatTest" instance=ExtResource("1")]
+script = ExtResource("4")
+subject_scene = ExtResource("2")
+floor_color = Color(0.94,0.935,0.89,1)
+camera_size = 9.0
+camera_focus = Vector3(0,0.8,-0.7)
+
+[node name="Explorer" parent="." index="6"]
+position = Vector3(-1.25,0.03,3.4)
+
+[node name="Camera3D" parent="." index="7"]
+position = Vector3(10,7.5,16)
+
+[node name="Partner" parent="." instance=ExtResource("3")]
+position = Vector3(-0.25,0.03,3.4)

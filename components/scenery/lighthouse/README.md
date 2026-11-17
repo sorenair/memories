@@ -13,6 +13,7 @@ The component reuses the existing turned-profile mesh builder, painted-prop life
 | Window Count | Number of front arched windows; staggered rear windows follow the same rhythm. |
 | Gallery Enabled | Toggle the gallery railing and its plaster corbels. The structural ledge remains. |
 | Body Color | Plaster and entry steps. |
+| Stripes Enabled / Stripe Color / Stripe Count | Optional alternating horizontal shaft bands; default off. Plinth, windows, gallery and fittings keep their original paint. |
 | Accent Color | Copper-colored roof, lamp base and lens bands. |
 | Trim Color | Gallery railing, lantern framing and finial. |
 | Prop Seed / Pigment Strength | Repeatable broad paint wash and its strength. |
@@ -52,3 +53,8 @@ The default model uses **13,220 opaque triangles in one mesh surface**, plus 16 
 ![Lighthouse beside the explorer](../../../docs/previews/lighthouse-overview.png)
 
 ![Painted rotating beacon](../../../docs/previews/lighthouse-beacon.png)
+
+The Duluth memory uses the optional red-and-white stripe treatment. Turning it on
+tags the existing shaft mesh without changing its shape or collision. Stripe color
+and count update shader uniforms in place; default unstriped scenes retain their
+previous appearance. The tagged shaft does not receive lantern emission.

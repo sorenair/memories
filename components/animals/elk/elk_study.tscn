@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://components/animals/elk/painterly_elk.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/animals/elk/painterly_elk_herd.tscn" id="2"]
+
+[node name="ElkStudy" type="Node3D"]
+
+[node name="Bull" parent="." instance=ExtResource("1")]
+position = Vector3(-3.4,0,2.8)
+rotation = Vector3(0,-0.55,0)
+prop_seed = 124
+
+[node name="Cow" parent="." instance=ExtResource("1")]
+position = Vector3(0,0,2.8)
+rotation = Vector3(0,0.25,0)
+prop_seed = 36
+elk_type = 1
+
+[node name="Calf" parent="." instance=ExtResource("1")]
+position = Vector3(2.8,0,3.2)
+rotation = Vector3(0,-0.45,0)
+prop_seed = 83
+elk_type = 2
+
+[node name="Herd" parent="." instance=ExtResource("2")]
+position = Vector3(0,0,-4.5)
+prop_seed = 402
+count = 7
+footprint = Vector2(11,6)
+minimum_spacing = 2.4
+bull_fraction = 0.4
+calf_fraction = 0.15
+grazing_fraction = 0.55

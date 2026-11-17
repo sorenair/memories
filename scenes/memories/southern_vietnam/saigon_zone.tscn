@@ -1,0 +1,291 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/mifflin_street.wav" id="air"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/city/painterly_lotus_tower.tscn" id="lotus"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/city/painterly_clustered_spire_tower.tscn" id="spire"]
+[ext_resource type="PackedScene" path="res://components/groundcover/street/painterly_street.tscn" id="street"]
+[ext_resource type="PackedScene" path="res://components/scenery/tokyo/city/painterly_city_tower.tscn" id="tower"]
+[ext_resource type="Resource" path="res://scenes/memories/tokyo/forest_green.tres" id="green"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="jungle"]
+[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
+
+[sub_resource type="Curve3D" id="BoulevardCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.0,0.0,-0.96,0,0,13,-0.08,-0.0,1.92,0.08,0.0,-1.92,0,0,7,0.08,-0.0,1.92,-0.08,0.0,-1.92,0.5,0,1,0.08,-0.0,2.08,-0.08,0.0,-2.08,-0.5,0,-5,-0.08,-0.0,1.12,0,0,0,0,0,-12), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+
+[sub_resource type="Curve3D" id="CityRouteCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.32,0.0,-0.64,-3,0,11,-0.736,-0.0,1.44,0.736,0.0,-1.44,-1,0,7,0.08,-0.0,1.6,-0.08,0.0,-1.6,1.6,0,2,0.256,-0.0,1.76,-0.256,0.0,-1.76,-1.5,0,-3,-0.24,-0.0,0.96,0,0,0,0,0,-9), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"saigon"
+display_name = "Saigon"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -27
+ambience_size = Vector2(35, 36)
+ambience_blend_distance = 4.0
+
+[node name="Boulevard" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("BoulevardCurve")
+path_width = 9.4
+paving_color = Color(0.7451,0.7451,0.6784,1)
+end_fade = Vector2(1.8, 1.8)
+slab_length = 2.0
+edge_softness = 0.25
+
+[node name="CityRoute" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("CityRouteCurve")
+path_width = 1.8
+paving_color = Color(0.7529,0.7333,0.6549,1)
+end_fade = Vector2(0, 0)
+slab_length = 2.0
+edge_softness = 0.25
+visible = false
+collision_enabled = false
+
+[node name="CityRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(-1,0,7)
+
+[node name="LotusTower" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("lotus")]
+position = Vector3(-6.5,0,-10.7)
+rotation_degrees = Vector3(0,20,0)
+prop_seed = 620450
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="SpireTower" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("spire")]
+position = Vector3(6.3,0,-14.5)
+prop_seed = 620451
+footprint = Vector2(5.4,5.1)
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="WestRoad" parent="Scenery" instance=ExtResource("street")]
+position = Vector3(-7.1,0,1)
+width = 2.8
+length = 27
+asphalt_color = Color(0.6118,0.6588,0.6353,1)
+end_fade = Vector2(2.2,2.2)
+
+[node name="WestTower1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(-11.2,0,8)
+rotation_degrees = Vector3(0,90,0)
+floors = 9
+footprint = Vector2(4.2,4.4)
+floor_height = 1.2
+profile = 0
+prop_seed = 620463
+body_color = Color(0.6157,0.6588,0.6196,1)
+accent_color = Color(0.5569,0.6667,0.6275,1)
+lit_fraction = 0.22
+screen_enabled = false
+halo_enabled = false
+sign_text = ""
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="WestTower2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(-11.2,0,1)
+rotation_degrees = Vector3(0,90,0)
+floors = 11
+footprint = Vector2(4.2,4.4)
+floor_height = 1.2
+profile = 1
+prop_seed = 620464
+body_color = Color(0.6471,0.7059,0.6863,1)
+accent_color = Color(0.5569,0.6667,0.6275,1)
+lit_fraction = 0.22
+screen_enabled = false
+halo_enabled = false
+sign_text = ""
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="WestTower3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(-11.2,0,-6)
+rotation_degrees = Vector3(0,90,0)
+floors = 13
+footprint = Vector2(4.2,4.4)
+floor_height = 1.2
+profile = 2
+prop_seed = 620465
+body_color = Color(0.6902,0.7059,0.6431,1)
+accent_color = Color(0.5569,0.6667,0.6275,1)
+lit_fraction = 0.22
+screen_enabled = false
+halo_enabled = false
+sign_text = ""
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="WestPalm1" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-5.5,0,9)
+plant_form = 0
+plant_seed = 620493
+plant_height = 3.7
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="WestPalm2" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-5.5,0,3)
+plant_form = 0
+plant_seed = 620494
+plant_height = 3.7
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="WestPalm3" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-5.5,0,-4)
+plant_form = 0
+plant_seed = 620495
+plant_height = 3.7
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="EastRoad" parent="Scenery" instance=ExtResource("street")]
+position = Vector3(7.1,0,1)
+width = 2.8
+length = 27
+asphalt_color = Color(0.6118,0.6588,0.6353,1)
+end_fade = Vector2(2.2,2.2)
+
+[node name="EastTower1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(11.2,0,8)
+rotation_degrees = Vector3(0,-90,0)
+floors = 5
+footprint = Vector2(4.2,4.4)
+floor_height = 1.2
+profile = 0
+prop_seed = 620477
+body_color = Color(0.6157,0.6588,0.6196,1)
+accent_color = Color(0.5569,0.6667,0.6275,1)
+lit_fraction = 0.22
+screen_enabled = false
+halo_enabled = false
+sign_text = ""
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="EastTower2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(11.2,0,1)
+rotation_degrees = Vector3(0,-90,0)
+floors = 6
+footprint = Vector2(4.2,4.4)
+floor_height = 1.2
+profile = 1
+prop_seed = 620478
+body_color = Color(0.6471,0.7059,0.6863,1)
+accent_color = Color(0.5569,0.6667,0.6275,1)
+lit_fraction = 0.22
+screen_enabled = false
+halo_enabled = false
+sign_text = ""
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="EastTower3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
+position = Vector3(11.2,0,-6)
+rotation_degrees = Vector3(0,-90,0)
+floors = 7
+footprint = Vector2(4.2,4.4)
+floor_height = 1.2
+profile = 2
+prop_seed = 620479
+body_color = Color(0.6902,0.7059,0.6431,1)
+accent_color = Color(0.5569,0.6667,0.6275,1)
+lit_fraction = 0.22
+screen_enabled = false
+halo_enabled = false
+sign_text = ""
+recall_enabled = true
+recall_anchor = NodePath("../CityRecall")
+
+[node name="EastPalm1" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(5.5,0,9)
+plant_form = 0
+plant_seed = 620507
+plant_height = 3.7
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="EastPalm2" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(5.5,0,3)
+plant_form = 0
+plant_seed = 620508
+plant_height = 3.7
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="EastPalm3" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(5.5,0,-4)
+plant_form = 0
+plant_seed = 620509
+plant_height = 3.7
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="AvenueCrowd" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(0,0,1)
+count = 96
+footprint = Vector2(9.0,23)
+spacing = 0.86
+person_scale = 1.08
+crowd_seed = 620520
+palette = 0
+pose_mix = 2
+facing_variation = 80.0
+motion_strength = 0.32
+recall_enabled = true
+ground_exclusions = Array[NodePath]([NodePath("../CityRoute"),NodePath("../LotusTower"),NodePath("../SpireTower")])
+
+[node name="NorthGathering" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(0,0,-10.8)
+count = 18
+footprint = Vector2(9,3.2)
+spacing = 0.92
+person_scale = 1.08
+crowd_seed = 620521
+palette = 0
+pose_mix = 1
+motion_strength = 0.28
+recall_enabled = true
+ground_exclusions = Array[NodePath]([NodePath("../CityRoute"),NodePath("../LotusTower"),NodePath("../SpireTower")])
+
+[node name="Fragment" parent="."]
+position = Vector3(0,0.07,-9)
+note_title = "Among the city towers"
+notes = PackedStringArray("Placeholder: add your own words about Saigon, its skyline and the people around you.")

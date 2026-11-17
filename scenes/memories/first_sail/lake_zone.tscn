@@ -1,0 +1,408 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/central_vietnam_surf.wav" id="waves"]
+[ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="water"]
+[ext_resource type="Resource" path="res://scenes/memories/first_sail/lake_water.tres" id="lake_palette"]
+[ext_resource type="PackedScene" path="res://components/scenery/sailing/dock/painterly_wooden_dock.tscn" id="dock"]
+[ext_resource type="PackedScene" path="res://components/scenery/sailing/ensign/painterly_ensign.tscn" id="boat"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="Resource" path="res://scenes/memories/first_sail/shore_green.tres" id="green"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/scenery/rock_clusters/painterly_rock_cluster.tscn" id="rocks"]
+
+[sub_resource type="Curve3D" id="ShoreCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.064,0.0,-0.288,-1,0,12,-0.16,-0.0,0.56,0.16,0.0,-0.56,-0.6,0,10.2,-0.096,-0.0,0.496,0.096,0.0,-0.496,0,0,8.5,-0.0,-0.0,0.224,0,0,0,0,0,7.1), "tilts": PackedFloat32Array(0,0,0,0)}
+point_count = 4
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"first_sail_lake"
+display_name = "First Sail · At the lake"
+ambience_stream = ExtResource("waves")
+ambience_volume_db = -29.0
+ambience_size = Vector2(30,32)
+ambience_blend_distance = 4.0
+
+[node name="ShoreReveal" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0,9.0)
+
+[node name="DockReveal" parent="Scenery" type="Marker3D"]
+position = Vector3(0,0.55,1.6)
+
+[node name="Lake" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("water")]
+position = Vector3(1,-0.04,-7)
+footprint = Vector2(28,25)
+water_seed = 822260
+irregularity = 0.09
+palette_preset = 0
+palette = ExtResource("lake_palette")
+behavior_preset = 3
+foam_amount = 0.18
+foam_width = 0.25
+block_water_entry = false
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="Dock" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("dock")]
+layout = 1
+dock_length = 9.0
+dock_width = 2.4
+head_width = 6.0
+deck_height = 0.55
+ramp_length = 2.5
+rail_sides = 3
+body_color = Color(0.7216,0.6706,0.5333,1)
+accent_color = Color(0.4745,0.4824,0.3882,1)
+trim_color = Color(0.5882,0.5922,0.502,1)
+prop_seed = 822261
+contact_shadow_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="Ensign" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("boat")]
+position = Vector3(4.5,-0.04,-3.2)
+sail_angle = 22.0
+wind_strength = 0.045
+bob_amount = 0.028
+motion_speed = 0.65
+fenders_enabled = true
+sails_enabled = true
+contact_shadow_enabled = false
+prop_seed = 822262
+recall_enabled = true
+recall_anchor = NodePath("../DockReveal")
+
+[node name="ShorePath" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ShoreCurve")
+path_width = 2.7
+paving_color = Color(0.7725,0.7529,0.6549,1)
+paving_seed = 822263
+slab_length = 3.0
+end_fade = Vector2(1.0,0.45)
+edge_softness = 0.35
+
+[node name="ShoreTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6.8,0,8.3)
+tree_seed = 822280
+tree_type = 0
+tree_height = 4.6
+crown_width = 3.7
+branch_count = 6
+leaf_sprays_per_cluster = 58
+falling_leaf_count = 0
+trunk_radius = 0.14
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.045
+
+[node name="ShoreTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-8.4,0,11.4)
+tree_seed = 822281
+tree_type = 2
+tree_height = 4.8
+crown_width = 3.3
+branch_count = 6
+leaf_sprays_per_cluster = 58
+falling_leaf_count = 0
+trunk_radius = 0.14
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.045
+
+[node name="ShoreTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.4,0,13.8)
+tree_seed = 822282
+tree_type = 0
+tree_height = 5.0
+crown_width = 3.8
+branch_count = 6
+leaf_sprays_per_cluster = 58
+falling_leaf_count = 0
+trunk_radius = 0.14
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.045
+
+[node name="ShoreTree4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(6.8,0,9.2)
+tree_seed = 822283
+tree_type = 0
+tree_height = 4.1
+crown_width = 3.4
+branch_count = 6
+leaf_sprays_per_cluster = 58
+falling_leaf_count = 0
+trunk_radius = 0.14
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.045
+
+[node name="ShoreTree5" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.2,0,12.6)
+tree_seed = 822284
+tree_type = 2
+tree_height = 4.6
+crown_width = 3.0
+branch_count = 6
+leaf_sprays_per_cluster = 58
+falling_leaf_count = 0
+trunk_radius = 0.14
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.045
+
+[node name="ShoreTree6" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.4,0,14.1)
+tree_seed = 822285
+tree_type = 0
+tree_height = 4.4
+crown_width = 3.7
+branch_count = 6
+leaf_sprays_per_cluster = 58
+falling_leaf_count = 0
+trunk_radius = 0.14
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.045
+
+[node name="ShoreBush1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.7,0,8.0)
+bush_seed = 822310
+footprint = Vector2(1.8,1.4400000000000002)
+bush_height = 1.1700000000000002
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShoreBush2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5,0,9.4)
+bush_seed = 822311
+footprint = Vector2(1.9,1.52)
+bush_height = 1.2349999999999999
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShoreBush3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.9,0,12)
+bush_seed = 822312
+footprint = Vector2(2.1,1.6800000000000002)
+bush_height = 1.3650000000000002
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShoreBush4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.4,0,14)
+bush_seed = 822313
+footprint = Vector2(1.6,1.2800000000000002)
+bush_height = 1.04
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShoreBush5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.4,0,8.4)
+bush_seed = 822314
+footprint = Vector2(1.6,1.2800000000000002)
+bush_height = 1.04
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShoreBush6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.3,0,9.7)
+bush_seed = 822315
+footprint = Vector2(1.9,1.52)
+bush_height = 1.2349999999999999
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShoreBush7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.7,0,12.2)
+bush_seed = 822316
+footprint = Vector2(2.0,1.6)
+bush_height = 1.3
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShoreBush8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.8,0,14)
+bush_seed = 822317
+footprint = Vector2(1.5,1.2000000000000002)
+bush_height = 0.9750000000000001
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShoreGrass1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.2,0,7.8)
+patch_size = Vector2(3.4,2.8)
+patch_seed = 822330
+grass_height = 0.17
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 38.0
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../Dock"),NodePath("../ShorePath"),NodePath("../LeftShoreStones"),NodePath("../RightShoreStones")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="ShoreGrass2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.8,0,9.8)
+patch_size = Vector2(4.1,3.5)
+patch_seed = 822331
+grass_height = 0.17
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 38.0
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../Dock"),NodePath("../ShorePath"),NodePath("../LeftShoreStones"),NodePath("../RightShoreStones")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="ShoreGrass3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.8,0,12)
+patch_size = Vector2(4.0,3.5)
+patch_seed = 822332
+grass_height = 0.17
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 38.0
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../Dock"),NodePath("../ShorePath"),NodePath("../LeftShoreStones"),NodePath("../RightShoreStones")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="ShoreGrass4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.2,0,8.2)
+patch_size = Vector2(3.4,2.8)
+patch_seed = 822333
+grass_height = 0.17
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 38.0
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../Dock"),NodePath("../ShorePath"),NodePath("../LeftShoreStones"),NodePath("../RightShoreStones")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="ShoreGrass5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(5.7,0,10.1)
+patch_size = Vector2(4.2,3.7)
+patch_seed = 822334
+grass_height = 0.17
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 38.0
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../Dock"),NodePath("../ShorePath"),NodePath("../LeftShoreStones"),NodePath("../RightShoreStones")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="ShoreGrass6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.8,0,12.5)
+patch_size = Vector2(4.0,3.0)
+patch_seed = 822335
+grass_height = 0.17
+tufts_per_square_meter = 14.0
+leaves_per_square_meter = 38.0
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../Dock"),NodePath("../ShorePath"),NodePath("../LeftShoreStones"),NodePath("../RightShoreStones")])
+recall_enabled = true
+react_to_explorer = true
+
+[node name="LeftShoreStones" parent="Scenery" instance=ExtResource("rocks")]
+position = Vector3(-3.7,0.015,6.6)
+cluster_footprint = Vector2(2.5,1.2)
+rock_count = 5
+rock_scale = 0.48
+boulder_seed = 822350
+recall_enabled = true
+
+[node name="RightShoreStones" parent="Scenery" instance=ExtResource("rocks")]
+position = Vector3(3.8,0.015,7.1)
+cluster_footprint = Vector2(2.5,1.2)
+rock_count = 5
+rock_scale = 0.48
+boulder_seed = 822351
+recall_enabled = true
+
+[node name="DistantTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-11.4,0,-16)
+tree_seed = 822370
+tree_type = 4
+tree_height = 3.2
+crown_width = 3.1
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../DockReveal")
+
+[node name="DistantTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-13.2,0,-11.8)
+tree_seed = 822371
+tree_type = 0
+tree_height = 3.6
+crown_width = 3.1
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../DockReveal")
+
+[node name="DistantTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-8.8,0,-19.1)
+tree_seed = 822372
+tree_type = 2
+tree_height = 4.0
+crown_width = 3.1
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../DockReveal")
+
+[node name="Fragment" parent="."]
+position = Vector3(-0.6,0.62,-3.2)
+note_title = "Our first sail"
+notes = PackedStringArray("Placeholder: add your own words about your first sail on the Pearson Ensign.")

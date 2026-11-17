@@ -1,6 +1,6 @@
 # Sculpted fire: art direction
 
-Updated 2026-11-15 after reworking flame motion and spark shapes. Scope:
+Updated 2026-11-16 after another reference comparison and spark rework. Scope:
 `components/vfx/sculpted_fire/`; the original fire remains a separate component.
 
 ## Target
@@ -44,20 +44,32 @@ extended here to an original 3D volume rather than a flat fire card. It trades
 perfectly art-directed loops for more varied flow; review the result over several
 cycles rather than approving a single pose.
 
-## Supporting-layer critique and revision — November 15
+## Reference comparison and refinement — November 16
 
-**Fire:** regular handles were the main remaining mismatch, not just a timing
-issue. The current revision changes their construction as described above. Judge
-whether the upper flow stretches and folds convincingly while the base remains
-full. Watch for excessive detached blobs or tips that appear to hit a flat ceiling.
+**Fire:** the supplied drawings have longer, stretched folds and deliberate heat
+bands. The previous flow pass improved asymmetry, but some upper lobes were still
+round and its heat transitions were blurry. The current pass stretches the field
+vertically, moves it upward faster, limits density-driven expansion and adds
+small asymmetric root distortion. Sharper gold/cream transitions improve the
+graphic heat shapes. Keep the full low body; do not return to a tall orb.
 
-**Sparks:** the previous mixture of faceted chips, pinpoints and long needles
-looked like confetti; tightly uniform rounded teardrops then looked like spheres.
-The current revision uses one pointed stroke language with thin cross sections,
-hot gold heads, orange/red trailing ends, and varied length, width and bend.
-**Spark Variation** defaults to **0.65**. Preserve readable short flecks alongside
-longer streaks; avoid both glowing beads and a uniform rain of needles. Default
-Burstiness remains **0.35**.
+**Sparks:** rounded teardrops read as beads; the subsequent pointed loft meshes
+read as miniature darts because they retained a fixed body while drifting.
+The campfire reference has transient hot marks with much less solid presence.
+[Marina's ember study](https://realtimevfx.com/t/marina-vfx-50-weeks-of-stylized-vfx-between-art-emotion-code/29826)
+uses warped glowing fragment shapes, while
+[Jordan Jaminet's breakdown](https://jaminet.artstation.com/projects/4nGAW)
+uses intermittent ember bursts to reduce repetition. My design inference is that
+changing emission rhythm and the fragment's visible history matters more than
+adding another point to its mesh.
+
+The new implementation uses narrow irregular hot fragments with short
+camera-facing ribbons reconstructed from their recent 3D paths. Quick outward
+pops mix with slower fluttering embers, with per-birth direction, size and
+brightness changes. Trails cool to orange and fade; their maximum reach is
+capped relative to fragment size. **Spark Trail Length** defaults to **0.035
+seconds**; zero leaves only the hot fragments. **Spark Variation** remains
+**0.65**, and Burstiness **0.35**. No CPU animation or history buffer is needed.
 
 **Smoke:** the previous soft, mottled dabs read as blurred stains; simply
 sharpening them exposed overlapping discs. The guide's connected plume and
@@ -70,6 +82,8 @@ The base develops above the hottest body so the fire stays readable.
 Review these changes in motion on both backgrounds. The plume should look like
 one rolling cloud, with clear ember silhouettes through it. Avoid repeated solid
 balls, ghostly overlaps, noisy erosion and shading that makes the smoke rocky.
+Watch the occasional leaf-like upper flame cap and the stability of the hot heart
+in later reviews; these remain artistic judgments, not solved by a passing test.
 
 ## Review the next pass against these criteria
 
@@ -90,7 +104,8 @@ balls, ghostly overlaps, noisy erosion and shading that makes the smoke rocky.
 Use `tests/scenes/sculpted_fire_test.tscn` with F6. Review four angles,
 perspective and orthographic views, close-up and gameplay size. The component
 and render checks cover saved controls, density/fullness changes, recall,
-freeze, maximum wind, scene occlusion and orthographic size invariance.
+freeze, maximum wind, scene occlusion, orthographic size invariance, trail length
+and isolated overhead ember visibility.
 Profile representative instances on target hardware after geometry changes.
 Passing technical checks does not establish artistic approval.
 
@@ -103,8 +118,7 @@ Passing technical checks does not establish artistic approval.
 - [Sheila Stipnieks — Stylized Fire Breakdown](https://sheilastipnieks.artstation.com/projects/D5oPoA):
   layered emitters and fire/smoke erosion.
 
-Review the [current close-up](previews/sculpted-fire-curl-detail.gif),
-[composite](previews/sculpted-fire-motion.gif),
-[isolated smoke](previews/sculpted-fire-smoke-motion.gif) and
-[flame comparison](previews/sculpted-fire-flow-comparison.gif) and
-[revised sparks](previews/sculpted-fire-flow-sparks.gif).
+Review the [flame comparison](previews/sculpted-fire-reference-pass.gif),
+[ember comparison](previews/sculpted-fire-ember-comparison.gif),
+[composite](previews/sculpted-fire-motion.gif) and
+[isolated smoke](previews/sculpted-fire-smoke-motion.gif).

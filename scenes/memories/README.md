@@ -93,7 +93,42 @@ a leafy Meiji Shrine approach, the planted Sensō-ji courtyard and Shibuya Cross
 Existing gates, halls, pagoda, towers and crowds are linked by supported walking
 routes, two veranda stair flights and a clear diagonal through the crossing.
 
-The eleventh is [Vineyard](vineyard/README.md), dated August 1, 2026: two zones connect
+The eleventh is [Northern Vietnam](northern_vietnam/README.md), dated June 6, 2026:
+three zones connect a Hanoi Old Quarter shophouse lane, Hoan Kiem's island temple
+and red bridge, and a Ha Long Bay dock overlook among limestone karsts. New modular
+scenery combines with reused jungle planting, water, crowd and dock components.
+
+The twelfth is [Central Vietnam](central_vietnam/README.md), dated June 15, 2026:
+three zones connect a jungle-clad limestone grove and green-roofed temple at
+Marble Mountains, curved stepped rice fields, and Hue's imperial gate and palace court. Supported earthen paths
+climb to the rice overlook; each zone has its own fragment and ambient bed.
+
+The thirteenth is [Southern Vietnam](southern_vietnam/README.md), dated June 20, 2026:
+Bai Mon's crescent beach and lighthouse cliff, a continuous sculpted dune field,
+and a crowded Saigon avenue. The existing beach, sand, lighthouse, foliage and
+crowd components combine with a supported headland and two skyline profiles.
+
+The fourteenth is [Bean and Bear Lakes](bean_bear/README.md), dated July 25, 2026:
+three zones connect a parked 4Runner, a winding summer forest trail, a supported
+cliff overlooking two lakes in a line, and a lakeside tent/stove/fire campsite.
+Existing camping, woodland, water and terrain components supply the entire scene.
+
+The fifteenth is [Vineyard](vineyard/README.md), dated August 1, 2026: two zones connect
 six grape-bush rows to a raised wooden deck and scenic summer field. The field's
 foliage recalls from a reachable lookout anchor, and guidance follows the real
 ramp onto the deck.
+
+The sixteenth is [First Sail](first_sail/README.md), dated August 22, 2026:
+one lake-focused zone uses the existing wooden dock and Pearson Ensign, summer
+planting at the shore, a landing fragment, water ambience and a gradual sailboat
+camera reveal. The finite floor supports both explorers and the real access ramp.
+
+The seventeenth is [Labor Day in Colorado](colorado/README.md), dated September 6,
+2026: three zones connect a golden Flatirons field, a supported rocky summit with
+three mountain goats, and a pine-lined lake with a seven-animal elk herd and a
+nearby cow. All model components are reused.
+
+The eighteenth is [Duluth in the Fall](duluth_autumn/README.md), dated October 12,
+2026: three zones connect a short autumn trail and gray-rock lookout, a red-and-white
+lighthouse beside Lake Superior, and a Japanese dry garden with raked gravel, stone
+islands, a lantern and bamboo. Each has its own fragment and ambient bed.

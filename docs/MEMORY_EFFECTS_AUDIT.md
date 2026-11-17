@@ -1,6 +1,6 @@
 # Memory recall and foliage audit
 
-Verified against every world in `UI/memory_lane/memory_lane.gd` on November 15,
+Verified against every world in `UI/memory_lane/memory_lane.gd` on November 17,
 2026. Counts include generated child components, such as arcade light washes.
 
 | Timeline memory | Recall components | Foliage responding to players |
@@ -15,9 +15,16 @@ Verified against every world in `UI/memory_lane/memory_lane.gd` on November 15,
 | Mifflin Block Party | 76 | 48 |
 | Graduation | 53 | 42 |
 | Tokyo | 97 | 82 |
+| Northern Vietnam | 80 | 55 |
+| Central Vietnam | 110 | 97 |
+| Southern Vietnam | 81 | 63 |
+| Bean and Bear Lakes | 304 | 285 |
 | Vineyard | 86 | 72 |
+| First Sail | 28 | 23 |
+| Labor Day in Colorado | 170 | 87 |
+| Duluth in the Fall | 104 | 81 |
 | Seasonal Demo | 62 | 46 |
-| **Total** | **826** | **640** |
+| **Total** | **1703** | **1331** |
 
 The stadium, museum and New Year's Eve currently contain no reactive foliage.
 Their scenery, displays, crowds and lighting still recall. Library studies and
@@ -55,9 +62,21 @@ jungle and bonsai views; Postcard Cabin's walkthrough captures its winter trail,
 ice and fireside clearing. Mifflin adds street, porch and bar views, with its complete
 two-zone composition shown in a fully recalled overview. Vineyard adds vine-aisle,
 deck and field views. Graduation adds arches, portico and ceremony views with
-53 recallable pieces and 42 responsive foliage components. The current headless
-catalog audit passes across all twelve worlds, including Tokyo's shrine, temple
-and city views (97 recallable pieces and 82 responsive foliage components).
+53 recallable pieces and 42 responsive foliage components. The catalog baseline
+covered all nineteen worlds, including Tokyo's shrine, temple
+and city views (97 recallable pieces and 82 responsive foliage components), plus
+Northern Vietnam’s street, island temple and karst overlook (80 recallable pieces
+and 55 responsive foliage components). Central Vietnam adds the limestone temple clearing, rice
+terraces and imperial court, with 110 recallable and 97 reactive foliage components.
+Southern Vietnam adds the cove, lighthouse, dunes and crowded skyline, with 81
+recallable pieces and 63 reactive foliage components. Bean and Bear Lakes adds
+the forest trail, two-lake overlook and camp, with 304 recallable pieces and
+285 reactive foliage components. Its distant lakes and wooded camp use reachable
+viewpoint anchors. First Sail adds its planted shore, dock, lake and Ensign,
+with 28 recallable pieces and 23 reactive foliage components. Duluth adds its
+autumn trail, striped lighthouse shore and dry garden, with 104 recallable pieces
+and 81 reactive foliage components. Colorado's polish pass verified 170
+recallable pieces and 87 foliage components that respond to both explorers.
 Existing grass, bush, shared-distance, fire and smoke checks pass.
 Two separate LAN host/guest processes also pass, including remote foliage-group
 membership while remaining outside the local input/interaction group.

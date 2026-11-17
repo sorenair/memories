@@ -7,6 +7,10 @@ var _ink_alpha: float = 1.0
 var _pointer: int = -1
 var _start := Vector2.ZERO
 var _cancelled: bool = false
+var _external_touch_active := false
+
+func set_touch_active(active: bool) -> void:
+	_external_touch_active = active
 
 func _ready() -> void:
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -17,7 +21,7 @@ func _ready() -> void:
 func _target_alpha() -> float:
 	if selection_icon:
 		return 1.0 if button_pressed else (0.4 if is_hovered() or has_focus() else 0.18)
-	return 1.0 if is_hovered() or has_focus() or is_pressed() or _pointer >= 0 else 0.72
+	return 1.0 if is_hovered() or has_focus() or is_pressed() or _pointer >= 0 or _external_touch_active else 0.72
 
 func _process(delta: float) -> void:
 	_ink_alpha = lerpf(_ink_alpha, _target_alpha(), 1.0 - exp(-delta * 16.0))
@@ -49,3 +53,4 @@ func _input(event: InputEvent) -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT:
 		_pointer = -1
+		_external_touch_active = false

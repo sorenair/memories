@@ -38,7 +38,17 @@ func run() -> void:
 			if Geometry2D.segment_intersects_segment(recall_paths[0][segment], recall_paths[0][segment + 1], recall_paths[1][wing], recall_paths[1][wing + 1]) != null:
 				head_is_clear = false
 	check(head_is_clear, "The Recall curve must not cross either arrowhead wing")
-	check(menu.MEMORIES.size() == 12, "Timeline must contain eleven authored memories and Seasonal Demo")
+	for shape in [Vector2(28.0, 19.2), Vector2(30.0, 20.0), Vector2(32.75, 20.2)]:
+		var paths: Array = menu.get_node("Recall").recall_strokes(shape.x, shape.y)
+		check(is_equal_approx(paths[0][0].x + paths[0][-1].x, 64.0) and is_equal_approx(paths[0][0].y, paths[0][-1].y), "The Recall opening must stay symmetric about twelve o'clock throughout its animation")
+		for segment in range(paths[0].size() - 2):
+			for wing in range(2):
+				check(Geometry2D.segment_intersects_segment(paths[0][segment], paths[0][segment + 1], paths[1][wing], paths[1][wing + 1]) == null, "Animated Recall geometry must keep the arrowhead clear")
+	check(menu.MEMORIES.size() == 18, "Timeline must contain eighteen authored memories")
+	check(not menu.MEMORIES.any(func(memory: Dictionary) -> bool: return memory.scene == "res://scenes/world/memory_world.tscn"), "Seasonal Demo must not appear in the timeline")
+	for memory in menu.MEMORIES:
+		for word in str(memory.title).split(" ", false):
+			check(word.left(1) == word.left(1).to_upper(), "Every word in a memory title must start with a capital")
 	check(menu.MEMORIES[0].title == "First Meeting" and menu.MEMORIES[0].date == "NOV 12, 2025", "First memory must have the requested title and date")
 	menu.set_process(false)
 	menu._entrance_time = 0.0
@@ -72,7 +82,8 @@ func run() -> void:
 	check(menu._pointer == 0, "A second finger must not release the active swipe")
 	touch(menu, drag.position, false)
 	check(menu.selected_index == 1, "A left swipe should select the next memory")
-	check(menu.get_node("MemoryTitle").text == "Football in the snow", "Selection must update the title")
+	check(menu.get_node("MemoryTitle").text == "Axe Game", "Selection must use the updated football title")
+	check(menu.get_node("SelectedDate").text == "NOV 25, 2025", "Axe Game must display November 25, 2025")
 	for frame in range(80):
 		menu._process(1.0 / 60.0)
 	check(is_equal_approx(menu._position, 1.0), "Swipe release should settle the mark at the fixed selection point")
@@ -91,7 +102,7 @@ func run() -> void:
 	key.keycode = KEY_LEFT
 	key.pressed = true
 	menu._unhandled_key_input(key)
-	check(menu.selected_index == 10, "Keyboard left should select Vineyard before Seasonal Demo")
+	check(menu.selected_index == 16, "Keyboard left should select Labor Day In Colorado before Duluth In The Fall")
 	menu.select_memory(0)
 	menu.size = Vector2(390, 844)
 	menu._layout()
@@ -109,6 +120,11 @@ func run() -> void:
 	check(menu.get_node("MemoryTitle").size.x == 326, "Portrait title must fit the available width")
 	check(not menu.has_node("CharacterPicker"), "Avatar selection must live on the main menu")
 	var recall_point: Vector2 = menu.get_node("Recall").get_global_rect().get_center()
+	touch(menu, recall_point, true)
+	menu.get_node("Recall")._process(0.1)
+	check(menu.get_node("Recall")._engagement > 0.5, "Recall animation must respond to native touch feedback")
+	touch(menu, recall_point, false, 0, true)
+	check(not menu._travelling, "Cancelling the touch feedback must not enter a memory")
 	# Dispatch through the viewport to exercise the icon's native touch handling.
 	for pressed in [true, false]:
 		var event := InputEventScreenTouch.new()
@@ -116,6 +132,7 @@ func run() -> void:
 		event.index = 0
 		event.pressed = pressed
 		root.push_input(event, true)
+	check(menu.get_node("Recall")._activation_tween != null and menu.get_node("Recall")._activation_tween.is_running(), "Recalling must start the stroke animation before the scene fade")
 	var transition_veil := root.get_node("MemoryTransitionVeil/Paper")
 	await create_timer(0.6).timeout
 	check(current_scene != menu, "Touch Recall must change scenes")

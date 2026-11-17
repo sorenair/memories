@@ -1,0 +1,799 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/autumn_wind.wav" id="bed"]
+[ext_resource type="Script" path="res://scenes/memories/colorado/quandary_terrain.gd" id="terrain"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/painterly_surface_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
+[ext_resource type="PackedScene" path="res://components/animals/mountain_goat/painterly_mountain_goat.tscn" id="goat"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+
+[ext_resource type="PackedScene" path="res://components/scenery/rock_clusters/painterly_rock_cluster.tscn" id="scree"]
+
+[ext_resource type="Resource" path="res://scenes/memories/colorado/alpine_stone.tres" id="alpine_palette"]
+
+[ext_resource type="Resource" path="res://scenes/memories/colorado/shore_sedge.tres" id="sedge_palette"]
+
+[sub_resource type="Curve3D" id="SummitClimbCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.64,0,-0.48,-9,0,15,-1.6,0,0.8,1.6,0.128,-0.8,-5,0,12,-1.92,-0.32,0.64,1.92,0.32,-0.64,1,0.8,10,-1.36,-0.448,1.12,1.36,0.448,-1.12,7,2.0,8,-0.08,-0.256,1.52,0.08,0,-1.52,9.5,3.6,3,0.96,0,0.72,-0.96,0,-0.72,7.5,3.6,-1.5,1.2,0,-0.08,-1.2,0,0.08,3.5,3.6,-1.5,0.56,0,-0.08,0,0,0,0,3.6,-1), "tilts": PackedFloat32Array(0,0,0,0,0,0,0,0)}
+point_count = 8
+
+[sub_resource type="Curve3D" id="ToLakeCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.56,0,-0.32,0,3.6,-1,-1.28,0,1.04,1.28,0,-1.04,3.5,3.6,-3,-1.52,0,1.6,1.52,-0.256,-1.6,8,3.6,-7.5,-0.96,0.576,1.84,0.96,-0.576,-1.84,13,2.0,-13,-0.8,0.32,1.6,0.8,0,-1.6,14,0,-19,-0.64,0,0.64,0,0,0,18,0,-23), "tilts": PackedFloat32Array(0,0,0,0,0,0)}
+point_count = 6
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"colorado_quandary"
+display_name = "Quandary Peak · Summit"
+ambience_stream = ExtResource("bed")
+ambience_volume_db = -25
+ambience_size = Vector2(29, 34)
+ambience_blend_distance = 5.7
+
+[node name="SummitReveal" parent="Scenery" type="Marker3D"]
+position = Vector3(0,3.6,-1)
+
+[node name="ClimbReveal" parent="Scenery" type="Marker3D"]
+position = Vector3(2.8, 1.05, 9.5)
+
+[node name="SummitClimb" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("SummitClimbCurve")
+visible = false
+path_width = 2.45
+collision_enabled = false
+
+[node name="ToLake" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ToLakeCurve")
+visible = false
+path_width = 2.45
+collision_enabled = false
+
+[node name="QuandaryTerrain" parent="Scenery" type="Node3D" node_paths=PackedStringArray("ascent", "descent", "recall_anchor")]
+script = ExtResource("terrain")
+stone_palette = ExtResource("alpine_palette")
+ascent = NodePath("../SummitClimb")
+descent = NodePath("../ToLake")
+outline = PackedVector2Array(-10.8, 15.3, -8.7, 12.8, -6.1, 10.0, -3.35, 10, -1.6, 7.8, 0.65, 8.1, 3.65, 6.4, 1, 4.65, -2.45, 4.32, -4.8, 3.8, -6.4, 1.4, -6.9, -2.2, -4.8, -5.45, -1.6, -6.6, 0.8, -6.7, 3.1, -7.4, 5, -8.4, 6.5, -10.4, 8.4, -12.9, 10.3, -14.9, 11.4, -17.2, 11.9, -19.4, 15.3, -22.1, 17.6, -24.45, 19.44, -22.7, 18.3, -20, 16.75, -19.2, 16.5, -15.8, 15.9, -13.2, 14.45, -10.45, 12.6, -9.8, 11.5, -7.9, 10.6, -5.2, 11.6, -2.6, 11.9, 0, 12.15, 2.65, 11.6, 4.7, 10.8, 6.8, 9.6, 9.35, 7.5, 10.5, 5.55, 10.4, 2.9, 12.1, 0, 11.9, -2.5, 13.48, -4.5, 13.87, -7.3, 16, -9.9, 16.8)
+prop_seed = 906263
+recall_enabled = true
+recall_anchor = NodePath("../RidgeApproach")
+contact_shadow_enabled = false
+
+[node name="RidgeApproach" parent="Scenery" type="Marker3D"]
+position = Vector3(-6.6, 0, 13.4)
+
+[node name="Goat1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("goat")]
+position = Vector3(-2.85, 3.6, -2.3)
+rotation_degrees = Vector3(0, 52, 0)
+goat_size = 0.96
+idle_pose = 1
+idle_motion = 0.53
+idle_speed = 0.57
+prop_seed = 906420
+recall_enabled = true
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="Goat2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("goat")]
+position = Vector3(-3.42, 3.6, 0.54)
+rotation_degrees = Vector3(0, 103, 0)
+goat_size = 0.9
+idle_pose = 2
+idle_motion = 0.55
+idle_speed = 0.72
+prop_seed = 906421
+recall_enabled = true
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="Goat3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("goat")]
+position = Vector3(0.8, 3.6, -3.6)
+rotation_degrees = Vector3(0, -41, 0)
+goat_size = 1.0
+idle_pose = 0
+idle_motion = 0.55
+idle_speed = 0.67
+prop_seed = 906422
+recall_enabled = true
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="SummitStone0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-3.85, 3.6, 1.95)
+dimensions = Vector3(1.8, 0.77, 1.1)
+boulder_seed = 906850
+shape_profile = 2
+rotation_degrees = Vector3(0, -16, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="SummitStone1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(3.7, 3.6, 1.55)
+dimensions = Vector3(1.6, 0.82, 1.15)
+boulder_seed = 906851
+shape_profile = 2
+rotation_degrees = Vector3(0, 21, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="SummitStone2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.3, 3.6, -4.05)
+dimensions = Vector3(1.9, 0.97, 1.2)
+boulder_seed = 906852
+shape_profile = 4
+rotation_degrees = Vector3(0, 18, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="SummitStone3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(4.95, 3.6, 0.62)
+dimensions = Vector3(1.0, 0.52, 0.75)
+boulder_seed = 906853
+shape_profile = 2
+rotation_degrees = Vector3(0, 65, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="SummitStone4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-4.3, 3.6, -2.65)
+dimensions = Vector3(1.25, 0.7, 1.76)
+boulder_seed = 906854
+shape_profile = 2
+rotation_degrees = Vector3(0, 8, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="SummitStone5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-0.42, 3.6, -4.72)
+dimensions = Vector3(1.75, 0.6, 1.5)
+boulder_seed = 906855
+shape_profile = 2
+rotation_degrees = Vector3(0, 31, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="AlpineScree0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(-3, 3.61, 2.0)
+rotation_degrees = Vector3(0, 28, 0)
+cluster_footprint = Vector2(3.0, 1.1)
+rock_scale = 0.26
+rock_count = 18
+boulder_seed = 906875
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="AlpineScree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(-3.4, 3.61, -3.0)
+rotation_degrees = Vector3(0, 12, 0)
+cluster_footprint = Vector2(2.8, 1.4)
+rock_scale = 0.26
+rock_count = 18
+boulder_seed = 906876
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="AlpineScree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(0.1, 3.61, -4.5)
+rotation_degrees = Vector3(0, -24, 0)
+cluster_footprint = Vector2(2.5, 1.05)
+rock_scale = 0.26
+rock_count = 18
+boulder_seed = 906877
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="AlpineScree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(3.8, 3.61, 1.45)
+rotation_degrees = Vector3(0, 32, 0)
+cluster_footprint = Vector2(3.05, 1.5)
+rock_scale = 0.26
+rock_count = 18
+boulder_seed = 906878
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="AlpineScree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(-6.4, 0, 12.8)
+rotation_degrees = Vector3(0, -16, 0)
+cluster_footprint = Vector2(3.8, 1.2)
+rock_scale = 0.26
+rock_count = 18
+boulder_seed = 906879
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="AlpineTurf0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-2.85, 3.61, 0.96)
+patch_size = Vector2(0.85, 0.52)
+grass_height = 0.12
+tufts_per_square_meter = 13
+leaves_per_square_meter = 16
+ground_leaf_scale = 0.43
+patch_seed = 906891
+palette_preset = 0
+palette = ExtResource("sedge_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../SummitClimb"), NodePath("../ToLake")])
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="AlpineTurf1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(3.8, 3.61, 1.55)
+patch_size = Vector2(1.18, 0.55)
+grass_height = 0.11
+tufts_per_square_meter = 13
+leaves_per_square_meter = 16
+ground_leaf_scale = 0.43
+patch_seed = 906892
+palette_preset = 0
+palette = ExtResource("sedge_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../SummitClimb"), NodePath("../ToLake")])
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="AlpineTurf2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-2.2, 3.61, -4.3)
+patch_size = Vector2(1.2, 0.7)
+grass_height = 0.14
+tufts_per_square_meter = 13
+leaves_per_square_meter = 16
+ground_leaf_scale = 0.43
+patch_seed = 906893
+palette_preset = 0
+palette = ExtResource("sedge_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../SummitClimb"), NodePath("../ToLake")])
+recall_anchor = NodePath("../SummitReveal")
+
+[node name="BedrockBlock0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-6.5, -0.55, -1.65)
+rotation_degrees = Vector3(0, 28, 0)
+dimensions = Vector3(5.9, 4.25, 5.6)
+boulder_seed = 906821
+shape_profile = 4
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-5.0, 0.72, -5.0)
+rotation_degrees = Vector3(0, 51, 0)
+dimensions = Vector3(5.45, 4.55, 4.6)
+boulder_seed = 906823
+shape_profile = 4
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-4.9, -0.48, 3.6)
+rotation_degrees = Vector3(0, 57, 0)
+dimensions = Vector3(5.8, 3.42, 4.8)
+boulder_seed = 906822
+shape_profile = 2
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(0.15, 0.01, -6.3)
+rotation_degrees = Vector3(0, -13, 0)
+dimensions = Vector3(5.1, 4.1, 3.9)
+boulder_seed = 906825
+shape_profile = 4
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(1.08, 0.02, 4.18)
+rotation_degrees = Vector3(0, 36, 0)
+dimensions = Vector3(5.85, 3.42, 4.42)
+boulder_seed = 906829
+shape_profile = 4
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(6.1, -0.23, 10.6)
+rotation_degrees = Vector3(0, 47, 0)
+dimensions = Vector3(5.25, 2.1, 3.9)
+boulder_seed = 906831
+shape_profile = 4
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(11.2, 0.25, -4.25)
+rotation_degrees = Vector3(0, 14, 0)
+dimensions = Vector3(5.1, 3.66, 4.5)
+boulder_seed = 906835
+shape_profile = 4
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(6.6, 0.17, -11.1)
+rotation_degrees = Vector3(0, 35, 0)
+dimensions = Vector3(4.5, 3.5, 4.35)
+boulder_seed = 906836
+shape_profile = 4
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(11.76, -0.4, -15.65)
+rotation_degrees = Vector3(0, 56, 0)
+dimensions = Vector3(3.7, 2.22, 4.11)
+boulder_seed = 906837
+shape_profile = 2
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="BedrockBlock9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(17.05, -0.52, -16.9)
+rotation_degrees = Vector3(0, 37, 0)
+dimensions = Vector3(4.0, 2.23, 4.23)
+boulder_seed = 906838
+shape_profile = 4
+burial = 0.13
+roundness = 0.17
+roughness = 0.35
+solid = true
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+recall_anchor = NodePath("../ClimbReveal")
+
+[node name="LedgeOutcrop0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-5.48, -0.1, 9.53)
+rotation_degrees = Vector3(0, 26, 0)
+boulder_seed = 907242
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(2.1, 0.77, 1.85)
+shape_profile = 2
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-1.24, 0.49, 7.89)
+rotation_degrees = Vector3(0, 36, 0)
+boulder_seed = 907243
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(3.25, 1.2, 1.55)
+shape_profile = 4
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.8, 1.19, 6.96)
+rotation_degrees = Vector3(0, 12, 0)
+boulder_seed = 907244
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(2.15, 0.95, 1.68)
+shape_profile = 2
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(5.65, 2.67, 5.23)
+rotation_degrees = Vector3(0, -14, 0)
+boulder_seed = 907245
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(2.45, 1.28, 1.68)
+shape_profile = 4
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(9.31, 1.68, 8.49)
+rotation_degrees = Vector3(0, 31, 0)
+boulder_seed = 907246
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(1.8, 0.64, 1.21)
+shape_profile = 2
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(7.24, 3.84, 3.71)
+rotation_degrees = Vector3(0, 48, 0)
+boulder_seed = 907247
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(2.4, 1.07, 1.5)
+shape_profile = 4
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(5.95, 4.25, 1.99)
+rotation_degrees = Vector3(0, 21, 0)
+boulder_seed = 907248
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(2.6, 1.13, 1.86)
+shape_profile = 2
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(9.44, 2.99, -2.66)
+rotation_degrees = Vector3(0, 54, 0)
+boulder_seed = 907249
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(1.58, 0.72, 1.2)
+shape_profile = 2
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(6.86, 3.92, -10.21)
+rotation_degrees = Vector3(0, 7, 0)
+boulder_seed = 907250
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(2.48, 1.3, 1.73)
+shape_profile = 4
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(9.95, 2.79, -6.81)
+rotation_degrees = Vector3(0, 46, 0)
+boulder_seed = 907251
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(1.78, 0.67, 1.14)
+shape_profile = 2
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(9.47, 2.92, -12.99)
+rotation_degrees = Vector3(0, 16, 0)
+boulder_seed = 907252
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(2.5, 1.15, 1.72)
+shape_profile = 2
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(14.92, 1.2, -12.56)
+rotation_degrees = Vector3(0, 22, 0)
+boulder_seed = 907253
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(1.66, 0.59, 1.15)
+shape_profile = 4
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeOutcrop12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(11.72, 0.79, -16.1)
+rotation_degrees = Vector3(0, -33, 0)
+boulder_seed = 907254
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+dimensions = Vector3(1.23, 0.57, 0.79)
+shape_profile = 2
+burial = 0.18
+roundness = 0.18
+roughness = 0.33
+
+[node name="LedgeScree0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(-0.9, 0.54, 9.1)
+rotation_degrees = Vector3(0, 22, 0)
+boulder_seed = 907265
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(1.23, 0.57)
+rock_count = 11
+rock_scale = 0.22
+roundness = 0.22
+roughness = 0.27
+
+[node name="LedgeScree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(3.13, 1.17, 8.15)
+rotation_degrees = Vector3(0, -28, 0)
+boulder_seed = 907266
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(0.91, 1.37)
+rock_count = 12
+rock_scale = 0.22
+roundness = 0.22
+roughness = 0.27
+
+[node name="LedgeScree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(6.68, 2.34, 6.22)
+rotation_degrees = Vector3(0, 22, 0)
+boulder_seed = 907267
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(1.05, 0.67)
+rock_count = 11
+rock_scale = 0.19
+roundness = 0.22
+roughness = 0.27
+
+[node name="LedgeScree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(8.73, 2.27, 8.05)
+rotation_degrees = Vector3(0, 19, 0)
+boulder_seed = 907268
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(0.79, 1.49)
+rock_count = 11
+rock_scale = 0.18
+roundness = 0.22
+roughness = 0.27
+
+[node name="LedgeScree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(8.02, 3.42, 3.97)
+rotation_degrees = Vector3(0, -10, 0)
+boulder_seed = 907269
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(0.85, 1.24)
+rock_count = 14
+rock_scale = 0.2
+roundness = 0.22
+roughness = 0.27
+
+[node name="LedgeScree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(7.88, 3.65, -9.32)
+rotation_degrees = Vector3(0, 26, 0)
+boulder_seed = 907270
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(1.1, 0.95)
+rock_count = 15
+rock_scale = 0.22
+roundness = 0.22
+roughness = 0.27
+
+[node name="LedgeScree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(9.83, 3.25, -7.2)
+rotation_degrees = Vector3(0, -25, 0)
+boulder_seed = 907271
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(0.66, 1.14)
+rock_count = 13
+rock_scale = 0.18
+roundness = 0.22
+roughness = 0.27
+
+[node name="LedgeScree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(11.7, 1.98, -13.91)
+rotation_degrees = Vector3(0, 50, 0)
+boulder_seed = 907272
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(1.01, 0.79)
+rock_count = 10
+rock_scale = 0.23
+roundness = 0.22
+roughness = 0.27
+
+[node name="LedgeScree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(13.39, 0.35, -18.08)
+rotation_degrees = Vector3(0, -32, 0)
+boulder_seed = 907273
+palette_preset = 0
+palette = ExtResource("alpine_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../ClimbReveal")
+cluster_footprint = Vector2(0.96, 0.81)
+rock_count = 12
+rock_scale = 0.17
+roundness = 0.22
+roughness = 0.27
+
+[node name="Fragment" parent="."]
+position = Vector3(0,3.68,-1)
+note_title = "On Quandary Peak"
+notes = PackedStringArray("Placeholder: add your own words about the rocky summit and the mountain goats.")

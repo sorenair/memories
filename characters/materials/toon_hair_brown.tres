@@ -1,9 +1,8 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://ce4n8oetcn10w"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ce4n8oetcn10w"]
+
+[ext_resource type="Shader" path="res://characters/materials/character_paint.gdshader" id="1_paint"]
 
 [resource]
-resource_name = "Toon Hair - Brown"
-diffuse_mode = 3
-specular_mode = 1
-disable_fog = true
-albedo_color = Color(0.457432, 0.283747, 0.166237, 1)
-roughness = 0.0
+resource_name = "Painted Hair - Brown"
+shader = ExtResource("1_paint")
+shader_parameter/base_color = Color(0.47, 0.37, 0.285, 1)

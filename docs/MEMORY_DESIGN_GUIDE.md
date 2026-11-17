@@ -2,6 +2,8 @@
 
 Use this as the design and implementation standard for future memories. It is grounded in the authored **First Meeting** and **Football in the snow** scenes, their shared world/zone framework, and their rendered previews. Scene files are the source of truth; older previews and design reviews may show earlier layouts.
 
+For a refinement pass over existing memories, use the [memory polish guide](MEMORY_POLISH_GUIDE.md). It provides per-zone composition and richness criteria, preserves selective vignettes and the ivory void, and defines scopes and handoffs for agent assignments without changing the memories' core elements.
+
 ## 1. Begin with the memory
 
 A memory is a place recalled together: a few recognizable details, a clear route, and room for two explorers. Choose the details that carry the memory before adding scenery. A large location can feel expansive while only a small part is walkable.
@@ -51,7 +53,7 @@ Use a zone for a distinct place/beat with its own fragment and ambience. **A cam
 - Block out arrival, fragment, approaches, and connecting paths before dressing the scene. Leave room to pass another explorer and operate props without standing inside foliage or collision.
 - Use **MemoryPlatform** for finite supported ground. The world discovers it, disables infinite ground, and matches its dissolve to the void. Keep safe boundaries aligned with visible railings, fences, or edges.
 - For connected landings/aisles, prefer **one custom-outline platform**. Separate platforms have closed safety rims that can block their joins. A concave outline preserves both narrow routes and surrounding empty space.
-- For winding routes, reuse [PainterlyCurvedPath](../components/groundcover/paving/README.md#curved-paths). Its editable Curve3D drives the painted ribbon, continuous collision, foliage exclusion and sampled guidance points; keep walking routes attached to that curve when editing it.
+- Choose a [surface path](../components/groundcover/paths/README.md) for winding routes: earth for woodland hikes, gravel for park/shrine approaches, two-track soil for fields, and flagstones or urban setts for built settings. These inherit [PainterlyCurvedPath](../components/groundcover/paving/README.md#curved-paths); the editable Curve3D still drives the surface, continuous collision, foliage exclusion and sampled guidance points. Keep walking routes attached to that curve when editing it. Original slab paving remains appropriate for sidewalks and house approaches.
 - Place Entry on the actual floor, including elevated decks. Allow the LAN guest's fallback spawn **1.2 m to the right**. Set the wrapper's `recalled_spawn_offset` deliberately; both authored memories use zero instead of the base world's 10 m offset.
 - Check paths with the actual explorer: gates, stairs, benches, prop controls, fragments, and turnarounds. Decorative stadium tiers and field need no walking collision.
 - Start with the inherited near-isometric orthographic camera. **Size 3.5** is the close exploration reference. Keep the explorer and nearby fragment readable without foreground objects hiding them.

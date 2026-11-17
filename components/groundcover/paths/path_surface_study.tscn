@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/gravel_walk.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/field_track.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/flagstone_path.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/urban_paver_path.tscn" id="5"]
+
+[sub_resource type="Curve3D" id="StudyCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,1.5,0,-1.7,0,0,5.5,0.6,0,1.6,-0.6,0,-1.6,1.2,0,0,0.8,0,1.7,0,0,0,0,0,-5.5), "tilts": PackedFloat32Array(0,0,0)}
+point_count = 3
+
+[node name="PathSurfaceStudy" type="Node3D"]
+
+[node name="EarthTrail" parent="." instance=ExtResource("1")]
+position = Vector3(-9.4,0,0)
+curve = SubResource("StudyCurve")
+paving_seed = 137
+
+[node name="Label0" type="Label3D" parent="."]
+position = Vector3(-9.4,0.4,7.0)
+billboard = 1
+modulate = Color(0.22,0.25,0.23,1)
+outline_size = 0
+pixel_size = 0.008
+font_size = 38
+text = "EARTH TRAIL"
+
+[node name="GravelWalk" parent="." instance=ExtResource("2")]
+position = Vector3(-4.7,0,0)
+curve = SubResource("StudyCurve")
+paving_seed = 208
+
+[node name="Label1" type="Label3D" parent="."]
+position = Vector3(-4.7,0.4,7.0)
+billboard = 1
+modulate = Color(0.22,0.25,0.23,1)
+outline_size = 0
+pixel_size = 0.008
+font_size = 38
+text = "GRAVEL WALK"
+
+[node name="FieldTrack" parent="." instance=ExtResource("3")]
+position = Vector3(0.0,0,0)
+curve = SubResource("StudyCurve")
+paving_seed = 279
+
+[node name="Label2" type="Label3D" parent="."]
+position = Vector3(0.0,0.4,7.0)
+billboard = 1
+modulate = Color(0.22,0.25,0.23,1)
+outline_size = 0
+pixel_size = 0.008
+font_size = 38
+text = "FIELD TRACK"
+
+[node name="FlagstonePath" parent="." instance=ExtResource("4")]
+position = Vector3(4.7,0,0)
+curve = SubResource("StudyCurve")
+paving_seed = 350
+
+[node name="Label3" type="Label3D" parent="."]
+position = Vector3(4.7,0.4,7.0)
+billboard = 1
+modulate = Color(0.22,0.25,0.23,1)
+outline_size = 0
+pixel_size = 0.008
+font_size = 38
+text = "FLAGSTONE"
+
+[node name="UrbanPaverPath" parent="." instance=ExtResource("5")]
+position = Vector3(9.4,0,0)
+curve = SubResource("StudyCurve")
+paving_seed = 421
+
+[node name="Label4" type="Label3D" parent="."]
+position = Vector3(9.4,0.4,7.0)
+billboard = 1
+modulate = Color(0.22,0.25,0.23,1)
+outline_size = 0
+pixel_size = 0.008
+font_size = 38
+text = "URBAN PAVERS"

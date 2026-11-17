@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="PackedScene" path="res://tests/scenes/component_test.tscn" id="stage"]
+[ext_resource type="PackedScene" path="res://components/scenery/gardens/garden_study.tscn" id="garden"]
+[node name="ZenGardenTest" instance=ExtResource("stage")]
+subject_scene = ExtResource("garden")
+camera_size = 13.0
+camera_focus = Vector3(0,1,-0.5)
+[node name="Explorer" parent="." index="6"]
+position = Vector3(0,0.03,5.2)
+[node name="Hint" parent="Controls" index="2"]
+text = "WASD / arrows / joystick · Walk the raked garden · R reload"

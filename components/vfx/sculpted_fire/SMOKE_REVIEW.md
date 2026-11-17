@@ -1,4 +1,4 @@
-# Smoke and spark review — 2026-11-15
+# Smoke and spark review — updated 2026-11-16
 
 The supplied campfire reference has a connected gray plume with readable billows
 and bright, fairly consistent ember marks. The guide also calls for slower smoke
@@ -32,19 +32,22 @@ depth buffer. The smoke layers render before the sparks, so the embers remain
 readable through the stylized plume while opaque scenery still occludes them.
 
 The initial spark revision overcorrected toward consistency: short rounded
-teardrops with ±8% width variation read as glowing beads. The follow-up uses
-thin, pointed strokes with hot heads, bent orange/red tails and controlled
-variation in width and length. Velocity alignment supplies their direction;
-camera-facing broad sides keep the closed 3D flecks readable. They rise and slow
-along the plume, with restrained flicker and a tail-first fade.
+teardrops with ±8% width variation read as glowing beads. The next pointed loft
+meshes read as miniature darts: they carried a fixed silhouette through the air.
+The November 16 revision uses narrow hot fragments and short ribbons that
+reconstruct their actual recent curved motion. Quick pops mix with slower,
+fluttering embers. Size, launch direction and brightness vary across births;
+the fragment cools and fades without becoming a long-lived shaded solid.
+Heads face the camera, including when a trajectory points toward it.
 
 ## Authoring and verification
 
 **Smoke Definition** controls silhouette softness and toon-band transitions.
 Its default is **0.8**. Amount controls optical density; Height, Spread, Turbulence,
 Color and Wind retain their roles. Spark Amount, Size, Height, Burstiness and
-the new **Spark Variation** (default **0.65**) control the embers. Animation stays
-on the GPU in six batches.
+**Spark Variation** (default **0.65**) and **Spark Trail Length** (default **0.035**
+seconds) control the embers. Zero trail length retains the hot fragments.
+Animation stays on the GPU in six batches, with no particle-history simulation.
 
 Open `res://tests/scenes/sculpted_fire_test.tscn` with F6. Inspect the whole effect,
 smoke alone and sparks alone, using dark and warm-white backgrounds. Check for
@@ -54,7 +57,8 @@ embers. The follow-up flame revision replaces regular oval loops with a rising
 
 The render check covers separate layer visibility/motion, smoke density and
 Definition, foreground/background occlusion of the cloud, freeze, four angles,
-perspective, orthographic invariance, fullness, wind and partial recall. Component
+perspective, orthographic invariance, fullness, wind, partial recall, trail
+length, zero-trail fragments and isolated overhead ember visibility. Component
 checks cover exported control persistence, bounds, shared geometry/private
 materials and recall/rebuild continuity.
 

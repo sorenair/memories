@@ -7,6 +7,10 @@ uniform float beacon_strength = 0.65;
 uniform float rotation_speed = 0.035;
 uniform float beam_heading = 0.0;
 uniform float animation_time = -1.0;
+uniform vec4 stripe_color : source_color = vec4(0.68,0.31,0.27,1.0);
+uniform int stripe_count = 6;
+uniform float tower_height = 9.0;
+varying float paint_shade;
 varying vec3 pigment;
 varying vec3 point;
 varying float kind;
@@ -17,13 +21,21 @@ void vertex() {
 	float light = dot(n, normalize(vec3(-0.45, 0.82, 0.35))) * 0.5 + 0.5;
 	float shade = mix(0.73, 0.95, smoothstep(0.27, 0.43, light));
 	shade = mix(shade, 1.035, smoothstep(0.72, 0.85, light));
+	paint_shade = shade;
 	pigment = COLOR.rgb * shade;
 	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 void fragment() {
 	float wash = sin(point.x * 1.7 + sin(point.y * 0.85 + paint_phase)) * sin(point.z * 1.9 + point.y * 0.6);
 	vec3 color = pigment * mix(0.96, 1.035, mix(0.5, smoothstep(-0.2, 0.5, wash), pigment_strength));
-	float lamp = step(1.5, kind);
+	// Only the tagged shaft receives stripes. Openings and fittings stay intact.
+	if (kind > 2.5 && point.y > 0.40 && point.y < tower_height - 0.24) {
+		float band = floor((point.y-0.40)/max(tower_height-0.64,0.1)*float(stripe_count));
+		if (mod(band,2.0)>0.5) {
+			color = stripe_color.rgb*paint_shade*mix(0.97,1.025,smoothstep(-0.2,0.5,wash));
+		}
+	}
+	float lamp = step(1.5, kind)*(1.0-step(2.5,kind));
 	float t = animation_time >= 0.0 ? animation_time : TIME;
 	float turn = t * rotation_speed * 6.283185 + beam_heading;
 	float lens = 0.8 + 0.2 * cos(atan(point.x, point.z) - turn);

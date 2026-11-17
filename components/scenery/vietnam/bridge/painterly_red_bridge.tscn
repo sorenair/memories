@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/vietnam/bridge/painterly_red_bridge.gd" id="script"]
+[node name="PainterlyRedBridge" type="Node3D"]
+script = ExtResource("script")
+body_color = Color(0.49,0.28,0.22,1)
+accent_color = Color(0.65,0.24,0.20,1)
+contact_shadow_enabled = false

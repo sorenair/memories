@@ -1,19 +1,16 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" uid="uid://bom7t0sdq1s84" path="res://characters/soren/soren.glb" id="1_model"]
 [ext_resource type="Material" path="res://characters/materials/toon_skin_soren.tres" id="2_skin"]
 [ext_resource type="Material" path="res://characters/materials/toon_hair_brown.tres" id="3_hair"]
 [ext_resource type="Material" path="res://characters/materials/toon_cloth_black.tres" id="4_black"]
 [ext_resource type="Material" path="res://characters/materials/toon_cloth_white.tres" id="5_white"]
+[ext_resource type="Shader" path="res://characters/materials/character_paint.gdshader" id="6_paint"]
 
-[sub_resource type="StandardMaterial3D" id="NecklaceMetal"]
-resource_name = "Toon Necklace Metal"
-cull_mode = 2
-diffuse_mode = 3
-specular_mode = 1
-disable_fog = true
-albedo_color = Color(0.4133, 0.4133, 0.4133, 1)
-roughness = 0.5
+[sub_resource type="ShaderMaterial" id="NecklaceMetal"]
+resource_name = "Painted Necklace Metal"
+shader = ExtResource("6_paint")
+shader_parameter/base_color = Color(0.48, 0.45, 0.4, 1)
 
 [node name="Soren" instance=ExtResource("1_model")]
 

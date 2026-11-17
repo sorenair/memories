@@ -1,0 +1,558 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/mifflin_street.wav" id="air"]
+[ext_resource type="PackedScene" path="res://components/groundcover/street/painterly_street.tscn" id="street"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/urban_paver_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/buildings/painterly_hanoi_house.tscn" id="house"]
+[ext_resource type="Resource" path="res://scenes/memories/northern_vietnam/foliage_green.tres" id="green"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="jungle"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/vines/painterly_wall_vine.tscn" id="vine"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_tropical_broadleaf.tscn" id="broad"]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/vignette_detail.tscn" id="detail"]
+
+[ext_resource type="PackedScene" path="res://components/lighting/festive_lights/painterly_festive_lights.tscn" id="lights"]
+
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+
+[ext_resource type="Script" path="res://scenes/memories/northern_vietnam/route_surface_breaks.gd" id="breaks"]
+
+[sub_resource type="Curve3D" id="LaneRouteCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.032,0.0,-0.96,0,0,14,0.048,-0.0,1.92,-0.048,0.0,-1.92,0.2,0,8,0.032,-0.0,2.4,-0.032,0.0,-2.4,-0.3,0,2,-0.048,-0.0,1.44,0,0,0,0,0,-7), "tilts": PackedFloat32Array(0,0,0,0)}
+point_count = 4
+
+[sub_resource type="Curve3D" id="ToLakeCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.64,0.0,-0.32,0,0,-7,-1.6,-0.0,0.512,1.6,0.0,-0.512,4,0,-9,-2.24,-0.0,-0.0,2.24,0.0,0.0,10,0,-10.2,-1.28,-0.0,-0.192,0,0,0,18,0,-9), "tilts": PackedFloat32Array(0,0,0,0)}
+point_count = 4
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"hanoi_old_quarter"
+display_name = "Hanoi · Old Quarter"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -28
+ambience_size = Vector2(19, 30)
+ambience_blend_distance = 4.0
+
+[node name="Lane" parent="Scenery" instance=ExtResource("street")]
+length = 25.0
+width = 5.1
+asphalt_color = Color(0.658824,0.666667,0.627451,1)
+end_fade = Vector2(3.3,3.8)
+
+edge_softness = 0.65
+
+[node name="LaneRoute" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("LaneRouteCurve")
+path_width = 1.9
+paving_color = Color(0.7529,0.7333,0.6549,1)
+end_fade = Vector2(0, 0)
+slab_length = 2.0
+edge_softness = 0.25
+visible = false
+collision_enabled = false
+
+[node name="ToLake" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ToLakeCurve")
+path_width = 2.65
+paving_color = Color(0.627451,0.619608,0.537255,1)
+end_fade = Vector2(1.2,1.2)
+slab_length = 2.0
+edge_softness = 0.25
+
+stone_color = Color(0.788235,0.768627,0.682353,1)
+
+shoulder_color = Color(0.694118,0.709804,0.611765,1)
+
+surface_style = 3
+
+stone_size = 0.72
+
+joint_width = 0.016
+
+crown_height = 0
+
+visible = false
+
+[node name="WestHouse1" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(-5.3000,0.0000,10.5000)
+rotation_degrees = Vector3(0,90,0)
+footprint = Vector2(3.3,4.4)
+floors = 2
+floor_height = 1.85
+profile = 0
+body_color = Color(0.7647,0.6863,0.4706,1)
+accent_color = Color(0.3176,0.451,0.4039,1)
+prop_seed = 606260
+recall_enabled = true
+
+roof_color = Color(0.474510,0.415686,0.376471,1)
+
+pigment_strength = 0.42
+
+[node name="WestHouse2" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(-5.9000,0.0000,6.2000)
+rotation_degrees = Vector3(0,90,0)
+footprint = Vector2(3.4,4.4)
+floors = 3
+floor_height = 1.8
+profile = 1
+body_color = Color(0.7529,0.6353,0.6039,1)
+accent_color = Color(0.4235,0.4745,0.5137,1)
+prop_seed = 606261
+recall_enabled = true
+
+roof_color = Color(0.427451,0.450980,0.376471,1)
+
+pigment_strength = 0.42
+
+[node name="WestHouse3" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(-5.1000,0.0000,1.7000)
+rotation_degrees = Vector3(0,90,0)
+footprint = Vector2(3.5,4.1)
+floors = 2
+floor_height = 1.9
+profile = 2
+body_color = Color(0.8275,0.7843,0.6392,1)
+accent_color = Color(0.3059,0.451,0.4431,1)
+prop_seed = 606262
+recall_enabled = true
+
+roof_color = Color(0.533333,0.470588,0.396078,1)
+
+pigment_strength = 0.42
+
+[node name="WestHouse4" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(-5.8000,0.0000,-2.8000)
+rotation_degrees = Vector3(0,90,0)
+footprint = Vector2(3.3,4.4)
+floors = 3
+floor_height = 1.8
+profile = 0
+body_color = Color(0.6588,0.6941,0.6353,1)
+accent_color = Color(0.502,0.451,0.3647,1)
+prop_seed = 606263
+recall_enabled = true
+
+roof_color = Color(0.474510,0.415686,0.376471,1)
+
+pigment_strength = 0.42
+
+[node name="WestHouse5" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(-5.0000,0.0000,-7.7000)
+rotation_degrees = Vector3(0,90,0)
+footprint = Vector2(3.1,4.2)
+floors = 2
+floor_height = 1.8
+profile = 1
+body_color = Color(0.7843,0.7098,0.5647,1)
+accent_color = Color(0.4824,0.3529,0.3059,1)
+prop_seed = 606264
+recall_enabled = true
+
+roof_color = Color(0.427451,0.450980,0.376471,1)
+
+pigment_strength = 0.42
+
+[node name="EastHouse1" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(7.6000,0.0000,10.8000)
+rotation_degrees = Vector3(0,-90,0)
+footprint = Vector2(3,3.7)
+floors = 1
+floor_height = 1.8
+profile = 1
+body_color = Color(0.8275,0.7843,0.6392,1)
+accent_color = Color(0.3059,0.451,0.4431,1)
+prop_seed = 606280
+recall_enabled = true
+
+roof_color = Color(0.474510,0.415686,0.376471,1)
+
+pigment_strength = 0.42
+
+[node name="EastHouse2" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(8.7000,0.0000,6.5000)
+rotation_degrees = Vector3(0,-90,0)
+footprint = Vector2(3.1,3.6)
+floors = 2
+floor_height = 1.6
+profile = 0
+body_color = Color(0.6588,0.6941,0.6353,1)
+accent_color = Color(0.502,0.451,0.3647,1)
+prop_seed = 606281
+recall_enabled = true
+
+roof_color = Color(0.427451,0.450980,0.376471,1)
+
+pigment_strength = 0.42
+
+[node name="EastHouse3" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(8.0000,0.0000,1.5000)
+rotation_degrees = Vector3(0,-90,0)
+footprint = Vector2(3,3.8)
+floors = 1
+floor_height = 1.8
+profile = 2
+body_color = Color(0.7843,0.7098,0.5647,1)
+accent_color = Color(0.4824,0.3529,0.3059,1)
+prop_seed = 606282
+recall_enabled = true
+
+roof_color = Color(0.533333,0.470588,0.396078,1)
+
+pigment_strength = 0.42
+
+[node name="EastHouse4" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(8.7000,0.0000,-3.1000)
+rotation_degrees = Vector3(0,-90,0)
+footprint = Vector2(3.4,3.9)
+floors = 2
+floor_height = 1.7
+profile = 1
+body_color = Color(0.7647,0.6863,0.4706,1)
+accent_color = Color(0.3176,0.451,0.4039,1)
+prop_seed = 606283
+recall_enabled = true
+
+roof_color = Color(0.474510,0.415686,0.376471,1)
+
+pigment_strength = 0.42
+
+[node name="EastHouse5" parent="Scenery" instance=ExtResource("house")]
+position = Vector3(7.7000,0.0000,-7.6000)
+rotation_degrees = Vector3(0,-90,0)
+footprint = Vector2(2.9,3.7)
+floors = 1
+floor_height = 1.8
+profile = 0
+body_color = Color(0.7529,0.6353,0.6039,1)
+accent_color = Color(0.4235,0.4745,0.5137,1)
+prop_seed = 606284
+recall_enabled = true
+
+roof_color = Color(0.427451,0.450980,0.376471,1)
+
+pigment_strength = 0.42
+
+[node name="StreetPalm1" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-2.9,0,12)
+plant_form = 0
+plant_seed = 606300
+plant_height = 3.2
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="StreetPalm2" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(3,0,7)
+plant_form = 1
+plant_seed = 606301
+plant_height = 3.2
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="StreetPalm3" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-3,0,-7.7)
+plant_form = 0
+plant_seed = 606302
+plant_height = 3.2
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="StreetPalm4" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(6.5,0,-9.1)
+plant_form = 1
+plant_seed = 606303
+plant_height = 3.2
+spread = 2.2
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="StreetShrub1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.7,0,11.1)
+bush_seed = 606310
+bush_height = 0.54
+footprint = Vector2(0.9,0.7200000000000001)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="StreetShrub2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.9,0,6)
+bush_seed = 606311
+bush_height = 0.54
+footprint = Vector2(0.9,0.7200000000000001)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="StreetShrub3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.8,0,-6.7)
+bush_seed = 606312
+bush_height = 0.54
+footprint = Vector2(0.9,0.7200000000000001)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="StreetShrub4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.5,0,-8.5)
+bush_seed = 606313
+bush_height = 0.54
+footprint = Vector2(0.9,0.7200000000000001)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="StreetLife" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(0,0,0.5)
+count = 20
+footprint = Vector2(5.0,20)
+spacing = 0.92
+person_scale = 1.05
+crowd_seed = 60626
+pose_mix = 2
+motion_strength = 0.28
+recall_enabled = true
+ground_exclusions = Array[NodePath]([NodePath("../LaneRoute")])
+
+[node name="LeavingStreet" parent="Scenery" type="Node3D"]
+script = ExtResource("breaks")
+source_path = NodePath("../ToLake")
+visible_spans = PackedVector2Array(0,0.32,0.48,0.77,0.87,1)
+
+[node name="Doorstep1" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(-3.0000,0.0000,8.4000)
+rotation_degrees = Vector3(0.0000,90.0000,0.0000)
+detail_kind = 0
+body_color = Color(0.517647,0.427451,0.337255,1)
+accent_color = Color(0.349020,0.458824,0.415686,1)
+recall_enabled = true
+
+[node name="Doorstep2" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(3.1000,0.0000,4.9000)
+rotation_degrees = Vector3(0.0000,-90.0000,0.0000)
+detail_kind = 0
+body_color = Color(0.517647,0.427451,0.337255,1)
+accent_color = Color(0.584314,0.439216,0.368627,1)
+recall_enabled = true
+
+[node name="Doorstep3" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(-3.3000,0.0000,-5.9000)
+rotation_degrees = Vector3(0.0000,90.0000,0.0000)
+detail_kind = 0
+body_color = Color(0.517647,0.427451,0.337255,1)
+accent_color = Color(0.325490,0.454902,0.466667,1)
+recall_enabled = true
+
+[node name="ShopSign1" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(-3.0000,0.0000,5.0000)
+rotation_degrees = Vector3(0.0000,90.0000,0.0000)
+detail_kind = 2
+body_color = Color(0.482353,0.396078,0.317647,1)
+trim_color = Color(0.945098,0.874510,0.709804,1)
+accent_color = Color(0.427451,0.407843,0.325490,1)
+collision_enabled = false
+contact_shadow_enabled = false
+recall_enabled = true
+
+[node name="ShopSign2" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(-3.0000,0.0000,-2.4000)
+rotation_degrees = Vector3(0.0000,90.0000,0.0000)
+detail_kind = 2
+body_color = Color(0.360784,0.486275,0.439216,1)
+trim_color = Color(0.945098,0.874510,0.709804,1)
+accent_color = Color(0.427451,0.407843,0.325490,1)
+collision_enabled = false
+contact_shadow_enabled = false
+recall_enabled = true
+
+[node name="ShopSign3" parent="Scenery" instance=ExtResource("detail")]
+position = Vector3(5.7000,0.0000,8.6000)
+rotation_degrees = Vector3(0.0000,-90.0000,0.0000)
+detail_kind = 2
+body_color = Color(0.631373,0.435294,0.345098,1)
+trim_color = Color(0.945098,0.874510,0.709804,1)
+accent_color = Color(0.427451,0.407843,0.325490,1)
+collision_enabled = false
+contact_shadow_enabled = false
+recall_enabled = true
+
+[node name="BalconyVine1" parent="Scenery" instance=ExtResource("vine")]
+position = Vector3(-2.9000,2.8000,5.5000)
+rotation_degrees = Vector3(0.0000,90.0000,0.0000)
+growth_mode = 1
+footprint = Vector2(1.7,1.25)
+leaf_spray_count = 120
+leaf_size = 0.14
+branch_count = 3
+vine_seed = 606700
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BalconyVine2" parent="Scenery" instance=ExtResource("vine")]
+position = Vector3(-3.2000,1.3000,-3.0000)
+rotation_degrees = Vector3(0.0000,90.0000,0.0000)
+growth_mode = 1
+footprint = Vector2(1.7,1.25)
+leaf_spray_count = 120
+leaf_size = 0.14
+branch_count = 3
+vine_seed = 606701
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BalconyVine3" parent="Scenery" instance=ExtResource("vine")]
+position = Vector3(6.1000,1.6500,6.7000)
+rotation_degrees = Vector3(0.0000,-90.0000,0.0000)
+growth_mode = 1
+footprint = Vector2(1.7,1.25)
+leaf_spray_count = 120
+leaf_size = 0.14
+branch_count = 3
+vine_seed = 606702
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PavementPlant1" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(-3.3000,0.0000,14.0000)
+plant_form = 3
+plant_height = 0.8
+spread = 1.15
+fullness = 0.35
+plant_seed = 606720
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PavementPlant2" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(5.2000,0.0000,2.9000)
+plant_form = 3
+plant_height = 0.8
+spread = 1.15
+fullness = 0.35
+plant_seed = 606721
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PavementPlant3" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(-3.1000,0.0000,-8.8000)
+plant_form = 3
+plant_height = 0.8
+spread = 1.15
+fullness = 0.35
+plant_seed = 606722
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PavementPlant4" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(8.0000,0.0000,-9.8000)
+plant_form = 3
+plant_height = 0.8
+spread = 1.15
+fullness = 0.35
+plant_seed = 606723
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="StreetExitTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.9000,0.0000,-10.5000)
+tree_height = 4.4
+crown_width = 4.0
+branch_count = 4
+leaf_sprays_per_cluster = 85
+tree_seed = 606735
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="StreetExitTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.4000,0.0000,-12.3000)
+tree_height = 3.8
+crown_width = 4.0
+branch_count = 4
+leaf_sprays_per_cluster = 85
+tree_seed = 606736
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="StreetStrand1" parent="Scenery" instance=ExtResource("lights")]
+position = Vector3(0.5000,0.0000,8.9000)
+span = 7.4
+height = 3.3
+sag = 0.38
+poles = false
+recall_enabled = true
+
+[node name="StreetStrand2" parent="Scenery" instance=ExtResource("lights")]
+position = Vector3(0.5000,0.0000,-3.6000)
+span = 7.4
+height = 3.3
+sag = 0.38
+poles = false
+recall_enabled = true
+
+[node name="AwningLight1" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(-2.2000,0.0200,7.7000)
+footprint = Vector2(1.8,2.1)
+light_color = Color(0.960784,0.823529,0.627451,1)
+intensity = 0.12
+recall_enabled = true
+
+[node name="AwningLight2" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(-2.1000,0.0200,-3.6000)
+footprint = Vector2(1.8,2.1)
+light_color = Color(0.960784,0.823529,0.627451,1)
+intensity = 0.12
+recall_enabled = true
+
+[node name="Fragment" parent="."]
+position = Vector3(0.2,0.06,2)
+note_title = "Along the narrow streets"
+notes = PackedStringArray("Placeholder: add your own words about Hanoi’s Old Quarter.")

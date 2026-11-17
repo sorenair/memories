@@ -1,7 +1,7 @@
 @tool
 class_name PainterlySculptedFire
 extends Node3D
-## Fused 3D fire, closed lifted wisps, rolling smoke and sparks.
+## Fused 3D fire, closed lifted wisps, rolling smoke and ember trails.
 ## Generated geometry is internal; animation runs in the materials.
 const FLAME = preload("res://components/vfx/sculpted_fire/sculpted_flame.gdshader")
 const FLOW = preload("res://components/vfx/sculpted_fire/flame_flow.res")
@@ -109,10 +109,15 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 	set(value):
 		spark_size = clampf(value, 0.01, 0.12)
 		_appearance_changed()
-## Variation between small pointed flecks and longer bent streaks.
+## Variation in ember size, launch speed and flutter.
 @export_range(0.0, 1.0, 0.01) var spark_variation: float = 0.65:
 	set(value):
 		spark_variation = clampf(value, 0.0, 1.0)
+		_appearance_changed()
+## Seconds of recent motion behind each ember. Zero leaves just the hot fragments.
+@export_range(0.0, 0.18, 0.005) var spark_trail_length: float = 0.035:
+	set(value):
+		spark_trail_length = clampf(value, 0.0, 0.18)
 		_appearance_changed()
 ## Zero distributes embers evenly; one emits overlapping small packets.
 @export_range(0.0, 1.0, 0.01) var spark_burstiness: float = 0.35:
@@ -165,7 +170,7 @@ func _request_rebuild() -> void:
 
 func _appearance_changed() -> void:
 	for material in _materials:
-		for key in [&"fire_size", &"body_fullness", &"intensity", &"animation_speed", &"curl_amount", &"wind", &"core_color", &"flame_color", &"edge_color", &"smoke_amount", &"smoke_height", &"smoke_spread", &"smoke_turbulence", &"smoke_definition", &"smoke_color", &"spark_amount", &"spark_height", &"spark_size", &"spark_variation", &"spark_burstiness", &"glow_strength"]:
+		for key in [&"fire_size", &"body_fullness", &"intensity", &"animation_speed", &"curl_amount", &"wind", &"core_color", &"flame_color", &"edge_color", &"smoke_amount", &"smoke_height", &"smoke_spread", &"smoke_turbulence", &"smoke_definition", &"smoke_color", &"spark_amount", &"spark_height", &"spark_size", &"spark_variation", &"spark_trail_length", &"spark_burstiness", &"glow_strength"]:
 			material.set_shader_parameter(key, get(key))
 		material.set_shader_parameter("fire_phase", float(posmod(fire_seed, 997)) * 0.071)
 		material.set_shader_parameter("preview_time", _preview_time)
@@ -239,6 +244,22 @@ static func loft_mesh(sides: int, rings: int) -> ArrayMesh:
 			for index in [a, b, a + 1, a + 1, b, b + 1]: surface.add_index(index)
 	return surface.commit()
 
+static func spark_mesh() -> ArrayMesh:
+	if _spark_mesh: return _spark_mesh
+	var surface := SurfaceTool.new()
+	surface.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for ring in 17:
+		for side in 2:
+			var uv := Vector2(float(side), float(ring) / 16.0)
+			surface.set_uv(uv)
+			surface.set_normal(Vector3.FORWARD)
+			surface.add_vertex(Vector3(uv.x - 0.5, uv.y, 0.0))
+	for ring in 16:
+		var a := ring * 2
+		for index in [a, a + 2, a + 1, a + 1, a + 2, a + 3]: surface.add_index(index)
+	_spark_mesh = surface.commit()
+	return _spark_mesh
+
 func rebuild() -> void:
 	_queued = false
 	if not is_inside_tree(): return
@@ -274,9 +295,7 @@ func rebuild() -> void:
 		_fray_mesh.size = Vector2.ONE
 	var fray := _batch("SmokeFray", _fray_mesh, 16, SMOKE_FRAY, 0x5A2)
 	fray.material_override.render_priority = -1
-	if not _spark_mesh:
-		_spark_mesh = loft_mesh(8,12)
-	_batch("Sparks", _spark_mesh, 64, SPARK, 0x5A1)
+	_batch("Sparks", spark_mesh(), 64, SPARK, 0x5A1)
 	var glow := MeshInstance3D.new()
 	glow.name = "GroundGlow"
 	glow.mesh = QuadMesh.new()

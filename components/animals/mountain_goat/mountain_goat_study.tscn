@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://components/animals/mountain_goat/painterly_mountain_goat.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://components/animals/elk/painterly_elk.tscn" id="2"]
+
+[node name="MountainGoatStudy" type="Node3D"]
+
+[node name="Goat" parent="." instance=ExtResource("1")]
+position = Vector3(-1.8,0,1.0)
+rotation = Vector3(0,-0.50,0)
+prop_seed = 46
+
+[node name="GrazingGoat" parent="." instance=ExtResource("1")]
+position = Vector3(1.3,0,1.0)
+rotation = Vector3(0,0.5,0)
+prop_seed = 97
+goat_size = 0.94
+idle_pose = 2
+horn_length = 0.85
+
+[node name="AlertGoat" parent="." instance=ExtResource("1")]
+position = Vector3(2.4,0,-2.3)
+rotation = Vector3(0,-0.3,0)
+prop_seed = 135
+idle_pose = 1
+fluffiness = 0.95
+
+[node name="Elk" parent="." instance=ExtResource("2")]
+position = Vector3(-1.9,0,-3.4)
+rotation = Vector3(0,0.25,0)
+prop_seed = 124

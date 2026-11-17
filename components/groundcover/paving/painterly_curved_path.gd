@@ -138,7 +138,9 @@ func rebuild() -> void:
 		var b := _length*(i+1)/sections
 		_band(tool,a,b,-path_width*0.5,path_width*0.5,-0.0125,-0.0125,0.6,1.0)
 		var corners := [_edge(a,-path_width*0.5,0.0125),_edge(b,-path_width*0.5,0.0125),_edge(b,path_width*0.5,0.0125),_edge(a,path_width*0.5,0.0125)]
-		for index in [0,1,2,0,2,3]: faces.append(corners[index])
+		# Godot's collision front faces are clockwise. Keep downward ground rays
+		# on the front face too, including the diagonals through the path center.
+		for index in [2,1,0,3,2,0]: faces.append(corners[index])
 	var visual := MeshInstance3D.new()
 	visual.name = "PaintedRibbon"
 	visual.mesh = tool.commit()

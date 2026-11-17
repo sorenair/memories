@@ -21,7 +21,8 @@ func tower(c: Dictionary) -> Dictionary:
 		var y := float(floor_index)*h
 		var bevel := minf(size.x,size.z)*(0.17 if c.profile==2 else 0.025)
 		flat_deck(Vector3(0,y+h*0.5,0),size.x,size.z,h,body.lightened(rng.randf_range(-0.025,0.025)),bevel)
-		flat_deck(Vector3(0,y+h-0.045,0),size.x+0.035,size.z+0.035,0.09,roof_paint,bevel)
+		# Lift the cap above the body top so the two painted faces do not flicker.
+		flat_deck(Vector3(0,y+h-0.037,0),size.x+0.035,size.z+0.035,0.09,roof_paint,bevel)
 		for face in range(4):
 			var span: float=(size.x if face<2 else size.z)-bevel*2-0.16
 			var columns := maxi(2,floori(span/0.62))

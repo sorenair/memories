@@ -61,7 +61,7 @@ func make(c: Dictionary) -> Dictionary:
 	var h: float = c.tower_height
 	# Broad white plinth and a gently tapering continuous plaster shaft.
 	lathe([Vector2(0, 0.01), Vector2(r * 1.38, 0.01), Vector2(r * 1.40, 0.08), Vector2(r * 1.36, 0.26), Vector2(r * 1.07, 0.29), Vector2(0, 0.29)], body.darkened(0.06))
-	lathe([Vector2(0, 0.26), Vector2(r, 0.26), Vector2(r, 0.4), Vector2(r * 0.97, h * 0.23), Vector2(r * 0.92, h * 0.49), Vector2(r * 0.87, h * 0.75), Vector2(r * 0.83, h - 0.24), Vector2(r * 0.91, h - 0.15), Vector2(r * 1.05, h - 0.07), Vector2(r * 1.26, h + 0.03), Vector2(r * 1.29, h + 0.13), Vector2(0, h + 0.13)], body)
+	lathe([Vector2(0, 0.26), Vector2(r, 0.26), Vector2(r, 0.4), Vector2(r * 0.97, h * 0.23), Vector2(r * 0.92, h * 0.49), Vector2(r * 0.87, h * 0.75), Vector2(r * 0.83, h - 0.24), Vector2(r * 0.91, h - 0.15), Vector2(r * 1.05, h - 0.07), Vector2(r * 1.26, h + 0.03), Vector2(r * 1.29, h + 0.13), Vector2(0, h + 0.13)], body, 3.0 if c.stripes_enabled else 0.0)
 	lathe([Vector2(r * 1.05, 0.29), Vector2(r * 1.075, 0.32), Vector2(r * 1.075, 0.37), Vector2(r, 0.40)], body.lightened(0.035))
 	# Inset-looking narrow arched lights, staggered on opposite sides of the tower.
 	for i in range(c.window_count):

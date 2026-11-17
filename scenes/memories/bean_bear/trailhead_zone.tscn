@@ -1,0 +1,1954 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="air"]
+[ext_resource type="PackedScene" path="res://components/vehicles/four_runner/painterly_four_runner.tscn" id="car"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="path"]
+[ext_resource type="Resource" path="res://scenes/memories/bean_bear/forest_green.tres" id="green"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
+
+[sub_resource type="Curve3D" id="ForestTrailCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.224,0.0,-0.64,0.4,0,10.5,0.24,-0.0,1.424,-0.24,0.0,-1.424,1.8,0,6.5,-0.032,-0.0,1.728,0.032,0.0,-1.728,-1.1,0,1.6,-1.184,-0.0,1.456,1.184,0.0,-1.456,2,0,-4.3,-1.44,-0.0,1.072,1.44,0.0,-1.072,6.3,0,-7.5,-1.552,-0.0,1.36,1.552,0.0,-1.36,11,0,-11,-0.8,-0.0,0.8,0,0,0,16,0,-16), "tilts": PackedFloat32Array(0,0,0,0,0,0,0)}
+point_count = 7
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"bean_bear_trailhead"
+display_name = "Bean and Bear · Into the forest"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -29
+ambience_size = Vector2(31, 35)
+ambience_blend_distance = 4.0
+
+[node name="ArrivalRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(0.4,0,10.5)
+
+[node name="FourRunner" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("car")]
+position = Vector3(-2.8,0,10)
+rotation_degrees = Vector3(0,-15,0)
+roof_rack_enabled = true
+headlights_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../ArrivalRecall")
+
+[node name="TrailheadClearing" parent="Scenery" instance=ExtResource("paving")]
+position = Vector3(-1.1,-0.018,10.6)
+footprint = Vector2(8.2,7.1)
+paving_color = Color(0.7412,0.7176,0.6314,1)
+slab_length = 3.0
+end_fade = Vector2(1.0,1.0)
+edge_softness = 0.4
+
+[node name="ForestTrail" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ForestTrailCurve")
+path_width = 2.4
+paving_color = Color(0.725490,0.647059,0.529412,1)
+end_fade = Vector2(0.5, 0)
+edge_softness = 0.25
+paving_seed = 72526
+crown_height = 0.012
+detail_density = 0.35
+
+[node name="TrailTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.9911,0,11.5416)
+tree_type = 2
+tree_seed = 725261
+tree_height = 4.859364295101208
+crown_width = 2.949275001793839
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.8427,0,12.8779)
+tree_type = 0
+tree_seed = 725262
+tree_height = 4.783831157311766
+crown_width = 2.968395705312265
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree5" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.0333,0,5.8385)
+tree_type = 4
+tree_seed = 725265
+tree_height = 5.196048810245738
+crown_width = 3.3491815853451476
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree6" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(7.4057,0,6.5137)
+tree_type = 2
+tree_seed = 725266
+tree_height = 4.584157855235115
+crown_width = 3.23049946624315
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern1-1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.8708,0,6.151)
+rotation_degrees = Vector3(0,270,0)
+plant_seed = 725310
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub1-1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.6597,0,6.018)
+bush_seed = 725340
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass1-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.8708,0,6.151)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725370
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree7" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-1.9775,0,6.6092)
+tree_type = 0
+tree_seed = 725267
+tree_height = 5.409217067907347
+crown_width = 3.0368090975822732
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree8" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-4.4227,0,7.8572)
+tree_type = 4
+tree_seed = 725268
+tree_height = 4.81576614596858
+crown_width = 3.204617162131712
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern11" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-0.2708,0,6.849)
+rotation_degrees = Vector3(0,272,0)
+plant_seed = 725312
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.0597,0,6.982)
+bush_seed = 725342
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass11" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-0.2708,0,6.849)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725372
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree9" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(2.3806,0,0.7125)
+tree_type = 0
+tree_seed = 725269
+tree_height = 4.810227864626031
+crown_width = 2.957857524135269
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree10" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.9196,0,0.7307)
+tree_type = 4
+tree_seed = 725270
+tree_height = 5.17493073585804
+crown_width = 2.9628755168794747
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern2-1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(0.9996,0,1.6389)
+rotation_degrees = Vector3(0,271,0)
+plant_seed = 725311
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub2-1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(1.7995,0,1.6537)
+bush_seed = 725341
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass2-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(0.9996,0,1.6389)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725371
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree11" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-4.6142,0,1.9189)
+tree_type = 2
+tree_seed = 725271
+tree_height = 4.560745215572064
+crown_width = 3.2035085987014313
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree12" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6.8348,0,2.3752)
+tree_type = 0
+tree_seed = 725272
+tree_height = 4.549814983905045
+crown_width = 2.8221701080052553
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern21" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-3.1996,0,1.5611)
+rotation_degrees = Vector3(0,273,0)
+plant_seed = 725313
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub21" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.9995,0,1.5463)
+bush_seed = 725343
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass21" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.1996,0,1.5611)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725373
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree13" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.2611,0,-1.498)
+tree_type = 4
+tree_seed = 725273
+tree_height = 4.626136142731941
+crown_width = 3.202663898031412
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree14" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(7.3709,0,-1.2427)
+tree_type = 0
+tree_seed = 725274
+tree_height = 4.701006044351815
+crown_width = 2.8016941252464442
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern3-1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.6293,0,-2.9751)
+rotation_degrees = Vector3(0,272,0)
+plant_seed = 725312
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub3-1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.25,0,-2.4704)
+bush_seed = 725342
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass3-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.6293,0,-2.9751)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725372
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree15" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-1.0533,0,-6.316)
+tree_type = 4
+tree_seed = 725275
+tree_height = 5.115069636197897
+crown_width = 3.1045536534588347
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree16" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-2.8323,0,-8.3921)
+tree_type = 2
+tree_seed = 725276
+tree_height = 4.287739974155316
+crown_width = 3.046689459294735
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern31" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(0.3707,0,-5.6249)
+rotation_degrees = Vector3(0,274,0)
+plant_seed = 725314
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub31" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.25,0,-6.1296)
+bush_seed = 725344
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass31" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(0.3707,0,-5.6249)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725374
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree17" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(7.935,0,-4.8248)
+tree_type = 0
+tree_seed = 725277
+tree_height = 4.50406040299472
+crown_width = 2.853607425737105
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree18" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(10.1394,0,-2.3935)
+tree_type = 4
+tree_seed = 725278
+tree_height = 5.619103100874921
+crown_width = 2.850878985578057
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern4-1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(7.554,0,-5.8155)
+rotation_degrees = Vector3(0,273,0)
+plant_seed = 725313
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub4-1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.0317,0,-5.1738)
+bush_seed = 725343
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass4-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.554,0,-5.8155)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725373
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree19" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.2658,0,-9.5376)
+tree_type = 0
+tree_seed = 725279
+tree_height = 4.7309542393072945
+crown_width = 2.878903015767667
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree20" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(2.2443,0,-12.6321)
+tree_type = 4
+tree_seed = 725280
+tree_height = 4.787662356583264
+crown_width = 2.9077667910041765
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern41" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(5.046,0,-9.1845)
+rotation_degrees = Vector3(0,275,0)
+plant_seed = 725315
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub41" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.5683,0,-9.8262)
+bush_seed = 725345
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass41" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(5.046,0,-9.1845)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725375
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree21" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(13.401,0,-8.6263)
+tree_type = 2
+tree_seed = 725281
+tree_height = 4.277705756008481
+crown_width = 3.059053727880266
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree22" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(14.1556,0,-7.1441)
+tree_type = 0
+tree_seed = 725282
+tree_height = 5.109900175975651
+crown_width = 2.860160028088283
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern5-1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(12.384,0,-9.4206)
+rotation_degrees = Vector3(0,274,0)
+plant_seed = 725314
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub5-1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(12.9113,0,-8.8189)
+bush_seed = 725344
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass5-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(12.384,0,-9.4206)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725374
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree23" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.9593,0,-13.4651)
+tree_type = 4
+tree_seed = 725283
+tree_height = 4.594401482371099
+crown_width = 3.1065337759087113
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree24" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(7.2911,0,-15.9397)
+tree_type = 0
+tree_seed = 725284
+tree_height = 5.29977754380025
+crown_width = 3.342582343416356
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern51" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(9.616,0,-12.5794)
+rotation_degrees = Vector3(0,276,0)
+plant_seed = 725316
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub51" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.0887,0,-13.1811)
+bush_seed = 725346
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass51" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(9.616,0,-12.5794)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725376
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree25" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(18.8257,0,-13.976)
+tree_type = 4
+tree_seed = 725285
+tree_height = 4.521205346984235
+crown_width = 2.973431067358049
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree26" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(20.6174,0,-11.1342)
+tree_type = 2
+tree_seed = 725286
+tree_height = 5.630805198709282
+crown_width = 2.9691414120039266
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern6-1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(17.4849,0,-14.5151)
+rotation_degrees = Vector3(0,275,0)
+plant_seed = 725315
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub6-1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(18.0506,0,-13.9494)
+bush_seed = 725345
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass6-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(17.4849,0,-14.5151)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725375
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailTree27" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(14.4773,0,-17.9283)
+tree_type = 0
+tree_seed = 725287
+tree_height = 5.417873023008212
+crown_width = 2.8581610361194185
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailTree28" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(11.6793,0,-19.4498)
+tree_type = 4
+tree_seed = 725288
+tree_height = 5.435849846310235
+crown_width = 3.322723698723712
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="TrailFern61" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(14.5151,0,-17.4849)
+rotation_degrees = Vector3(0,277,0)
+plant_seed = 725317
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="TrailShrub61" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(13.9494,0,-18.0506)
+bush_seed = 725347
+bush_height = 0.8999999999999999
+footprint = Vector2(1.5,1.2000000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="TrailGrass61" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(14.5151,0,-17.4849)
+patch_size = Vector2(2.5, 2.7)
+patch_seed = 725377
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree0-1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.781,0,9.7884)
+tree_type = 4
+tree_seed = 725999
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern0-10" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(2.9169,0,9.6657)
+rotation_degrees = Vector3(0,279,0)
+plant_seed = 726039
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub0-10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.5776,0,9.8969)
+bush_seed = 726079
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern0-11" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.908,0,8.9531)
+rotation_degrees = Vector3(0,280,0)
+plant_seed = 726040
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub0-11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.5687,0,9.1843)
+bush_seed = 726080
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass0-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.6484,0,9.3919)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726119
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree01" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-2.581,0,7.2116)
+tree_type = 4
+tree_seed = 726001
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern010" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-1.0473,0,8.2782)
+rotation_degrees = Vector3(0,281,0)
+plant_seed = 726041
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub010" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.708,0,8.0469)
+bush_seed = 726081
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern011" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-1.3776,0,7.1031)
+rotation_degrees = Vector3(0,282,0)
+plant_seed = 726042
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub011" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.0383,0,6.8718)
+bush_seed = 726082
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass01" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-1.4484,0,7.6081)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726121
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree1-1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.7062,0,2.0636)
+tree_type = 0
+tree_seed = 726000
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern1-10" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(2.4119,0,3.4107)
+rotation_degrees = Vector3(0,283,0)
+plant_seed = 726043
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub1-10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.0143,0,3.0542)
+bush_seed = 726083
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern1-11" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(2.505,0,2.1936)
+rotation_degrees = Vector3(0,284,0)
+plant_seed = 726044
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub1-11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.1074,0,1.8371)
+bush_seed = 726084
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass1-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(2.6736,0,2.6748)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726120
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree11" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.0062,0,6.0364)
+tree_type = 0
+tree_seed = 726002
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern110" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-1.2026,0,5.5499)
+rotation_degrees = Vector3(0,285,0)
+plant_seed = 726045
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub110" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.805,0,5.9064)
+bush_seed = 726085
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern111" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-2.3143,0,5.0458)
+rotation_degrees = Vector3(0,286,0)
+plant_seed = 726046
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub111" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.9167,0,5.4023)
+bush_seed = 726086
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass11" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-1.9736,0,5.4252)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726122
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree2-1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.9024,0,0.464)
+tree_type = 2
+tree_seed = 726001
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern2-10" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(2.0764,0,0.0694)
+rotation_degrees = Vector3(0,287,0)
+plant_seed = 726047
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub2-10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.6961,0,0.395)
+bush_seed = 726087
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern2-11" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.1612,0,-0.4903)
+rotation_degrees = Vector3(0,288,0)
+plant_seed = 726048
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub2-11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.7809,0,-0.1647)
+bush_seed = 726088
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass2-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(2.8402,0,-0.0942)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726121
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree21" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.0024,0,-3.164)
+tree_type = 2
+tree_seed = 726003
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern210" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-1.6416,0,-1.8841)
+rotation_degrees = Vector3(0,289,0)
+plant_seed = 726049
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub210" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.2612,0,-2.2097)
+bush_seed = 726089
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern211" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-1.7961,0,-3.095)
+rotation_degrees = Vector3(0,290,0)
+plant_seed = 726050
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub211" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.4158,0,-3.4206)
+bush_seed = 726090
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass21" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-1.9402,0,-2.6058)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726123
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree3-1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(6.4783,0,-2.7713)
+tree_type = 4
+tree_seed = 726002
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern3-10" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(5.0026,0,-3.9168)
+rotation_degrees = Vector3(0,291,0)
+plant_seed = 726051
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub3-10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.4205,0,-3.3552)
+bush_seed = 726091
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern3-11" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(6.2227,0,-3.9523)
+rotation_degrees = Vector3(0,292,0)
+plant_seed = 726052
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub3-11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.6407,0,-3.3907)
+bush_seed = 726092
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass3-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(5.7619,0,-3.734)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726122
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree31" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(1.8217,0,-9.0287)
+tree_type = 4
+tree_seed = 726004
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern310" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(2.4952,0,-7.2862)
+rotation_degrees = Vector3(0,293,0)
+plant_seed = 726053
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub310" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.0773,0,-7.8477)
+bush_seed = 726093
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern311" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(2.8795,0,-8.4448)
+rotation_degrees = Vector3(0,294,0)
+plant_seed = 726054
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub311" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.4616,0,-9.0063)
+bush_seed = 726094
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass31" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(2.5381,0,-8.066)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726124
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree4-1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(10.9793,0,-6.122)
+tree_type = 0
+tree_seed = 726003
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern4-10" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(9.5032,0,-7.2671)
+rotation_degrees = Vector3(0,295,0)
+plant_seed = 726055
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub4-10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.9213,0,-6.7056)
+bush_seed = 726095
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern4-11" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(10.7234,0,-7.3029)
+rotation_degrees = Vector3(0,296,0)
+plant_seed = 726056
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub4-11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(11.1415,0,-6.7415)
+bush_seed = 726096
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass4-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(10.2626,0,-7.0845)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726123
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree41" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(6.3207,0,-12.378)
+tree_type = 0
+tree_seed = 726005
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern410" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(6.9947,0,-10.6357)
+rotation_degrees = Vector3(0,297,0)
+plant_seed = 726057
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub410" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.5766,0,-11.1971)
+bush_seed = 726097
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern411" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(7.3787,0,-11.7944)
+rotation_degrees = Vector3(0,298,0)
+plant_seed = 726058
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub411" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.9606,0,-12.3558)
+bush_seed = 726098
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass41" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.0374,0,-11.4155)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726125
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree5-1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(16.2577,0,-10.7423)
+tree_type = 2
+tree_seed = 726004
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern5-10" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(14.6314,0,-11.6615)
+rotation_degrees = Vector3(0,299,0)
+plant_seed = 726059
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub5-10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(15.1263,0,-11.1665)
+bush_seed = 726099
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern5-11" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(15.8335,0,-11.8737)
+rotation_degrees = Vector3(0,300,0)
+plant_seed = 726060
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub5-11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(16.3284,0,-11.3787)
+bush_seed = 726100
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass5-1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(15.4092,0,-11.5908)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726124
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="InfillTree51" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(10.7423,0,-16.2577)
+tree_type = 2
+tree_seed = 726006
+tree_height = 5.2
+crown_width = 3.5
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+
+[node name="InfillFern510" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(11.6615,0,-14.6314)
+rotation_degrees = Vector3(0,301,0)
+plant_seed = 726061
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub510" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(11.1665,0,-15.1263)
+bush_seed = 726101
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillFern511" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(11.8737,0,-15.8335)
+rotation_degrees = Vector3(0,302,0)
+plant_seed = 726062
+plant_height = 0.45
+spread = 1.65
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="InfillShrub511" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(11.3787,0,-16.3284)
+bush_seed = 726102
+bush_height = 1.08
+footprint = Vector2(1.8,1.4400000000000002)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="InfillGrass51" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(11.5908,0,-15.4092)
+patch_size = Vector2(4.8, 4.4)
+patch_seed = 726126
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+
+[node name="TrailRock1" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-3.5,0,3.6)
+dimensions = Vector3(0.9, 0.55, 0.8)
+boulder_seed = 725400
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="TrailRock2" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(3.9,0,-2.1)
+dimensions = Vector3(0.9, 0.55, 0.8)
+boulder_seed = 725401
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="TrailRock3" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(8.6,0,-6.6)
+dimensions = Vector3(0.9, 0.55, 0.8)
+boulder_seed = 725402
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="TrailRock4" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(13.7,0,-13)
+dimensions = Vector3(0.9, 0.55, 0.8)
+boulder_seed = 725403
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="Fragment" parent="."]
+position = Vector3(-1.1,0.075,1.6)
+note_title = "Into the north woods"
+notes = PackedStringArray("Placeholder: add your own words about leaving the 4Runner and hiking the Bean and Bear Lakes Trail.")

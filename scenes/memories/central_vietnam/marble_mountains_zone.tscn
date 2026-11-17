@@ -1,0 +1,1063 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/conservatory_jungle.wav" id="air"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="earth"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/flagstone_path.tscn" id="stone"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/conservatory.tres" id="green"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/karst/painterly_limestone_karst.tscn" id="karst"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/temple/painterly_lake_temple.tscn" id="temple"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="jungle"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_tropical_broadleaf.tscn" id="broad"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_bamboo.tscn" id="bamboo"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+
+[sub_resource type="Curve3D" id="MountainRouteCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0.0000,0.0000,0.0000,0.3600,0.0000,-0.5400,-10.0000,0.0350,8.0000,-0.7200,-0.0000,0.7740,0.7200,0.0000,-0.7740,-8.0000,0.0350,5.0000,-0.9360,-0.0000,0.1800,0.9360,0.0000,-0.1800,-6.0000,0.0350,3.7000,-1.0800,-0.0000,-0.0540,1.0800,0.0000,0.0540,-2.8000,0.0350,4.0000,-1.2240,-0.0000,0.0540,1.2240,0.0000,-0.0540,0.0000,0.0350,4.0000,-1.4760,-0.0000,0.1800,1.4760,0.0000,-0.1800,4.0000,0.0350,3.7000,-1.3266,-0.0000,0.6378,1.3266,0.0000,-0.6378,8.2000,0.0350,3.0000,-0.5706,-0.0000,0.5118,0.0000,0.0000,0.0000,11.3700,0.0350,0.1565), "tilts": PackedFloat32Array(0,0,0,0,0,0,0,0)}
+point_count = 8
+
+[sub_resource type="Curve3D" id="GroundWashCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0.0000,0.0000,0.0000,0.1800,0.0000,1.4400,-1.0000,0.0040,-8.0000,-0.1800,-0.0000,-2.8800,0.1800,0.0000,2.8800,0.0000,0.0040,0.0000,-0.0000,-0.0000,-1.4400,0.0000,0.0000,0.0000,0.0000,0.0040,8.0000), "tilts": PackedFloat32Array(0,0,0)}
+point_count = 3
+
+[sub_resource type="Curve3D" id="CourtCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0.0000,0.0000,0.0000,0.0000,0.0000,-0.5580,0.0000,0.0180,4.6000,-0.0000,-0.0000,1.1340,0.0000,0.0000,-1.1340,0.0000,0.0180,1.5000,-0.0000,-0.0000,0.5760,0.0000,0.0000,0.0000,0.0000,0.0180,-1.7000), "tilts": PackedFloat32Array(0,0,0)}
+point_count = 3
+
+[sub_resource type="Curve3D" id="ToFieldsCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.9008,0.0,-0.985,11.37,0,0.1565,-1.2208,-0.0,1.945,1.2208,0.0,-1.945,17,0,-6,0.16,-0.0,1.76,-0.16,0.0,-1.76,19,0,-12,0.48,-0.0,0.8,0,0,0,16,0,-17), "tilts": PackedFloat32Array(0,0,0,0)}
+point_count = 4
+
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"marble_mountains"
+display_name = "Da Nang · Marble Mountains"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -24
+ambience_size = Vector2(34,34)
+ambience_blend_distance = 4.0
+
+[node name="MountainView" parent="Scenery" type="Marker3D"]
+position = Vector3(-6,0,4)
+
+[node name="GroundWash" parent="Scenery" instance=ExtResource("earth")]
+curve = SubResource("GroundWashCurve")
+path_width = 24
+paving_color = Color(0.6510,0.6784,0.5373,1)
+shoulder_color = Color(0.5529,0.6196,0.4706,1)
+end_fade = Vector2(3.5,3.5)
+crown_height = 0
+width_variation = 0.12
+edge_softness = 0.6
+detail_density = 0.25
+collision_enabled = false
+
+[node name="TempleCourt" parent="Scenery" instance=ExtResource("stone")]
+curve = SubResource("CourtCurve")
+path_width = 8.0
+paving_color = Color(0.5725,0.6078,0.5255,1)
+stone_color = Color(0.7725,0.7843,0.7098,1)
+shoulder_color = Color(0.5529,0.6196,0.4706,1)
+stone_size = 1.1
+joint_width = 0.028
+end_fade = Vector2(0.45,0.15)
+crown_height = 0
+width_variation = 0.03
+edge_softness = 0.24
+
+[node name="MountainRoute" parent="Scenery" instance=ExtResource("stone")]
+curve = SubResource("MountainRouteCurve")
+path_width = 2.7
+paving_color = Color(0.5686,0.5922,0.5059,1)
+stone_color = Color(0.7490,0.7647,0.6824,1)
+shoulder_color = Color(0.5529,0.6196,0.4706,1)
+stone_size = 0.9
+joint_width = 0.032
+end_fade = Vector2(0.8,0)
+crown_height = 0
+width_variation = 0.14
+edge_softness = 0.3
+
+[node name="ToFields" parent="Scenery" instance=ExtResource("earth")]
+curve = SubResource("ToFieldsCurve")
+path_width = 2.6
+paving_color = Color(0.6980,0.6745,0.5490,1)
+end_fade = Vector2(0,0)
+crown_height = 0.008
+edge_softness = 0.3
+
+[node name="NestledTemple" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("temple")]
+position = Vector3(0,0.035,-0.8)
+footprint = Vector2(6.4,4.2)
+roof_tiles_enabled = true
+body_color = Color(0.8510,0.7882,0.6431,1)
+accent_color = Color(0.5647,0.3412,0.2941,1)
+roof_color = Color(0.2667,0.4706,0.3725,1)
+trim_color = Color(0.7255,0.6784,0.5137,1)
+prop_seed = 615262
+recall_enabled = true
+recall_anchor = NodePath("../MountainView")
+
+[node name="Limestone1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
+position = Vector3(-10.0000,-0.0700,-3.0000)
+rotation_degrees = Vector3(0,14,0)
+footprint = Vector2(7.5,7)
+karst_height = 10
+peaks = 2
+body_color = Color(0.7412,0.7569,0.6863,1)
+accent_color = Color(0.3412,0.4549,0.2824,1)
+prop_seed = 615470
+recall_enabled = true
+recall_anchor = NodePath("../MountainView")
+visibility_distance = 140
+
+[node name="Limestone2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
+position = Vector3(-6.5000,-0.0700,-7.0000)
+rotation_degrees = Vector3(0,-18,0)
+footprint = Vector2(7.8,6.4)
+karst_height = 13
+peaks = 3
+body_color = Color(0.6549,0.6902,0.6392,1)
+accent_color = Color(0.3412,0.4549,0.2824,1)
+prop_seed = 615471
+recall_enabled = true
+recall_anchor = NodePath("../MountainView")
+visibility_distance = 140
+
+[node name="Limestone3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
+position = Vector3(0.0000,-0.0700,-8.5000)
+rotation_degrees = Vector3(0,16,0)
+footprint = Vector2(8.0,6.5)
+karst_height = 15.5
+peaks = 2
+body_color = Color(0.7412,0.7569,0.6863,1)
+accent_color = Color(0.3412,0.4549,0.2824,1)
+prop_seed = 615472
+recall_enabled = true
+recall_anchor = NodePath("../MountainView")
+visibility_distance = 140
+
+[node name="Limestone4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
+position = Vector3(7.0000,-0.0700,-7.0000)
+rotation_degrees = Vector3(0,-9,0)
+footprint = Vector2(7.6,6.5)
+karst_height = 12.5
+peaks = 3
+body_color = Color(0.6549,0.6902,0.6392,1)
+accent_color = Color(0.3412,0.4549,0.2824,1)
+prop_seed = 615473
+recall_enabled = true
+recall_anchor = NodePath("../MountainView")
+visibility_distance = 140
+
+[node name="Limestone5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
+position = Vector3(11.4000,-0.0700,-3.5000)
+rotation_degrees = Vector3(0,20,0)
+footprint = Vector2(5.8,5.2)
+karst_height = 8.5
+peaks = 2
+body_color = Color(0.7412,0.7569,0.6863,1)
+accent_color = Color(0.3412,0.4549,0.2824,1)
+prop_seed = 615474
+recall_enabled = true
+recall_anchor = NodePath("../MountainView")
+visibility_distance = 140
+
+[node name="Limestone6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
+position = Vector3(-12.7000,-0.0700,3.8000)
+rotation_degrees = Vector3(0,-12,0)
+footprint = Vector2(4.2,4.6)
+karst_height = 6
+peaks = 1
+body_color = Color(0.6549,0.6902,0.6392,1)
+accent_color = Color(0.3412,0.4549,0.2824,1)
+prop_seed = 615475
+recall_enabled = true
+recall_anchor = NodePath("../MountainView")
+visibility_distance = 140
+
+[node name="LedgeTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-10.0000,6.8000,-3.0000)
+tree_seed = 615500
+tree_height = 3.2
+crown_width = 3.8
+trunk_radius = 0.11
+trunk_collision = false
+branch_count = 4
+leaf_sprays_per_cluster = 60
+recall_anchor = NodePath("../MountainView")
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LedgeTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-6.8000,10.8000,-7.0000)
+tree_seed = 615501
+tree_height = 3.2
+crown_width = 4.8
+trunk_radius = 0.11
+trunk_collision = false
+branch_count = 4
+leaf_sprays_per_cluster = 60
+recall_anchor = NodePath("../MountainView")
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LedgeTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(0.3000,13.2000,-8.0000)
+tree_seed = 615502
+tree_height = 3.7
+crown_width = 4.7
+trunk_radius = 0.11
+trunk_collision = false
+branch_count = 4
+leaf_sprays_per_cluster = 60
+recall_anchor = NodePath("../MountainView")
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LedgeTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(6.8000,10.6000,-7.0000)
+tree_seed = 615503
+tree_height = 3.2
+crown_width = 4.5
+trunk_radius = 0.11
+trunk_collision = false
+branch_count = 4
+leaf_sprays_per_cluster = 60
+recall_anchor = NodePath("../MountainView")
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LedgeTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(11.4000,7.0000,-3.5000)
+tree_seed = 615504
+tree_height = 2.7
+crown_width = 3.4
+trunk_radius = 0.11
+trunk_collision = false
+branch_count = 4
+leaf_sprays_per_cluster = 60
+recall_anchor = NodePath("../MountainView")
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LedgeTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-12.7000,4.9000,3.8000)
+tree_seed = 615505
+tree_height = 2.7
+crown_width = 3.1
+trunk_radius = 0.11
+trunk_collision = false
+branch_count = 4
+leaf_sprays_per_cluster = 60
+recall_anchor = NodePath("../MountainView")
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LedgeTree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.0000,4.1000,-3.0000)
+tree_seed = 615506
+tree_height = 3
+crown_width = 3.8
+trunk_radius = 0.11
+trunk_collision = false
+branch_count = 4
+leaf_sprays_per_cluster = 60
+recall_anchor = NodePath("../MountainView")
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="LedgeTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(5.8000,4.0000,-3.6000)
+tree_seed = 615507
+tree_height = 2.8
+crown_width = 3.6
+trunk_radius = 0.11
+trunk_collision = false
+branch_count = 4
+leaf_sprays_per_cluster = 60
+recall_anchor = NodePath("../MountainView")
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant1" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-10.0000,0.0000,6.0000)
+rotation_degrees = Vector3(0,59.10,0)
+plant_form = 0
+plant_seed = 615550
+plant_height = 3.91
+spread = 3.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant2" parent="Scenery" instance=ExtResource("bamboo")]
+position = Vector3(-8.0000,0.0000,1.0000)
+rotation_degrees = Vector3(0,185.65,0)
+plant_form = 6
+plant_seed = 615551
+plant_height = 4.62
+spread = 2.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant3" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(-5.6000,0.0000,0.0000)
+rotation_degrees = Vector3(0,148.54,0)
+plant_form = 4
+plant_seed = 615552
+plant_height = 2.23
+spread = 2.8
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant4" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-4.9000,0.0000,-2.2000)
+rotation_degrees = Vector3(0,317.03,0)
+plant_form = 1
+plant_seed = 615553
+plant_height = 3.73
+spread = 3.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant5" parent="Scenery" instance=ExtResource("bamboo")]
+position = Vector3(4.8000,0.0000,-2.2000)
+rotation_degrees = Vector3(0,6.72,0)
+plant_form = 6
+plant_seed = 615554
+plant_height = 4.65
+spread = 2.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant6" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(6.6000,0.0000,0.0000)
+rotation_degrees = Vector3(0,320.27,0)
+plant_form = 4
+plant_seed = 615555
+plant_height = 2.30
+spread = 2.8
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant7" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(10.0000,0.0000,1.0000)
+rotation_degrees = Vector3(0,41.41,0)
+plant_form = 0
+plant_seed = 615556
+plant_height = 3.82
+spread = 3.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant8" parent="Scenery" instance=ExtResource("bamboo")]
+position = Vector3(-10.5000,0.0000,10.1000)
+rotation_degrees = Vector3(0,97.11,0)
+plant_form = 6
+plant_seed = 615557
+plant_height = 4.98
+spread = 2.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant9" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(-7.5000,0.0000,8.0000)
+rotation_degrees = Vector3(0,172.62,0)
+plant_form = 4
+plant_seed = 615558
+plant_height = 2.13
+spread = 2.8
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant10" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-5.0000,0.0000,7.6000)
+rotation_degrees = Vector3(0,147.56,0)
+plant_form = 1
+plant_seed = 615559
+plant_height = 4.19
+spread = 3.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant11" parent="Scenery" instance=ExtResource("bamboo")]
+position = Vector3(-2.0000,0.0000,8.2000)
+rotation_degrees = Vector3(0,313.61,0)
+plant_form = 6
+plant_seed = 615560
+plant_height = 4.33
+spread = 2.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant12" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(2.0000,0.0000,7.8000)
+rotation_degrees = Vector3(0,7.98,0)
+plant_form = 4
+plant_seed = 615561
+plant_height = 2.23
+spread = 2.8
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant13" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(5.0000,0.0000,7.5000)
+rotation_degrees = Vector3(0,217.90,0)
+plant_form = 0
+plant_seed = 615562
+plant_height = 4.14
+spread = 3.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant14" parent="Scenery" instance=ExtResource("bamboo")]
+position = Vector3(8.0000,0.0000,6.0000)
+rotation_degrees = Vector3(0,165.13,0)
+plant_form = 6
+plant_seed = 615563
+plant_height = 4.66
+spread = 2.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant15" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(12.0000,0.0000,4.5000)
+rotation_degrees = Vector3(0,155.11,0)
+plant_form = 4
+plant_seed = 615564
+plant_height = 2.22
+spread = 2.8
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant16" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-9.0000,0.0000,-8.0000)
+rotation_degrees = Vector3(0,288.47,0)
+plant_form = 1
+plant_seed = 615565
+plant_height = 3.78
+spread = 3.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant17" parent="Scenery" instance=ExtResource("bamboo")]
+position = Vector3(-3.0000,0.0000,-9.0000)
+rotation_degrees = Vector3(0,356.09,0)
+plant_form = 6
+plant_seed = 615566
+plant_height = 4.38
+spread = 2.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant18" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(4.0000,0.0000,-9.0000)
+rotation_degrees = Vector3(0,74.25,0)
+plant_form = 4
+plant_seed = 615567
+plant_height = 2.50
+spread = 2.8
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JunglePlant19" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(12.0000,0.0000,-7.0000)
+rotation_degrees = Vector3(0,247.51,0)
+plant_form = 0
+plant_seed = 615568
+plant_height = 4.27
+spread = 3.4
+fullness = 0.5
+wind_strength = 0.045
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-11.0000,0.0000,7.0000)
+bush_seed = 615600
+footprint = Vector2(2.58,1.87)
+bush_height = 1.05
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9.4000,0.0000,3.4000)
+bush_seed = 615601
+footprint = Vector2(1.82,1.76)
+bush_height = 1.15
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-7.0000,0.0000,1.7000)
+bush_seed = 615602
+footprint = Vector2(2.34,1.56)
+bush_height = 0.82
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-5.0000,0.0000,-0.6000)
+bush_seed = 615603
+footprint = Vector2(2.57,2.19)
+bush_height = 0.72
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.0000,0.0000,-0.2000)
+bush_seed = 615604
+footprint = Vector2(1.90,1.89)
+bush_height = 1.26
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.0000,0.0000,1.4000)
+bush_seed = 615605
+footprint = Vector2(2.37,2.08)
+bush_height = 1.26
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(10.0000,0.0000,2.0000)
+bush_seed = 615606
+footprint = Vector2(1.98,1.61)
+bush_height = 1.05
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-11.0000,0.0000,10.0000)
+bush_seed = 615607
+footprint = Vector2(2.03,1.93)
+bush_height = 0.96
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-7.0000,0.0000,8.3000)
+bush_seed = 615608
+footprint = Vector2(1.97,2.13)
+bush_height = 1.35
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.8000,0.0000,6.9000)
+bush_seed = 615609
+footprint = Vector2(2.65,1.71)
+bush_height = 1.27
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.5000,0.0000,7.2000)
+bush_seed = 615610
+footprint = Vector2(2.50,1.51)
+bush_height = 0.69
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.0000,0.0000,7.0000)
+bush_seed = 615611
+footprint = Vector2(2.42,1.52)
+bush_height = 1.18
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush13" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.5000,0.0000,6.8000)
+bush_seed = 615612
+footprint = Vector2(1.81,2.02)
+bush_height = 0.76
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush14" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.0000,0.0000,5.8000)
+bush_seed = 615613
+footprint = Vector2(2.45,1.95)
+bush_height = 1.33
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush15" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(12.6000,0.0000,2.0000)
+bush_seed = 615614
+footprint = Vector2(2.14,1.62)
+bush_height = 1.02
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush16" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-8.0000,0.0000,-7.0000)
+bush_seed = 615615
+footprint = Vector2(2.62,1.84)
+bush_height = 1.25
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush17" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.0000,0.0000,-6.0000)
+bush_seed = 615616
+footprint = Vector2(2.29,2.21)
+bush_height = 0.76
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush18" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.0000,0.0000,-6.0000)
+bush_seed = 615617
+footprint = Vector2(2.50,2.12)
+bush_height = 1.21
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush19" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(10.0000,0.0000,-5.0000)
+bush_seed = 615618
+footprint = Vector2(2.71,2.29)
+bush_height = 0.74
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleBush20" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-13.0000,0.0000,0.0000)
+bush_seed = 615619
+footprint = Vector2(2.70,1.51)
+bush_height = 1.19
+mass_count = 4
+sprays_per_mass = 54
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-9.2000,0.0000,6.8000)
+rotation_degrees = Vector3(0,116.44,0)
+plant_seed = 615650
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern2" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-7.2000,0.0000,4.8000)
+rotation_degrees = Vector3(0,83.64,0)
+plant_seed = 615651
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern3" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-5.5000,0.0000,2.1000)
+rotation_degrees = Vector3(0,182.54,0)
+plant_seed = 615652
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern4" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-3.0000,0.0000,2.0000)
+rotation_degrees = Vector3(0,141.90,0)
+plant_seed = 615653
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern5" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.4000,0.0000,1.7000)
+rotation_degrees = Vector3(0,189.44,0)
+plant_seed = 615654
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern6" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(6.6000,0.0000,2.0000)
+rotation_degrees = Vector3(0,355.77,0)
+plant_seed = 615655
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern7" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(9.4000,0.0000,3.9000)
+rotation_degrees = Vector3(0,354.29,0)
+plant_seed = 615656
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern8" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-7.4000,0.0000,7.2000)
+rotation_degrees = Vector3(0,125.40,0)
+plant_seed = 615657
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern9" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-3.0000,0.0000,6.0000)
+rotation_degrees = Vector3(0,88.28,0)
+plant_seed = 615658
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern10" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.0000,0.0000,6.0000)
+rotation_degrees = Vector3(0,266.94,0)
+plant_seed = 615659
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern11" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(6.8000,0.0000,5.5000)
+rotation_degrees = Vector3(0,258.15,0)
+plant_seed = 615660
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailFern12" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(11.8000,0.0000,1.4000)
+rotation_degrees = Vector3(0,289.86,0)
+plant_seed = 615661
+plant_height = 0.65
+spread = 1.7
+fullness = 0.42
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="JungleFloor1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-10.0000,0.0070,6.0000)
+patch_size = Vector2(6,5)
+patch_seed = 615700
+tufts_per_square_meter = 14
+leaves_per_square_meter = 30
+grass_height = 0.16
+ground_exclusions = Array[NodePath]([NodePath("../MountainRoute"),NodePath("../TempleCourt"),NodePath("../ToFields"),NodePath("../NestledTemple")])
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="JungleFloor2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-6.0000,0.0070,5.0000)
+patch_size = Vector2(6,6)
+patch_seed = 615701
+tufts_per_square_meter = 14
+leaves_per_square_meter = 30
+grass_height = 0.16
+ground_exclusions = Array[NodePath]([NodePath("../MountainRoute"),NodePath("../TempleCourt"),NodePath("../ToFields"),NodePath("../NestledTemple")])
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="JungleFloor3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.0000,0.0070,7.0000)
+patch_size = Vector2(6,3)
+patch_seed = 615702
+tufts_per_square_meter = 14
+leaves_per_square_meter = 30
+grass_height = 0.16
+ground_exclusions = Array[NodePath]([NodePath("../MountainRoute"),NodePath("../TempleCourt"),NodePath("../ToFields"),NodePath("../NestledTemple")])
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="JungleFloor4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(2.5000,0.0070,6.7000)
+patch_size = Vector2(6,3)
+patch_seed = 615703
+tufts_per_square_meter = 14
+leaves_per_square_meter = 30
+grass_height = 0.16
+ground_exclusions = Array[NodePath]([NodePath("../MountainRoute"),NodePath("../TempleCourt"),NodePath("../ToFields"),NodePath("../NestledTemple")])
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="JungleFloor5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.5000,0.0070,4.8000)
+patch_size = Vector2(6,5)
+patch_seed = 615704
+tufts_per_square_meter = 14
+leaves_per_square_meter = 30
+grass_height = 0.16
+ground_exclusions = Array[NodePath]([NodePath("../MountainRoute"),NodePath("../TempleCourt"),NodePath("../ToFields"),NodePath("../NestledTemple")])
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="JungleFloor6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-7.0000,0.0070,-2.0000)
+patch_size = Vector2(4,5)
+patch_seed = 615705
+tufts_per_square_meter = 14
+leaves_per_square_meter = 30
+grass_height = 0.16
+ground_exclusions = Array[NodePath]([NodePath("../MountainRoute"),NodePath("../TempleCourt"),NodePath("../ToFields"),NodePath("../NestledTemple")])
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="JungleFloor7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(6.0000,0.0070,-2.0000)
+patch_size = Vector2(4,5)
+patch_seed = 615706
+tufts_per_square_meter = 14
+leaves_per_square_meter = 30
+grass_height = 0.16
+ground_exclusions = Array[NodePath]([NodePath("../MountainRoute"),NodePath("../TempleCourt"),NodePath("../ToFields"),NodePath("../NestledTemple")])
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="JungleFloor8" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(12.0000,0.0070,-1.0000)
+patch_size = Vector2(3,5)
+patch_seed = 615707
+tufts_per_square_meter = 14
+leaves_per_square_meter = 30
+grass_height = 0.16
+ground_exclusions = Array[NodePath]([NodePath("../MountainRoute"),NodePath("../TempleCourt"),NodePath("../ToFields"),NodePath("../NestledTemple")])
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="Fragment" parent="."]
+position = Vector3(0,0.065,4)
+note_title = "A temple among the limestone"
+notes = PackedStringArray("Placeholder: add your own words about visiting the Marble Mountains together.")

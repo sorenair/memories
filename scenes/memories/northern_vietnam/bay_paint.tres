@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WaterSettings" load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/water/water_settings.gd" id="1"]
+[resource]
+script = ExtResource("1")
+flow_speed = 0.13
+ripple_scale = 0.72
+wave_activity = 0.4
+wave_height = 0.007
+paint_contrast = 0.3
+depth_distance = 2.7
+caustic_strength = 0.13
+normal_strength = 0.3
+reflection_strength = 0.24
+highlight_amount = 0.42
+sky_color = Color(0.847059,0.898039,0.800000,1)

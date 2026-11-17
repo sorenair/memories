@@ -21,6 +21,7 @@ uniform float spark_amount = 0.65;
 uniform float spark_height = 2.2;
 uniform float spark_size = 0.03;
 uniform float spark_variation = 0.65;
+uniform float spark_trail_length = 0.035;
 uniform float spark_burstiness = 0.35;
 float fire_clock(float engine_time) {
 	return (preview_time >= 0.0 ? preview_time : engine_time) * animation_speed + fire_phase;

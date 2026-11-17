@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="PackedScene" path="res://scenes/world/memory_world_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://scenes/memories/bean_bear.tscn" id="memory"]
+[ext_resource type="Script" path="res://scripts/bean_bear_camera.gd" id="camera"]
+[node name="MemoryWorld" instance=ExtResource("base")]
+recalled_spawn_offset = Vector3(0,0,0)
+[node name="Memory" parent="." index="4" instance=ExtResource("memory")]
+[node name="CameraRig" parent="." index="5" node_paths=PackedStringArray("trailhead_zone","overlook_zone","camp_zone")]
+script = ExtResource("camera")
+trailhead_zone = NodePath("../Memory/Zones/Trailhead")
+overlook_zone = NodePath("../Memory/Zones/Overlook")
+camp_zone = NodePath("../Memory/Zones/Campsite")
+[node name="Camera3D" parent="CameraRig" index="0"]
+size = 3.5
+far = 180.0

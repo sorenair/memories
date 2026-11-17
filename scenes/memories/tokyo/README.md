@@ -43,7 +43,11 @@ All 97 recallable components are enabled; all 82 foliage components respond to
 both explorers. Solid scenery keeps its collision throughout recall. Outer temple trees also recall from the reachable gate/courtyard markers. Tree seeds,
 shape variation and leaf density reuse the existing generators. **forest_green.tres**
 and **temple_green.tres** supply restrained deep/soft green palettes. No new model
-component was required.
+component is needed for the landmarks. The walks now use the
+[surface-path family](../../../components/groundcover/paths/README.md): compacted
+gravel at Meiji and running-bond stone paving at Sensō-ji and its outgoing
+connection. Their original curves, heights and guidance links remain intact;
+Shibuya's hidden route and road-marking component keep their existing roles.
 
 ## Authoring
 

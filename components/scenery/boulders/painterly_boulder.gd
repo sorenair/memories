@@ -28,6 +28,12 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 			rebuild()
 var _recall_effect: Node
 
+## Optional reachable viewing point for a scenic stone arrangement.
+@export var recall_anchor: Node3D
+
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
+
 func get_recall_controller() -> Node:
 	return _recall_effect
 

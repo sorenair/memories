@@ -73,3 +73,24 @@ godot --headless --path . --script tests/band_interaction.gd
 ```
 
 The audio integration check runs the real First Meeting scene: simultaneous looping beds, all four band notes, fragment cues, bounded overlapping effects, actual mixed Master samples, independent volume/mute controls, and cleanup/re-entry through the timeline. Physical speaker/headphone balance still needs listening on target devices.
+
+Central Vietnam’s beach uses `samples/central_vietnam_surf.wav`, an original quiet
+12-second filtered-noise surf bed. Recreate only that placeholder with
+`python3 tools/generate_central_vietnam_audio.py`. Its zone-level volume and bounds
+remain editable through the shared ambience controls.
+
+Bean and Bear Lakes reuses `vineyard_rows` for its woodland walk, `vineyard_field`
+for the overlook, and `cabin_clearing` for the lakeside camp. These are placeholder
+beds, editable on each zone root; the camp retains the existing fire VFX.
+
+First Sail uses `central_vietnam_surf` at −29 dB as a placeholder lake-water bed
+in its single Lakeside zone. Replace the zone's Ambience Stream to use a lake
+recording; music and fragment SFX retain the shared mixer routing.
+
+Duluth in the Fall blends `autumn_wind` on the forest trail, `central_vietnam_surf`
+at the lighthouse shore, and `vineyard_rows` in the quiet garden. Wave/garden beds
+are reusable placeholders, editable on each zone root.
+
+Labor Day in Colorado reuses `vineyard_field` for the golden field, `autumn_wind`
+for the exposed summit and `vineyard_rows` for the forested lake. All three zone
+streams are placeholder recordings and use the existing ambience blend.

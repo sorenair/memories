@@ -16,6 +16,11 @@ func capture(id: String, phase: String) -> void:
 	RenderingServer.force_draw(false)
 	root.get_texture().get_image().save_png("/tmp/memory-effects-%s-%s.png" % [id,phase])
 func reaction(component: Node3D, player: Node3D, guest: Node3D) -> bool:
+	if component is PainterlyRiceTerraces:
+		check(component.react_to_explorers and component.is_processing(), "Rice response disabled")
+		component._process(0.5)
+		check(component._material.get_shader_parameter("explorer_0").distance_to(player.global_position)<0.05 and component._material.get_shader_parameter("explorer_1").distance_to(guest.global_position)<0.05, "Rice must respond to both explorers")
+		return true
 	if component is PainterlyGrassPatch:
 		check(component.react_to_explorer and component.is_processing(), "Grass response disabled: " + str(component.get_path()))
 		component._process(0.5)

@@ -152,3 +152,8 @@ The seasonal demo uses Turquoise, Autumn Jade, and Winter Glass pond palettes. W
 All recall types share **Proximity Distance** in
 `res://components/effects/recall/recall_settings.tres` (default 3.5 m beyond the outline).
 Increase it to begin pond recall farther from the player.
+
+For a lake viewed from a cliff, assign **Recall Anchor** to a reachable viewpoint.
+Either explorer approaching that marker recalls the water, even when the water
+lies below the normal height gate. Leave it empty for ordinary shoreline discovery.
+The water still expands within its own outline and keeps its existing shore safety.

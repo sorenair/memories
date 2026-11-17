@@ -167,7 +167,7 @@ func refresh() -> void:
 			_arrow_fade = create_tween()
 			_arrow_fade.tween_property(_submit, "modulate:a", arrow_alpha, 0.18)
 	_connection.set_connection(LanSession.partner_id != 0, joining)
-	# Routine states are expressed by the rings; reserve text for actionable errors.
+	# Routine states are expressed by the lock; reserve text for actionable errors.
 	_status.text = LanSession.status if LanSession.state == LanSession.State.OFFLINE else ""
 	_status.visible = not _status.text.is_empty()
 

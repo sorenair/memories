@@ -52,6 +52,10 @@ static func explorer_near(component: Node3D, footprint: Vector2, center: Vector2
 	return false
 
 static func explorer_near_outline(component: Node3D, outline: PackedVector2Array) -> bool:
+	if component.has_method("get_recall_anchor"):
+		var anchor: Node3D = component.get_recall_anchor()
+		if is_instance_valid(anchor) and anchor != component:
+			return explorer_near(anchor, Vector2.ZERO)
 	for explorer in explorers(component):
 		if not explorer is Node3D or absf(explorer.global_position.y - component.global_position.y) >= 1.5:
 			continue

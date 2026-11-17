@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/vietnam/temple/painterly_lake_temple.gd" id="script"]
+[node name="PainterlyLakeTemple" type="Node3D"]
+script = ExtResource("script")
+body_color = Color(0.76,0.65,0.43,1)
+accent_color = Color(0.58,0.23,0.19,1)
+roof_color = Color(0.55,0.37,0.27,1)
+trim_color = Color(0.74,0.71,0.60,1)

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/vietnam/terraces/painterly_rice_terraces.gd" id="script"]
+[node name="RiceTerraces" type="Node3D"]
+script = ExtResource("script")
+body_color = Color(0.46,0.48,0.29,1)
+accent_color = Color(0.58,0.65,0.37,1)
+trim_color = Color(0.66,0.66,0.43,1)
+collision_enabled = false
+contact_shadow_enabled = false

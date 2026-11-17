@@ -2,7 +2,7 @@ extends Node
 ## Shared explorer recall. Callers own input, networking and scene navigation.
 signal arrived
 signal departed
-const PAINT = preload("res://scripts/network/remote_presence.gdshader")
+const PAINT = preload("res://characters/materials/character_paint.gdshader")
 const ARRIVAL_DURATION := 1.25
 const DEPARTURE_DURATION := 0.95
 var progress := 0.0
@@ -30,15 +30,18 @@ func _ready() -> void:
 func _bind(node: Node) -> void:
 	if node is MeshInstance3D and node.mesh:
 		for surface in range(node.mesh.get_surface_count()):
-			var source := node.get_active_material(surface) as BaseMaterial3D
-			if not source:
+			var source: Material = node.get_active_material(surface)
+			var paint: ShaderMaterial
+			if source is ShaderMaterial and source.shader == PAINT:
+				paint = source.duplicate() as ShaderMaterial
+			elif source is BaseMaterial3D:
+				paint = ShaderMaterial.new()
+				paint.shader = PAINT
+				paint.set_shader_parameter("base_color", source.albedo_color)
+				paint.set_shader_parameter("base_texture", source.albedo_texture)
+			else:
 				continue
-			var paint := ShaderMaterial.new()
-			paint.shader = PAINT
-			paint.set_shader_parameter("base_color", source.albedo_color)
-			paint.set_shader_parameter("base_texture", source.albedo_texture)
-			paint.set_shader_parameter("roughness", source.roughness)
-			paint.set_shader_parameter("metallic", source.metallic)
+			paint.set_shader_parameter("recall_enabled", true)
 			# Each skinned mesh has different local coordinates; one explorer-height
 			# range makes feet, clothing, hair and accessories resolve together.
 			paint.set_shader_parameter("recall_solid_bounds", Vector2(0.0, _scan_height))

@@ -75,3 +75,7 @@ Use `res://scenes/effects/boulder_recall_test.tscn` (F6) to replay/pause/scrub t
 rebuilds and empty/repopulated rock clusters. See [the effects guide](../../../scenes/effects/README.md).
 
 Stone shading uses three broad toon tones with softly edged transitions, preserving palette colors, per-plane pigment variation, and ground contact blending. The same bands are used during recall and by rock clusters. Geometry and hard plane normals are unchanged.
+
+**Recall Anchor** optionally points to a reachable viewpoint for scenic stone
+arrangements, such as the Duluth dry garden. Empty retains normal local discovery;
+this also applies to inherited rock clusters.

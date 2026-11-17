@@ -5,7 +5,7 @@
 Place the root on the fire's base and use **Fire Size** for width and height.
 
 The effect combines a full lower flame, irregular red-orange tongues, a luminous
-heart, small detached flame pieces, billowing smoke, pointed sparks and a warm
+heart, small detached flame pieces, billowing smoke, flickering embers and a warm
 ground wash. The flame is a true 3D volume. A rising curl/density field bends,
 splits and necks its upper mass instead of moving fixed oval loops. The dense
 root stays connected while the upper silhouette changes. Smoke moves more slowly.
@@ -22,13 +22,15 @@ wash reuses the original fire's shader.
 | Fire | **Fire Size** (width/height scale in meters), **Body Fullness**, **Intensity**, **Animation Speed**, **Curl Amount** (strength of the rolling upper flow), **Wind** (local X/Z), **Fire Seed** |
 | Paint and Glow | **Core Color**, **Flame Color**, **Edge Color**, **Glow Strength** |
 | Smoke | **Smoke Amount** (density), **Smoke Height** (plume rise), **Smoke Spread**, **Smoke Turbulence**, **Smoke Definition**, **Smoke Color** |
-| Sparks | **Spark Amount**, **Spark Height** in flame-height multiples, **Spark Size** in meters, **Spark Variation**, **Spark Burstiness** |
+| Sparks | **Spark Amount**, **Spark Height** in flame-height multiples, **Spark Size** in meters, **Spark Variation**, **Spark Trail Length** in seconds, **Spark Burstiness** |
 | Recall | **Recall Enabled**, using the shared proximity distance and fade lifecycle |
 
 **Body Fullness** defaults to **0.72**. It fills the lower flame without raising
 a sphere into the upper silhouette. A flow-distorted tapered plume forms the
 upper mass. Lower values narrow the base. **Spark Variation** (default **0.65**)
-blends from consistent strokes toward varied short flecks and longer bent streaks.
+varies fragment size and launch speed. **Spark Trail Length** (default **0.035**
+seconds) controls how much recent motion is drawn behind each ember. Zero keeps
+the glowing fragments and removes their trails.
 
 Set **Animation Speed** to zero to freeze every layer. Set **Intensity** to zero
 to hide the effect. Smoke Amount, Spark Amount and Glow Strength each support
@@ -60,7 +62,10 @@ with a tapered plume inside an invisible bounds box, with at most 128 bounded
 steps per pixel and five refinement steps when a trace crosses the surface.
 An upward-scrolling 64³ field supplies curl displacement and density. Displacement
 grows with height; density pinches the plume into irregular tongues and temporary
-openings. An actual-height taper limits the size of detached upper pieces.
+openings. The field is stretched vertically and moves faster than the earlier
+flow revision. Limiting density-driven expansion reduces rounded upper lobes;
+small root distortion softens its otherwise regular outline. An actual-height
+taper limits the size of detached upper pieces.
 Three interior field samples estimate heat thickness without normal-lit spots
 or a permanent painted highlight. The shader writes the depth of the
 actual fire surface, so opaque scenery correctly occludes the volume.
@@ -84,12 +89,14 @@ painted shadow, middle and light tones. Sixteen faint billboard dabs add upper
 wisps. Both smoke layers test scene depth without writing it. The volume writes
 its actual surface depth for that test, preventing proxy-box occlusion artifacts.
 
-Sparks have a pool of 64 closed loft meshes (192 triangles each); the default
-amount shows 42. Velocity-aligned strokes have pointed gold heads, a thin cross
-section and narrowing orange/red tails. Their broad faces turn toward the camera
-so they stay readable as 3D flecks rather than spheres. Variation controls width,
-length and bend while preserving one drawn shape language. Embers follow the
-plume, slow as they climb and fade from their tails. Restrained flicker adds heat;
+Sparks have a pool of 64 camera-facing ribbons (32 triangles each); the default
+amount shows 42. Each ribbon reconstructs the ember's recent trajectory from its
+birth time and seeded path. A narrow, irregular hot fragment leads a short,
+curving orange tail. The head stays readable when viewed along its velocity,
+including from above. Quick outward pops mix with slower fluttering embers;
+per-birth variation and flicker keep them from resembling repeated rigid darts.
+Trails are capped relative to fragment size to avoid long confetti-like ribbons.
+They require no simulation history buffer or CPU updates.
 Burstiness defaults to 0.35. Smoke renders before the sparks so their
 bright marks remain readable, with opaque scene occlusion preserved.
 
@@ -101,11 +108,12 @@ The implicit flame costs more per covered pixel than the original simple fire.
 Tight ray bounds and early exits limit empty work; physical-device performance
 still needs profiling before using many large instances.
 
-Local profiling of the flow revision on the M1 Mac (Godot 4.4.1 Mobile/Metal,
+Local profiling of the November 16 revision on the M1 Mac (Godot 4.4.1 Mobile/Metal,
 1280×720, VSync disabled, median of 120 frames after 30 warm-up frames) measured
-about 6.9 ms/frame for one complete fire and 6.9 ms/frame for four; the empty
-viewport was 2.97 ms/frame. These are whole-frame timings at a fixed gameplay-scale camera,
-not a per-effect GPU budget or a measurement on a phone.
+about 2.7 ms/frame for one complete fire and 6.1 ms/frame for four; the empty
+viewport was 2.9 ms/frame. Desktop scheduling affects these small timings. These
+are whole-frame observations at a fixed gameplay-scale camera, not a per-effect
+GPU budget or a measurement on a phone.
 
 To regenerate the shared field (NumPy is needed only for this offline step):
 
@@ -125,6 +133,7 @@ flame pieces and separate smoke/spark layers. Implementation research:
 - [Alex Starovoyt — Stylized Fire Spell VFX](https://discofish.artstation.com/projects/eRDOkP): simple volume meshes, animated vertices and scrolling masks.
 - [Cyanilux — Fire/Flame Shader Breakdown](https://www.cyanilux.com/tutorials/fire-shader-breakdown/): upward distortion, clear teardrop shapes and restrained overdraw.
 - [Marina VFX — Stylized Fire Texture](https://realtimevfx.com/t/marina-vfx-50-weeks-of-stylized-vfx-between-art-emotion-code/29826): separate vertical fire flow and slower breathing shape.
+- [Jordan Jaminet — FireCamp breakdown](https://jaminet.artstation.com/projects/4nGAW): emission rhythm and intermittent ember bursts.
 
 These informed the design; all geometry and shaders here are original project
 code, with no downloaded reference assets.
@@ -145,7 +154,8 @@ frozen animation, visible motion, and visibility from four angles. The render ch
 also isolates the main fire across seven times, checks its core at both Curl Amount
 extremes, verifies foreground/background occlusion and perspective projection,
 and checks smoke density, Definition, scene occlusion and animation in isolation.
-Ember visibility, motion and Spark Variation are checked independently too.
+Ember visibility, motion, Spark Variation, trail length, zero-trail heads and
+overhead visibility are checked independently too.
 The solid flame is also tested through partial recall and maximum wind at low
 intensity. It writes
 light/dark previews to `docs/previews/sculpted-fire-{light,dark}.png`. The optional

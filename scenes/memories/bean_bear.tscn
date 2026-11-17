@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="Script" path="res://scripts/bean_bear_memory.gd" id="script"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://scenes/memories/bean_bear/trailhead_zone.tscn" id="Trailhead"]
+[ext_resource type="PackedScene" path="res://scenes/memories/bean_bear/overlook_zone.tscn" id="Overlook"]
+[ext_resource type="PackedScene" path="res://scenes/memories/bean_bear/campsite_zone.tscn" id="Campsite"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+
+[ext_resource type="Curve2D" path="res://scenes/memories/bean_bear/walk_outline.tres" id="outline"]
+
+[node name="Memory" instance=ExtResource("base")]
+script = ExtResource("script")
+memory_id = &"bean_bear"
+display_name = "Bean and Bear Lakes"
+
+[node name="Entry" parent="."]
+position = Vector3(0.4,0.07,28.5)
+
+[node name="Exit" parent="."]
+position = Vector3(21.8,0.07,-20.7)
+
+[node name="ForestFloor" parent="Environment" instance=ExtResource("floor")]
+visible = false
+custom_outline = ExtResource("outline")
+outline_detail = 96
+edge_inset = 0.12
+boundary_height = 4.0
+
+[node name="Guidance" parent="Environment" type="Node3D"]
+
+
+[node name="Audio" parent="."]
+fragment_sound = ExtResource("chime")
+
+[node name="Trailhead" parent="Zones" instance=ExtResource("Trailhead")]
+position = Vector3(0,0,18)
+
+[node name="Overlook" parent="Zones" instance=ExtResource("Overlook")]
+position = Vector3(24,0,-8)
+
+[node name="Campsite" parent="Zones" instance=ExtResource("Campsite")]
+position = Vector3(25,0,-24)
+
+[node name="ForestMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/Trailhead/Fragment")
+stroke_width = 0.32
+
+[node name="LakesMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Trailhead/Fragment")
+end_anchor = NodePath("../../../Zones/Overlook/Fragment")
+stroke_width = 0.32
+
+[node name="CampMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Overlook/Fragment")
+end_anchor = NodePath("../../../Zones/Campsite/Fragment")
+stroke_width = 0.32

@@ -3,7 +3,7 @@
 Two zones recall a late-summer walk between grape rows and a quiet wooden deck
 looking across a meadow. Six long rows use the existing bushes in warm olive
 greens, with small timber/wire supports and restrained plum-colored grape bunches.
-A sandy aisle leads onto the deck; pale chairs, simple wooden rails and a wide
+Two softly worn field-track lanes lead onto the deck; pale chairs, simple wooden rails and a wide
 field of grass, flowers and distant trees carry the second place. The location,
 winery name and personal story were not supplied, so neither signage nor exact
 geography is invented. Both notes are explicitly marked placeholders.
@@ -41,10 +41,11 @@ LAN, interaction, requested guidance, audio mixing and timeline return.
   then opens toward the field. It reverses smoothly on the return walk; yaw stays
   fixed throughout.
 
-The only new scenery component is
-[Vineyard Detail](../../../components/scenery/vineyard/README.md), with trellis and
-railing layouts. Foliage, walkable deck/ramp, chairs, path, platform, fragments and
-audio framework are reused. Scenic foliage now supports optional reachable recall
+[Vineyard Detail](../../../components/scenery/vineyard/README.md) supplies the
+trellis and railing layouts. The [field-track path](../../../components/groundcover/paths/README.md)
+adds two worn soil lanes with a grassy median along the original aisle curve.
+Foliage, walkable deck/ramp, chairs, platform, fragments and audio framework are
+reused. Scenic foliage supports optional reachable recall
 anchors; ordinary instances keep their existing behavior. Guidance supports raised
 walking surfaces while treating cabinets and house shells as obstacles.
 

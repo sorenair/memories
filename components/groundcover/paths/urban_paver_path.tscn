@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/painterly_surface_path.tscn" id="1"]
+
+[node name="UrbanPaverPath" instance=ExtResource("1")]
+surface_style = 3
+paving_color = Color(0.572549,0.596078,0.568627,1)
+shoulder_color = Color(0.611765,0.619608,0.533333,1)
+stone_color = Color(0.768627,0.772549,0.729412,1)
+path_width = 2.6
+width_variation = 0.015
+irregularity = 0.25
+crown_height = 0.0
+stone_size = 0.68
+joint_width = 0.014
+edge_softness = 0.16

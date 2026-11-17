@@ -20,7 +20,7 @@ float ellipsoid(vec3 p, vec3 radii) {
 	return k0 * (k0 - 1.0) / max(k1, 0.0001);
 }
 vec4 sample_flow(vec3 p) {
-	return textureLod(flow_noise,p*vec3(1.10,0.70,1.10)+flow_offset,0.0);
+	return textureLod(flow_noise,p*vec3(1.10,0.52,1.10)+flow_offset,0.0);
 }
 float fire_shape(vec3 p) {
 	vec3 q = p;
@@ -29,7 +29,7 @@ float fire_shape(vec3 p) {
 	vec4 flow = sample_flow(q);
 	vec3 curl = clamp((flow.rgb-vec3(0.5))*2.0,vec3(-0.75),vec3(0.75));
 	q.xz -= curl.xz*(0.06+curl_amount*0.26)*height*(0.35+height);
-	q.y -= curl.y*curl_amount*0.40*height*height;
+	q.y -= curl.y*curl_amount*0.30*height*height;
 	float h = clamp(q.y/1.18,0.0,1.0);
 	q.xz -= core_motion.yz*h*h;
 	float radius = (0.27+body_fullness*0.055)*pow(1.0-h,1.25)*(1.0+0.90*h);
@@ -38,8 +38,10 @@ float fire_shape(vec3 p) {
 	float outer_height = clamp(p.y/1.42,0.0,1.0);
 	radius = min(radius,0.40*pow(1.0-outer_height,1.10));
 	float plume = max(length(q.xz)-radius,max(-q.y,q.y-1.18));
-	plume += (0.52-flow.a)*radius*(1.60+curl_amount*0.80)*smoothstep(0.16,0.85,q.y);
-	float body = ellipsoid(p-vec3(core_motion.y*0.15,body_volume.w,core_motion.z*0.15),body_volume.xyz);
+	plume += max(0.52-flow.a,-0.14)*radius*(1.60+curl_amount*0.80)*smoothstep(0.16,0.85,q.y);
+	vec3 root = p;
+	root.xz -= curl.xz*0.055*smoothstep(0.0,0.45,p.y);
+	float body = ellipsoid(root-vec3(core_motion.y*0.15,body_volume.w,core_motion.z*0.15),body_volume.xyz);
 	return max(max(soft_union(body,plume,0.07),-p.y-0.018),p.y-1.42);
 }
 float field(vec3 p) {
@@ -53,7 +55,7 @@ void vertex() {
 	vec3 radii = mix(vec3(0.24,0.16,0.23),vec3(0.40,0.26,0.37),body_fullness);
 	radii *= vec3(1.0+sin(t*5.7)*0.04,1.0+sin(t*6.3+1.2)*0.035,1.0+cos(t*4.9)*0.04);
 	body_volume = vec4(radii,radii.y-0.015);
-	flow_offset = vec3(t*0.035,-t*0.36,t*0.018)+fire_phase*vec3(0.137,0.079,0.193);
+	flow_offset = vec3(t*0.035,-t*0.43,t*0.018)+fire_phase*vec3(0.137,0.079,0.193);
 	VERTEX.y += 0.82;
 	proxy_position = VERTEX;
 	VERTEX *= vec3(fire_size.x, fire_size.y, fire_size.x);
@@ -110,8 +112,8 @@ void fragment() {
 	float thickness = max(-inside/growth,0.0);
 	vec3 color = mix(edge_color.rgb,flame_color.rgb,smoothstep(0.014,0.055,thickness));
 	vec3 gold = mix(flame_color.rgb,core_color.rgb,0.72);
-	color = mix(color,gold,smoothstep(0.09,0.17,thickness));
-	color = mix(color,core_color.rgb,smoothstep(0.20,0.27,thickness));
+	color = mix(color,gold,smoothstep(0.105,0.15,thickness));
+	color = mix(color,core_color.rgb,smoothstep(0.205,0.25,thickness));
 	float pigment = fire_noise(hit*vec3(5.0,3.0,5.0)-vec3(0.0,t*3.0,0.0));
 	ALBEDO = color * mix(0.985, 1.015, pigment);
 	EMISSION = color * glow_strength * 0.18;

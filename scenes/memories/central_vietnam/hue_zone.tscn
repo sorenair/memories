@@ -1,0 +1,315 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/museum_room.wav" id="air"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/imperial/painterly_meridian_gate.tscn" id="gate"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/imperial/painterly_thai_hoa_hall.tscn" id="hall"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="water"]
+[ext_resource type="Resource" path="res://scenes/memories/tokyo/forest_green.tres" id="green"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="jungle"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/scenery/conservatory/walls/painterly_stone_wall.tscn" id="wall"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+
+[sub_resource type="Curve3D" id="GateApproachCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.48,0.0,-0.48,-5,0,15,-0.8,-0.0,0.8,0.8,0.0,-0.8,-2,0,12,-0.32,-0.0,1.12,0.32,0.0,-1.12,0,0,10,-0.0,-0.0,1.76,0.0,0.0,-1.76,0,0,5,-0.0,-0.0,1.92,0.0,0.0,-1.92,0,0,-1,-0.0,-0.0,0.96,0,0,0,0,0,-7), "tilts": PackedFloat32Array(0,0,0,0,0,0)}
+point_count = 6
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"hue_imperial_city"
+display_name = "Hue · Imperial City"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -30
+ambience_size = Vector2(29, 38)
+ambience_blend_distance = 4.0
+
+[node name="GateApproach" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("GateApproachCurve")
+path_width = 3.0
+paving_color = Color(0.7843,0.7569,0.6667,1)
+end_fade = Vector2(1.2, 0)
+slab_length = 2.0
+edge_softness = 0.25
+
+[node name="MeridianGate" parent="Scenery" instance=ExtResource("gate")]
+position = Vector3(0,0,5)
+recall_enabled = true
+
+[node name="ThaiHoaHall" parent="Scenery" instance=ExtResource("hall")]
+position = Vector3(0,0,-12)
+recall_enabled = true
+
+[node name="Courtyard" parent="Scenery" instance=ExtResource("paving")]
+position = Vector3(0,0,-3.2)
+footprint = Vector2(7.4,10.0)
+slab_length = 2.0
+paving_color = Color(0.7843,0.7569,0.6667,1)
+end_fade = Vector2(0.8,0.8)
+
+[node name="WestPond" parent="Scenery" instance=ExtResource("water")]
+position = Vector3(-6.3,-0.06,-3)
+footprint = Vector2(4.2,6.8)
+palette_preset = 3
+behavior_preset = 1
+foam_amount = 0.16
+block_water_entry = true
+recall_enabled = true
+
+[node name="WestLotusLeaf1" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-5.2,-0.02,-1.1)
+plant_form = 3
+plant_seed = 615460
+plant_height = 0.35
+spread = 0.95
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="WestLotusLeaf2" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-5.85,-0.02,-2.7)
+plant_form = 3
+plant_seed = 615461
+plant_height = 0.35
+spread = 0.95
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="WestLotusLeaf3" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-6.5,-0.02,-4.3)
+plant_form = 3
+plant_seed = 615462
+plant_height = 0.35
+spread = 0.95
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="WestCourtTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-10.3,0,2)
+tree_seed = 615473
+tree_height = 4.0
+crown_width = 2.9
+tree_type = 0
+branch_count = 6
+leaf_sprays_per_cluster = 65
+falling_leaf_count = 0
+trunk_radius = 0.14
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="WestCourtTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-10.3,0,-6.8)
+tree_seed = 615474
+tree_height = 4.2
+crown_width = 2.9
+tree_type = 0
+branch_count = 6
+leaf_sprays_per_cluster = 65
+falling_leaf_count = 0
+trunk_radius = 0.14
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="WestCourtTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-8.0,0,-12)
+tree_seed = 615475
+tree_height = 4.4
+crown_width = 2.9
+tree_type = 0
+branch_count = 6
+leaf_sprays_per_cluster = 65
+falling_leaf_count = 0
+trunk_radius = 0.14
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="WestWall" parent="Scenery" instance=ExtResource("wall")]
+position = Vector3(-10,0,-8)
+rotation_degrees = Vector3(0,90,0)
+length = 6.0
+wall_height = 1.5
+recall_enabled = true
+
+[node name="EastPond" parent="Scenery" instance=ExtResource("water")]
+position = Vector3(6.3,-0.06,-3)
+footprint = Vector2(4.2,6.8)
+palette_preset = 3
+behavior_preset = 1
+foam_amount = 0.16
+block_water_entry = true
+recall_enabled = true
+
+[node name="EastLotusLeaf1" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(5.2,-0.02,-1.1)
+plant_form = 3
+plant_seed = 615466
+plant_height = 0.35
+spread = 0.95
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="EastLotusLeaf2" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(5.85,-0.02,-2.7)
+plant_form = 3
+plant_seed = 615467
+plant_height = 0.35
+spread = 0.95
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="EastLotusLeaf3" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(6.5,-0.02,-4.3)
+plant_form = 3
+plant_seed = 615468
+plant_height = 0.35
+spread = 0.95
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="EastCourtTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(10.3,0,2)
+tree_seed = 615487
+tree_height = 4.0
+crown_width = 2.9
+tree_type = 0
+branch_count = 6
+leaf_sprays_per_cluster = 65
+falling_leaf_count = 0
+trunk_radius = 0.14
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="EastCourtTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(10.3,0,-6.8)
+tree_seed = 615488
+tree_height = 4.2
+crown_width = 2.9
+tree_type = 0
+branch_count = 6
+leaf_sprays_per_cluster = 65
+falling_leaf_count = 0
+trunk_radius = 0.14
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="EastCourtTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(8.0,0,-12)
+tree_seed = 615489
+tree_height = 4.4
+crown_width = 2.9
+tree_type = 0
+branch_count = 6
+leaf_sprays_per_cluster = 65
+falling_leaf_count = 0
+trunk_radius = 0.14
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="EastWall" parent="Scenery" instance=ExtResource("wall")]
+position = Vector3(10,0,-8)
+rotation_degrees = Vector3(0,90,0)
+length = 6.0
+wall_height = 1.5
+recall_enabled = true
+
+[node name="CourtShrub1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9,0,1)
+bush_seed = 615510
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="CourtShrub2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.5,0,1.5)
+bush_seed = 615511
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="CourtShrub3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9,0,-6)
+bush_seed = 615512
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="CourtShrub4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9,0,-6.8)
+bush_seed = 615513
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="CourtShrub5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-7.6,0,-12.8)
+bush_seed = 615514
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="CourtShrub6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.5,0,-13.5)
+bush_seed = 615515
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="Fragment" parent="."]
+position = Vector3(0,0.07,-7)
+note_title = "Within the imperial walls"
+notes = PackedStringArray("Placeholder: add your own words about visiting Hue’s Imperial City.")

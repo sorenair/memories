@@ -242,6 +242,27 @@ func run() -> void:
 	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
 	check(changes(even_sparks,await snapshot())>100, "Spark Variation must visibly change fleck proportions")
 	fire.spark_variation = 0.65
+	fire.spark_trail_length = 0.0
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	var fragments_only := await snapshot()
+	check(changes(fragments_only,no_sparks)>100, "Zero trail length must preserve visible hot fragments")
+	fire.spark_trail_length = 0.12
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	check(changes(fragments_only,await snapshot())>100, "Trail length must visibly alter the motion trails")
+	fire.spark_trail_length = 0.035
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	# A trajectory pointing toward the camera must not collapse the facing frame.
+	var spark_camera_position := camera.position
+	var spark_camera_rotation := camera.rotation
+	camera.position = Vector3(0,8,0)
+	camera.look_at(Vector3(0,1.95,0),Vector3.FORWARD)
+	var overhead_sparks := await snapshot("/tmp/sculpted-fire-sparks-overhead.png")
+	fire.spark_amount = 0.0
+	for id in ["Flames", "Flamelets", "Smoke", "SmokeFray", "GroundGlow"]: fire.get_node(id).hide()
+	check(changes(overhead_sparks,await snapshot())>50, "Ember heads must remain visible from above")
+	fire.spark_amount = 0.65
+	camera.position = spark_camera_position
+	camera.rotation = spark_camera_rotation
 	fire.set_preview_time(1.3)
 	camera.size = 5.6
 	camera.look_at(Vector3(0, 1.95, 0))

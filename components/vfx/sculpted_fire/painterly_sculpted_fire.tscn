@@ -4,11 +4,14 @@
 
 [node name="PainterlySculptedFire" type="Node3D"]
 script = ExtResource("1")
-animation_speed = 0.7
+body_fullness = 0.0
+animation_speed = 1.25
 edge_color = Color(0.87451, 0.278431, 0.12549, 1)
-smoke_amount = 0.75
+smoke_amount = 0.2
+smoke_height = 2.5
 smoke_turbulence = 0.5
-spark_amount = 0.25
-spark_height = 2.0
-spark_size = 0.045
+spark_amount = 0.23
+spark_height = 1.9
+spark_size = 0.07
 spark_variation = 1.0
+spark_trail_length = 0.065

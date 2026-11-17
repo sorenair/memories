@@ -54,6 +54,19 @@ func run() -> void:
 	scene.get_node("Explorer").position = Vector3(0, 5, 0)
 	recall._process(0.1)
 	check(recall.progress == 0.0, "Airborne arrivals must not recall water")
+	var lookout := Marker3D.new()
+	lookout.position = Vector3(12, 5, 12)
+	scene.add_child(lookout)
+	pond.recall_anchor = lookout
+	scene.get_node("Explorer").position = Vector3.ZERO
+	recall._process(0.1)
+	check(recall.progress == 0.0, "An explicit lookout must replace shoreline discovery")
+	scene.get_node("Explorer").position = lookout.global_position
+	recall._process(0.1)
+	check(recall.playing, "A reachable elevated lookout must recall distant scenic water")
+	recall.reset()
+	pond.recall_anchor = null
+	lookout.queue_free()
 	scene.get_node("Explorer").position = Vector3.ZERO
 	recall._process(0.1)
 	check(recall.playing, "Approaching the pond must trigger local recall")

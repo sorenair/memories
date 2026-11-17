@@ -69,10 +69,22 @@ func run() -> void:
 	tower.rebuild()
 	check(tower.get_recall_controller() == effect and is_equal_approx(effect.progress, 0.5), "Rebuilds must preserve lighthouse recall")
 	tower.recall_enabled = false
+	check(not tower.stripes_enabled,"Existing lighthouse instances must retain their unstriped default")
+	tower.stripes_enabled = true
+	tower.rebuild()
+	var striped: Mesh = tower._generated_root.get_node("PaintedProp").mesh
+	check(striped.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]==arrays[Mesh.ARRAY_VERTEX],"Striping must preserve the existing tower shape")
+	var tagged := false
+	for uv: Vector2 in striped.surface_get_arrays(0)[Mesh.ARRAY_TEX_UV2]: tagged = tagged or uv.x>2.5
+	check(tagged,"The striped variant must tag the shaft separately from windows and fittings")
+	tower.stripe_count = 8
+	tower.stripe_color = Color("ad4e45")
+	check(tower._generated_root.get_node("PaintedProp").mesh==striped and tower._material.get_shader_parameter("stripe_count")==8,"Stripe color/count edits must update paint without rebuilding geometry")
 	var packed := PackedScene.new()
 	check(packed.pack(tower) == OK, "Lighthouse settings must pack as a reusable scene")
 	var copy := packed.instantiate()
 	check(copy.get_children().is_empty(), "Generated lighthouse geometry and physics must not serialize")
+	check(copy.stripes_enabled and copy.stripe_count==8 and copy.stripe_color==tower.stripe_color,"Stripe authoring parameters must survive packing")
 	copy.free()
 	tower.gallery_enabled = false
 	tower.beacon_enabled = false

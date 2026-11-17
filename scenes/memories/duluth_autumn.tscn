@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="Script" path="res://scripts/duluth_autumn_memory.gd" id="script"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://scenes/memories/duluth_autumn/trail_zone.tscn" id="Trail"]
+[ext_resource type="PackedScene" path="res://scenes/memories/duluth_autumn/lighthouse_zone.tscn" id="Lighthouse"]
+[ext_resource type="PackedScene" path="res://scenes/memories/duluth_autumn/garden_zone.tscn" id="Garden"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+
+[ext_resource type="Curve2D" path="res://scenes/memories/duluth_autumn/walk_outline.tres" id="outline"]
+
+[node name="Memory" instance=ExtResource("base")]
+script = ExtResource("script")
+memory_id = &"duluth_autumn"
+display_name = "Duluth in the Fall"
+
+[node name="Entry" parent="."]
+position = Vector3(0,0.075,24)
+
+[node name="Exit" parent="."]
+position = Vector3(53.8,0.075,-32.8)
+
+[node name="AutumnFloor" parent="Environment" instance=ExtResource("floor")]
+visible = false
+custom_outline = ExtResource("outline")
+outline_detail = 96
+edge_inset = 0.12
+boundary_height = 4.0
+
+[node name="Guidance" parent="Environment" type="Node3D"]
+
+
+[node name="Audio" parent="."]
+fragment_sound = ExtResource("chime")
+
+[node name="Trail" parent="Zones" instance=ExtResource("Trail")]
+position = Vector3(0,0,15)
+
+[node name="Lighthouse" parent="Zones" instance=ExtResource("Lighthouse")]
+position = Vector3(30,0,-8)
+
+[node name="Garden" parent="Zones" instance=ExtResource("Garden")]
+position = Vector3(54,0,-36)
+
+[node name="LookoutMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/Trail/Fragment")
+stroke_width = 0.32
+
+[node name="LighthouseMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Trail/Fragment")
+end_anchor = NodePath("../../../Zones/Lighthouse/Fragment")
+stroke_width = 0.32
+
+[node name="GardenMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Lighthouse/Fragment")
+end_anchor = NodePath("../../../Zones/Garden/Fragment")
+stroke_width = 0.32

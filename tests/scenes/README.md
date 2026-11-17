@@ -1,5 +1,17 @@
 # Component test scenes
 
+`path_surface_test.tscn` previews the [path/trail family](../../components/groundcover/paths/README.md): earth, gravel, field track, irregular flagstone and urban running-bond paving on the same curve, beside both explorers. Edit the Path3D curve or material/layout controls on each preset. The original curved sidewalk remains separately available.
+
+`flatiron_test.tscn` previews the [painterly Flatirons](../../components/scenery/flatirons/README.md): classic, split and broken-crested sandstone slabs with large inclined faces and recessed fractures. Both explorers show the scale. Load a single formation into the generic stage for isolated shape, stone-palette and recall editing; the stage camera supports larger landmarks.
+
+`shuttle_bus_test.tscn` previews the [painterly trail shuttle](../../components/vehicles/shuttle_bus/README.md) beside both explorers. Walk around its closed exterior and passenger boarding approach; edit window bays, body size, destination, colors, roof pod or mountain graphic on the source component. The generic stage can also load the single bus for isolated recall checks.
+
+`mountain_goat_test.tscn` previews the [painterly mountain goat](../../components/animals/mountain_goat/README.md): three subtly varied white goats in relaxed, alert and grazing poses, with a bull elk and both explorers for scale. Inspect light breathing/head/ear idles and torso collision, or load the single goat into the generic stage for parameter and recall studies.
+
+`elk_test.tscn` previews the [painterly elk](../../components/animals/elk/README.md): a mature bull, cow and calf in front, with a mixed herd behind and both explorers for scale. Walk around the stationary herd, inspect grazing/head/ear idles and test torso collisions. Individual elk or the seeded herd can also be loaded into the generic stage for isolated parameter/recall studies.
+
+`backpacking_test.tscn` previews the [backpacking props](../../components/scenery/camp/BACKPACKING.md): gray 2018 4Runner, orange tent and liquid-fuel stove/pot setup. Walk between the parked car and closed tent, inspect the subtle cloth wind and cooking effects, or load one component directly into the generic stage for isolated parameter and recall tests.
+
 `res://tests/scenes/component_test.tscn` is the reusable 3D test stage. Open it and
 press **F6**. Its current subject is the painterly 3D memory fragment. Choose another
 component through Subject Scene. The stage includes the shared fragment note UI,
@@ -67,3 +79,7 @@ geometry, stairs, exclusion footprint and solid exterior collision.
 `sand_test.tscn` previews [painterly sand](../../components/groundcover/sand/README.md) in two forms: wind-shaped dune ridges and softer rolling hills. Walk onto the raised terrain to leave temporary footprints. Both configurations use real surface collision, inherited snow footprint tracking and editable sand colors. The generic stage can also load a single sand patch for isolated recall checks.
 
 `lighthouse_test.tscn` previews the [painterly lighthouse](../../components/scenery/lighthouse/README.md), with a smooth tapered tower, lantern gallery and rotating painted beacon. Walk up its entry steps to the closed door; use the background selector to inspect the soft beam against a dark setting. Height, radius, colors, windows and beacon controls live on the source component.
+
+`zen_garden_test.tscn` previews the [dry-garden kit](../../components/scenery/gardens/README.md):
+a feathered raked-gravel bed, stone lantern and existing boulders, with the explorer
+for scale. The source pieces retain their individual authoring and recall controls.

@@ -115,7 +115,7 @@ func _ground(point: Vector3) -> Vector3:
 			var shape := body.shape_owner_get_owner(owner_id) as Node
 			# Only authored walking surfaces elevate navigation. Cabinets, roofs
 			# and tables remain obstacles rather than becoming alternative floors.
-			if shape and (shape.name in [&"StairRamp",&"AccessRamp",&"Deck",&"Veranda"] or body.name in [&"WalkingSurface",&"PorticoStairs"]):
+			if shape and (shape.name in [&"StairRamp",&"AccessRamp",&"Deck",&"Veranda",&"ShoreRamp",&"HeadlandTop"] or str(shape.name).begins_with("DockDeck") or str(shape.name).begins_with("BridgeRamp") or str(shape.name).begins_with("TerraceSoil") or body.name in [&"WalkingSurface",&"PorticoStairs",&"SandCollision"]):
 				support = hit.position.y
 		_support_cache[key] = support+0.68
 	return Vector3(point.x,_support_cache[key],point.z)
@@ -126,7 +126,7 @@ func _is_ramp(hit: Dictionary) -> bool:
 		return false
 	var owner_id := body.shape_find_owner(int(hit["shape"]))
 	var owner := body.shape_owner_get_owner(owner_id) as Node
-	return is_instance_valid(owner) and (owner.name in [&"StairRamp",&"AccessRamp"] or body.name==&"PorticoStairs")
+	return is_instance_valid(owner) and (owner.name in [&"StairRamp",&"AccessRamp",&"ShoreRamp"] or str(owner.name).begins_with("BridgeRamp") or body.name==&"PorticoStairs")
 
 func _point_status(point: Vector3) -> int:
 	var key := Vector2(point.x, point.z)

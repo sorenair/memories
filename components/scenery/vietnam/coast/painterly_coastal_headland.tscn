@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/vietnam/coast/painterly_coastal_headland.gd" id="script"]
+[node name="CoastalHeadland" type="Node3D"]
+script = ExtResource("script")
+body_color = Color(0.53,0.55,0.47,1)
+accent_color = Color(0.59,0.63,0.43,1)
+contact_shadow_enabled = false

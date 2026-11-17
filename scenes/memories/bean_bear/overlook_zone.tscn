@@ -1,0 +1,1404 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="air"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/coast/painterly_coastal_headland.tscn" id="cliff"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="water"]
+[ext_resource type="Resource" path="res://scenes/memories/bean_bear/lake_water.tres" id="water_palette"]
+[ext_resource type="Resource" path="res://scenes/memories/bean_bear/forest_green.tres" id="green"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="Resource" path="res://scenes/memories/bean_bear/distant_green.tres" id="far_green"]
+[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+
+[sub_resource type="Curve3D" id="OverlookClimbCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.8,0.056,-0.08,-8,0,10,-1.92,-0.192,0.112,1.92,0.192,-0.112,-3,0.35,9.5,-1.76,-0.296,0.88,1.76,0.296,-0.88,4,1.2,9.3,-0.64,-0.32,1.808,0.64,0.32,-1.808,8,2.2,4,0.64,-0.16,1.12,-0.64,0.16,-1.12,8,3.2,-2,1.056,-0.0,-0.16,-1.056,0.0,0.16,4,3.2,-3,0.416,-0.0,-0.32,0,0,0,1.4,3.2,-1), "tilts": PackedFloat32Array(0,0,0,0,0,0,0)}
+point_count = 7
+
+[sub_resource type="Curve3D" id="ToCampCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.256,0.0,-0.32,1.4,3.2,-1,-1.056,-0.0,0.64,1.056,0.0,-0.64,3,3.2,-3,-1.44,0.112,1.28,1.44,-0.112,-1.28,8,3.2,-5,-0.32,0.304,1.92,0.32,-0.304,-1.92,12,2.5,-11,1.12,0.4,1.76,-1.12,-0.4,-1.76,10,1.3,-17,0.8,0.208,0.8,0,0,0,5,0,-22), "tilts": PackedFloat32Array(0,0,0,0,0,0)}
+point_count = 6
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"bean_bear_overlook"
+display_name = "Bean and Bear · Two lakes"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -28
+ambience_size = Vector2(34, 37)
+ambience_blend_distance = 4.0
+
+[node name="OverlookRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(1.4,3.2,-1)
+
+[node name="Cliff" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cliff")]
+footprint = Vector2(12,10)
+cliff_height = 3.2
+prop_seed = 725261
+body_color = Color(0.5725,0.5882,0.5412,1)
+accent_color = Color(0.5216,0.5686,0.4157,1)
+trim_color = Color(0.4314,0.4706,0.3804,1)
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="OverlookClimb" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("OverlookClimbCurve")
+path_width = 2.4
+paving_color = Color(0.725490,0.647059,0.529412,1)
+end_fade = Vector2(0, 0)
+edge_softness = 0.25
+paving_seed = 72526
+crown_height = 0.012
+detail_density = 0.35
+
+[node name="ToCamp" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ToCampCurve")
+path_width = 2.4
+paving_color = Color(0.725490,0.647059,0.529412,1)
+end_fade = Vector2(0, 0)
+edge_softness = 0.25
+paving_seed = 72526
+crown_height = 0.012
+detail_density = 0.35
+
+[node name="NearLake" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("water")]
+position = Vector3(-8,-0.055,-9)
+rotation_degrees = Vector3(0,45,0)
+footprint = Vector2(11, 14)
+water_seed = 725262
+irregularity = 0.1
+palette_preset = 0
+palette = ExtResource("water_palette")
+behavior_preset = 3
+wave_height = 0.025
+wave_activity = 0.18
+foam_amount = 0.16
+foam_width = 0.2
+block_water_entry = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarLake" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("water")]
+position = Vector3(-19,-0.055,-20)
+rotation_degrees = Vector3(0,45,0)
+footprint = Vector2(10, 11)
+water_seed = 725263
+irregularity = 0.1
+palette_preset = 0
+palette = ExtResource("water_palette")
+behavior_preset = 3
+wave_height = 0.025
+wave_activity = 0.18
+foam_amount = 0.16
+foam_width = 0.2
+block_water_entry = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-3.656,0,-14.5089)
+tree_type = 4
+tree_seed = 725450
+tree_height = 4.036542108226167
+crown_width = 2.965386438071199
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-0.3023,0,-8.6731)
+tree_type = 2
+tree_seed = 725452
+tree_height = 5.325976262952829
+crown_width = 3.6004691882499302
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-0.2722,0,-6.5836)
+tree_type = 4
+tree_seed = 725453
+tree_height = 5.161619079899527
+crown_width = 3.544309948993555
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.1951,0,-1.2449)
+tree_type = 2
+tree_seed = 725457
+tree_height = 4.80804563590909
+crown_width = 3.002797375604711
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-10.0256,0,-2.0098)
+tree_type = 4
+tree_seed = 725458
+tree_height = 4.298755826052278
+crown_width = 3.6064400221974693
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-12.0544,0,-3.2535)
+tree_type = 0
+tree_seed = 725459
+tree_height = 4.184666129404489
+crown_width = 3.2914119831984165
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-14.1297,0,-5.4632)
+tree_type = 4
+tree_seed = 725460
+tree_height = 4.270708625769688
+crown_width = 3.6012979007803376
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-15.3451,0,-7.8729)
+tree_type = 0
+tree_seed = 725461
+tree_height = 5.318747532020582
+crown_width = 3.6804637535230245
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-15.7837,0,-10.6877)
+tree_type = 2
+tree_seed = 725462
+tree_height = 4.426708732186155
+crown_width = 3.192467862792307
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-15.5196,0,-12.4243)
+tree_type = 4
+tree_seed = 725463
+tree_height = 5.127732141098704
+crown_width = 3.0329081435884033
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree15" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-14.5961,0,-14.3252)
+tree_type = 0
+tree_seed = 725464
+tree_height = 4.67588862141652
+crown_width = 3.0029298413104817
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree16" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-12.156,0,-16.259)
+tree_type = 4
+tree_seed = 725465
+tree_height = 3.7665098647242186
+crown_width = 3.1727337742117854
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree17" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-9.8471,0,-16.7778)
+tree_type = 0
+tree_seed = 725466
+tree_height = 5.1301971986957335
+crown_width = 3.343604281254784
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree18" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-8.4916,0,-16.7207)
+tree_type = 2
+tree_seed = 725467
+tree_height = 5.285078607362788
+crown_width = 3.5733222679366468
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="NearShoreTree19" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-5.3764,0,-15.6918)
+tree_type = 4
+tree_seed = 725468
+tree_height = 4.0286817321867
+crown_width = 2.9707051509138136
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-14.5315,0,-24.8587)
+tree_type = 4
+tree_seed = 725550
+tree_height = 4.82907335858982
+crown_width = 3.670694615990924
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-12.8733,0,-22.6675)
+tree_type = 0
+tree_seed = 725551
+tree_height = 4.6905416052169695
+crown_width = 3.0879078226100214
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-12.3055,0,-21.2175)
+tree_type = 2
+tree_seed = 725552
+tree_height = 4.351529610159555
+crown_width = 3.056661382928885
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-12.0737,0,-18.6362)
+tree_type = 4
+tree_seed = 725553
+tree_height = 4.410436809139912
+crown_width = 3.4144159229852598
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-12.407,0,-17.1225)
+tree_type = 0
+tree_seed = 725554
+tree_height = 5.047830395810058
+crown_width = 3.6752618923659366
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-13.5113,0,-15.1925)
+tree_type = 4
+tree_seed = 725555
+tree_height = 5.301047828651187
+crown_width = 3.591831841893744
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-15.0643,0,-13.8947)
+tree_type = 0
+tree_seed = 725556
+tree_height = 3.903611092716569
+crown_width = 3.253483500767147
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-16.1586,0,-13.3944)
+tree_type = 2
+tree_seed = 725557
+tree_height = 4.843492151283069
+crown_width = 3.63086618972826
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-17.8176,0,-13.0583)
+tree_type = 4
+tree_seed = 725558
+tree_height = 4.68597687670485
+crown_width = 3.6898936828866202
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-19.8912,0,-13.2229)
+tree_type = 0
+tree_seed = 725559
+tree_height = 5.444066816165384
+crown_width = 3.4246439663883885
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-21.6915,0,-13.8856)
+tree_type = 4
+tree_seed = 725560
+tree_height = 4.287214042292895
+crown_width = 3.573046156094499
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-23.9678,0,-15.6507)
+tree_type = 0
+tree_seed = 725561
+tree_height = 4.259119374478361
+crown_width = 3.100660410507677
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-24.6195,0,-16.481)
+tree_type = 2
+tree_seed = 725562
+tree_height = 3.7468455541674732
+crown_width = 3.497218682348026
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-25.8202,0,-19.3101)
+tree_type = 4
+tree_seed = 725563
+tree_height = 4.882446948201975
+crown_width = 3.548673774451056
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree15" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-25.9377,0,-20.1587)
+tree_type = 0
+tree_seed = 725564
+tree_height = 4.608331312465518
+crown_width = 2.8582267472631626
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree16" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-25.5988,0,-22.8611)
+tree_type = 4
+tree_seed = 725565
+tree_height = 4.145600585413404
+crown_width = 2.845821418971937
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree17" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-24.7682,0,-24.4525)
+tree_type = 0
+tree_seed = 725566
+tree_height = 5.050659131738346
+crown_width = 3.330208484295639
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree18" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-23.4972,0,-25.7353)
+tree_type = 2
+tree_seed = 725567
+tree_height = 4.736437238277707
+crown_width = 3.4534730892276837
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree19" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-22.3433,0,-26.4081)
+tree_type = 4
+tree_seed = 725568
+tree_height = 4.160145789274219
+crown_width = 3.162978830818247
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree20" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-20.1807,0,-26.9418)
+tree_type = 0
+tree_seed = 725569
+tree_height = 5.340379295608375
+crown_width = 2.8798895445556196
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree21" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-17.4501,0,-26.594)
+tree_type = 4
+tree_seed = 725570
+tree_height = 4.317647389531493
+crown_width = 3.3354066979848422
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="FarShoreTree22" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-15.4594,0,-25.6048)
+tree_type = 0
+tree_seed = 725571
+tree_height = 5.19461342734587
+crown_width = 3.446079544663607
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RidgeTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-24,0,-18)
+tree_type = 4
+tree_seed = 725590
+tree_height = 5.0
+crown_width = 3.7
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RidgeTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-28,0,-21)
+tree_type = 0
+tree_seed = 725591
+tree_height = 5.5
+crown_width = 3.7
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RidgeTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-25,0,-27)
+tree_type = 2
+tree_seed = 725592
+tree_height = 6.0
+crown_width = 3.7
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RidgeTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-20,0,-29)
+tree_type = 4
+tree_seed = 725593
+tree_height = 5.0
+crown_width = 3.7
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RidgeTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-15,0,-28)
+tree_type = 0
+tree_seed = 725594
+tree_height = 5.5
+crown_width = 3.7
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RidgeTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-12,0,-24)
+tree_type = 2
+tree_seed = 725595
+tree_height = 6.0
+crown_width = 3.7
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RidgeTree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-6,0,-19)
+tree_type = 4
+tree_seed = 725596
+tree_height = 5.0
+crown_width = 3.7
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RidgeTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-18,0,-12)
+tree_type = 0
+tree_seed = 725597
+tree_height = 5.5
+crown_width = 3.7
+branch_count = 5
+leaf_sprays_per_cluster = 28
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = false
+palette_preset = 0
+palette = ExtResource("far_green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="SummitTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-3.7,3.2,3.2)
+tree_type = 4
+tree_seed = 725610
+tree_height = 3.8
+crown_width = 2.8
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="SummitTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(0,3.2,3.5)
+tree_type = 2
+tree_seed = 725611
+tree_height = 4.2
+crown_width = 2.8
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="SummitTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(4.5,3.2,2.6)
+tree_type = 0
+tree_seed = 725612
+tree_height = 4.6
+crown_width = 2.8
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="SummitRock1" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-4.5,3.2,-2.6)
+dimensions = Vector3(1.5, 0.55, 1.1)
+boulder_seed = 725620
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="SummitRock2" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-2.7,3.2,-3.2)
+dimensions = Vector3(1.5, 0.55, 1.1)
+boulder_seed = 725621
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="SummitRock3" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(4.7,3.2,-0.4)
+dimensions = Vector3(1.5, 0.55, 1.1)
+boulder_seed = 725622
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="OverlookFern1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-3.3,3.23,1.6)
+rotation_degrees = Vector3(0,240,0)
+plant_seed = 725640
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="OverlookGrass1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.3,3.23,1.6)
+patch_size = Vector2(2.7, 2.3)
+patch_seed = 725660
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../OverlookClimb"),NodePath("../ToCamp")])
+
+[node name="OverlookFern2" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.4,3.23,1.5)
+rotation_degrees = Vector3(0,241,0)
+plant_seed = 725641
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="OverlookGrass2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.4,3.23,1.5)
+patch_size = Vector2(2.7, 2.3)
+patch_seed = 725661
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../OverlookClimb"),NodePath("../ToCamp")])
+
+[node name="OverlookFern3" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-3.6,0,7.1)
+rotation_degrees = Vector3(0,242,0)
+plant_seed = 725642
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="OverlookGrass3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.6,0,7.1)
+patch_size = Vector2(2.7, 2.3)
+patch_seed = 725662
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../OverlookClimb"),NodePath("../ToCamp")])
+
+[node name="OverlookFern4" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(7.4,0,11.7)
+rotation_degrees = Vector3(0,243,0)
+plant_seed = 725643
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="OverlookGrass4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.4,0,11.7)
+patch_size = Vector2(2.7, 2.3)
+patch_seed = 725663
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../OverlookClimb"),NodePath("../ToCamp")])
+
+[node name="OverlookFern5" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(13.8,0,-8)
+rotation_degrees = Vector3(0,244,0)
+plant_seed = 725644
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="OverlookGrass5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(13.8,0,-8)
+patch_size = Vector2(2.7, 2.3)
+patch_seed = 725664
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../OverlookClimb"),NodePath("../ToCamp")])
+
+[node name="OverlookFern6" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(12.3,0,-17)
+rotation_degrees = Vector3(0,245,0)
+plant_seed = 725645
+plant_height = 0.45
+spread = 1.3
+fullness = 0.5
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.035
+
+[node name="OverlookGrass6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(12.3,0,-17)
+patch_size = Vector2(2.7, 2.3)
+patch_seed = 725665
+tufts_per_square_meter = 12.0
+leaves_per_square_meter = 25.0
+grass_height = 0.16
+recall_enabled = true
+react_to_explorer = true
+palette_preset = 0
+palette = ExtResource("green")
+ground_exclusions = Array[NodePath]([NodePath("../OverlookClimb"),NodePath("../ToCamp")])
+
+[node name="RimTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-8.4,0,13.5)
+tree_type = 4
+tree_seed = 725680
+tree_height = 4.6
+crown_width = 3.2
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RimTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-4.3,0.15,12.8)
+tree_type = 2
+tree_seed = 725681
+tree_height = 4.6
+crown_width = 3.2
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RimTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(2.9,1.0,12.6)
+tree_type = 0
+tree_seed = 725682
+tree_height = 4.6
+crown_width = 3.2
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RimTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(11.3,1.7,4.8)
+tree_type = 4
+tree_seed = 725683
+tree_height = 4.6
+crown_width = 3.2
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RimTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(11.6,3.0,-1.9)
+tree_type = 2
+tree_seed = 725684
+tree_height = 4.6
+crown_width = 3.2
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RimTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(14.7,2.5,-10.4)
+tree_type = 0
+tree_seed = 725685
+tree_height = 4.6
+crown_width = 3.2
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RimTree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(13.4,1.6,-15.5)
+tree_type = 4
+tree_seed = 725686
+tree_height = 4.6
+crown_width = 3.2
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.16
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="RimTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(8.4,0.4,-22.8)
+tree_type = 2
+tree_seed = 725687
+tree_height = 4.6
+crown_width = 3.2
+branch_count = 6
+leaf_sprays_per_cluster = 52
+falling_leaf_count = 0
+trunk_radius = 0.11
+trunk_bend = 0.09
+trunk_collision = true
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+wind_strength = 0.05
+visibility_distance = 130.0
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="Fragment" parent="."]
+position = Vector3(1.4,3.28,-1)
+note_title = "One lake, then another"
+notes = PackedStringArray("Placeholder: add your own words about the cliff overlook and the two lakes nestled in the forest.")

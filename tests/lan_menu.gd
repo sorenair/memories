@@ -22,7 +22,7 @@ func run() -> void:
 	var controls = menu.get_node("LAN")
 	check(session.state == session.State.HOSTING and session.menu_mode == session.MenuMode.HOST, "Fresh launch must automatically activate hosting")
 	check(controls._row.visible and not controls._address.editable and controls._address.text.is_valid_ip_address(), "Host must use the shared address row without an IP prefix")
-	check(not controls._status.visible and not controls._connection.connected, "Waiting status must be conveyed by the disconnected rings only")
+	check(not controls._status.visible and not controls._connection.connected, "Waiting status must be conveyed by the open lock only")
 	var host_field: Rect2 = controls._address.get_global_rect()
 	var host_arrow: Rect2 = controls._submit.get_global_rect()
 	var host_indicator: Rect2 = controls._connection.get_global_rect()

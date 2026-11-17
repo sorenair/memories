@@ -30,6 +30,15 @@ func run() -> void:
 	effect.set_process(false)
 	check(effect.progress == 0.0 and not remote.visible, "Replica must begin hidden at zero recall")
 	check(not effect._surfaces.is_empty(), "Both skinned avatars need recall materials")
+	var pants := remote.get_node("Visual/Vivian/Armature/Skeleton3D/PANTS") as MeshInstance3D
+	var authored_cloth := preload("res://characters/materials/toon_cloth_white.tres")
+	var scanned_cloth := pants.get_active_material(0) as ShaderMaterial
+	check(scanned_cloth != null and scanned_cloth != authored_cloth
+		and scanned_cloth.shader == authored_cloth.shader
+		and scanned_cloth.get_shader_parameter("recall_enabled")
+		and scanned_cloth.get_shader_parameter("base_color") == authored_cloth.get_shader_parameter("base_color")
+		and scanned_cloth.get_shader_parameter("tone_strength") == authored_cloth.get_shader_parameter("tone_strength"),
+		"Recall must preserve the cloth's paint and tone in a separate material")
 	check(not world.player.has_node("PresenceRecall"), "Local player materials and arrival must stay independent")
 	world._process(0.016)
 	check(remote.visible and remote.global_position.is_equal_approx(point), "First playback must show the zero-recall replica at its actual pose")
@@ -46,6 +55,7 @@ func run() -> void:
 	check(world._remote == remote and remote.avatar == MemoryExplorer.Avatar.SOREN, "Avatar updates must preserve the current scan")
 	effect._process(PRESENCE.ARRIVAL_DURATION)
 	check(effect.progress == 1.0 and not effect.is_processing(), "Completed arrival must stop processing")
+	check(pants.get_active_material(0) == authored_cloth, "Completed recall must restore Vivian's shared cloth material")
 	for surface in effect._surfaces:
 		check(surface.mesh.get_surface_override_material(surface.surface) == surface.original, "Arrival must restore exact authored materials")
 	if "--capture" in OS.get_cmdline_user_args():

@@ -2,7 +2,7 @@ extends SceneTree
 ## Run with -- host and -- guest in two processes on the same machine.
 const MAIN := "res://UI/main_menu/main_menu.tscn"
 const TIMELINE := "res://UI/memory_lane/memory_lane.tscn"
-const WORLDS := ["res://scenes/world/first_meeting_world.tscn", "res://scenes/world/snowy_stadium_world.tscn", "res://scenes/world/art_museum_world.tscn", "res://scenes/world/memory_world.tscn"]
+const WORLDS := ["res://scenes/world/first_meeting_world.tscn", "res://scenes/world/snowy_stadium_world.tscn", "res://scenes/world/art_museum_world.tscn", "res://scenes/world/christmas_market_world.tscn"]
 const RemoteMotion := preload("res://scripts/network/remote_motion.gd")
 var failures := 0
 var session: Node
@@ -50,7 +50,7 @@ func timeline() -> void:
 
 func enter(index: int) -> void:
 	await timeline()
-	# Match by scene, not timeline order: new memories may be inserted before Demo.
+	# Match by scene so display-name and catalog-order changes do not alter test routing.
 	var selected := -1
 	for entry in range(current_scene.MEMORIES.size()):
 		if current_scene.MEMORIES[entry].scene == WORLDS[index]:
@@ -130,7 +130,7 @@ func run() -> void:
 		controls._submit.pressed.emit()
 	check(await wait_for(func(): return session.partner_id != 0), "Both menu peers must connect")
 	check(in_scene(MAIN), "Connecting must not choose or enter a memory")
-	check(controls._connection.connected and not controls._status.visible, "Connected rings must replace routine connection text")
+	check(controls._connection.connected and not controls._status.visible, "The connected lock must replace routine connection text")
 	check(session.local_memory.is_empty() and session.partner_memory.is_empty(), "Menu connection must start without a shared memory")
 	if host:
 		await host_checks()
@@ -147,7 +147,7 @@ func host_checks() -> void:
 	command(1)
 	await enter(0)
 	await acknowledged(1)
-	check(session.partner_memory == "foliage_demo", "The guest must retain their own memory selection")
+	check(session.partner_memory == "christmas_market", "The guest must retain their own memory selection")
 	await solo()
 	command(2)
 	await acknowledged(2)

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/vietnam/karst/painterly_limestone_karst.gd" id="script"]
+[node name="PainterlyLimestoneKarst" type="Node3D"]
+script = ExtResource("script")
+body_color = Color(0.56,0.60,0.55,1)
+accent_color = Color(0.31,0.43,0.31,1)
+contact_shadow_enabled = false

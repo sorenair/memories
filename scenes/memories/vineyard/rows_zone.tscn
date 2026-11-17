@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/flowers/painterly_flower_patch.tscn" id="flowers"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/field_track.tscn" id="path"]
 [ext_resource type="Resource" path="res://scenes/memories/vineyard/vine_leaves.tres" id="leaves"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="wind"]
 
@@ -26,9 +26,8 @@ ambience_blend_distance = 4.0
 [node name="Trail" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("VineTrail")
 path_width = 2.15
-paving_color = Color(0.81569, 0.77647, 0.64314, 1)
+paving_color = Color(0.768627,0.686275,0.517647,1)
 irregularity = 0.75
-slab_length = 3.0
 end_fade = Vector2(1.7000, 1.7000)
 edge_softness = 0.35
 

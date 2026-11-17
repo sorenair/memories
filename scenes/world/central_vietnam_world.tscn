@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="PackedScene" path="res://scenes/world/memory_world_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://scenes/memories/central_vietnam.tscn" id="memory"]
+[ext_resource type="Script" path="res://scripts/central_vietnam_camera.gd" id="camera"]
+[node name="MemoryWorld" instance=ExtResource("base")]
+recalled_spawn_offset = Vector3(0,0,0)
+[node name="Memory" parent="." index="4" instance=ExtResource("memory")]
+[node name="CameraRig" parent="." index="5" node_paths=PackedStringArray("mountain_zone","rice_zone","hue_zone")]
+script = ExtResource("camera")
+mountain_zone = NodePath("../Memory/Zones/MarbleMountains")
+rice_zone = NodePath("../Memory/Zones/Rice")
+hue_zone = NodePath("../Memory/Zones/Hue")
+[node name="Camera3D" parent="CameraRig" index="0"]
+size = 3.5
+far = 190.0

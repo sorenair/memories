@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/vietnam/buildings/painterly_hanoi_house.gd" id="script"]
+[node name="PainterlyHanoiHouse" type="Node3D"]
+script = ExtResource("script")
+body_color = Color(0.75,0.67,0.48,1)
+accent_color = Color(0.31,0.43,0.39,1)
+trim_color = Color(0.84,0.79,0.66,1)

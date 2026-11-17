@@ -1,0 +1,204 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="air"]
+[ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="sand"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="boulder"]
+
+[ext_resource type="Resource" path="res://scenes/memories/southern_vietnam/dune_scrub.tres" id="dry_palette"]
+
+[sub_resource type="Curve3D" id="DuneRouteCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.32,0.0,-0.56,-10,0,11,-0.96,-0.0,1.28,0.96,0.0,-1.28,-8,0,7.5,-1.44,-0.0,0.96,1.44,0.0,-0.96,-4,0,3,-1.44,-0.0,0.64,1.44,0.0,-0.64,1,0,1.5,-0.96,-0.0,1.2,0.96,0.0,-1.2,5,0,-1,-0.8,-0.0,1.6,0.8,0.0,-1.6,7,0,-6,-0.48,-0.0,0.8,0,0,0,10,0,-11), "tilts": PackedFloat32Array(0,0,0,0,0,0,0)}
+point_count = 7
+
+[sub_resource type="Curve3D" id="ToSaigonCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.64,0.0,-0.8,10,0,-11,-1.6,-0.0,1.6,1.6,0.0,-1.6,14,0,-16,-1.6,-0.0,1.44,1.6,0.0,-1.44,20,0,-21,-0.64,-0.0,0.64,0,0,0,24,0,-25), "tilts": PackedFloat32Array(0,0,0,0)}
+point_count = 4
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"sand_dunes"
+display_name = "Sand dunes"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -28
+ambience_size = Vector2(35, 35)
+ambience_blend_distance = 4.0
+
+[node name="DunesRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(-10,0,11)
+
+[node name="DuneSand" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("sand")]
+patch_size = Vector2(30,30)
+patch_seed = 620262
+terrain_form = 0
+dune_height = 1.55
+dune_spacing = 10.5
+dune_direction = 43
+edge_feather = 3.0
+sand_color = Color(0.8471,0.749,0.5804,1)
+shadow_color = Color(0.6667,0.5529,0.4,1)
+ripple_strength = 0.34
+mesh_detail = 96
+recall_enabled = true
+recall_anchor = NodePath("../DunesRecall")
+
+[node name="DuneRoute" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("DuneRouteCurve")
+path_width = 2.2
+paving_color = Color(0.7529,0.7333,0.6549,1)
+end_fade = Vector2(0, 0)
+slab_length = 2.0
+edge_softness = 0.25
+visible = false
+collision_enabled = false
+
+[node name="ToSaigon" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ToSaigonCurve")
+path_width = 2.5
+paving_color = Color(0.7725,0.7373,0.6275,1)
+end_fade = Vector2(1.6, 0.8)
+slab_length = 2.0
+edge_softness = 0.25
+
+[node name="DuneScrub1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-12,0,5)
+bush_seed = 620400
+footprint = Vector2(1.3,1.0)
+bush_height = 0.46
+palette_preset = 0
+palette = ExtResource("dry_palette")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="DuneScrub2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9,0,-5)
+bush_seed = 620401
+footprint = Vector2(1.3,1.0)
+bush_height = 0.46
+palette_preset = 0
+palette = ExtResource("dry_palette")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="DuneScrub3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9,0,7)
+bush_seed = 620402
+footprint = Vector2(1.3,1.0)
+bush_height = 0.46
+palette_preset = 0
+palette = ExtResource("dry_palette")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="DuneScrub4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(11,0,-3)
+bush_seed = 620403
+footprint = Vector2(1.3,1.0)
+bush_height = 0.46
+palette_preset = 0
+palette = ExtResource("dry_palette")
+wind_strength = 0.025
+recall_enabled = true
+react_to_explorers = true
+
+[node name="DuneGrass1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-11.2,0,7)
+patch_size = Vector2(1.9,1.6)
+grass_height = 0.18
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 12.0
+palette_preset = 0
+palette = ExtResource("dry_palette")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="DuneGrass2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-10.5,0,1)
+patch_size = Vector2(1.9,1.6)
+grass_height = 0.18
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 12.0
+palette_preset = 0
+palette = ExtResource("dry_palette")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="DuneGrass3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-7.5,0,-8.4)
+patch_size = Vector2(1.9,1.6)
+grass_height = 0.18
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 12.0
+palette_preset = 0
+palette = ExtResource("dry_palette")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="DuneGrass4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(6.8,0,10.2)
+patch_size = Vector2(1.9,1.6)
+grass_height = 0.18
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 12.0
+palette_preset = 0
+palette = ExtResource("dry_palette")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="DuneGrass5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(10.7,0,4)
+patch_size = Vector2(1.9,1.6)
+grass_height = 0.18
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 12.0
+palette_preset = 0
+palette = ExtResource("dry_palette")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="DuneGrass6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(10.5,0,-6.6)
+patch_size = Vector2(1.9,1.6)
+grass_height = 0.18
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 12.0
+palette_preset = 0
+palette = ExtResource("dry_palette")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="DuneRock1" parent="Scenery" instance=ExtResource("boulder")]
+position = Vector3(-12.3,0,-1)
+dimensions = Vector3(1.3,0.65,1.0)
+boulder_seed = 620430
+palette_preset = 2
+recall_enabled = true
+solid = false
+
+[node name="DuneRock2" parent="Scenery" instance=ExtResource("boulder")]
+position = Vector3(10.5,0,8)
+dimensions = Vector3(1.3,0.65,1.0)
+boulder_seed = 620431
+palette_preset = 2
+recall_enabled = true
+solid = false
+
+[node name="DuneRock3" parent="Scenery" instance=ExtResource("boulder")]
+position = Vector3(-4.7,0,-10.5)
+dimensions = Vector3(1.3,0.65,1.0)
+boulder_seed = 620432
+palette_preset = 2
+recall_enabled = true
+solid = false
+
+[node name="Fragment" parent="."]
+position = Vector3(1,0.1,1.5)
+note_title = "Between the dunes"
+notes = PackedStringArray("Placeholder: add your own words about walking through the sand dunes.")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/painterly_surface_path.tscn" id="1"]
+
+[node name="FlagstonePath" instance=ExtResource("1")]
+surface_style = 2
+paving_color = Color(0.639216,0.611765,0.513725,1)
+shoulder_color = Color(0.662745,0.682353,0.545098,1)
+stone_color = Color(0.764706,0.752941,0.694118,1)
+path_width = 2.4
+width_variation = 0.08
+crown_height = 0.006
+stone_size = 0.82
+joint_width = 0.026

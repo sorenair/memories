@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/vietnam/imperial/painterly_hue_landmark.gd" id="script"]
+[node name="HueLandmark" type="Node3D"]
+script = ExtResource("script")
+landmark = 0
+footprint = Vector2(14,3.2)
+body_color = Color(0.68,0.59,0.43,1)
+accent_color = Color(0.57,0.24,0.18,1)
+trim_color = Color(0.76,0.71,0.55,1)
+roof_color = Color(0.74,0.58,0.28,1)

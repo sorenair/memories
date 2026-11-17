@@ -1,16 +1,18 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=10 format=3 uid="uid://4jlidoax3ofg"]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
 [ext_resource type="PackedScene" path="res://scenes/memories/tokyo/meiji_zone.tscn" id="meiji"]
+[ext_resource type="Script" uid="uid://23ekbrbeyjys" path="res://scripts/tokyo_memory.gd" id="route"]
 [ext_resource type="PackedScene" path="res://scenes/memories/tokyo/sensoji_zone.tscn" id="sensoji"]
 [ext_resource type="PackedScene" path="res://scenes/memories/tokyo/shibuya_zone.tscn" id="shibuya"]
-[ext_resource type="Script" path="res://scripts/tokyo_memory.gd" id="route"]
-[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
 
 [sub_resource type="Curve2D" id="WalkOutline"]
-_data = {"points": PackedVector2Array(0,0,0,0,-20,29,0,0,0,0,-1,29,0,0,0,0,2,25,0,0,0,0,2,17,0,0,0,0,0,15,0,0,0,0,2,13,0,0,0,0,7,10,0,0,0,0,13,8,0,0,0,0,21,7,0,0,0,0,24,3,0,0,0,0,24,-1,0,0,0,0,29,-5,0,0,0,0,36,-11,0,0,0,0,40,-14,0,0,0,0,49,-14,0,0,0,0,50,-19,0,0,0,0,50,-40,0,0,0,0,47,-44,0,0,0,0,22,-44,0,0,0,0,19,-40,0,0,0,0,19,-23,0,0,0,0,20,-18,0,0,0,0,22,-15,0,0,0,0,21,-14,0,0,0,0,2,-15,0,0,0,0,-2,-12,0,0,0,0,-2,2,0,0,0,0,0,6,0,0,0,0,-1,8,0,0,0,0,-5,10,0,0,0,0,-3,6,0,0,0,0,-5,3,0,0,0,0,-18,3,0,0,0,0,-21,6,0,0,0,0,-22,22,0,0,0,0,-20,29)}
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -20, 29, 0, 0, 0, 0, -1, 29, 0, 0, 0, 0, 2, 25, 0, 0, 0, 0, 2, 17, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 2, 13, 0, 0, 0, 0, 7, 10, 0, 0, 0, 0, 13, 8, 0, 0, 0, 0, 21, 7, 0, 0, 0, 0, 24, 3, 0, 0, 0, 0, 24, -1, 0, 0, 0, 0, 29, -5, 0, 0, 0, 0, 36, -11, 0, 0, 0, 0, 40, -14, 0, 0, 0, 0, 49, -14, 0, 0, 0, 0, 50, -19, 0, 0, 0, 0, 50, -40, 0, 0, 0, 0, 47, -44, 0, 0, 0, 0, 22, -44, 0, 0, 0, 0, 19, -40, 0, 0, 0, 0, 19, -23, 0, 0, 0, 0, 20, -18, 0, 0, 0, 0, 22, -15, 0, 0, 0, 0, 21, -14, 0, 0, 0, 0, 2, -15, 0, 0, 0, 0, -2, -12, 0, 0, 0, 0, -2, 2, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, -1, 8, 0, 0, 0, 0, -5, 10, 0, 0, 0, 0, -3, 6, 0, 0, 0, 0, -5, 3, 0, 0, 0, 0, -18, 3, 0, 0, 0, 0, -21, 6, 0, 0, 0, 0, -22, 22, 0, 0, 0, 0, -20, 29)
+}
 point_count = 36
 
 [node name="Memory" instance=ExtResource("base")]
@@ -18,46 +20,49 @@ script = ExtResource("route")
 memory_id = &"tokyo"
 display_name = "Tokyo"
 
-[node name="Entry" parent="."]
-position = Vector3(-10,0.04,26)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.04, 26)
 
-[node name="Exit" parent="."]
-position = Vector3(27.4,0.07,-36)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.4, 0.07, -36)
 
-[node name="TokyoFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="TokyoFloor" parent="Environment" index="0" instance=ExtResource("floor")]
 visible = false
-custom_outline = SubResource("WalkOutline")
 outline_detail = 96
+custom_outline = SubResource("WalkOutline")
 edge_inset = 0.18
 
-[node name="Guidance" parent="Environment" type="Node3D"]
+[node name="Guidance" type="Node3D" parent="Environment" index="1"]
 
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="Meiji" parent="Zones" instance=ExtResource("meiji")]
-position = Vector3(-10,0,12)
-
-[node name="Sensoji" parent="Zones" instance=ExtResource("sensoji")]
-position = Vector3(10,0,-10)
-
-[node name="Shibuya" parent="Zones" instance=ExtResource("shibuya")]
-position = Vector3(34,0,-29)
-
-[node name="IntoTheShrine" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="IntoTheShrine" parent="Environment/Guidance" index="0" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Meiji/Fragment")
+waypoints = PackedVector3Array(-10, 0.76, 26, -9.98312, 0.76, 25.2396, -9.94456, 0.76, 24.4799, -9.89542, 0.76, 23.7209, -9.84295, 0.76, 22.9621, -9.79393, 0.76, 22.203, -9.75788, 0.76, 21.4432, -9.75505, 0.76, 20.6827, -9.80856, 0.76, 19.9241, -9.90451, 0.76, 19.1696, -9.9861, 0.76, 18.4136, -10, 0.76, 17.6532, -10, 0.76, 16.8926, -10, 0.76, 16.1319, -10, 0.76, 15.3713, -10, 0.76, 14.6106, -10, 0.76, 13.85, -10, 1.25, 10.8625)
 stroke_width = 0.32
 
-[node name="ThroughTheLanternGate" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="ThroughTheLanternGate" parent="Environment/Guidance" index="1" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Meiji/Fragment")
 end_anchor = NodePath("../../../Zones/Sensoji/Fragment")
+waypoints = PackedVector3Array(-10, 1.25, 10.8625, -10, 0.76, 13.85, -10, 0.76, 13.85, -9.2201, 0.76, 13.8752, -8.44229, 0.76, 13.9383, -7.66587, 0.76, 14.0172, -6.88853, 0.76, 14.0862, -6.10889, 0.76, 14.1178, -5.34211, 0.76, 14.0342, -4.63965, 0.76, 13.6945, -3.95576, 0.76, 13.3185, -3.28317, 0.76, 12.9227, -2.61811, 0.76, 12.5144, -1.95829, 0.76, 12.0976, -1.3021, 0.76, 11.6752, -0.648166, 0.76, 11.2492, 0.00500011, 0.76, 10.8221, 0.659591, 0.76, 10.3972, 1.31916, 0.76, 9.98006, 1.98209, 0.76, 9.56826, 2.64717, 0.76, 9.15995, 3.3139, 0.76, 8.75431, 3.98201, 0.76, 8.35096, 4.65142, 0.76, 7.94977, 5.32212, 0.76, 7.55075, 5.99423, 0.76, 7.15412, 6.66801, 0.76, 6.76033, 7.34406, 0.76, 6.3704, 8.02238, 0.76, 5.98468, 8.74984, 0.76, 5.9494, 9.3087, 0.76, 6.492, 10, 0.76, 6.5, 10, 0.76, 6.5, 10, 0.76, 5.71538, 10, 0.76, 4.93077, 10, 0.76, 4.14615, 10, 0.76, 3.36154, 10, 0.76, 2.57692, 10, 0.76, 1.79235, 10, 0.76, 1.0077, 10, 0.76, 0.223081, 10, 0.76, -0.561539, 10, 0.76, -1.34616, 10, 0.76, -2.13077, 10, 0.76, -2.91546, 10, 0.76, -3.7, 10, 1.25, -6.6875)
 stroke_width = 0.32
 
-[node name="AcrossTheCity" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="AcrossTheCity" parent="Environment/Guidance" index="2" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Sensoji/Fragment")
 end_anchor = NodePath("../../../Zones/Shibuya/Fragment")
+waypoints = PackedVector3Array(10, 1.25, -6.6875, 10, 0.76, -3.7, 10, 0.76, -3.7, 10.7807, 0.76, -3.7003, 11.5614, 0.76, -3.70211, 12.3421, 0.76, -3.70651, 13.1227, 0.76, -3.71448, 13.9033, 0.76, -3.72719, 14.6838, 0.76, -3.7462, 15.464, 0.76, -3.7739, 16.2296, 0.76, -3.88248, 16.9597, 0.76, -4.15924, 17.6842, 0.76, -4.45015, 18.4038, 0.76, -4.75281, 19.1185, 0.76, -5.06686, 19.8278, 0.76, -5.39308, 20.5305, 0.76, -5.73326, 21.2246, 0.76, -6.09059, 21.9064, 0.76, -6.47075, 22.5682, 0.76, -6.88472, 23.191, 0.76, -7.35475, 23.7888, 0.76, -7.85693, 24.3786, 0.76, -8.36841, 24.9639, 0.76, -8.88509, 25.5463, 0.76, -9.40498, 26.127, 0.76, -9.92682, 26.7067, 0.76, -10.4497, 27.2862, 0.76, -10.9728, 27.8664, 0.76, -11.4952, 28.4486, 0.76, -12.0154, 29.0351, 0.76, -12.5305, 29.6137, 0.76, -13.0546, 30.1778, 0.76, -13.5943, 30.7325, 0.76, -14.1437, 31.2809, 0.76, -14.6994, 31.8252, 0.76, -15.2591, 32.3672, 0.76, -15.8209, 32.9088, 0.76, -16.3832, 33.452, 0.76, -16.944, 34, 0.76, -17.5, 34, 0.76, -17.5, 34.5066, 0.76, -18.0945, 35.0216, 0.76, -18.6818, 35.5406, 0.76, -19.2655, 36.0607, 0.76, -19.8482, 36.5793, 0.76, -20.4324, 37.0931, 0.76, -21.0207, 37.5659, 0.76, -21.6373, 37.8424, 0.76, -22.3672, 38.0325, 0.76, -23.1244, 38.1501, 0.76, -23.8964, 38.199, 0.76, -24.6757, 37.7357, 0.76, -25.2643, 37.1833, 0.76, -25.8167, 36.631, 0.76, -26.369, 36.0787, 0.76, -26.9213, 35.5264, 0.76, -27.4736, 34.974, 0.76, -28.026, 34.4217, 0.76, -28.5783, 33.8695, 0.76, -29.1305, 33.3172, 0.76, -29.6828, 32.7648, 0.76, -30.2352, 32.2125, 0.76, -30.7875, 31.6602, 0.76, -31.3398, 31.1079, 0.76, -31.8921, 30.5555, 0.76, -32.4445, 30.0032, 0.76, -32.9968, 29.5151, 0.76, -33.5929, 29.3364, 0.76, -34.3512, 29.2975, 0.76, -35.1309, 28.9223, 0.76, -35.6639, 28.1706, 0.76, -35.8729, 27.4, 0.76, -36, 27.4, 0.83, -36)
 stroke_width = 0.32
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Meiji" parent="Zones" index="0" instance=ExtResource("meiji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 12)
+
+[node name="Sensoji" parent="Zones" index="1" instance=ExtResource("sensoji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -10)
+
+[node name="Shibuya" parent="Zones" index="2" instance=ExtResource("shibuya")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, -29)

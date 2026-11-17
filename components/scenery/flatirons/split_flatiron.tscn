@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://components/scenery/flatirons/painterly_flatiron.tscn" id="1"]
+
+[node name="SplitFlatiron" instance=ExtResource("1")]
+formation_type = 1
+prop_seed = 181
+formation_height = 13.0
+formation_width = 8.0
+thickness = 2.7

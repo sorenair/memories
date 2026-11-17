@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="Script" path="res://scripts/northern_vietnam_memory.gd" id="script"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/old_quarter_zone.tscn" id="OldQuarter"]
+[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/hoan_kiem_zone.tscn" id="HoanKiem"]
+[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/ha_long_zone.tscn" id="HaLong"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+
+[sub_resource type="Curve2D" id="FloorOutline"]
+_data = {"points": PackedVector2Array(0,0,0,0,-8,29,0,0,0,0,8,29,0,0,0,0,8,8,0,0,0,0,11,7,0,0,0,0,24,7,0,0,0,0,30,3,0,0,0,0,35,-2,0,0,0,0,40,-6,0,0,0,0,47,-11,0,0,0,0,48,-14,0,0,0,0,46.4,-17,0,0,0,0,46.4,-24.8,0,0,0,0,48,-24.8,0,0,0,0,48,-27.7,0,0,0,0,42,-27.7,0,0,0,0,42,-24.8,0,0,0,0,43.6,-24.8,0,0,0,0,43.6,-17,0,0,0,0,41,-14,0,0,0,0,37,-11,0,0,0,0,31,-5,0,0,0,0,27,-1,0,0,0,0,22,1,0,0,0,0,20,0,0,0,0,0,20,-9,0,0,0,0,22,-10,0,0,0,0,22,-16.8,0,0,0,0,14,-16.8,0,0,0,0,14,-10,0,0,0,0,16,-9,0,0,0,0,16,0,0,0,0,0,9,0,0,0,0,0,5,2,0,0,0,0,1,3,0,0,0,0,-8,3)}
+point_count = 35
+
+[node name="Memory" instance=ExtResource("base")]
+script = ExtResource("script")
+memory_id = &"northern_vietnam"
+display_name = "Northern Vietnam"
+
+[node name="Entry" parent="."]
+position = Vector3(0,0.04,26)
+
+[node name="Exit" parent="."]
+position = Vector3(45,0.6,-26.1)
+
+[node name="VietnamFloor" parent="Environment" instance=ExtResource("floor")]
+visible = false
+custom_outline = SubResource("FloorOutline")
+outline_detail = 96
+edge_inset = 0.08
+
+[node name="Guidance" parent="Environment" type="Node3D"]
+
+
+[node name="Audio" parent="."]
+fragment_sound = ExtResource("chime")
+
+[node name="OldQuarter" parent="Zones" instance=ExtResource("OldQuarter")]
+position = Vector3(0,0,12)
+
+[node name="HoanKiem" parent="Zones" instance=ExtResource("HoanKiem")]
+position = Vector3(18,0,-8)
+
+[node name="HaLong" parent="Zones" instance=ExtResource("HaLong")]
+position = Vector3(45,0,-29)
+
+[node name="StreetMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/OldQuarter/Fragment")
+stroke_width = 0.32
+
+[node name="LakeMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/OldQuarter/Fragment")
+end_anchor = NodePath("../../../Zones/HoanKiem/Fragment")
+stroke_width = 0.32
+
+[node name="BayMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/HoanKiem/Fragment")
+end_anchor = NodePath("../../../Zones/HaLong/Fragment")
+stroke_width = 0.32

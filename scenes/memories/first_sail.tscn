@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="Script" path="res://scripts/first_sail_memory.gd" id="script"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://scenes/memories/first_sail/lake_zone.tscn" id="lake"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+
+[sub_resource type="Curve2D" id="WalkOutline"]
+_data = {"points": PackedVector2Array(0,0,0,0,-9.0,15.6,0,0,0,0,7.3,15.6,0,0,0,0,9.4,12,0,0,0,0,8.3,8.6,0,0,0,0,5.0,7,0,0,0,0,1.48,6.0,0,0,0,0,1.48,-1.67,0,0,0,0,3.18,-1.67,0,0,0,0,3.18,-4.68,0,0,0,0,-3.18,-4.68,0,0,0,0,-3.18,-1.67,0,0,0,0,-1.48,-1.67,0,0,0,0,-1.48,6.0,0,0,0,0,-4.7,7,0,0,0,0,-8.3,8.2,0,0,0,0,-9.6,11.4)}
+point_count = 16
+
+[node name="Memory" instance=ExtResource("base")]
+script = ExtResource("script")
+memory_id = &"first_sail"
+display_name = "First Sail"
+
+[node name="Entry" parent="."]
+position = Vector3(-1,0.07,12)
+
+[node name="Exit" parent="."]
+position = Vector3(-0.6,0.62,-3.2)
+
+[node name="ShoreAndDockFloor" parent="Environment" instance=ExtResource("floor")]
+visible = false
+custom_outline = SubResource("WalkOutline")
+outline_detail = 96
+edge_inset = 0.08
+boundary_height = 2.2
+
+[node name="Guidance" parent="Environment" type="Node3D"]
+
+
+[node name="Audio" parent="."]
+fragment_sound = ExtResource("chime")
+
+[node name="Lakeside" parent="Zones" instance=ExtResource("lake")]
+
+
+[node name="DockMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/Lakeside/Fragment")
+stroke_width = 0.32

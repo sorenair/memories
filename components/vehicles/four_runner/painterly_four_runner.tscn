@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/vehicles/four_runner/painterly_four_runner.gd" id="1"]
+[node name="PainterlyFourRunner" type="Node3D"]
+script = ExtResource("1")
+body_color = Color(0.43,0.47,0.47,1)
+accent_color = Color(0.68,0.71,0.66,1)
+trim_color = Color(0.25,0.30,0.30,1)

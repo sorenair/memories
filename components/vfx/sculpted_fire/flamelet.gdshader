@@ -12,8 +12,8 @@ void vertex() {
 	float birth_time = t-age/rate;
 	float phase = INSTANCE_CUSTOM.z*6.283185;
 	vec3 source = vec3(cos(phase)*0.12,0.80,sin(phase)*0.12);
-	vec3 offset = vec3(birth_time*0.035,-birth_time*0.36,birth_time*0.018)+fire_phase*vec3(0.137,0.079,0.193);
-	vec4 birth = textureLod(flow_noise,source*vec3(1.10,0.70,1.10)+offset,0.0);
+	vec3 offset = vec3(birth_time*0.035,-birth_time*0.43,birth_time*0.018)+fire_phase*vec3(0.137,0.079,0.193);
+	vec4 birth = textureLod(flow_noise,source*vec3(1.10,0.52,1.10)+offset,0.0);
 	float envelope = smoothstep(0.0,0.09,age)*(1.0-smoothstep(0.35,0.90,age));
 	envelope *= smoothstep(0.35,0.58,birth.a);
 	float h = UV.y;

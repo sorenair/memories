@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="Script" path="res://scripts/colorado_memory.gd" id="script"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://scenes/memories/colorado/flatirons_zone.tscn" id="Flatirons"]
+[ext_resource type="PackedScene" path="res://scenes/memories/colorado/summit_zone.tscn" id="Summit"]
+[ext_resource type="PackedScene" path="res://scenes/memories/colorado/lake_zone.tscn" id="ForestLake"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+
+[ext_resource type="Curve2D" path="res://scenes/memories/colorado/walk_outline.tres" id="outline"]
+
+[node name="Memory" instance=ExtResource("base")]
+script = ExtResource("script")
+memory_id = &"colorado"
+display_name = "Labor Day in Colorado"
+
+[node name="Entry" parent="."]
+position = Vector3(0,0.075,26)
+
+[node name="Exit" parent="."]
+position = Vector3(57.5,0.075,-39)
+
+[node name="ColoradoFloor" parent="Environment" instance=ExtResource("floor")]
+visible = false
+custom_outline = ExtResource("outline")
+outline_detail = 96
+edge_inset = 0.12
+boundary_height = 4.0
+
+[node name="Guidance" parent="Environment" type="Node3D"]
+
+
+[node name="Audio" parent="."]
+fragment_sound = ExtResource("chime")
+
+[node name="Flatirons" parent="Zones" instance=ExtResource("Flatirons")]
+position = Vector3(0,0,16)
+
+[node name="Summit" parent="Zones" instance=ExtResource("Summit")]
+position = Vector3(29,0,-9)
+
+[node name="ForestLake" parent="Zones" instance=ExtResource("ForestLake")]
+position = Vector3(52,0,-43)
+
+[node name="FieldMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Entry")
+end_anchor = NodePath("../../../Zones/Flatirons/Fragment")
+stroke_width = 0.32
+
+[node name="SummitMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Flatirons/Fragment")
+end_anchor = NodePath("../../../Zones/Summit/Fragment")
+stroke_width = 0.32
+
+[node name="LakeMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/Summit/Fragment")
+end_anchor = NodePath("../../../Zones/ForestLake/Fragment")
+stroke_width = 0.32

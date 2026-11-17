@@ -1,0 +1,915 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="bed"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/painterly_surface_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/scenery/flatirons/painterly_flatiron.tscn" id="flatiron"]
+[ext_resource type="Resource" path="res://scenes/memories/colorado/golden_field.tres" id="gold_palette"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="Resource" path="res://scenes/memories/colorado/forest_green.tres" id="forest_palette"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
+
+[ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="wash"]
+
+[ext_resource type="PackedScene" path="res://components/scenery/rock_clusters/painterly_rock_cluster.tscn" id="scree"]
+
+[ext_resource type="Resource" path="res://scenes/memories/colorado/sandstone_toe.tres" id="toe_palette"]
+
+[ext_resource type="Resource" path="res://scenes/memories/colorado/aspen_gold.tres" id="aspen_palette"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/flowers/painterly_flower_patch.tscn" id="flower"]
+
+[sub_resource type="Curve3D" id="FieldWalkCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,-0.288,0,-0.48,0,0,10,0.176,0,0.992,-0.176,0,-0.992,-1.8,0,7,-0.48,0,0.96,0.48,0,-0.96,-1.1,0,3.8,-0.224,0,0.816,0.224,0,-0.816,1.2,0,1,0.144,0,0.368,0,0,0,0.3,0,-1.3), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+
+[sub_resource type="Curve3D" id="ToSummitCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.752,0,0.368,0.3,0,-1.3,-1.712,0,-0.128,1.712,0,0.128,5,0,1,-1.76,0,0.96,1.76,0,-0.96,11,0,-0.5,-1.44,0,1.52,1.44,0,-1.52,16,0,-5,-0.64,0,0.8,0,0,0,20,0,-10), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+
+[sub_resource type="Curve3D" id="FieldExitCurve"]
+bake_interval = 0.1
+_data = {"points": PackedVector3Array(0,0,0,1.2,0,0.75,1.1,0,-0.9, -1.05,0,-0.1,1.1,0,0.12,4.9,0,0.98, -1.2,0,0,0,0,0,8.4,0,0.64), "tilts": PackedFloat32Array(0,0,0)}
+point_count = 3
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"colorado_flatirons"
+display_name = "Boulder · The Flatirons"
+ambience_stream = ExtResource("bed")
+ambience_volume_db = -27
+ambience_size = Vector2(31, 32)
+ambience_blend_distance = 5.0
+
+[node name="FieldReveal" parent="Scenery" type="Marker3D"]
+position = Vector3(0.3, 0, 2.5)
+
+[node name="MeadowReveal" parent="Scenery" type="Marker3D"]
+position = Vector3(0, 0, 7.8)
+
+[node name="GapReveal" parent="Scenery" type="Marker3D"]
+position = Vector3(11, 0, -0.5)
+
+[node name="MeadowWash" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("wash")]
+position = Vector3(-1, -0.085, 3.8)
+rotation_degrees = Vector3(0, 22, 0)
+patch_size = Vector2(22.5, 18.7)
+patch_seed = 906611
+dune_height = 0
+ripple_strength = 0
+edge_feather = 4.6
+mesh_detail = 36
+sand_color = Color(0.8078, 0.7255, 0.5059, 1)
+shadow_color = Color(0.7373, 0.6353, 0.4549, 1)
+collision_enabled = false
+track_footprints = false
+footprint_quality = 0
+recall_enabled = true
+recall_anchor = NodePath("../MeadowReveal")
+
+[node name="FoothillWash" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("wash")]
+position = Vector3(-2, -0.11, -6.8)
+rotation_degrees = Vector3(0, 11, 0)
+patch_size = Vector2(22, 13)
+patch_seed = 906612
+dune_height = 0
+ripple_strength = 0
+edge_feather = 4.1
+mesh_detail = 36
+sand_color = Color(0.6784, 0.5686, 0.4196, 1)
+shadow_color = Color(0.5922, 0.4667, 0.3529, 1)
+collision_enabled = false
+track_footprints = false
+footprint_quality = 0
+recall_enabled = true
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FieldWalk" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("FieldWalkCurve")
+path_width = 2.35
+paving_color = Color(0.7255, 0.5804, 0.3961, 1)
+paving_seed = 90626
+edge_softness = 0.54
+end_fade = Vector2(1.3, 2.25)
+surface_style = 0
+shoulder_color = Color(0.7059, 0.6314, 0.4314, 1)
+stone_color = Color(0.7333, 0.651, 0.5255, 1)
+crown_height = 0.0
+width_variation = 0.13
+breakup_size = 0.21
+detail_density = 0.36
+collision_enabled = true
+
+[node name="ToSummit" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ToSummitCurve")
+path_width = 2.35
+paving_color = Color(0.7412, 0.6706, 0.5216, 1)
+paving_seed = 90626
+edge_softness = 0.54
+end_fade = Vector2(0, 0)
+surface_style = 0
+shoulder_color = Color(0.7647, 0.7255, 0.6157, 1)
+stone_color = Color(0.7176, 0.6471, 0.5451, 1)
+crown_height = 0.0
+width_variation = 0.13
+breakup_size = 0.21
+detail_density = 0.36
+collision_enabled = false
+visible = false
+
+[node name="ClassicFlatiron" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flatiron")]
+position = Vector3(-8.6, -0.5, -5.2)
+rotation_degrees = Vector3(0, 29, 0)
+formation_width = 8.4
+formation_height = 15.5
+formation_type = 0
+thickness = 3.6
+slope_angle = 57
+jaggedness = 0.7
+fracture_count = 4
+prop_seed = 906260
+recall_enabled = true
+recall_anchor = NodePath("../FieldReveal")
+collision_enabled = false
+contact_shadow_enabled = false
+burial = 0.17
+pigment_strength = 0.78
+
+[node name="SplitFlatiron" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flatiron")]
+position = Vector3(-0.4, -0.75, -8.8)
+rotation_degrees = Vector3(0, 3, 0)
+formation_width = 8.2
+formation_height = 17.6
+formation_type = 1
+thickness = 3.6
+slope_angle = 58.0
+jaggedness = 0.7
+fracture_count = 4
+prop_seed = 906261
+recall_enabled = true
+recall_anchor = NodePath("../FieldReveal")
+collision_enabled = false
+contact_shadow_enabled = false
+burial = 0.15
+pigment_strength = 0.76
+
+[node name="BrokenFlatiron" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flatiron")]
+position = Vector3(10.45, -0.67, -7.6)
+rotation_degrees = Vector3(0, 12, 0)
+formation_width = 7.1
+formation_height = 12.8
+formation_type = 2
+thickness = 3.6
+slope_angle = 56
+jaggedness = 0.7
+fracture_count = 4
+prop_seed = 906262
+recall_enabled = true
+recall_anchor = NodePath("../FieldReveal")
+collision_enabled = false
+contact_shadow_enabled = false
+burial = 0.17
+pigment_strength = 0.74
+
+[node name="FieldExit" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("FieldExitCurve")
+surface_style = 0
+path_width = 2.05
+paving_color = Color(0.7373, 0.6471, 0.4549, 1)
+shoulder_color = Color(0.7294, 0.6627, 0.4941, 1)
+stone_color = Color(0.749, 0.6784, 0.5529, 1)
+crown_height = 0.0
+edge_softness = 0.54
+width_variation = 0.13
+breakup_size = 0.21
+end_fade = Vector2(1.65, 3.65)
+detail_density = 0.26
+collision_enabled = false
+
+[node name="MeadowGrass0" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.5, 0, 9.1)
+patch_size = Vector2(5.3, 6.8)
+grass_height = 0.29
+tufts_per_square_meter = 15
+leaves_per_square_meter = 19
+ground_leaf_scale = 0.43
+patch_seed = 906620
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+
+[node name="MeadowGrass1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(2.7, 0, 8.8)
+patch_size = Vector2(5.5, 6.5)
+grass_height = 0.25
+tufts_per_square_meter = 14
+leaves_per_square_meter = 18
+ground_leaf_scale = 0.43
+patch_seed = 906621
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+
+[node name="MeadowGrass2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-6, 0, 4.5)
+patch_size = Vector2(8.8, 7.8)
+grass_height = 0.31
+tufts_per_square_meter = 12
+leaves_per_square_meter = 15
+ground_leaf_scale = 0.43
+patch_seed = 906622
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+
+[node name="MeadowGrass3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(4.7, 0, 5.2)
+patch_size = Vector2(6.7, 7.0)
+grass_height = 0.24
+tufts_per_square_meter = 12
+leaves_per_square_meter = 15
+ground_leaf_scale = 0.43
+patch_seed = 906623
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+
+[node name="MeadowGrass4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5, 0, -1.9)
+patch_size = Vector2(9.6, 6.6)
+grass_height = 0.25
+tufts_per_square_meter = 11
+leaves_per_square_meter = 14
+ground_leaf_scale = 0.43
+patch_seed = 906624
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+
+[node name="MeadowGrass5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.8, 0, -3.0)
+patch_size = Vector2(9.2, 5.6)
+grass_height = 0.21
+tufts_per_square_meter = 10
+leaves_per_square_meter = 13
+ground_leaf_scale = 0.43
+patch_seed = 906625
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+
+[node name="MeadowGrass6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-8.2, 0, -5.4)
+patch_size = Vector2(6, 5.2)
+grass_height = 0.21
+tufts_per_square_meter = 8
+leaves_per_square_meter = 10
+ground_leaf_scale = 0.43
+patch_seed = 906626
+palette_preset = 0
+palette = ExtResource("aspen_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+
+[node name="MeadowGrass7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(9.6, 0, -3.8)
+patch_size = Vector2(5.3, 5)
+grass_height = 0.25
+tufts_per_square_meter = 8
+leaves_per_square_meter = 10
+ground_leaf_scale = 0.43
+patch_seed = 906627
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+
+[node name="MeadowGrass8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(7.5, 0, 2.9)
+patch_size = Vector2(4, 2.8)
+grass_height = 0.2
+tufts_per_square_meter = 9
+leaves_per_square_meter = 11
+ground_leaf_scale = 0.43
+patch_seed = 906628
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+recall_anchor = NodePath("../GapReveal")
+
+[node name="MeadowGrass9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(12.6, 0, 0.65)
+patch_size = Vector2(4.4, 2.4)
+grass_height = 0.22
+tufts_per_square_meter = 7
+leaves_per_square_meter = 9
+ground_leaf_scale = 0.43
+patch_seed = 906629
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+recall_anchor = NodePath("../GapReveal")
+
+[node name="MeadowGrass10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(17.8, 0, -6)
+patch_size = Vector2(3.8, 2.2)
+grass_height = 0.16
+tufts_per_square_meter = 7
+leaves_per_square_meter = 9
+ground_leaf_scale = 0.43
+patch_seed = 906630
+palette_preset = 0
+palette = ExtResource("gold_palette")
+recall_enabled = true
+react_to_explorer = true
+wind_strength = 0.065
+wind_speed = 0.64
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit"), NodePath("../ClassicFlatiron"), NodePath("../SplitFlatiron"), NodePath("../BrokenFlatiron")])
+recall_anchor = NodePath("../GapReveal")
+
+[node name="FoothillTree0" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-8, 0, 5.9)
+tree_type = 4
+tree_seed = 906650
+tree_height = 4.9
+crown_width = 3.2
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+
+[node name="FoothillTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-9.4, 0, 3.7)
+tree_type = 4
+tree_seed = 906651
+tree_height = 3.3
+crown_width = 2.1
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+
+[node name="FoothillTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-10, 0, -2.8)
+tree_type = 4
+tree_seed = 906652
+tree_height = 5.2
+crown_width = 3.6
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-11.9, 0, -4.7)
+tree_type = 4
+tree_seed = 906653
+tree_height = 3.4
+crown_width = 2.2
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-3.9, 0, -5.5)
+tree_type = 4
+tree_seed = 906654
+tree_height = 4.3
+crown_width = 2.6
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(7.2, 0, -2.2)
+tree_type = 4
+tree_seed = 906655
+tree_height = 3.7
+crown_width = 2.5
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(10.9, 0, -5.1)
+tree_type = 4
+tree_seed = 906656
+tree_height = 5.6
+crown_width = 3.7
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillTree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(11.65, 0, -7.2)
+tree_type = 4
+tree_seed = 906657
+tree_height = 3.8
+crown_width = 2.5
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(10.1, 0, -3.3)
+tree_type = 2
+tree_seed = 906658
+tree_height = 2.85
+crown_width = 1.8
+trunk_radius = 0.1
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("aspen_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillTree9" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(5.7, 0, 6.4)
+tree_type = 4
+tree_seed = 906659
+tree_height = 2.45
+crown_width = 1.55
+trunk_radius = 0.13
+branch_count = 5
+leaf_sprays_per_cluster = 42
+palette_preset = 0
+palette = ExtResource("forest_palette")
+recall_enabled = true
+react_to_explorers = true
+trunk_collision = true
+wind_strength = 0.075
+wind_speed = 0.42
+
+[node name="MeadowBrush0" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.5, 0, 10)
+footprint = Vector2(1.6, 1.216)
+bush_height = 0.42
+bush_seed = 906680
+sprays_per_mass = 29
+palette_preset = 0
+palette = ExtResource("aspen_palette")
+wind_strength = 0.05
+wind_speed = 0.52
+recall_enabled = true
+react_to_explorers = true
+
+[node name="MeadowBrush1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4, 0, 7.4)
+footprint = Vector2(2.5, 1.9)
+bush_height = 0.6
+bush_seed = 906681
+sprays_per_mass = 29
+palette_preset = 0
+palette = ExtResource("aspen_palette")
+wind_strength = 0.05
+wind_speed = 0.52
+recall_enabled = true
+react_to_explorers = true
+
+[node name="MeadowBrush2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-7, 0, 4.2)
+footprint = Vector2(2.9, 2.204)
+bush_height = 0.81
+bush_seed = 906682
+sprays_per_mass = 29
+palette_preset = 0
+palette = ExtResource("aspen_palette")
+wind_strength = 0.05
+wind_speed = 0.52
+recall_enabled = true
+react_to_explorers = true
+
+[node name="MeadowBrush3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.9, 0, 6)
+footprint = Vector2(2.4, 1.824)
+bush_height = 0.54
+bush_seed = 906683
+sprays_per_mass = 29
+palette_preset = 0
+palette = ExtResource("aspen_palette")
+wind_strength = 0.05
+wind_speed = 0.52
+recall_enabled = true
+react_to_explorers = true
+
+[node name="MeadowBrush4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-8, 0, -1.6)
+footprint = Vector2(2.5, 1.9)
+bush_height = 0.72
+bush_seed = 906684
+sprays_per_mass = 29
+palette_preset = 0
+palette = ExtResource("aspen_palette")
+wind_strength = 0.05
+wind_speed = 0.52
+recall_enabled = true
+react_to_explorers = true
+
+[node name="MeadowBrush5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.9, 0, -3.7)
+footprint = Vector2(1.9, 1.444)
+bush_height = 0.66
+bush_seed = 906685
+sprays_per_mass = 29
+palette_preset = 0
+palette = ExtResource("aspen_palette")
+wind_strength = 0.05
+wind_speed = 0.52
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SandstoneLedge0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-9.4, -0.38, -3.7)
+dimensions = Vector3(5.8, 2.2, 3.7)
+boulder_seed = 906700
+shape_profile = 4
+rotation_degrees = Vector3(0, 16, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="SandstoneLedge1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-6.5, -0.39, -4.2)
+dimensions = Vector3(6, 2.1, 4.6)
+boulder_seed = 906701
+shape_profile = 2
+rotation_degrees = Vector3(0, 29, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="SandstoneLedge2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.5, -0.3, -6.35)
+dimensions = Vector3(5, 2.6, 3.3)
+boulder_seed = 906702
+shape_profile = 4
+rotation_degrees = Vector3(0, 42, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="SandstoneLedge3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(1.5, -0.34, -5.3)
+dimensions = Vector3(5.3, 2, 4)
+boulder_seed = 906703
+shape_profile = 2
+rotation_degrees = Vector3(0, 55, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="SandstoneLedge4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(5.15, -0.35, -4.45)
+dimensions = Vector3(4.6, 2.1, 4.2)
+boulder_seed = 906704
+shape_profile = 4
+rotation_degrees = Vector3(0, 68, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="SandstoneLedge5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(10.1, -0.37, -5.5)
+dimensions = Vector3(5.7, 1.65, 3.3)
+boulder_seed = 906705
+shape_profile = 2
+rotation_degrees = Vector3(0, 81, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="SandstoneLedge6" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-5.8, 0, 2.7)
+dimensions = Vector3(2.1, 0.77, 1.4)
+boulder_seed = 906706
+shape_profile = 2
+rotation_degrees = Vector3(0, 94, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+
+[node name="SandstoneLedge7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(9.9, 0, 2.25)
+dimensions = Vector3(2, 1.1, 1.4)
+boulder_seed = 906707
+shape_profile = 4
+rotation_degrees = Vector3(0, 107, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../GapReveal")
+
+[node name="SandstoneLedge8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(12.4, 0, -5.25)
+dimensions = Vector3(1.42, 0.63, 0.95)
+boulder_seed = 906708
+shape_profile = 2
+rotation_degrees = Vector3(0, 120, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../GapReveal")
+
+[node name="SandstoneLedge9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(17.1, 0, -9.85)
+dimensions = Vector3(1.25, 0.62, 0.87)
+boulder_seed = 906709
+shape_profile = 4
+rotation_degrees = Vector3(0, 133, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+recall_anchor = NodePath("../GapReveal")
+
+[node name="SandstoneLedge10" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-1.45, 0, 10.55)
+dimensions = Vector3(0.58, 0.26, 0.48)
+boulder_seed = 906710
+shape_profile = 2
+rotation_degrees = Vector3(0, 146, 0)
+burial = 0.15
+roundness = 0.22
+roughness = 0.38
+solid = false
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("toe_palette")
+
+[node name="FoothillStones0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(-6, 0, -2.4)
+rotation_degrees = Vector3(0, 23, 0)
+cluster_footprint = Vector2(5, 2.7)
+rock_scale = 0.39
+rock_count = 12
+boulder_seed = 906730
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("toe_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillStones1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(4.4, 0, -3.4)
+rotation_degrees = Vector3(0, 38, 0)
+cluster_footprint = Vector2(5, 2.3)
+rock_scale = 0.39
+rock_count = 12
+boulder_seed = 906731
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("toe_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../FieldReveal")
+
+[node name="FoothillStones2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(12.35, 0, -4.5)
+rotation_degrees = Vector3(0, 32, 0)
+cluster_footprint = Vector2(3.6, 0.8)
+rock_scale = 0.24
+rock_count = 12
+boulder_seed = 906732
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("toe_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../GapReveal")
+
+[node name="FoothillStones3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("scree")]
+position = Vector3(15.6, 0, -7.75)
+rotation_degrees = Vector3(0, -22, 0)
+cluster_footprint = Vector2(3.3, 1.0)
+rock_scale = 0.24
+rock_count = 12
+boulder_seed = 906733
+roundness = 0.19
+roughness = 0.31
+palette_preset = 0
+palette = ExtResource("toe_palette")
+solid = false
+recall_enabled = true
+recall_anchor = NodePath("../GapReveal")
+
+[node name="MeadowBlooms0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(-1.2, 0, 8.7)
+patch_seed = 906763
+footprint = Vector2(1.2, 1.45)
+flower_count = 16
+crown_height = 0.17
+bloom_radius = 0.046
+scale_range = Vector2(0.68, 1.35)
+bloom_palette = 5
+bloom_color_a = Color(0.8667, 0.7765, 0.5333, 1)
+bloom_color_b = Color(0.898, 0.8627, 0.7529, 1)
+center_color = Color(0.698, 0.5451, 0.3333, 1)
+bloom_contrast = 0.7
+foliage_palette = 2
+wind_strength = 0.022
+wind_speed = 0.62
+react_to_explorers = true
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit")])
+recall_enabled = true
+recall_anchor = NodePath("../MeadowReveal")
+
+[node name="MeadowBlooms1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(0.95, 0, 5.9)
+patch_seed = 906764
+footprint = Vector2(2.1, 1.8)
+flower_count = 23
+crown_height = 0.17
+bloom_radius = 0.046
+scale_range = Vector2(0.68, 1.35)
+bloom_palette = 5
+bloom_color_a = Color(0.8667, 0.7765, 0.5333, 1)
+bloom_color_b = Color(0.898, 0.8627, 0.7529, 1)
+center_color = Color(0.698, 0.5451, 0.3333, 1)
+bloom_contrast = 0.7
+foliage_palette = 2
+wind_strength = 0.022
+wind_speed = 0.62
+react_to_explorers = true
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit")])
+recall_enabled = true
+recall_anchor = NodePath("../MeadowReveal")
+
+[node name="MeadowBlooms2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(-1.85, 0, 0.75)
+patch_seed = 906765
+footprint = Vector2(1.75, 1.18)
+flower_count = 16
+crown_height = 0.17
+bloom_radius = 0.046
+scale_range = Vector2(0.68, 1.35)
+bloom_palette = 5
+bloom_color_a = Color(0.8667, 0.7765, 0.5333, 1)
+bloom_color_b = Color(0.898, 0.8627, 0.7529, 1)
+center_color = Color(0.698, 0.5451, 0.3333, 1)
+bloom_contrast = 0.7
+foliage_palette = 2
+wind_strength = 0.022
+wind_speed = 0.62
+react_to_explorers = true
+ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSummit"), NodePath("../FieldExit")])
+recall_enabled = true
+recall_anchor = NodePath("../MeadowReveal")
+
+[node name="Fragment" parent="."]
+position = Vector3(0.3,0.075,-1.3)
+note_title = "Beneath the Flatirons"
+notes = PackedStringArray("Placeholder: add your own words about the yellow grass and the Flatirons near Boulder.")

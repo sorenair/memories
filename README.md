@@ -6,7 +6,7 @@ Designing a new memory? Start with the [memory design guide](docs/MEMORY_DESIGN_
 
 ## Play
 
-Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, **New Year's Eve — December 31, 2025**, **Como Conservatory — January 14, 2026**, **Postcard Cabin — February 10, 2026**, **Mifflin Block Party — April 25, 2026**, **Graduation — May 14, 2026**, **Tokyo — May 28, 2026**, **Vineyard — August 1, 2026**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
+Open `project.godot` in Godot 4.4 or newer and press **F5** for the EVERMORE title screen. Choose Soren (male symbol) or Vivian (female symbol) in the bottom-right corner; the unselected symbol is translucent. Tap or click infinity, or press Enter, to unfold Memory Lane. It contains **First Meeting — November 12, 2025**, **Football in the snow**, **Minneapolis Institute of Art — December 4, 2025**, **Christmas market — December 19, 2025**, **New Year's Eve — December 31, 2025**, **Como Conservatory — January 14, 2026**, **Postcard Cabin — February 10, 2026**, **Mifflin Block Party — April 25, 2026**, **Graduation — May 14, 2026**, **Tokyo — May 28, 2026**, **Northern Vietnam — June 6, 2026**, **Central Vietnam — June 15, 2026**, **Southern Vietnam — June 20, 2026**, **Bean and Bear Lakes — July 25, 2026**, **Vineyard — August 1, 2026**, **First Sail — August 22, 2026**, **Labor Day in Colorado — September 6, 2026**, **Duluth in the Fall — October 12, 2026**, and **Seasonal Demo**. First Meeting is selected by default. Swipe or drag, tap a mark, or use left/right arrows to choose, then **Recall →** to enter that memory with the selected character. See [the UI guide](UI/README.md). To run directly without the arrival fade, open `scenes/world/first_meeting_world.tscn` or `scenes/world/memory_world.tscn` and press **F6**.
 
 - **WASD / arrow keys:** walk, relative to the screen.
 - **Controller left stick:** analog movement.
@@ -104,14 +104,79 @@ reuse the Tokyo kit, with supported paths and veranda stairs, fragments, local
 ambient beds and close cameras that widen at landmarks. See [the Tokyo guide](scenes/memories/tokyo/README.md),
 or run `scenes/world/tokyo_world.tscn`.
 
+## Northern Vietnam
+
+The eleventh authored memory is **Northern Vietnam — June 6, 2026**: a narrow
+Hanoi Old Quarter lane, a leafy Hoan Kiem island temple reached by a red bridge,
+and a timber overlook among Ha Long Bay's limestone karsts. The new reusable
+Vietnam kit combines modular shophouses, lake landmarks, a walkable arched bridge
+and seeded cliffs with existing jungle foliage, water, crowd and dock components.
+See [the memory guide](scenes/memories/northern_vietnam/README.md) and
+[the scenery kit](components/scenery/vietnam/README.md).
+
+## Central Vietnam
+
+The twelfth authored memory is **Central Vietnam — June 15, 2026**: a crescent of
+walkable sand and jungle at Da Nang, stepped rice fields with an elevated bund
+walk, and Hue's open Meridian Gate leading toward an imperial hall. It reuses the
+sand footprint field, water and tropical planting, with new rice/imperial pieces
+in the Vietnam kit. See [the memory guide](scenes/memories/central_vietnam/README.md),
+or run `scenes/world/central_vietnam_world.tscn`.
+
+## Southern Vietnam
+
+The thirteenth authored memory is **Southern Vietnam — June 20, 2026**: Bai Mon's
+crescent beach leads up to the existing lighthouse on a coastal cliff, then across
+sculpted sand dunes and into a crowded Saigon promenade. The beach reuses Da Nang's
+sand component and crescent outline. New cliff and skyline presets join the
+existing water, foliage, footprint and crowd systems. See
+[the memory guide](scenes/memories/southern_vietnam/README.md), or run
+`scenes/world/southern_vietnam_world.tscn`.
+
+## Bean and Bear Lakes
+
+The fourteenth authored memory is **Bean and Bear Lakes — July 25, 2026**: a parked
+4Runner and winding forest hike lead to a rock overlook of two lakes, then a dense
+woodland campsite beside the nearer lake. Three zones reuse the camping kit, fire,
+foliage, water and terrain, with close walking cameras and a wider cliff reveal.
+See [the backpacking memory guide](scenes/memories/bean_bear/README.md), or run
+`scenes/world/bean_bear_world.tscn`.
+
 ## Vineyard
 
-The eleventh authored memory is **Vineyard — August 1, 2026**: a close walk between
+The fifteenth authored memory is **Vineyard — August 1, 2026**: a close walk between
 six grape rows leads onto a wooden deck overlooking a broad summer meadow. The
 scene reuses bushes, grass, flowers, trees, chairs and the stage's ramp/deck, with
 small trellis and railing details. Both zones have a fragment and breeze ambience;
 the camera opens toward the field from the viewing rail. See [the vineyard guide](scenes/memories/vineyard/README.md),
 or run `scenes/world/vineyard_world.tscn`.
+
+## First Sail
+
+The sixteenth authored memory is **First Sail — August 22, 2026**: one lake-focused
+zone connects a planted summer bank to a wooden T dock and the existing Pearson
+Ensign. Walk up the ramp to the landing fragment as the camera opens toward the
+sails and blue water. The boat retains its gentle shader-driven rocking and cloth
+motion. See [the sailing memory guide](scenes/memories/first_sail/README.md), or run
+`scenes/world/first_sail_world.tscn`.
+
+## Labor Day in Colorado
+
+The seventeenth authored memory is **Labor Day in Colorado — September 6, 2026**:
+a yellow field beneath the Flatirons leads to a rocky Quandary Peak summit with
+three mountain goats, then a forest lake and elk meadow in Rocky Mountain National
+Park. Three zones reuse the existing landmarks, animals, terrain, water and foliage.
+See [the Colorado guide](scenes/memories/colorado/README.md), or run
+`scenes/world/colorado_world.tscn`.
+
+## Duluth in the Fall
+
+The eighteenth authored memory is **Duluth in the Fall — October 12, 2026**:
+three zones connect a winding gold/red forest hike and rock lookout, a striped
+lighthouse beside Lake Superior, and a quiet Japanese dry garden. Reused terrain,
+foliage and water combine with optional lighthouse stripes, raked gravel and a stone
+lantern. See [the Duluth guide](scenes/memories/duluth_autumn/README.md), or run
+`scenes/world/duluth_autumn_world.tscn`.
 
 ## Seasonal demo layout
 
@@ -139,9 +204,15 @@ Instance `components/foliage/painterly_tree.tscn` to add a single tree. Choose B
 
 Instance `components/foliage/painterly_bush.tscn` to add a low, spreading shrub. Seed, footprint, height, density, palette, wind, and culling distance are editable with live previews. See [the bush authoring guide](components/foliage/BUSHES.md).
 
+The [surface-path family](components/groundcover/paths/README.md) adds earth trails, gravel walks, field tracks, irregular flagstones and urban pavers on editable curves. Organic shoulders, shallow crowns, continuous collision and foliage exclusions share the existing guidance API. Tokyo, Bean/Bear Lakes, the fall-colors hike and Vineyard now use context-specific treatments. Run `tests/scenes/path_surface_test.tscn` with F6 for a labeled comparison.
+
 Use **Foliage Colors → Palette Preset** on any grass, tree, or bush instance for seasonal and dreamlike color schemes. See [the palette guide](components/foliage/PALETTES.md).
 
 ## Scenery components
+
+The [backpacking set](components/scenery/camp/BACKPACKING.md) adds a gray 2018 Toyota 4Runner, orange Stormbreak-style tent, and WhisperLite-style stove with a pot, separate red fuel bottle and restrained cooking effects. Each is configurable, collidable and recallable. Run `tests/scenes/backpacking_test.tscn` with F6 for a component study beside the explorer.
+
+The [trail shuttle bus](components/vehicles/shuttle_bus/README.md) adds a parked blue-and-cream exterior with passenger windows, a closed folding door, mountain graphics and editable destination signage. Body length, scale, colors, roof equipment and headlights are configurable. Run `tests/scenes/shuttle_bus_test.tscn` with F6 beside both explorers.
 
 The [lighthouse](components/scenery/lighthouse/README.md) adds a smooth white tower, arched windows, a closed entry with walkable steps, a lantern gallery and a copper-colored roof. Shape, colors and the restrained rotating beacon are configurable; recall and groundcover exclusions use the shared framework. Run `tests/scenes/lighthouse_test.tscn` with F6 to inspect it beside the explorer.
 
@@ -154,6 +225,8 @@ The [conservatory component kit](components/scenery/conservatory/README.md) adds
 The [postcard cabin](components/buildings/postcard_cabin/README.md) is a reusable closed trailer-cabin exterior with charcoal siding, a sloping roof, large painted windows, a warm porch lamp, wheels and entry steps. Dimensions, colors and optional details are editable. Run `tests/scenes/postcard_cabin_test.tscn` with F6 for a playable component study.
 
 Instance `components/scenery/boulders/painterly_boulder.tscn` for one seeded, painterly stone with six varied shape profiles, stone palettes, and convex collision. See [the boulder guide](components/scenery/boulders/README.md). The demo contains boulders and a reusable rock cluster beside the pond.
+
+The [Flatiron components](components/scenery/flatirons/README.md) add large inclined sandstone faces in Classic Slab, Split Crest and Broken Ridge forms. Width, height, thickness, slope, jaggedness, fractures and existing stone palettes are editable, with collision and recall support. Run `tests/scenes/flatiron_test.tscn` with F6 for a three-formation study beside both explorers.
 
 The [concert kit](components/scenery/concert/README.md) adds a walkable stage with an access ramp, modular speaker stacks with subtle cone motion, moving-head rave lights with painted shafts and floor pools, and a large animated visual screen. The screen mixes six GPU-driven graphic families with brush wipes and editable tempo, colors, dimensions, and glow. Run `tests/scenes/concert_test.tscn` with F6 for a playable arrangement using the existing crowd and component test framework.
 
@@ -252,6 +325,12 @@ The summer clearing includes three procedural flower drifts: cream/buttercup, ro
 ## Birds
 
 The summer clearing includes three [painterly birds](components/animals/bird/README.md): a sparrow, robin, and bluebird. Each waits with subtle idle motion, then flaps upward and away when an explorer enters its configurable scare radius. Palette, size, flight speed, ascent, and optional respawn delay are editable in the component Inspector.
+
+## Elk
+
+The [painterly elk](components/animals/elk/README.md) provide mature bull, cow, calf and young-bull forms, with seeded proportions/coat/antlers and light shader-driven idles. Place individual animals or a configurable instanced herd with varied headings, grazing poses and per-animal collision. Run `tests/scenes/elk_test.tscn` with F6 for a mixed group beside both explorers.
+
+The [mountain goat](components/animals/mountain_goat/README.md) reuses the elk's smooth geometry and idle shader for a stockier white animal with a shaggy coat/beard, slim dark horns and split hooves. Size, fluff, horn length and light relaxed/alert/grazing idles are editable; small seed changes help vary a group. Run `tests/scenes/mountain_goat_test.tscn` with F6 for goats beside the elk and both explorers.
 
 ## Wall vines
 

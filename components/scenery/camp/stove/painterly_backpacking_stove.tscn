@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://components/scenery/camp/stove/painterly_backpacking_stove.gd" id="1"]
+[node name="PainterlyBackpackingStove" type="Node3D"]
+script = ExtResource("1")
+body_color = Color(0.34, 0.38, 0.37, 1)
+accent_color = Color(0.73, 0.22, 0.17, 1)
+trim_color = Color(0.68, 0.69, 0.61, 1)

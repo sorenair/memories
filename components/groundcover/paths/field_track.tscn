@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/painterly_surface_path.tscn" id="1"]
+
+[node name="FieldTrack" instance=ExtResource("1")]
+surface_style = 0
+twin_tracks = true
+paving_color = Color(0.768627,0.686275,0.517647,1)
+shoulder_color = Color(0.537255,0.580392,0.427451,1)
+stone_color = Color(0.647059,0.623529,0.533333,1)
+path_width = 2.4
+width_variation = 0.12
+detail_density = 0.3
+crown_height = 0.016

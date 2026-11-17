@@ -1,6 +1,6 @@
 # Painterly camp props
 
-Two reusable exterior props use the existing conservatory piece builder, painted
+Reusable exterior props use the existing conservatory piece builder, painted
 material, contact shadow, solid collision and assembled recall framework. Both
 origins sit at ground level. They preview and rebuild in the editor; generated
 geometry stays internal.
@@ -9,6 +9,13 @@ geometry stays internal.
 | --- | --- |
 | `adirondack/painterly_adirondack_chair.tscn` | Raked slatted seat, tall fanned back, broad arms and runners. Front faces local +Z. Chair Color, Seat Width and Back Height control the silhouette. |
 | `fire_pit/painterly_fire_pit.tscn` | Low open steel ring, crossed logs, coal bed, feet and optional half grate. Radius, Metal Color and Grill Enabled control the bowl. |
+
+The [backpacking set](BACKPACKING.md) adds an orange Stormbreak-style tent with
+subtle shader wind and a WhisperLite-style stove, pot and red fuel bottle with
+optional flame/steam. It also links the gray 2018 4Runner in `components/vehicles/`.
+Run `tests/scenes/backpacking_test.tscn` with F6 for all three beside the explorer.
+These additions reuse the same painted-prop and assembled-recall conventions;
+their controls, geometry and validation are covered in the separate guide.
 
 The chair provides a `Front` marker; the pit provides `Approach` and `FireBase`.
 Use `get_anchor()` for placement. Both implement `excludes_ground_point()` for

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://components/scenery/flatirons/painterly_flatiron.tscn" id="1"]
+
+[node name="JaggedFlatiron" instance=ExtResource("1")]
+formation_type = 2
+prop_seed = 312
+formation_height = 10.0
+formation_width = 9.5
+thickness = 2.4
+jaggedness = 0.95

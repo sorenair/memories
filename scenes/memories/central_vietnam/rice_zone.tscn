@@ -1,0 +1,185 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="AudioStream" path="res://audio/samples/conservatory_jungle.wav" id="air"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/terraces/painterly_rice_terraces.tscn" id="rice"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="Resource" path="res://scenes/memories/tokyo/forest_green.tres" id="green"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="jungle"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+
+[sub_resource type="Curve3D" id="BundWalkCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.16,0.024,-0.3168,-10,0,11,-0.64,-0.024,0.5055,0.64,0.024,-0.5055,-9,0.15,9.02,-0.96,-0.0,0.2656,0.96,0.0,-0.2656,-6,0.15,7.8405,-0.96,-0.0,0.0723,0.96,0.0,-0.0723,-3,0.15,7.36,-0.96,-0.0,-0.0064,0.96,0.0,0.0064,0,0.15,7.3887,-0.96,-0.0,-0.0694,0.96,0.0,0.0694,3,0.15,7.3998,-0.96,-0.0,-0.2542,0.96,0.0,0.2542,6,0.15,7.8225,-0.8,-0.0,-0.3303,0.8,0.0,0.3303,9,0.15,8.9885,-0.592,-0.0,0.3182,0.592,0.0,-0.3182,11,0.15,9.8872,-0.272,-0.08,1.0539,0.272,0.08,-1.0539,12.7,0.15,7,-0.0,-0.2016,1.28,0.0,0.2016,-1.28,12.7,0.65,3.3,-0.0,-0.1216,0.928,0.0,0.1216,-0.928,12.7,1.41,-1.0,-0.0,-0.0,0.24,0,0,0,12.7,1.41,-2.5), "tilts": PackedFloat32Array(0,0,0,0,0,0,0,0,0,0,0,0,0)}
+point_count = 13
+
+[sub_resource type="Curve3D" id="ToHueCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0,0,0,0.304,0.0,-0.208,12.7,1.41,-2.5,-0.528,0.1776,0.768,0.528,-0.1776,-0.768,14.6,1.41,-3.8,-0.544,0.2256,0.768,0.544,-0.2256,-0.768,16,0.3,-7.3,-1.12,0.048,0.432,1.12,-0.048,-0.432,18,0,-8.6,-0.8,-0.0,0.224,0,0,0,23,0,-10), "tilts": PackedFloat32Array(0,0,0,0,0)}
+point_count = 5
+
+[node name="MemoryZone" instance=ExtResource("zone")]
+zone_id = &"rice_terraces"
+display_name = "Terraced rice fields"
+ambience_stream = ExtResource("air")
+ambience_volume_db = -29
+ambience_size = Vector2(30, 31)
+ambience_blend_distance = 4.0
+
+[node name="FieldsView" parent="Scenery" type="Marker3D"]
+position = Vector3(7,0,8)
+
+[node name="RiceTerraces" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rice")]
+prop_seed = 615260
+collision_enabled = true
+recall_enabled = true
+recall_anchor = NodePath("../FieldsView")
+
+[node name="BundWalk" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("BundWalkCurve")
+path_width = 2.25
+paving_color = Color(0.7059,0.6902,0.5412,1)
+end_fade = Vector2(0, 0)
+slab_length = 2.0
+edge_softness = 0.25
+
+[node name="ToHue" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ToHueCurve")
+path_width = 2.4
+paving_color = Color(0.7412,0.7255,0.6118,1)
+end_fade = Vector2(0, 1.0)
+slab_length = 2.0
+edge_softness = 0.25
+
+[node name="FieldPlant1" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-12.4,0,8)
+plant_form = 1
+plant_seed = 615400
+plant_height = 2.8
+spread = 2.0
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="FieldPlant2" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-12.8,0,3)
+plant_form = 6
+plant_seed = 615401
+plant_height = 1.5
+spread = 2.0
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="FieldPlant3" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(-12.3,0,-4)
+plant_form = 2
+plant_seed = 615402
+plant_height = 2.8
+spread = 2.0
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="FieldPlant4" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(15.4,0,6)
+plant_form = 0
+plant_seed = 615403
+plant_height = 1.5
+spread = 2.0
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="FieldPlant5" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(16.4,0,-0.4)
+plant_form = 4
+plant_seed = 615404
+plant_height = 2.8
+spread = 2.0
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="FieldPlant6" parent="Scenery" instance=ExtResource("jungle")]
+position = Vector3(17.6,0,-5.2)
+plant_form = 5
+plant_seed = 615405
+plant_height = 1.5
+spread = 2.0
+fullness = 0.4
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.045
+
+[node name="FieldShrub1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-12.8,0,9.3)
+bush_seed = 615420
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="FieldShrub2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-12.6,0,1)
+bush_seed = 615421
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="FieldShrub3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(16.1,0,6.1)
+bush_seed = 615422
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="FieldShrub4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(17.5,0,-4.2)
+bush_seed = 615423
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="FieldShrub5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(19.5,0,-10.9)
+bush_seed = 615424
+bush_height = 0.84
+footprint = Vector2(1.4,1.1199999999999999)
+recall_enabled = true
+react_to_explorers = true
+palette_preset = 0
+palette = ExtResource("green")
+
+[node name="Fragment" parent="."]
+position = Vector3(12.7,1.49,-2.5)
+note_title = "Along the rice terraces"
+notes = PackedStringArray("Placeholder: add your own words about the terraced rice fields.")
