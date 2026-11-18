@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="air"]
@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="path"]
 [ext_resource type="PackedScene" path="res://components/scenery/sailing/dock/painterly_wooden_dock.tscn" id="dock"]
 [ext_resource type="PackedScene" path="res://components/scenery/vietnam/karst/painterly_limestone_karst.tscn" id="karst"]
-[ext_resource type="Resource" path="res://scenes/memories/northern_vietnam/foliage_green.tres" id="green"]
+[ext_resource type="Resource" path="res://scenes/memories/northern_vietnam/bay_foliage.tres" id="green"]
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="jungle"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
 
@@ -17,10 +17,6 @@
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
 
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
-
-[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
-
-[ext_resource type="Resource" path="res://scenes/memories/northern_vietnam/limestone.tres" id="stone"]
 
 [ext_resource type="Resource" path="res://scenes/memories/northern_vietnam/bay_paint.tres" id="settings"]
 
@@ -51,34 +47,31 @@ palette = ExtResource("water_palette")
 behavior_preset = 3
 block_water_entry = false
 recall_enabled = true
-foam_amount = 0.08
+foam_amount = 0.22
 
 pond_outline = SubResource("BayOutline")
 
 settings = ExtResource("settings")
 
-foam_width = 0.28
+foam_width = 0.32
 
 foam_cell_size = 1.8
 
 shore_field_quality = 1
+shore_obstacles = Array[NodePath]([NodePath("../Karst1"), NodePath("../Karst2"), NodePath("../Karst3"), NodePath("../Karst4"), NodePath("../Karst5"), NodePath("../Karst6"), NodePath("../Karst7"), NodePath("../Karst8")])
 
 [node name="ShoreApproach" parent="Scenery" instance=ExtResource("path")]
+visible = false
 curve = SubResource("ShoreApproachCurve")
 path_width = 2.5
-paving_color = Color(0.666667,0.662745,0.549020,1)
-end_fade = Vector2(.6,.3)
-slab_length = 2.0
-edge_softness = 0.4
+collision_enabled = false
 
-shoulder_color = Color(0.631373,0.690196,0.545098,1)
+[node name="ShoreTurn" type="Marker3D" parent="Scenery"]
+position = Vector3(-2.15, 0, 15.9)
 
-detail_density = 0.25
-
-crown_height = 0
-
-[node name="LookoutDock" parent="Scenery" instance=ExtResource("dock")]
+[node name="LookoutDock" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("dock")]
 position = Vector3(0,0,6)
+recall_anchor = NodePath("../ShoreTurn")
 dock_length = 9.0
 dock_width = 2.4
 head_width = 5.8
@@ -95,132 +88,156 @@ pigment_strength = 0.4
 position = Vector3(0,0.55,7.2)
 
 [node name="Karst1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(-14.0000,-0.1000,-11.0000)
-rotation_degrees = Vector3(0.0000,0.0000,-2.0000)
-footprint = Vector2(8.0,6.7)
-karst_height = 7.6
+position = Vector3(-13.7, -0.1, -12.4)
+rotation_degrees = Vector3(0, 12, 0)
+footprint = Vector2(8.2, 6.0)
+karst_height = 7.5
+formation_profile = 1
+contour = 1
 peaks = 2
 prop_seed = 606450
-body_color = Color(0.564706,0.650980,0.592157,1)
-accent_color = Color(0.329412,0.482353,0.313725,1)
+body_color = Color(0.68, 0.728, 0.609, 1)
+accent_color = Color(0.264, 0.485, 0.283, 1)
 recall_enabled = true
 recall_anchor = NodePath("../BayView")
 collision_enabled = false
 visibility_distance = 140.0
 
-pigment_strength = 0.3
+pigment_strength = 0.38
+
 
 [node name="Karst2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(-7.5000,-0.1000,-17.2000)
-rotation_degrees = Vector3(0.0000,37.0000,3.0000)
-footprint = Vector2(9.5,7.5)
-karst_height = 12.8
+position = Vector3(-5.9, -0.1, -17.6)
+rotation_degrees = Vector3(0, 47, 0)
+footprint = Vector2(10.9, 6.4)
+karst_height = 10.5
+formation_profile = 1
+contour = 1
 peaks = 3
 prop_seed = 606451
-body_color = Color(0.678431,0.737255,0.694118,1)
-accent_color = Color(0.470588,0.556863,0.423529,1)
+body_color = Color(0.705, 0.768, 0.722, 1)
+accent_color = Color(0.326, 0.532, 0.364, 1)
 recall_enabled = true
 recall_anchor = NodePath("../BayView")
 collision_enabled = false
 visibility_distance = 140.0
 
-pigment_strength = 0.3
+pigment_strength = 0.38
+
 
 [node name="Karst3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(4.0000,-0.1000,-17.0000)
-rotation_degrees = Vector3(0.0000,74.0000,-2.7500)
-footprint = Vector2(8.6,6.7)
-karst_height = 10.2
-peaks = 2
+position = Vector3(4.9, -0.1, -18.6)
+rotation_degrees = Vector3(0, 80, 0)
+footprint = Vector2(5.8, 5.8)
+karst_height = 10.3
+formation_profile = 1
+contour = 2
+peaks = 1
 prop_seed = 606452
-body_color = Color(0.678431,0.737255,0.694118,1)
-accent_color = Color(0.470588,0.556863,0.423529,1)
+body_color = Color(0.659, 0.752, 0.707, 1)
+accent_color = Color(0.292, 0.519, 0.354, 1)
 recall_enabled = true
 recall_anchor = NodePath("../BayView")
 collision_enabled = false
 visibility_distance = 140.0
 
-pigment_strength = 0.3
+pigment_strength = 0.38
+
 
 [node name="Karst4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(14.2000,-0.1000,-7.0000)
-rotation_degrees = Vector3(0.0000,111.0000,4.2500)
-footprint = Vector2(10.5,7.0)
-karst_height = 9.0
-peaks = 2
+position = Vector3(14.1, -0.1, -7.7)
+rotation_degrees = Vector3(0, 104, 0)
+footprint = Vector2(11.1, 7.3)
+karst_height = 7.65
+formation_profile = 1
+contour = 3
+peaks = 3
 prop_seed = 606453
-body_color = Color(0.564706,0.650980,0.592157,1)
-accent_color = Color(0.329412,0.482353,0.313725,1)
+body_color = Color(0.679, 0.727, 0.6, 1)
+accent_color = Color(0.214, 0.461, 0.282, 1)
 recall_enabled = true
 recall_anchor = NodePath("../BayView")
 collision_enabled = false
 visibility_distance = 140.0
 
-pigment_strength = 0.3
+pigment_strength = 0.38
+
 
 [node name="Karst5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(-10.0000,-0.1000,-3.5000)
-rotation_degrees = Vector3(0.0000,148.0000,-1.2500)
-footprint = Vector2(7.5,6.0)
-karst_height = 7.3
-peaks = 2
+position = Vector3(-9.3, -0.1, -3.45)
+rotation_degrees = Vector3(0, 198, 0)
+footprint = Vector2(6.65, 5.55)
+karst_height = 7.4
+formation_profile = 1
+contour = 2
+peaks = 1
 prop_seed = 606454
-body_color = Color(0.564706,0.650980,0.592157,1)
-accent_color = Color(0.329412,0.482353,0.313725,1)
+body_color = Color(0.651, 0.708, 0.568, 1)
+accent_color = Color(0.218, 0.481, 0.266, 1)
 recall_enabled = true
 recall_anchor = NodePath("../BayView")
 collision_enabled = false
 visibility_distance = 140.0
 
-pigment_strength = 0.3
+pigment_strength = 0.38
+
 
 [node name="Karst6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(8.0000,-0.1000,-2.8000)
-rotation_degrees = Vector3(0.0000,185.0000,3.7500)
-footprint = Vector2(5.8,4.8)
-karst_height = 4.6
-peaks = 1
+position = Vector3(7.3, -0.1, -1.95)
+rotation_degrees = Vector3(0, 215, 0)
+footprint = Vector2(6.9, 5.15)
+karst_height = 4.65
+formation_profile = 1
+contour = 3
+peaks = 2
 prop_seed = 606455
-body_color = Color(0.564706,0.650980,0.592157,1)
-accent_color = Color(0.329412,0.482353,0.313725,1)
+body_color = Color(0.6, 0.673, 0.539, 1)
+accent_color = Color(0.198, 0.429, 0.273, 1)
 recall_enabled = true
 recall_anchor = NodePath("../BayView")
 collision_enabled = false
 visibility_distance = 140.0
 
-pigment_strength = 0.3
+pigment_strength = 0.38
+
 
 [node name="Karst7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(15.0000,-0.1000,-17.5000)
-rotation_degrees = Vector3(0.0000,222.0000,-1.7500)
-footprint = Vector2(6.2,4.5)
-karst_height = 7.8
-peaks = 2
+position = Vector3(13.15, -0.1, -16.5)
+rotation_degrees = Vector3(0, 268, 0)
+footprint = Vector2(4.9, 4.2)
+karst_height = 8.2
+formation_profile = 1
+contour = 2
+peaks = 1
 prop_seed = 606456
-body_color = Color(0.678431,0.737255,0.694118,1)
-accent_color = Color(0.470588,0.556863,0.423529,1)
+body_color = Color(0.722, 0.8, 0.746, 1)
+accent_color = Color(0.353, 0.54, 0.388, 1)
 recall_enabled = true
 recall_anchor = NodePath("../BayView")
 collision_enabled = false
 visibility_distance = 140.0
 
-pigment_strength = 0.3
+pigment_strength = 0.38
+
 
 [node name="Karst8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(-17.5000,-0.1000,-2.0000)
-rotation_degrees = Vector3(0.0000,259.0000,-2.5000)
-footprint = Vector2(5.2,4.6)
-karst_height = 3.8
+position = Vector3(-18.2, -0.1, -3.3)
+rotation_degrees = Vector3(0, 277, 0)
+footprint = Vector2(6.9, 4.95)
+karst_height = 3.35
+formation_profile = 1
+contour = 3
 peaks = 1
 prop_seed = 606457
-body_color = Color(0.564706,0.650980,0.592157,1)
-accent_color = Color(0.329412,0.482353,0.313725,1)
+body_color = Color(0.687, 0.732, 0.613, 1)
+accent_color = Color(0.292, 0.493, 0.292, 1)
 recall_enabled = true
 recall_anchor = NodePath("../BayView")
 collision_enabled = false
 visibility_distance = 140.0
 
-pigment_strength = 0.3
+pigment_strength = 0.38
+
 
 [node name="BayFoliage1" parent="Scenery" instance=ExtResource("jungle")]
 position = Vector3(-3.3,0,14.3)
@@ -274,48 +291,6 @@ palette_preset = 0
 palette = ExtResource("green")
 wind_strength = 0.045
 
-[node name="BayFoliage5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("jungle")]
-position = Vector3(-10.0000,5.7000,-3.5000)
-plant_form = 2
-plant_seed = 606474
-plant_height = 0.8
-spread = 1.3
-fullness = 0.4
-recall_enabled = true
-react_to_explorers = true
-palette_preset = 0
-palette = ExtResource("green")
-wind_strength = 0.045
-recall_anchor = NodePath("../BayView")
-
-[node name="BayFoliage6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("jungle")]
-position = Vector3(8.0000,3.5000,-2.8000)
-plant_form = 1
-plant_seed = 606475
-plant_height = 0.8
-spread = 1.4
-fullness = 0.4
-recall_enabled = true
-react_to_explorers = true
-palette_preset = 0
-palette = ExtResource("green")
-wind_strength = 0.045
-recall_anchor = NodePath("../BayView")
-
-[node name="BayFoliage7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("jungle")]
-position = Vector3(14.2000,6.9000,-7.0000)
-plant_form = 4
-plant_seed = 606476
-plant_height = 0.85
-spread = 1.4
-fullness = 0.4
-recall_enabled = true
-react_to_explorers = true
-palette_preset = 0
-palette = ExtResource("green")
-wind_strength = 0.045
-recall_anchor = NodePath("../BayView")
-
 [node name="ShoreShrub1" parent="Scenery" instance=ExtResource("bush")]
 position = Vector3(-3.0,0,15.5)
 bush_seed = 606490
@@ -327,7 +302,7 @@ palette_preset = 0
 palette = ExtResource("green")
 
 [node name="ShoreShrub2" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(2.8,0,13.9)
+position = Vector3(1.35, 0, 15)
 bush_seed = 606491
 bush_height = 0.84
 footprint = Vector2(1.4,1.1199999999999999)
@@ -356,124 +331,12 @@ react_to_explorers = true
 palette_preset = 0
 palette = ExtResource("green")
 
-[node name="IslandFoot1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(-14.0000,-0.2200,-9.9000)
-dimensions = Vector3(9.7600,1.9000,7.5040)
-boulder_seed = 606900
-shape_profile = 4
-variability = 0.7
-roundness = 0.46
-burial = 0.18
-palette_preset = 0
-palette = ExtResource("stone")
-solid = false
-recall_enabled = true
-recall_anchor = NodePath("../BayView")
-
-[node name="IslandFoot2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(-7.5000,-0.2200,-16.1000)
-dimensions = Vector3(11.5900,1.5000,8.4000)
-boulder_seed = 606901
-shape_profile = 4
-variability = 0.7
-roundness = 0.46
-burial = 0.18
-palette_preset = 0
-palette = ExtResource("stone")
-solid = false
-recall_enabled = true
-recall_anchor = NodePath("../BayView")
-
-[node name="IslandFoot3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(4.0000,-0.2200,-15.9000)
-dimensions = Vector3(10.4920,1.5000,7.5040)
-boulder_seed = 606902
-shape_profile = 4
-variability = 0.7
-roundness = 0.46
-burial = 0.18
-palette_preset = 0
-palette = ExtResource("stone")
-solid = false
-recall_enabled = true
-recall_anchor = NodePath("../BayView")
-
-[node name="IslandFoot4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(14.2000,-0.2200,-5.9000)
-dimensions = Vector3(12.8100,1.9000,7.8400)
-boulder_seed = 606903
-shape_profile = 4
-variability = 0.7
-roundness = 0.46
-burial = 0.18
-palette_preset = 0
-palette = ExtResource("stone")
-solid = false
-recall_enabled = true
-recall_anchor = NodePath("../BayView")
-
-[node name="IslandFoot5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(-10.0000,-0.2200,-2.4000)
-dimensions = Vector3(9.1500,1.9000,6.7200)
-boulder_seed = 606904
-shape_profile = 4
-variability = 0.7
-roundness = 0.46
-burial = 0.18
-palette_preset = 0
-palette = ExtResource("stone")
-solid = false
-recall_enabled = true
-recall_anchor = NodePath("../BayView")
-
-[node name="IslandFoot6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(8.0000,-0.2200,-1.7000)
-dimensions = Vector3(7.0760,1.9000,5.3760)
-boulder_seed = 606905
-shape_profile = 4
-variability = 0.7
-roundness = 0.46
-burial = 0.18
-palette_preset = 0
-palette = ExtResource("stone")
-solid = false
-recall_enabled = true
-recall_anchor = NodePath("../BayView")
-
-[node name="IslandFoot7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(15.0000,-0.2200,-16.4000)
-dimensions = Vector3(7.5640,1.5000,5.0400)
-boulder_seed = 606906
-shape_profile = 4
-variability = 0.7
-roundness = 0.46
-burial = 0.18
-palette_preset = 0
-palette = ExtResource("stone")
-solid = false
-recall_enabled = true
-recall_anchor = NodePath("../BayView")
-
-[node name="IslandFoot8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(-17.5000,-0.2200,-0.9000)
-dimensions = Vector3(6.3440,1.9000,5.1520)
-boulder_seed = 606907
-shape_profile = 4
-variability = 0.7
-roundness = 0.46
-burial = 0.18
-palette_preset = 0
-palette = ExtResource("stone")
-solid = false
-recall_enabled = true
-recall_anchor = NodePath("../BayView")
-
 [node name="IslandCanopy1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-10.0000,5.8000,-3.5000)
-tree_height = 2.5
-crown_width = 3.5
+position = Vector3(-9.3, 6.728, -3.45)
+tree_height = 1.15
+crown_width = 2.2
 tree_type = 1
-trunk_radius = 0.1
+trunk_radius = 0.06
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 70
@@ -486,11 +349,11 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="IslandCanopy2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(14.2000,7.2000,-7.0000)
-tree_height = 2.5
-crown_width = 3.7
+position = Vector3(14.1, 6.971, -7.7)
+tree_height = 1.28
+crown_width = 2.4
 tree_type = 1
-trunk_radius = 0.1
+trunk_radius = 0.06
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 70
@@ -503,11 +366,11 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="IslandCanopy3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-14.0000,6.1000,-11.0000)
-tree_height = 2.5
-crown_width = 3.2
+position = Vector3(-13.7, 6.825, -12.4)
+tree_height = 1.05
+crown_width = 2.05
 tree_type = 1
-trunk_radius = 0.1
+trunk_radius = 0.06
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 70
@@ -520,11 +383,11 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="IslandCanopy4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(8.0000,3.7000,-2.8000)
-tree_height = 2.5
-crown_width = 2.4
+position = Vector3(7.3, 4.061, -1.95)
+tree_height = 0.72
+crown_width = 1.45
 tree_type = 1
-trunk_radius = 0.1
+trunk_radius = 0.06
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 70

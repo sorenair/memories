@@ -71,34 +71,38 @@ shore_field_quality = 1
 
 [node name="LakeWalk" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("LakeWalkCurve")
-path_width = 3.2
-paving_color = Color(0.713725,0.713725,0.627451,1)
-end_fade = Vector2(0.5,0)
+path_width = 2.45
+paving_color = Color(0.738, 0.722, 0.625, 1)
+end_fade = Vector2(2.05, 0.15)
 slab_length = 2.0
-edge_softness = 0.32
+edge_softness = 0.49
 
-detail_density = 0.35
+detail_density = 0.52
 
 crown_height = 0
+
 
 [node name="ToBay" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ToBayCurve")
 path_width = 2.65
-paving_color = Color(0.709804,0.694118,0.596078,1)
+paving_color = Color(0.738, 0.722, 0.625, 1)
 end_fade = Vector2(0.6,1)
 slab_length = 2.0
-edge_softness = 0.38
+edge_softness = 0.5
 
 shoulder_color = Color(0.643137,0.694118,0.552941,1)
 
-detail_density = 0.38
+detail_density = 0.5
 
 crown_height = 0
 
 visible = false
+width_variation = 0.17
 
-[node name="RedBridge" parent="Scenery" instance=ExtResource("bridge")]
+
+[node name="RedBridge" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bridge")]
 position = Vector3(0,0,3)
+recall_anchor = NodePath("../BridgeView")
 bridge_length = 10.0
 bridge_width = 2.5
 arch_rise = 0.42
@@ -110,12 +114,17 @@ footprint = Vector2(7.3,6.8)
 slab_length = 2.0
 end_fade = Vector2(0.8,0.8)
 paving_color = Color(0.745098,0.741176,0.650980,1)
-edge_softness = 0.48
+edge_softness = 0.62
 
-[node name="NgocSonTemple" parent="Scenery" instance=ExtResource("temple")]
+
+[node name="BridgeView" type="Marker3D" parent="Scenery"]
+position = Vector3(0, 0, 10.75)
+
+[node name="NgocSonTemple" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("temple")]
 position = Vector3(0,0,-6.4)
 footprint = Vector2(4.8,3.2)
 recall_enabled = true
+recall_anchor = NodePath("../BridgeView")
 
 roof_tiles_enabled = true
 
@@ -137,7 +146,7 @@ footprint = Vector2(2.3,2.0)
 body_color = Color(0.7647,0.7686,0.6784,1)
 roof_color = Color(0.4667,0.498,0.451,1)
 recall_enabled = true
-recall_anchor = NodePath("../TowerView")
+recall_anchor = NodePath("../BridgeView")
 
 [node name="TowerIslet" parent="Scenery" instance=ExtResource("paving")]
 position = Vector3(7.3,0,-0.5)
@@ -232,7 +241,7 @@ recall_anchor = NodePath("../TowerView")
 wind_strength = 0.045
 
 [node name="LakeTree6" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(15.2,0,7.5)
+position = Vector3(12.8, 0, 3.7)
 tree_seed = 606335
 tree_height = 4.0
 crown_width = 3.7
@@ -282,8 +291,9 @@ palette = ExtResource("green")
 
 wind_strength = 0.045
 
-[node name="LakeTree9" parent="Scenery" instance=ExtResource("tree")]
+[node name="LakeTree9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
 position = Vector3(-3,0,-5.2)
+recall_anchor = NodePath("../BridgeView")
 tree_seed = 606338
 tree_height = 3.7
 crown_width = 3.6
@@ -299,8 +309,9 @@ palette = ExtResource("green")
 
 wind_strength = 0.045
 
-[node name="LakeTree10" parent="Scenery" instance=ExtResource("tree")]
+[node name="LakeTree10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
 position = Vector3(3,0,-7.4)
+recall_anchor = NodePath("../BridgeView")
 tree_seed = 606339
 tree_height = 4.2
 crown_width = 3.4
@@ -631,7 +642,9 @@ ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../LakeWalk")
 [node name="BankTrailFragments" parent="Scenery" type="Node3D"]
 script = ExtResource("breaks")
 source_path = NodePath("../ToBay")
-visible_spans = PackedVector2Array(0,0.28,0.38,0.63,0.74,1)
+visible_spans = PackedVector2Array(0.13, 0.42, 0.54, 0.86)
+fade_length = 2.45
+
 
 [node name="BankUnderstory1" parent="Scenery" instance=ExtResource("bush")]
 position = Vector3(-7.7000,0.0000,10.4000)
@@ -678,7 +691,7 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="BankUnderstory5" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(9.5000,0.0000,9.8000)
+position = Vector3(8.25, 0, 11.0)
 bush_height = 0.7552767398441163
 footprint = Vector2(2.46,1.45)
 bush_seed = 606784
@@ -687,6 +700,7 @@ palette_preset = 0
 palette = ExtResource("green")
 recall_enabled = true
 react_to_explorers = true
+
 
 [node name="BankUnderstory6" parent="Scenery" instance=ExtResource("bush")]
 position = Vector3(11.3000,0.0000,5.6000)
@@ -973,8 +987,8 @@ trim_color = Color(0.729412,0.741176,0.650980,1)
 recall_enabled = true
 
 [node name="PromenadeBench2" parent="Scenery" instance=ExtResource("detail")]
-position = Vector3(10.5000,0.0000,9.1000)
-rotation_degrees = Vector3(0.0000,-35.0000,0.0000)
+position = Vector3(10.2, 0, 11.35)
+rotation_degrees = Vector3(0, 145, 0)
 detail_kind = 1
 body_color = Color(0.556863,0.498039,0.384314,1)
 accent_color = Color(0.337255,0.431373,0.376471,1)
@@ -1053,7 +1067,7 @@ beam_height = 4.0
 footprint = Vector2(2.3,1.6)
 opacity = 0.045
 mote_count = 22
-ground_wash_intensity = 0.08
+ground_wash_enabled = false
 mote_size = Vector2(0.018,0.035)
 recall_enabled = true
 

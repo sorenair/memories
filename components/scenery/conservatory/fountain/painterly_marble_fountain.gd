@@ -31,6 +31,40 @@ const CAUSTICS = preload("res://components/scenery/water/textures/water_caustics
 	set(value):
 		flow_speed = clampf(value, 0, 2)
 		_update_water()
+## Allow nearby explorers to send a brief surge through the fountain itself.
+@export var water_surge_enabled := false
+var _surge: Tween
+var _surge_amount := 0.0
+
+func _ready() -> void:
+	super._ready()
+	if water_surge_enabled and not Engine.is_editor_hint():
+		add_to_group(&"memory_interactables")
+
+func get_interaction_outline_meshes() -> Array[MeshInstance3D]:
+	var stone := get_node_or_null("Visual") as MeshInstance3D
+	return [stone] if stone else []
+
+func can_interact(actor: Node3D) -> bool:
+	return water_surge_enabled and water_enabled and is_instance_valid(actor) \
+		and (_surge == null or not _surge.is_running()) \
+		and global_position.distance_squared_to(actor.global_position) <= (basin_radius + 1.8) ** 2 \
+		and (not recall_enabled or (get_recall_controller() and get_recall_controller().progress >= 1.0))
+
+func try_activate(actor: Node3D) -> bool:
+	if not can_interact(actor):
+		return false
+	_surge = create_tween().set_trans(Tween.TRANS_SINE)
+	_surge.tween_method(_set_surge, 0.0, 1.0, 0.65)
+	_surge.tween_interval(0.85)
+	_surge.tween_method(_set_surge, 1.0, 0.0, 1.35)
+	return true
+
+func _set_surge(amount: float) -> void:
+	_surge_amount = amount
+	if _water_material:
+		_water_material.set_shader_parameter("surge", amount)
+
 var _water_material: ShaderMaterial
 var _visual_time: float = -1.0
 
@@ -89,7 +123,15 @@ func _build_layers() -> void:
 		var control := out * basin_radius * 0.62 + Vector3.UP * fountain_height * 0.92
 		var end := out * basin_radius * 0.72 + Vector3.UP * fountain_height * 0.273
 		_water_arc(b, start, control, end, 0.0065 * basin_radius)
-	_water_arc(b, Vector3.UP * fountain_height * 0.97, Vector3.UP * fountain_height * 1.23 + Vector3.RIGHT * 0.10, Vector3(0.23, fountain_height * 0.895, 0), 0.015)
+	_water_arc(b, Vector3.UP * fountain_height * 0.97, Vector3.UP * fountain_height * 1.23 + Vector3.RIGHT * 0.10, Vector3(0.23, fountain_height * 0.895, 0), 0.015, 2)
+	if water_surge_enabled:
+		for index in 6:
+			var angle := index * TAU / 6.0
+			var out := Vector3(cos(angle), 0, sin(angle))
+			_water_arc(b, Vector3.UP * fountain_height * 0.97 + out * 0.07,
+				Vector3.UP * fountain_height * (1.28 + (index % 2) * 0.16) + out * basin_radius * 0.66,
+				Vector3.UP * fountain_height * 0.273 + out * basin_radius * 0.75,
+				0.012, 3)
 	_water_material = ShaderMaterial.new()
 	_water_material.shader = WATER_PAINT
 	_water_material.set_shader_parameter("pigment_mask", PIGMENT)
@@ -99,10 +141,10 @@ func _build_layers() -> void:
 	water.name = "LivingWater"
 	water.mesh = b.s.commit()
 	water.material_override = _water_material
-	water.custom_aabb = water.mesh.get_aabb().grow(0.02)
+	water.custom_aabb = water.mesh.get_aabb().grow(fountain_height if water_surge_enabled else 0.02)
 	_generated(water)
 
-func _water_arc(b: RefCounted, start: Vector3, control: Vector3, end: Vector3, radius: float) -> void:
+func _water_arc(b: RefCounted, start: Vector3, control: Vector3, end: Vector3, radius: float, kind: int = 1) -> void:
 	for row in range(14):
 		for side in range(6):
 			for corner in [Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 0), Vector2i(1, 1), Vector2i(0, 1)]:
@@ -116,12 +158,14 @@ func _water_arc(b: RefCounted, start: Vector3, control: Vector3, end: Vector3, r
 				var angle := TAU * float(side + corner.y) / 6.0
 				var normal := x * cos(angle) + tangent.cross(x) * sin(angle)
 				b.s.set_uv(Vector2(float(side) / 6.0, t))
-				b.vertex(center + normal * radius, normal, Color.WHITE, 1)
+				b.vertex(center + normal * radius, normal, Color.WHITE, kind)
 
 func _update_water() -> void:
 	if _water_material:
 		_water_material.set_shader_parameter("water_color", water_color)
 		_water_material.set_shader_parameter("flow_speed", flow_speed)
+		_water_material.set_shader_parameter("surge", _surge_amount)
+		_water_material.set_shader_parameter("jet_lift", fountain_height * 0.85)
 		_water_material.set_shader_parameter("animation_time", _visual_time)
 
 func seek_time(seconds: float) -> void:

@@ -1,6 +1,6 @@
 # Football in the snow
 
-Recall the second timeline entry, **Football in the snow**, or run `scenes/world/snowy_stadium_world.tscn` with F6. The styling follows the supplied University of Minnesota stadium reference: maroon/gold seating, MINNESOTA wordmarks, and the supplied M on the field and opposite seating. The timeline retains **COLLEGE FOOTBALL** as its subtitle until the actual date is supplied.
+Recall **Axe Game**, the second timeline entry, or run `scenes/world/snowy_stadium_world.tscn` with F6. The styling follows the supplied University of Minnesota stadium reference, with maroon and gold seating, MINNESOTA wordmarks, and the supplied M on the field and opposite seating.
 
 The memory follows the [zone framework](../README.md). `snowy_stadium.tscn` contains Entry/Exit and shared Audio, and instances `stadium_zone.tscn` under **Zones/Stadium**. The zone owns its scenery, one fragment, and quiet wind ambience.
 
@@ -16,6 +16,8 @@ A single concave **MemoryPlatform** supplies continuous floor collision and an o
 The camera opens from size 3.5 to 64 along the connecting aisle, then frames a fixed stadium focus throughout the viewing bay. The tighter wide view allows the opposite upper stands and lights to extend past the top of the screen. Returning to the arrival landing restores the close view. Each device follows its own local explorer. Its yaw stays fixed, preserving movement directions. These settings live on **CameraRig** in the world wrapper (`scripts/stadium_camera.gd`); **CameraTransitionStart**, **CameraTransitionEnd**, and **StadiumViewFocus** in the zone define the reveal and composition. First Meeting and Seasonal Demo keep their existing cameras.
 
 The football field sits at Y=0, centered on Z=−26, more than ten meters below the deck. Twenty-two small players run on individually staggered, bending routes, turn with their movement, bob, and swing their legs. Defenders follow with varied reaction delays, and a football travels with a carrier. This is lightweight scenic animation, without gameplay physics or network traffic. Disable **Animate Players** for a static pose; **Show Teams** removes the figures. The broad field and layered distant seating provide scale beyond the compact playable fragment.
+
+Tap the gold button on the viewing platform to launch three maroon and gold fireworks over the field. The shared white outline shows when the console is in range. The show is local and can be replayed after the sparks fade.
 
 ## Editing
 

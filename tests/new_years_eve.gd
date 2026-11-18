@@ -132,6 +132,23 @@ func run() -> void:
 	check(zones[0].get_fragment().try_activate(player),"The single fragment must be reachable from the viewing apron")
 	world.get_node("Controls/FragmentInteraction").advance_note()
 	await create_timer(0.3).timeout
+	var encore: Node3D = scenery.get_node("EncorePad")
+	var controller: Node = world.get_node("InteractionController")
+	var screen: PainterlyConcertScreen = scenery.get_node("PaintedScreen")
+	var intensity := rig.intensity
+	var pattern := screen.pattern_mode
+	var tap := camera.unproject_position(encore.to_global(Vector3(0, 0.34, 0)))
+	check(controller.pick_interactable(tap) == encore, "The encore pad must be tappable from the viewing apron")
+	check(controller.request_interaction(encore), "Tapping the pad must cue the concert finale")
+	await create_timer(0.8).timeout
+	check(screen.pattern_mode == 6 and rig.intensity > intensity, "The finale must cue the sunburst and stronger beams")
+	check(not controller.request_interaction(encore), "The cue must finish before it can be replayed")
+	if "--capture-encore" in args:
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("res://docs/previews/new-years-eve-encore.png")
+	await create_timer(2.6).timeout
+	check(screen.pattern_mode == pattern and is_equal_approx(rig.intensity, intensity)
+		and controller.is_available(encore), "The normal show must resume after the finale")
 	for point in [Vector3(0,0,-3.7),Vector3(0,0,-7.8),Vector3(-3,0,-7.8),Vector3(-3,0,-9.8)]:
 		check(await walk_to(player,point),"The continuous ramp and stage must be walkable around the console")
 		check(player.is_on_floor(),"Ramp and deck must support the player")

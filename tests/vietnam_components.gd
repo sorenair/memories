@@ -11,9 +11,16 @@ func run() -> void:
 		var prop: PainterlyConcertComponent = load("res://components/scenery/vietnam/"+file+".tscn").instantiate()
 		root.add_child(prop)
 		await process_frame
-		var variants := 3 if prop is PainterlyHanoiHouse else (3 if prop is PainterlyLakeTemple else 1)
+		var variants := 1
+		if prop is PainterlyHanoiHouse or prop is PainterlyLakeTemple:
+			variants = 3
+		elif prop is PainterlyLimestoneKarst:
+			variants = 5
 		for variant in variants:
 			if prop is PainterlyHanoiHouse: prop.profile = variant
+			if prop is PainterlyLimestoneKarst:
+				prop.formation_profile = mini(variant, 1)
+				prop.contour = maxi(variant - 1, 0)
 			if prop is PainterlyLakeTemple:
 				prop.landmark = variant % 2
 				prop.roof_tiles_enabled = variant==2

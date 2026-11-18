@@ -11,5 +11,5 @@ beach_zone = NodePath("../Memory/Zones/BaiMon")
 dunes_zone = NodePath("../Memory/Zones/Dunes")
 city_zone = NodePath("../Memory/Zones/Saigon")
 [node name="Camera3D" parent="CameraRig" index="0"]
-size = 3.5
+size = 4.7
 far = 200.0

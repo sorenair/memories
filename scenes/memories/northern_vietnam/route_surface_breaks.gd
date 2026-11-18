@@ -10,6 +10,10 @@ extends Node3D
 	set(value):
 		visible_spans = value
 		_queue_rebuild()
+@export var fade_length := 1.8:
+	set(value):
+		fade_length = maxf(value, 0.1)
+		_queue_rebuild()
 const SURFACE = preload("res://components/groundcover/paths/painterly_surface_path.tscn")
 var _queued := false
 var _source: PainterlySurfacePath
@@ -39,7 +43,8 @@ func _rebuild() -> void:
 		segment.name = "PaintedSpan%d" % (_segments.size()+1)
 		for key in ["surface_style","path_width","paving_seed","paving_color","shoulder_color","stone_color","width_variation","crown_height","detail_density","stone_size","joint_width","edge_softness","irregularity","breakup_size","sample_spacing"]:
 			segment.set(key,_source.get(key))
-		segment.end_fade = Vector2(0.9,0.9)
+		var fade := minf(fade_length, (end - start) * 0.48)
+		segment.end_fade = Vector2(fade, fade)
 		segment.collision_enabled = false
 		var curve := Curve3D.new()
 		var steps := maxi(2,ceili((end-start)/0.3))

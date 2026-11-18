@@ -16,6 +16,73 @@ const TURNED = preload("res://components/scenery/conservatory/shared/turned_geom
 		grill_enabled = value
 		_request_rebuild()
 
+@export_group("Campfire Interaction")
+@export var tap_to_toggle := false
+@export var starts_lit := true
+@export_range(0.5, 5.0, 0.1, "suffix:m") var interaction_range := 2.8
+@export var fire_lights: Array[Node3D] = []
+@export var crackle: AudioStreamPlayer3D
+
+var _lit := false
+@onready var _fire := get_node_or_null("Fire") as Node3D
+
+func _ready() -> void:
+	super._ready()
+	if Engine.is_editor_hint():
+		return
+	if not tap_to_toggle or not is_instance_valid(_fire):
+		_lit = is_instance_valid(_fire) and _fire.visible
+		return
+	add_to_group(&"memory_interactables")
+	if is_instance_valid(crackle):
+		crackle.stream = MemoryAudio._prepare_stream(crackle.stream, true)
+	_set_lit(starts_lit)
+
+func is_lit() -> bool:
+	return _lit
+
+func can_interact(actor: Node3D) -> bool:
+	if not tap_to_toggle or not is_instance_valid(_fire) or not is_instance_valid(actor):
+		return false
+	if not is_visible_in_tree() or not actor.is_inside_tree() or actor.get_viewport() != get_viewport():
+		return false
+	if recall_enabled and (not is_instance_valid(_recall) or _recall.progress < 1.0):
+		return false
+	return global_position.distance_squared_to(actor.global_position) <= interaction_range ** 2
+
+func try_activate(actor: Node3D) -> bool:
+	if not can_interact(actor):
+		return false
+	_set_lit(not _lit)
+	return true
+
+func get_interaction_outline_meshes() -> Array[MeshInstance3D]:
+	return [get_node_or_null("Visual") as MeshInstance3D]
+
+func get_interaction_tap_position() -> Vector3:
+	return to_global(Vector3(0, 0.52 if _lit else 0.25, 0))
+
+func get_interaction_tap_radius() -> float:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return 0.0
+	var center := get_interaction_tap_position()
+	var edge := center + camera.global_basis.x.normalized() * (radius + 0.12)
+	return maxf(22.0, camera.unproject_position(center).distance_to(camera.unproject_position(edge)))
+
+func _set_lit(value: bool) -> void:
+	_lit = value
+	if is_instance_valid(_fire):
+		_fire.visible = _lit
+	for light in fire_lights:
+		if is_instance_valid(light):
+			light.visible = _lit
+	if is_instance_valid(crackle):
+		if _lit and crackle.stream:
+			crackle.play()
+		else:
+			crackle.stop()
+
 func _build(b: RefCounted) -> void:
 	var profile: Array[Vector2] = [Vector2(radius,0.07),Vector2(radius,0.35),Vector2(radius-0.045,0.35),Vector2(radius-0.045,0.10)]
 	TURNED.lathe(b,profile,metal_color,0,48)

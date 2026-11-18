@@ -11,5 +11,5 @@ mountain_zone = NodePath("../Memory/Zones/MarbleMountains")
 rice_zone = NodePath("../Memory/Zones/Rice")
 hue_zone = NodePath("../Memory/Zones/Hue")
 [node name="Camera3D" parent="CameraRig" index="0"]
-size = 3.5
+size = 4.7
 far = 190.0

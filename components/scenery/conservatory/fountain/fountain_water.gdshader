@@ -6,6 +6,8 @@ uniform sampler2D caustic_mask : repeat_enable, filter_linear_mipmap;
 uniform vec4 water_color : source_color = vec4(0.29, 0.59, 0.57, 1.0);
 uniform float flow_speed = 1.0;
 uniform float animation_time = -1.0;
+uniform float surge = 0.0;
+uniform float jet_lift = 1.5;
 varying vec3 p;
 varying float kind;
 void vertex() {
@@ -15,11 +17,16 @@ void vertex() {
 	if (kind > 0.5) {
 		VERTEX += NORMAL * sin(UV.y * 25.0 - t * 8.0) * 0.0025;
 	}
+	if (kind > 1.5) {
+		float arch = sin(UV.y * 3.141593);
+		VERTEX.y += arch * jet_lift * surge * (kind < 2.5 ? 1.0 : 0.62);
+	}
 	assembly_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 void fragment() {
 	float t = (animation_time >= 0.0 ? animation_time : TIME) * flow_speed;
 	vec3 color;
+	if (kind > 2.5 && surge < 0.015) { discard; }
 	if (kind < 0.5) {
 		// Reuses the pond's authored paint masks with crossing wave distortion.
 		vec2 warp = vec2(sin(p.z * 4.0 + t), cos(p.x * 3.7 - t * 0.8)) * 0.055;
@@ -29,10 +36,10 @@ void fragment() {
 		float ripple = sin(length(p.xz) * 17.0 - t * 3.4 + sin(angle * 4.0 + t * 0.6) * 0.36 + sin(p.x * 5.0 + p.z * 2.0) * 0.25);
 		float ring = (1.0 - smoothstep(0.10, 0.25, abs(ripple))) * smoothstep(0.24, 0.65, pigment + sin(angle * 3.0 + t) * 0.12);
 		color = water_color.rgb * mix(0.72, 1.18, smoothstep(0.25, 0.7, pigment));
-		color = mix(color, vec3(0.83, 0.91, 0.83), ring * 0.14 + smoothstep(0.6, 0.88, light) * 0.14);
+		color = mix(color, vec3(0.83, 0.91, 0.83), ring * (0.14 + surge * 0.30) + smoothstep(0.6, 0.88, light) * 0.14);
 	} else {
 		float falling = smoothstep(0.15, 0.55, sin(UV.y * 36.0 - t * 9.0));
-		color = mix(water_color.rgb * 1.12, vec3(0.92, 0.96, 0.88), 0.38 + falling * 0.30);
+		color = mix(water_color.rgb * 1.12, vec3(0.92, 0.96, 0.88), 0.38 + falling * 0.30 + surge * 0.14);
 	}
 	ALBEDO = color;
 	float assembly = assembly_clarity(assembly_position);

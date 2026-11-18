@@ -542,6 +542,7 @@ sprays_per_mass = 42
 position = Vector3(0, 0, -6.4)
 basin_radius = 1.25
 fountain_height = 1.7
+water_surge_enabled = true
 flow_speed = 0.7
 recall_enabled = true
 water_color = Color(0.34, 0.57, 0.72, 1)

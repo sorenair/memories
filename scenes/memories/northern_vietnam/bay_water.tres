@@ -2,7 +2,7 @@
 [ext_resource type="Script" path="res://components/scenery/water/water_palette.gd" id="script"]
 [resource]
 script = ExtResource("script")
-deep_color = Color(0.219608,0.435294,0.439216,1)
-body_color = Color(0.345098,0.588235,0.549020,1)
-shallow_color = Color(0.827451,0.858824,0.764706,1)
-foam_color = Color(0.933333,0.933333,0.866667,1)
+deep_color = Color(0.082, 0.407, 0.434, 1)
+body_color = Color(0.148, 0.652, 0.571, 1)
+shallow_color = Color(0.35, 0.755, 0.64, 1)
+foam_color = Color(0.878, 0.963, 0.869, 1)

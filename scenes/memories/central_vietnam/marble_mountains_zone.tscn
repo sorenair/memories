@@ -50,48 +50,50 @@ position = Vector3(-6,0,4)
 [node name="GroundWash" parent="Scenery" instance=ExtResource("earth")]
 curve = SubResource("GroundWashCurve")
 path_width = 24
-paving_color = Color(0.6510,0.6784,0.5373,1)
-shoulder_color = Color(0.5529,0.6196,0.4706,1)
+paving_color = Color(0.669, 0.705, 0.54, 1)
+shoulder_color = Color(0.587, 0.647, 0.461, 1)
 end_fade = Vector2(3.5,3.5)
 crown_height = 0
 width_variation = 0.12
-edge_softness = 0.6
-detail_density = 0.25
+edge_softness = 1.1
+detail_density = 0.18
 collision_enabled = false
 
 [node name="TempleCourt" parent="Scenery" instance=ExtResource("stone")]
 curve = SubResource("CourtCurve")
-path_width = 8.0
-paving_color = Color(0.5725,0.6078,0.5255,1)
-stone_color = Color(0.7725,0.7843,0.7098,1)
-shoulder_color = Color(0.5529,0.6196,0.4706,1)
+path_width = 6.6
+paving_color = Color(0.602, 0.623, 0.536, 1)
+stone_color = Color(0.772, 0.777, 0.695, 1)
+shoulder_color = Color(0.557, 0.625, 0.475, 1)
 stone_size = 1.1
 joint_width = 0.028
-end_fade = Vector2(0.45,0.15)
+end_fade = Vector2(2.45, 1.28)
 crown_height = 0
 width_variation = 0.03
-edge_softness = 0.24
+edge_softness = 0.64
+collision_enabled = false
 
 [node name="MountainRoute" parent="Scenery" instance=ExtResource("stone")]
 curve = SubResource("MountainRouteCurve")
-path_width = 2.7
-paving_color = Color(0.5686,0.5922,0.5059,1)
-stone_color = Color(0.7490,0.7647,0.6824,1)
-shoulder_color = Color(0.5529,0.6196,0.4706,1)
+path_width = 2.45
+paving_color = Color(0.602, 0.623, 0.536, 1)
+stone_color = Color(0.772, 0.777, 0.695, 1)
+shoulder_color = Color(0.557, 0.625, 0.475, 1)
 stone_size = 0.9
 joint_width = 0.032
-end_fade = Vector2(0.8,0)
+end_fade = Vector2(1.7, 4.2)
 crown_height = 0
 width_variation = 0.14
-edge_softness = 0.3
+edge_softness = 0.52
 
 [node name="ToFields" parent="Scenery" instance=ExtResource("earth")]
 curve = SubResource("ToFieldsCurve")
-path_width = 2.6
-paving_color = Color(0.6980,0.6745,0.5490,1)
-end_fade = Vector2(0,0)
+path_width = 2.23
+paving_color = Color(0.694, 0.671, 0.502, 1)
+end_fade = Vector2(5.2, 5.9)
 crown_height = 0.008
-edge_softness = 0.3
+edge_softness = 0.58
+shoulder_color = Color(0.59, 0.647, 0.434, 1)
 
 [node name="NestledTemple" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("temple")]
 position = Vector3(0,0.035,-0.8)
@@ -106,89 +108,107 @@ recall_enabled = true
 recall_anchor = NodePath("../MountainView")
 
 [node name="Limestone1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(-10.0000,-0.0700,-3.0000)
-rotation_degrees = Vector3(0,14,0)
-footprint = Vector2(7.5,7)
-karst_height = 10
+position = Vector3(-10.7, -0.07, -4.05)
+rotation_degrees = Vector3(0, 24, 0)
+footprint = Vector2(7.55, 6.2)
+karst_height = 9.1
 peaks = 2
-body_color = Color(0.7412,0.7569,0.6863,1)
-accent_color = Color(0.3412,0.4549,0.2824,1)
+body_color = Color(0.71, 0.743, 0.64, 1)
+accent_color = Color(0.235, 0.45, 0.255, 1)
 prop_seed = 615470
 recall_enabled = true
 recall_anchor = NodePath("../MountainView")
 visibility_distance = 140
+formation_profile = 1
+contour = 3
+pigment_strength = 0.41
 
 [node name="Limestone2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(-6.5000,-0.0700,-7.0000)
-rotation_degrees = Vector3(0,-18,0)
-footprint = Vector2(7.8,6.4)
-karst_height = 13
+position = Vector3(-7.05, -0.07, -8.0)
+rotation_degrees = Vector3(0, -26, 0)
+footprint = Vector2(8.2, 6.15)
+karst_height = 12.0
 peaks = 3
-body_color = Color(0.6549,0.6902,0.6392,1)
-accent_color = Color(0.3412,0.4549,0.2824,1)
+body_color = Color(0.648, 0.706, 0.652, 1)
+accent_color = Color(0.244, 0.47, 0.274, 1)
 prop_seed = 615471
 recall_enabled = true
 recall_anchor = NodePath("../MountainView")
 visibility_distance = 140
+formation_profile = 1
+contour = 1
+pigment_strength = 0.41
 
 [node name="Limestone3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(0.0000,-0.0700,-8.5000)
-rotation_degrees = Vector3(0,16,0)
-footprint = Vector2(8.0,6.5)
-karst_height = 15.5
-peaks = 2
-body_color = Color(0.7412,0.7569,0.6863,1)
-accent_color = Color(0.3412,0.4549,0.2824,1)
+position = Vector3(0.45, -0.07, -9.3)
+rotation_degrees = Vector3(0, 38, 0)
+footprint = Vector2(6.0, 5.9)
+karst_height = 13.4
+peaks = 1
+body_color = Color(0.722, 0.755, 0.682, 1)
+accent_color = Color(0.259, 0.498, 0.294, 1)
 prop_seed = 615472
 recall_enabled = true
 recall_anchor = NodePath("../MountainView")
 visibility_distance = 140
+formation_profile = 1
+contour = 2
+pigment_strength = 0.41
 
 [node name="Limestone4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(7.0000,-0.0700,-7.0000)
-rotation_degrees = Vector3(0,-9,0)
-footprint = Vector2(7.6,6.5)
-karst_height = 12.5
-peaks = 3
-body_color = Color(0.6549,0.6902,0.6392,1)
-accent_color = Color(0.3412,0.4549,0.2824,1)
+position = Vector3(7.0, -0.07, -8.65)
+rotation_degrees = Vector3(0, 9, 0)
+footprint = Vector2(8.4, 6.45)
+karst_height = 11.15
+peaks = 2
+body_color = Color(0.629, 0.696, 0.641, 1)
+accent_color = Color(0.221, 0.442, 0.273, 1)
 prop_seed = 615473
 recall_enabled = true
 recall_anchor = NodePath("../MountainView")
 visibility_distance = 140
+formation_profile = 1
+contour = 1
+pigment_strength = 0.41
 
 [node name="Limestone5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(11.4000,-0.0700,-3.5000)
-rotation_degrees = Vector3(0,20,0)
-footprint = Vector2(5.8,5.2)
-karst_height = 8.5
+position = Vector3(11.3, -0.07, -4.2)
+rotation_degrees = Vector3(0, 42, 0)
+footprint = Vector2(6.4, 5.1)
+karst_height = 7.45
 peaks = 2
-body_color = Color(0.7412,0.7569,0.6863,1)
-accent_color = Color(0.3412,0.4549,0.2824,1)
+body_color = Color(0.72, 0.758, 0.661, 1)
+accent_color = Color(0.243, 0.467, 0.274, 1)
 prop_seed = 615474
 recall_enabled = true
 recall_anchor = NodePath("../MountainView")
 visibility_distance = 140
+formation_profile = 1
+contour = 3
+pigment_strength = 0.41
 
 [node name="Limestone6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("karst")]
-position = Vector3(-12.7000,-0.0700,3.8000)
-rotation_degrees = Vector3(0,-12,0)
-footprint = Vector2(4.2,4.6)
-karst_height = 6
+position = Vector3(-12.8, -0.07, 3.35)
+rotation_degrees = Vector3(0, -55, 0)
+footprint = Vector2(4.7, 4.1)
+karst_height = 5.15
 peaks = 1
-body_color = Color(0.6549,0.6902,0.6392,1)
-accent_color = Color(0.3412,0.4549,0.2824,1)
+body_color = Color(0.649, 0.709, 0.597, 1)
+accent_color = Color(0.228, 0.463, 0.265, 1)
 prop_seed = 615475
 recall_enabled = true
 recall_anchor = NodePath("../MountainView")
 visibility_distance = 140
+formation_profile = 1
+contour = 2
+pigment_strength = 0.41
 
 [node name="LedgeTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-10.0000,6.8000,-3.0000)
+position = Vector3(-10.7, 8.377, -4.05)
 tree_seed = 615500
-tree_height = 3.2
-crown_width = 3.8
-trunk_radius = 0.11
+tree_height = 1.44
+crown_width = 2.38
+trunk_radius = 0.065
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 60
@@ -199,11 +219,11 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="LedgeTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-6.8000,10.8000,-7.0000)
+position = Vector3(-7.05, 11.190, -8.0)
 tree_seed = 615501
-tree_height = 3.2
-crown_width = 4.8
-trunk_radius = 0.11
+tree_height = 1.68
+crown_width = 2.66
+trunk_radius = 0.065
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 60
@@ -214,11 +234,11 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="LedgeTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(0.3000,13.2000,-8.0000)
+position = Vector3(0.45, 12.548, -9.3)
 tree_seed = 615502
-tree_height = 3.7
-crown_width = 4.7
-trunk_radius = 0.11
+tree_height = 1.2
+crown_width = 2.1
+trunk_radius = 0.065
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 60
@@ -229,11 +249,11 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="LedgeTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(6.8000,10.6000,-7.0000)
+position = Vector3(7.0, 10.366, -8.65)
 tree_seed = 615503
-tree_height = 3.2
-crown_width = 4.5
-trunk_radius = 0.11
+tree_height = 1.44
+crown_width = 2.38
+trunk_radius = 0.065
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 60
@@ -244,11 +264,11 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="LedgeTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(11.4000,7.0000,-3.5000)
+position = Vector3(11.3, 6.776, -4.2)
 tree_seed = 615504
-tree_height = 2.7
-crown_width = 3.4
-trunk_radius = 0.11
+tree_height = 1.68
+crown_width = 2.66
+trunk_radius = 0.065
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 60
@@ -259,11 +279,11 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="LedgeTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-12.7000,4.9000,3.8000)
+position = Vector3(-12.8, 4.545, 3.35)
 tree_seed = 615505
-tree_height = 2.7
-crown_width = 3.1
-trunk_radius = 0.11
+tree_height = 1.2
+crown_width = 2.1
+trunk_radius = 0.065
 trunk_collision = false
 branch_count = 4
 leaf_sprays_per_cluster = 60
@@ -274,10 +294,10 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="LedgeTree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-7.0000,4.1000,-3.0000)
+position = Vector3(-5.6, 0, -1.7)
 tree_seed = 615506
-tree_height = 3
-crown_width = 3.8
+tree_height = 2.9
+crown_width = 2.9
 trunk_radius = 0.11
 trunk_collision = false
 branch_count = 4
@@ -289,10 +309,10 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="LedgeTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(5.8000,4.0000,-3.6000)
+position = Vector3(7.4, 0, -1.8)
 tree_seed = 615507
-tree_height = 2.8
-crown_width = 3.6
+tree_height = 2.35
+crown_width = 2.4
 trunk_radius = 0.11
 trunk_collision = false
 branch_count = 4
@@ -1056,6 +1076,46 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
+
+[node name="TrailExitShrub1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(13.1, 0.018, -4.45)
+footprint = Vector2(1.44, 1.12)
+bush_height = 0.64
+bush_seed = 615920
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailExitShrub2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(18.95, 0.018, -5.8)
+footprint = Vector2(1.35, 1.05)
+bush_height = 0.54
+bush_seed = 615921
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailExitShrub3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(16.42, 0.018, -10.45)
+footprint = Vector2(1.48, 1.15)
+bush_height = 0.66
+bush_seed = 615922
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="TrailExitShrub4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(19.55, 0.018, -14.4)
+footprint = Vector2(1.29, 1.01)
+bush_height = 0.53
+bush_seed = 615923
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.065,4)

@@ -1,5 +1,7 @@
 @tool
 extends "res://components/scenery/tokyo/shared/japanese_geometry.gd"
+## Controls for the faceted coastal silhouettes, ordered to match the component.
+enum KarstContour { WEATHERED, SPLIT_RIDGE, SPIRE, SHELVED_BLUFF }
 
 func house(c: Dictionary) -> Dictionary:
 	begin(c)
@@ -191,3 +193,162 @@ func karst(c: Dictionary) -> Dictionary:
 
 	collider(Vector3(0,h*0.45,0),Vector3(w*0.78,h*0.9,d*0.78),"Limestone")
 	return finish()
+
+func faceted_karst(c: Dictionary) -> Dictionary:
+	begin(c)
+	var canopy := SphereMesh.new()
+	canopy.radius = 0.5
+	canopy.height = 1.0
+	canopy.radial_segments = 9
+	canopy.rings = 3
+	var footprint: Vector2 = c.footprint
+	var height: float = c.karst_height
+	var peak_count: int = c.peaks
+	var contour: int = c.contour
+	var direction := Vector2.from_angle(rng.randf_range(0.0, TAU))
+	for peak in range(1, peak_count):
+		var side := direction.rotated(PI * (peak - 1) + rng.randf_range(-0.45, 0.45))
+		var offset := side * footprint * rng.randf_range(0.23, 0.32)
+		var shoulder_height := height * rng.randf_range(0.41, 0.73)
+		var shoulder_size := footprint * Vector2(rng.randf_range(0.51, 0.67), rng.randf_range(0.52, 0.68))
+		var shoulder_contour := KarstContour.WEATHERED
+		if contour == KarstContour.SPLIT_RIDGE and peak == 1:
+			offset = side * footprint * 0.41
+			shoulder_height = height * 0.87
+			shoulder_size = footprint * Vector2(0.54, 0.62)
+			shoulder_contour = KarstContour.SPIRE
+		_karst_mass(offset, shoulder_size, shoulder_height, side, canopy, false, shoulder_contour)
+	var core_size := footprint if peak_count == 1 else footprint * 0.86
+	_karst_mass(Vector2.ZERO, core_size, height, direction, canopy, true, contour)
+	collider(Vector3(0, height * 0.45, 0), Vector3(footprint.x * 0.78, height * 0.9, footprint.y * 0.78), "Limestone")
+	return finish()
+
+func _karst_mass(center: Vector2, footprint: Vector2, height: float, lean: Vector2, canopy: SphereMesh, main: bool, contour: int) -> void:
+	const SIDES := 10
+	# Lower break, steep walls, stepped shoulders, then an oblique crown.
+	var widths := [0.94, 1.0, 0.88, 0.87, 0.69, rng.randf_range(0.39, 0.58), 0.28]
+	var levels := [0.0, 0.13, 0.34, 0.57, 0.71, 0.83, 0.94]
+	var phase := rng.randf_range(0.0, TAU)
+	var drift := lean * footprint * 0.18 * rng.randf_range(0.7, 1.25)
+	match contour:
+		KarstContour.SPLIT_RIDGE:
+			widths = [1.0, 1.02, 0.83, 0.69, 0.60, 0.44, 0.25]
+		KarstContour.SPIRE:
+			widths = [0.91, 1.0, 0.76, 0.69, 0.55, 0.36, 0.19]
+			levels = [0.0, 0.08, 0.24, 0.53, 0.73, 0.87, 0.95]
+			drift *= 1.4
+		KarstContour.SHELVED_BLUFF:
+			widths = [1.0, 1.08, 0.89, 0.93, 0.63, 0.67, 0.43]
+			levels = [0.0, 0.14, 0.40, 0.48, 0.69, 0.77, 0.91]
+			drift *= 0.75
+	var rings: Array[PackedVector3Array] = []
+	var bearings := PackedVector2Array()
+	var wall_heights := PackedFloat32Array()
+	var face_tints := PackedFloat32Array()
+	for side in SIDES:
+		var angle := phase + TAU * (side + rng.randf_range(-0.21, 0.21)) / SIDES
+		bearings.append(Vector2.from_angle(angle) * rng.randf_range(0.77, 1.19))
+		wall_heights.append(rng.randf_range(-0.075, 0.065))
+		face_tints.append(rng.randf_range(-0.075, 0.055))
+
+	for level in levels.size():
+		var t: float = levels[level]
+		var level_center := center + drift * sin(t * PI)
+		var ring := PackedVector3Array()
+		for side in SIDES:
+			var bearing := bearings[side]
+			var shoulder := sin(float(side) * 1.8 + phase + t * 2.5)
+			var width: float = widths[level] * (1.0 + shoulder * (0.07 + t * 0.19))
+			if contour == KarstContour.SPIRE and level < 2:
+				# A scalloped waterline reads as an undercut beneath the standing wall.
+				width *= 1.0 - posmod(side + 2, SIDES) % 3 * 0.045
+			var p := level_center + footprint * bearing * (width * 0.5)
+			var y := (t + wall_heights[side] * smoothstep(0.02, 0.58, t)) * height
+			y += height * shoulder * 0.028 * sin(t * PI)
+			ring.append(Vector3(p.x, y - 0.28, p.y))
+		rings.append(ring)
+
+	var green_start := rng.randi_range(0, SIDES - 1)
+	for level in range(rings.size() - 1):
+		for side in SIDES:
+			var next := (side + 1) % SIDES
+			var a := rings[level][side]
+			var b := rings[level][next]
+			var c := rings[level + 1][next]
+			var d := rings[level + 1][side]
+			var tone := face_tints[side] + rng.randf_range(-0.018, 0.018)
+			var stone := body.lightened(maxf(0.0, tone)).darkened(maxf(0.0, -tone))
+			if level == 0:
+				stone = stone.lerp(accent.darkened(0.2), 0.29)
+			elif level >= 4:
+				stone = stone.lerp(accent, 0.11)
+			var green_side := posmod(side - green_start, SIDES)
+			if level == 5 and green_side < 6:
+				stone = stone.lerp(accent, 0.44 if green_side == 0 or green_side == 5 else 0.69)
+			elif level == 4 and green_side < 5:
+				stone = stone.lerp(accent, 0.52)
+			elif level == 3 and green_side in [1, 2]:
+				stone = stone.lerp(accent, 0.41)
+			var outward := Vector3(bearings[side].x + bearings[next].x, 0.0, bearings[side].y + bearings[next].y)
+			_karst_face(a, b, c, outward, stone)
+			_karst_face(a, c, d, outward, stone.lerp(body, 0.18))
+	var summit := Vector3(center.x, height * 0.97 - 0.28, center.y)
+	var crown := rings.back() as PackedVector3Array
+	for side in SIDES:
+		var green_side := posmod(side - green_start, SIDES)
+		var crown_tint := body.lerp(accent, 0.86 if green_side < 7 else 0.46)
+		_karst_face(summit, crown[side], crown[(side + 1) % SIDES], Vector3.UP, crown_tint)
+		var bottom := Vector3(center.x, -0.28, center.y)
+		_karst_face(bottom, rings[0][side], rings[0][(side + 1) % SIDES], Vector3.DOWN, body.darkened(0.23))
+
+	# Let the canopy spill from the ridge onto selected shoulders.
+	for patch in (5 if main else 3):
+		var side := (green_start + patch) % SIDES
+		var next := (side + 1) % SIDES
+		var ledge := rings[5][side].lerp(rings[5][next], 0.55)
+		var rim := rings[6][side].lerp(rings[6][next], 0.55)
+		var at := ledge.lerp(rim, rng.randf_range(0.58, 0.86))
+		var tint := accent.lerp(Color(0.56, 0.64, 0.40), rng.randf_range(0.18, 0.38))
+		var size := Vector3(footprint.x * 0.245, height * 0.105, footprint.y * 0.25)
+		_karst_canopy(canopy, at.lerp(rim, 0.16), size, tint.darkened(0.10))
+		_karst_canopy(canopy, rim.lerp(summit, 0.27), size * 0.89, tint.lightened(0.095))
+		_karst_canopy(canopy, at.lerp(rings[6][next], 0.44), size * 0.72, tint)
+		var shelf := rings[4][side].lerp(rings[4][next], 0.42)
+		var fringe := shelf.lerp(ledge, 0.54 + 0.12 * cos(float(patch)))
+		_karst_canopy(canopy, fringe, size * Vector3(0.98, 0.72, 0.94), tint.darkened(0.13))
+		_karst_canopy(canopy, fringe.lerp(ledge, 0.42), size * 0.82, tint)
+		if patch in [1, 2]:
+			var lower_shelf := rings[3][side].lerp(rings[3][next], 0.52)
+			var apron := shelf.lerp(lower_shelf, 0.36 + float(patch) * 0.18)
+			_karst_canopy(canopy, shelf, size * Vector3(0.94, 0.78, 0.88), tint)
+			_karst_canopy(canopy, apron, size * Vector3(0.77, 0.93, 0.74), tint.darkened(0.14))
+			_karst_canopy(canopy, apron.lerp(rings[4][next], 0.24), size * 0.67, tint.lightened(0.07))
+
+	# A second band wraps the crown, with its mass centered on the summit faces.
+	for patch in (7 if main else 5):
+		var side := (green_start + SIDES - patch) % SIDES
+		var edge := crown[side].lerp(crown[(side + 1) % SIDES], 0.42)
+		var lift := 0.25 + 0.17 * sin(float(side) + phase)
+		var at := edge.lerp(summit, lift)
+		var width := 0.20 + 0.025 * cos(float(side) * 2.0 + phase)
+		var size := Vector3(footprint.x * width, height * 0.091, footprint.y * width)
+		var tint := accent.lerp(Color(0.58, 0.67, 0.43), 0.26 + 0.11 * sin(float(side) + phase))
+		_karst_canopy(canopy, at, size, tint)
+		_karst_canopy(canopy, at.lerp(summit, 0.37), size * 0.63, tint.lightened(0.11))
+
+func _karst_canopy(canopy: SphereMesh, at: Vector3, size: Vector3, tint: Color) -> void:
+	# Sink the underside into the limestone so each crown follows the landform.
+	var center := at + Vector3.UP * size.y * 0.11
+	append(canopy, Transform3D(Basis.IDENTITY.scaled(size), center), tint, 2)
+
+func _karst_face(a: Vector3, b: Vector3, c: Vector3, outward: Vector3, tint: Color) -> void:
+	var normal := (b - a).cross(c - a).normalized()
+	if normal.dot(outward) < 0.0:
+		normal = -normal
+		vertex(a, normal, tint)
+		vertex(b, normal, tint)
+		vertex(c, normal, tint)
+	else:
+		vertex(a, normal, tint)
+		vertex(c, normal, tint)
+		vertex(b, normal, tint)

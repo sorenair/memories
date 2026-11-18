@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://components/activities/tree_lighting/tree_lighting.gd" id="1"]
+[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="2"]
+
+[node name="TreeLighting" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Lantern" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+
+[node name="Lights" type="MultiMeshInstance3D" parent="."]
+cast_shadow = 0
+
+[node name="Chime" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2")
+volume_db = -12.0
+max_distance = 15.0
+bus = &"SFX"

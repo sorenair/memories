@@ -101,7 +101,7 @@ func run() -> void:
 	check(zones.size()==3 and memory.memory_id==&"central_vietnam","Central Vietnam needs three ordered zones and a distinct LAN identity")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both arrivals must fit on supported jungle path")
 	check(absf(player.global_position.y-approach.to_global(approach.point_at(0)).y)<0.08,"Arrival must sit on the flagstone path")
-	check(camera.size<4.0,"The mountain arrival must begin close")
+	check(absf(camera.size - 4.7) < 0.15,"The mountain arrival must begin at the walking zoom")
 	for trail in [approach,fields_path,bund,hue_path,gate_walk]:
 		for index in 81:
 			check(floor.contains_ground_point(trail.to_global(trail.point_at(trail.get_path_length()*index/80.0)),0.3),"Every path sample must stay inside the finite floor: "+trail.name)
@@ -113,23 +113,34 @@ func run() -> void:
 	check(zones[0].zone_id==&"marble_mountains" and not zones[0].has_node("Scenery/Sea") and not zones[0].has_node("Scenery/CrescentSand"),"Marble Mountains must replace the beach")
 	check(zones[0].get_node("Scenery/NestledTemple").roof_color.g>zones[0].get_node("Scenery/NestledTemple").roof_color.r,"The nestled temple must have a green roof")
 	await create_timer(2.5).timeout
-	check(camera.size>14.2 and camera.size<15.5,"The clearing should reveal the temple and limestone peaks")
+	check(absf(camera.size - 17.6) < 0.15,"The clearing should reveal the temple and limestone peaks")
 	check(zones[0].ambience.playing,"The mountains should play their jungle ambient bed")
 	await capture("mountain-temple")
 	await read_fragment(world,zones[0].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The next requested hint must climb to the rice overlook")
 	await walk_trail(player,approach,note_ratio,1)
-	await walk_trail(player,fields_path,0,1)
-	await walk_trail(player,bund,0,1)
+	await walk_trail(player,fields_path,0,0.87)
+	await capture("field-transition")
+	await walk_trail(player,fields_path,0.87,1)
+	var terraces: PainterlyRiceTerraces = zones[1].get_node("Scenery/RiceTerraces")
+	check(terraces.paddy_contours.size() >= 10 and not terraces._paddy_faces.is_empty(),"Organic field plots must supply solid bank geometry")
+	var middle := bund.curve.get_closest_offset(Vector3(0.4, 0.60, 4.24)) / bund.get_path_length()
+	await walk_trail(player,bund,0,middle)
+	await create_timer(2.0).timeout
+	check(player.global_position.y > 0.5 and absf(camera.size - 4.7) < 0.15,"Exploration between the paddies must feel close and stay on the rising bund")
+	await capture("rice-bund")
+	await walk_trail(player,bund,middle,1)
 	check(player.global_position.y>1.35,"The real explorer must climb the raised field path")
 	await create_timer(3.0).timeout
-	check(camera.size>14.2 and camera.size<15.5,"The elevated bund should reveal the stepped rice contours")
+	check(absf(camera.size - 14.0) < 0.15,"The elevated bund should reveal the stepped rice contours")
 	check(zones[1].ambience.playing,"The fields should have a separate ambient bed")
 	check(zones[1].get_node("Scenery/RiceTerraces").get_recall_controller().progress>0.99,"Scenic rice shelves should recall from a reachable front bund")
 	await capture("rice-overlook")
 	await read_fragment(world,zones[1].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The final hint must descend from the fields and pass through the imperial gate")
-	await walk_trail(player,hue_path,0,1)
+	await walk_trail(player,hue_path,0,0.89)
+	await capture("hue-transition")
+	await walk_trail(player,hue_path,0.89,1)
 	check(await walk_to(player,zones[2].to_global(Vector3(0,0,10))),"The gate approach must remain clear")
 	await create_timer(2.5).timeout
 	check(camera.size>10.8 and camera.size<12.5,"The gate should open to its landmark framing after approach")
@@ -147,7 +158,7 @@ func run() -> void:
 	await walk_trail(player,fields_path,1,0)
 	await walk_trail(player,approach,1,0)
 	await create_timer(2.0).timeout
-	check(camera.size<4.0,"Returning to arrival must restore the intimate camera")
+	check(absf(camera.size - 4.7) < 0.15,"Returning to arrival must restore the intimate camera")
 	if "--capture" in args: await capture_views(world,memory,camera)
 	world.free()
 	await process_frame
@@ -183,13 +194,6 @@ func capture_views(world: Node3D,memory: MemoryScene,camera: Camera3D) -> void:
 		rig.position = Vector3(view.x,view.y,view.z)
 		camera.size = view.w
 		await capture(names[index])
-	var player: MemoryExplorer = world.get_node("Explorer")
-	player.set_physics_process(false)
-	player.global_position = memory.get_node("Zones/MarbleMountains/Fragment").global_position+Vector3(-0.5,0,0)
-	player.reset_physics_interpolation()
-	rig.global_position = player.global_position+Vector3(0,3.2,-3.6)
-	camera.size = 15.0
-	await capture("mountain-temple")
 
 func run_lan(host: bool) -> void:
 	var barrier := LanBarrier.new()

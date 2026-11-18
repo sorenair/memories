@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cb7eo010o37xf"]
+[gd_scene load_steps=11 format=3 uid="uid://cb7eo010o37xf"]
 
 [ext_resource type="Script" uid="uid://cns7lnohopk1t" path="res://components/scenery/stadium/painterly_stadium_concourse.gd" id="concourse"]
 [ext_resource type="PackedScene" path="res://components/scenery/stadium/painterly_football_field.tscn" id="field"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" path="res://components/scenery/stadium/painterly_stadium_stands.tscn" id="stands"]
 [ext_resource type="AudioStream" uid="uid://bkp2h00cuatg4" path="res://audio/samples/autumn_wind.wav" id="wind"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+
+[ext_resource type="PackedScene" path="res://components/activities/stadium_fireworks/stadium_fireworks.tscn" id="fireworks"]
 
 [sub_resource type="Curve2D" id="DeckOutline"]
 _data = {
@@ -52,6 +54,9 @@ crowd_bounce_height = 0.35
 crowd_bounce_speed = 1.5
 
 [node name="ViewingPlatform" type="Node3D" parent="Scenery" index="3"]
+
+[node name="Fireworks" parent="Scenery/ViewingPlatform" instance=ExtResource("fireworks")]
+position = Vector3(2.5, 0.045, -1.45)
 
 [node name="ArrivalSection" type="Node3D" parent="Scenery" index="4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 9.5)

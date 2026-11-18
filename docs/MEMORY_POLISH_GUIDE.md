@@ -241,7 +241,7 @@ core elements, including intentional open or densely planted sections.
 | [Graduation](../scenes/memories/graduation/README.md) | Frame the existing campus landmarks, enrich spring planting, and clarify the ceremony's visual hierarchy while retaining open transitions. |
 | [Tokyo](../scenes/memories/tokyo/README.md) | Layer shrine/temple planting and approaches; give the crossing a distinct urban rhythm, with void visible between selected city masses. |
 | [Northern Vietnam](../scenes/memories/northern_vietnam/README.md) | Refine inhabited street clusters, leafy lakeside depth and temple framing; stage the limestone/water layers with open seascape between them. |
-| [Central Vietnam](../scenes/memories/central_vietnam/README.md) | Improve shoreline and crop/landmark compositions, tactile surfaces and appropriate tropical layers; preserve open beach and the authored places. |
+| [Central Vietnam](../scenes/memories/central_vietnam/README.md) | Frame the Marble Mountains temple with faceted limestone, walk between the flooded rice terraces, and let the imperial gate guide the final approach. |
 | [Southern Vietnam](../scenes/memories/southern_vietnam/README.md) | Contrast lush coastal pockets, open wind-shaped dunes and selected city activity; retain the authored landmarks and meaningful empty areas. |
 | [Bean and Bear Lakes](../scenes/memories/bean_bear/README.md) | Layer the forest trail and camp margins, integrate gear/fire/steam, and keep the two-lake overlook open and readable. |
 | [Vineyard](../scenes/memories/vineyard/README.md) | Refine the ordered rows, irregular planted margins and meadow depth; keep the deck's view and quiet space between meaningful groups. |

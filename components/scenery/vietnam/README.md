@@ -10,7 +10,7 @@ scene files save parameters. There are no per-frame geometry rebuilds or new tex
 | `buildings/painterly_hanoi_house.tscn` | Footprint, floors (1–5), floor height, parapet/tiled gable/stepped terrace, balconies, awning | Approach |
 | `bridge/painterly_red_bridge.tscn` | Length, width, arch rise | Shore (+Z), Island (−Z) |
 | `temple/painterly_lake_temple.tscn` | Ngoc Son Pavilion / Turtle Tower, footprint | Approach |
-| `karst/painterly_limestone_karst.tscn` | Footprint, height, crown lobes, seed | — |
+| `karst/painterly_limestone_karst.tscn` | Formation profile, contour, footprint, height, peaks, seed | — |
 
 All expose body/accent/trim/roof colors, seed, pigment, collision, contact shadow,
 visibility distance and recall with an optional reachable anchor. Prefer dimensions
@@ -32,15 +32,20 @@ recognizes BridgeRamp segments as supported slopes.
 vermilion posts and layered terracotta roofs; Turtle Tower has three pale tiers and
 inset openings. Both are closed scenery. Supply island ground and foliage separately.
 
-**Karsts** use seeded fluted rings and uneven domed crowns, broad stratified stone
-colors, and vegetation masses batched into the same opaque mesh. Peaks controls
-crown lobes, not a precise peak count. Additional existing jungle plants can sit on
-selected ledges; use the same accessible recall anchor. Disable collision on distant
-islands. This is a static scenic component, not climbable terrain or a rock simulation.
+**Karsts** share one opaque mesh for stone and greenery. **Rounded Peaks** uses
+fluted rings and domed crowns. **Faceted Cliffs** uses irregular, offset rock
+masses and clusters vegetation on selected upper ledges. Peaks controls the
+crown lobes or the number of overlapping cliff masses, depending on the profile.
+For coastal scenes, the **Contour** control gives faceted cliffs split ridges,
+spires and shelved bluffs. Water can use these islands as shoreline obstacles
+to paint shallows along their footprints.
+Additional jungle plants can use the same accessible recall anchor. Disable
+collision for distant islands.
 
 Default opaque geometry budgets are roughly **2.2k triangles** per shophouse
 (3.3k with the tiled roof), **4.4k** for the bridge, **3.4k / 3.8k** for the two
-lake landmarks and **6.4k** per karst. Each uses one static painted surface, plus an
+lake landmarks, **6.4k** for rounded karsts and about **5.8k** for a two-peak
+faceted karst. Each uses one static painted surface, plus an
 optional contact-shadow plane.
 
 `tests/vietnam_components.gd` checks finite normals/vertices, seeded generation,
@@ -100,8 +105,10 @@ the existing lighthouse. **Footprint / Cliff Height / Prop Seed** create an unev
 coastal rock outline with a flat green cap, broad painted faces and one convex
 collision body. **Summit** locates the upper datum. Place the lighthouse separately
 at that height; keep incoming/outgoing paths flat before crossing the rock edge.
-Use existing curved paths for slopes. The component has **528 triangles**, one
-opaque paint surface and ordinary recall; it has no runtime terrain simulation.
+Assign existing curved paths to **Ridge Routes** to build tapered rock shoulders
+under their slopes. The optional shoulders add one concave collider and use the
+same painted surface as the main rock. The core is **528 triangles** before
+adding these shoulders.
 
 **`city/painterly_lotus_tower.tscn`** and
 **`city/painterly_clustered_spire_tower.tscn`** inherit the existing modular city tower

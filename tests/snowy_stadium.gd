@@ -92,7 +92,11 @@ func run() -> void:
 	if "--capture" in OS.get_cmdline_user_args():
 		root.content_scale_size = Vector2i(1600, 738)
 		await create_timer(0.7).timeout
-		await capture("res://docs/previews/snowy-stadium-aisle.png")
+		if "--capture-fireworks" not in OS.get_cmdline_user_args():
+			await capture("res://docs/previews/snowy-stadium-aisle.png")
+	var fireworks: Node3D = zone.get_node("Scenery/ViewingPlatform/Fireworks")
+	var controller: Node = world.get_node("InteractionController")
+	check(not controller.is_available(fireworks), "Fireworks must be out of range from arrival")
 	check(await walk_to(player, zone.get_fragment().global_position), "The arrival fragment must be reachable at close camera scale")
 	check(zone.get_fragment().try_activate(player), "The arrival fragment must be readable")
 	world.get_node("Controls/FragmentInteraction").advance_note()
@@ -111,7 +115,24 @@ func run() -> void:
 	check(camera.size > 63.0 and camera.size < 65.0, "The viewing platform must keep the tighter stadium view")
 	check(not camera.is_position_behind(field.global_position), "The football field must be in front of the overlook camera")
 	if "--capture" in OS.get_cmdline_user_args():
-		await capture("res://docs/previews/snowy-stadium-overlook.png")
+		if "--capture-fireworks" not in OS.get_cmdline_user_args():
+			await capture("res://docs/previews/snowy-stadium-overlook.png")
+	var button: MeshInstance3D = fireworks.get_node("Button")
+	var sparks: MultiMeshInstance3D = fireworks.get_node("Sparks")
+	check(controller.pick_interactable(camera.unproject_position(button.global_position + Vector3.UP * 0.08)) == fireworks,
+		"The gold launch button must be tappable from the overlook")
+	for center: Vector3 in fireworks.burst_centers:
+		check(camera.is_position_in_frustum(fireworks.to_global(center)),
+			"Burst centers must fit the stadium camera")
+	check(controller.request_interaction(fireworks), "The shared controller must launch fireworks")
+	await create_timer(1.85).timeout
+	check(sparks.multimesh.visible_instance_count == 216, "Three full bursts must be visible")
+	check(not controller.request_interaction(fireworks), "An active show must reject repeat taps")
+	if "--capture" in OS.get_cmdline_user_args():
+		await capture("res://docs/previews/snowy-stadium-fireworks.png")
+	await create_timer(1.9).timeout
+	check(sparks.multimesh.visible_instance_count == 0 and controller.is_available(fireworks),
+		"The fireworks must clear and rearm after the show")
 	Input.action_press("move_forward")
 	for frame in 160: await physics_frame
 	Input.action_release("move_forward")

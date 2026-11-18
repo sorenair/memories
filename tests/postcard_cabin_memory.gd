@@ -20,6 +20,14 @@ func check(value: bool, message: String) -> void:
 		failures += 1
 		push_error(message)
 
+func tap(point: Vector2) -> void:
+	for pressed in [true, false]:
+		var event := InputEventScreenTouch.new()
+		event.index = 1
+		event.position = point
+		event.pressed = pressed
+		root.push_input(event, true)
+
 func walk_to(player: MemoryExplorer, point: Vector3) -> bool:
 	for frame in 1000:
 		var offset := Vector2(point.x-player.global_position.x,point.z-player.global_position.z)
@@ -88,6 +96,13 @@ func run() -> void:
 	var snow: PainterlySnowPatch = memory.get_node("Environment/ContinuousSnow")
 	var trail: PainterlyCurvedPath = memory.get_node("Zones/Hike/Scenery/Trail")
 	var camera: Camera3D = world.get_node("CameraRig/Camera3D")
+	var pit: PainterlyFirePit = zones[1].get_node("Scenery/FirePit")
+	var fire := pit.get_node("Fire") as PainterlySculptedFire
+	var ground_warmth: Node3D = zones[1].get_node("Scenery/FireWarmth")
+	var chair_light: Node3D = zones[1].get_node("Scenery/FirelightOnFurniture")
+	check(not pit.is_lit() and not fire.visible and not ground_warmth.visible and not chair_light.visible and not pit.crackle.playing,
+		"The campfire, firelight and crackle must start off")
+	check(not pit.try_activate(player),"A distant explorer must not be able to light the pit")
 	check(memory.memory_id==&"postcard_cabin" and zones.size()==2,"Winter cabin must have exactly two exterior zones and a stable LAN ID")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position,0.5)
 		and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both explorers must arrive on supported snow")
@@ -117,16 +132,24 @@ func run() -> void:
 	await walk_trail(player,trail,memory.hike_fragment_ratio,1.0)
 	await create_timer(1.0).timeout
 	check(camera.size>5.0 and camera.size<5.4,"The clearing should widen modestly around the cabin and fire")
-	check(zones[1].ambience.playing,"The clearing must blend its winter-air/fire bed")
+	check(zones[1].ambience.playing,"The clearing must blend its winter air independently of the fire")
 	await capture("clearing")
 	for point in [Vector3(4,0,-23.5),Vector3(4,0,-27.8),Vector3(4.8,0,-27.8)]:
 		check(await walk_to(player,point),"The clearing must leave an open passage around the chairs and pit")
 	var cabin: PainterlyPostcardCabin = zones[1].get_node("Scenery/Cabin")
-	var pit: PainterlyFirePit = zones[1].get_node("Scenery/FirePit")
-	var fire := pit.get_node("Fire") as PainterlySculptedFire
 	check(fire != null and fire.get_recall_anchor() == pit.get_recall_anchor(),"The cabin must use sculpted fire with the pit's reachable recall anchor")
 	check(cabin.get_recall_controller().progress>0.99 and pit.get_recall_controller().progress>0.99 and fire != null and fire.get_recall_controller().progress>0.99,"Cabin, pit and nested fire must recall from reachable approaches")
 	check(not snow.excludes_ground_point(cabin.global_position) and not snow.excludes_ground_point(pit.global_position),"Snow must exclude the cabin shell, steps and fire bowl")
+	check(not pit.is_lit() and not fire.visible,"Proximity recall must leave the flames unlit")
+	var controller := world.get_node("InteractionController")
+	for expected: bool in [true, false, true]:
+		var point := camera.unproject_position(pit.get_interaction_tap_position())
+		check(controller.pick_interactable(point) == pit,"The fire pit must be tappable from beside the clearing fragment")
+		tap(point)
+		await process_frame
+		check(pit.is_lit() == expected and fire.visible == expected and ground_warmth.visible == expected
+			and chair_light.visible == expected and pit.crackle.playing == expected,
+			"Each tap must toggle flames, firelight and crackle together")
 	await capture("fireside")
 	check(zones[1].get_fragment().try_activate(player),"The clearing fragment must be reachable beside the fire")
 	world.get_node("Controls/FragmentInteraction").advance_note()
@@ -170,6 +193,7 @@ func run() -> void:
 	if current_scene.has_node("MemoryArrival"): await current_scene.get_node("MemoryArrival").finished
 	for frame in 8: await physics_frame
 	check(current_scene.get_node("Explorer").avatar==MemoryExplorer.Avatar.VIVIAN and current_scene.get_node("Explorer").is_on_floor(),"Timeline recall must preserve character choice and a safe snowy arrival")
+	check(not current_scene.get_node("Memory/Zones/Clearing/Scenery/FirePit").is_lit(),"A fresh cabin visit must start with an unlit fire")
 	current_scene.free()
 	await create_timer(0.25).timeout
 	print("Postcard Cabin memory: ","PASS" if failures==0 else "FAIL")

@@ -23,7 +23,7 @@ func _ready() -> void:
 	serif.font_names = PackedStringArray(["Georgia", "Noto Serif", "DejaVu Serif"])
 	_title = Label.new()
 	_title.name = "EvermoreTitle"
-	_title.text = "ONE YEAR, TOGETHER"
+	_title.text = "OUR STORY"
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_title.mouse_filter = Control.MOUSE_FILTER_IGNORE

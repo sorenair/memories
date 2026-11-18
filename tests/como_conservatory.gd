@@ -120,6 +120,21 @@ func run() -> void:
 	check(zones[0].get_fragment().try_activate(player),"The garden fragment must be reachable beside the fountain")
 	world.get_node("Controls/FragmentInteraction").advance_note()
 	await create_timer(0.2).timeout
+	var fountain: PainterlyMarbleFountain = zones[0].get_node("Scenery/Fountain")
+	var controller: Node = world.get_node("InteractionController")
+	var tap := camera.unproject_position(fountain.to_global(Vector3.UP * fountain.fountain_height * 0.88))
+	check(controller.pick_interactable(tap) == fountain, "The fountain itself must be tappable from the garden lane")
+	check(controller.request_interaction(fountain), "Tapping the fountain must start its water surge")
+	await create_timer(0.85).timeout
+	check(fountain._water_material.get_shader_parameter("surge") > 0.95,
+		"The fountain water must reach the raised spray")
+	check(not controller.request_interaction(fountain), "The fountain must finish its surge before replay")
+	if "--capture-surge" in args:
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("res://docs/previews/como-conservatory-fountain-surge.png")
+	await create_timer(2.1).timeout
+	check(is_zero_approx(fountain._surge_amount) and controller.is_available(fountain),
+		"The fountain must return to its normal flow and rearm")
 	for point in [Vector3(2.7,0,-4.7),Vector3(0,0,-4.7)]:
 		check(await walk_to(player,point),"The fountain end of the rill must be approachable")
 	driver.axis = Vector2(0,1)

@@ -8,6 +8,8 @@ uniform float paint_phase = 0.0;
 uniform float frost_amount = 0.0;
 uniform float crowd_bounce_height = 0.0;
 uniform float crowd_bounce_speed = 1.0;
+uniform float artwork_tap_outline = 0.0;
+uniform float artwork_light_phase = 0.0;
 uniform sampler2D artwork_texture : source_color, filter_linear_mipmap;
 uniform sampler2D minnesota_mark : source_color, filter_linear_mipmap;
 uniform vec2 edge_half_size = vec2(1000.0);
@@ -64,7 +66,23 @@ void fragment() {
 		if (mark.a < 0.5) { discard; }
 		color *= mark.rgb;
 	}
-	if (abs(kind - 8.0) < 0.1) { color *= texture(artwork_texture, UV).rgb; }
+	if (abs(kind - 8.0) < 0.1) {
+		float phase = artwork_light_phase;
+		float strength = smoothstep(0.0, 0.18, phase) * (1.0 - smoothstep(0.66, 1.0, phase));
+		float edge_mask = smoothstep(0.0, 0.12, min(min(UV.x, 1.0 - UV.x), min(UV.y, 1.0 - UV.y)));
+		vec2 drift = vec2(sin(UV.y * 14.0 + phase * 9.0), cos(UV.x * 8.0 - phase * 8.0));
+		color *= texture(artwork_texture, UV + drift * 0.007 * edge_mask * strength).rgb;
+		// A warm break in the mist sweeps across the image and leaves the paint intact.
+		float light_x = mix(-0.2, 1.2, phase);
+		float horizon = exp(-pow((UV.y - 0.24) * 3.4, 2.0));
+		float mist = exp(-pow((UV.x - light_x + (UV.y - 0.24) * 0.23) * 3.2, 2.0));
+		float grain = mix(0.78, 1.0, noise2(UV * vec2(45.0, 26.0) + vec2(phase * 6.0, 0.0)));
+		color = mix(color, vec3(1.0, 0.68, 0.34), mist * horizon * grain * strength * 0.53);
+		vec2 margin = min(UV, 1.0 - UV);
+		vec2 pixel = max(fwidth(UV), vec2(0.0001));
+		float borders = 1.0 - smoothstep(1.4, 2.5, min(margin.x / pixel.x, margin.y / pixel.y));
+		color = mix(color, vec3(1.0), borders * artwork_tap_outline);
+	}
 	float field = 1.0 - smoothstep(0.1, 0.3, abs(kind));
 	float branding = 1.0 - smoothstep(0.1, 0.3, abs(kind - 4.0));
 	float marking = 1.0 - smoothstep(0.1, 0.3, abs(kind - 5.0));

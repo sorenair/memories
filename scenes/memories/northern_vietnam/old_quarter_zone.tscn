@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/mifflin_street.wav" id="air"]
@@ -34,6 +34,10 @@ bake_interval = 0.05
 _data = {"points": PackedVector3Array(0,0,0,0.64,0.0,-0.32,0,0,-7,-1.6,-0.0,0.512,1.6,0.0,-0.512,4,0,-9,-2.24,-0.0,-0.0,2.24,0.0,0.0,10,0,-10.2,-1.28,-0.0,-0.192,0,0,0,18,0,-9), "tilts": PackedFloat32Array(0,0,0,0)}
 point_count = 4
 
+[sub_resource type="Curve3D" id="ShopfrontCurb"]
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -0.7, 0, 0, 2.7, 0, 0, 0.7, 0, 0, -0.7, -0.07, 0, 0, 0, 0, 0.7, 0, 0, 0, 0.05, 0, -2.7), "tilts": PackedFloat32Array(0, 0, 0)}
+point_count = 3
+
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"hanoi_old_quarter"
 display_name = "Hanoi · Old Quarter"
@@ -43,12 +47,14 @@ ambience_size = Vector2(19, 30)
 ambience_blend_distance = 4.0
 
 [node name="Lane" parent="Scenery" instance=ExtResource("street")]
-length = 25.0
+position = Vector3(0, 0, 1.4)
+length = 28.0
 width = 5.1
-asphalt_color = Color(0.658824,0.666667,0.627451,1)
-end_fade = Vector2(3.3,3.8)
+asphalt_color = Color(0.67, 0.653, 0.606, 1)
+end_fade = Vector2(3.3, 2.8)
 
-edge_softness = 0.65
+edge_softness = 0.81
+
 
 [node name="LaneRoute" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("LaneRouteCurve")
@@ -63,10 +69,10 @@ collision_enabled = false
 [node name="ToLake" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ToLakeCurve")
 path_width = 2.65
-paving_color = Color(0.627451,0.619608,0.537255,1)
+paving_color = Color(0.66, 0.645, 0.566, 1)
 end_fade = Vector2(1.2,1.2)
 slab_length = 2.0
-edge_softness = 0.25
+edge_softness = 0.42
 
 stone_color = Color(0.788235,0.768627,0.682353,1)
 
@@ -81,6 +87,7 @@ joint_width = 0.016
 crown_height = 0
 
 visible = false
+
 
 [node name="WestHouse1" parent="Scenery" instance=ExtResource("house")]
 position = Vector3(-5.3000,0.0000,10.5000)
@@ -342,14 +349,19 @@ spacing = 0.92
 person_scale = 1.05
 crowd_seed = 60626
 pose_mix = 2
-motion_strength = 0.28
+motion_strength = 0.54
 recall_enabled = true
 ground_exclusions = Array[NodePath]([NodePath("../LaneRoute")])
+motion_speed = 0.98
+dance_bounce = 0.018
+
 
 [node name="LeavingStreet" parent="Scenery" type="Node3D"]
 script = ExtResource("breaks")
 source_path = NodePath("../ToLake")
-visible_spans = PackedVector2Array(0,0.32,0.48,0.77,0.87,1)
+visible_spans = PackedVector2Array(0.21, 0.47, 0.59, 0.87)
+fade_length = 2.1
+
 
 [node name="Doorstep1" parent="Scenery" instance=ExtResource("detail")]
 position = Vector3(-3.0000,0.0000,8.4000)
@@ -551,6 +563,34 @@ footprint = Vector2(1.8,2.1)
 light_color = Color(0.960784,0.823529,0.627451,1)
 intensity = 0.12
 recall_enabled = true
+
+[node name="ShopfrontCurbNorth" parent="Scenery" instance=ExtResource("path")]
+position = Vector3(-2.64, 0.008, 7.5)
+curve = SubResource("ShopfrontCurb")
+path_width = 1.04
+paving_seed = 606442
+paving_color = Color(0.70, 0.661, 0.585, 1)
+stone_color = Color(0.768, 0.714, 0.628, 1)
+stone_size = 0.48
+joint_width = 0.014
+end_fade = Vector2(1.15, 1.25)
+edge_softness = 0.32
+crown_height = 0.0
+collision_enabled = false
+
+[node name="ShopfrontCurbSouth" parent="Scenery" instance=ExtResource("path")]
+position = Vector3(-2.64, 0.008, 0.8)
+curve = SubResource("ShopfrontCurb")
+path_width = 1.04
+paving_seed = 606443
+paving_color = Color(0.70, 0.661, 0.585, 1)
+stone_color = Color(0.768, 0.714, 0.628, 1)
+stone_size = 0.48
+joint_width = 0.014
+end_fade = Vector2(1.15, 1.25)
+edge_softness = 0.32
+crown_height = 0.0
+collision_enabled = false
 
 [node name="Fragment" parent="."]
 position = Vector3(0.2,0.06,2)

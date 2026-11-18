@@ -11,24 +11,19 @@ composition, with quiet coast and open dunes giving way to a crowded city.
 
 ## Zones and reused components
 
-- **Bai Mon:** `bai_mon_zone.tscn` reuses the **same PainterlySandPatch and crescent
-  outline as Da Nang**, plus its sea palette, surf bed and existing jungle foliage.
-  Walk around the cove, then follow **HeadlandWalk** onto a solid coastal cliff.
-  The **existing PainterlyLighthouse** sits on top, with a restrained beacon. Its
-  interior and gallery remain scenery. The first fragment is at the accessible
-  cliff overlook. **ToDunes** passes around the tower and descends toward the next
-  zone; the ascent and exit stay separated until their shared flat landing.
+- **Bai Mon:** `bai_mon_zone.tscn` reuses the Da Nang crescent and sand component,
+  with a brighter blue cove and jade shallows. Jungle foliage frames the beach
+  walk. **HeadlandWalk** climbs flagstones set into the coastal ridge, and
+  **ToDunes** descends on an earthen tread. Both paths feather into the terrain
+  at their ends. The lighthouse and first fragment sit on the shared upper landing.
 - **Dunes:** `dunes_zone.tscn` uses a single 30 × 30 m **PainterlySandPatch**, with
-  wind-shaped crests, real collision and the existing two-player footprint field.
-  **DuneRoute** is hidden, non-colliding route data; walking happens on the actual
-  sand. Dry shrubs, sparse grass and small reused boulders follow sampled dune
-  heights. `dune_scrub.tres` supplies muted straw/olive colors.
-- **Saigon:** `saigon_zone.tscn` combines the existing city towers, roads, paving,
-  palms and crowd kit around an open pedestrian boulevard. Two new skyline presets
-  suggest a lotus tower with projecting helipad and a clustered spire silhouette.
-  These are compressed interpretations, not measured building replicas. Existing
-  crowds provide individually phased idle motion, with a narrow winding exclusion
-  along hidden **CityRoute** so both explorers can pass through the people.
+  an irregular windward outline, sculpted crests, and the existing two-player
+  footprint field. **DuneRoute** is hidden and supplies route hints. Tufts, dry
+  shrubs and low stones guide the walk across the actual sand to a faded exit.
+- **Saigon:** `saigon_zone.tscn` stages shorter warm-toned street fronts against
+  a cooler skyline. Wide, faded setts carry the walk into a moving crowd framed
+  by palms and understory. The hidden **CityRoute** leaves a narrow winding lane
+  for both explorers.
 
 The [Vietnam scenery kit](../../../components/scenery/vietnam/README.md) contains
 only the new supporting headland and skyline profiles. Buildings remain closed
@@ -59,9 +54,10 @@ paths and first fragment if changing **Headland → Cliff Height**. Keep a flat
 landing before either path crosses the rock edge. The guest's 1.2 m X arrival
 offset remains supported on the crescent.
 
-The camera starts at **3.5**, opens to **9** around the cove, **15** at the lighthouse,
-**8.5** near the dune fragment, and **10.5** in the city. Movement drives smooth,
-reversible framing with fixed yaw. Controls are exported from
+The standard walking size is **4.7**. Framing opens to **10** midway around the
+cove, **17.2** on the lighthouse landing, **9.7** near the dune fragment, and
+**11.4** in the middle of the Saigon crowd. Each view holds briefly as the
+explorer steps out of it, then eases back to the walking camera. Controls are exported from
 `../../../scripts/southern_vietnam_camera.gd`.
 
 Recall is enabled throughout. **HeadlandRecall** reveals the elevated lighthouse
@@ -89,8 +85,6 @@ previews live in `docs/previews/southern_vietnam-memory-*.png`. Physical phone/W
 performance is unmeasured. Existing headless material and macOS shader-cache/exit
 resource warnings may appear.
 
-The complete rendered walkthrough, component checks, recall/foliage audit, timeline,
-First Meeting guidance and Vineyard regression checks pass, along with both LAN
-host/guest processes.
+[Before and after](../../../docs/previews/southern-vietnam-polish-comparison.jpg)
 
 ![Southern Vietnam composition](../../../docs/previews/southern_vietnam-memory-overview.png)

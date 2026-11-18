@@ -1,18 +1,21 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/central_vietnam_surf.wav" id="air"]
 [ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="sand"]
 [ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="water"]
-[ext_resource type="Resource" path="res://scenes/memories/central_vietnam/sea_water.tres" id="sea_palette"]
+[ext_resource type="Resource" path="res://scenes/memories/southern_vietnam/cove_water.tres" id="sea_palette"]
 [ext_resource type="PackedScene" path="res://components/scenery/vietnam/coast/painterly_coastal_headland.tscn" id="cliff"]
 [ext_resource type="PackedScene" path="res://components/scenery/lighthouse/painterly_lighthouse.tscn" id="lighthouse"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
-[ext_resource type="Resource" path="res://scenes/memories/tokyo/forest_green.tres" id="green"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/conservatory.tres" id="green"]
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="jungle"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/flagstone_path.tscn" id="stone"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="earth"]
 
 [sub_resource type="Curve2D" id="CrescentOutline"]
 _data = {"points": PackedVector2Array(0,0,0,0,-13.0054,-8.1825,0,0,0,0,-13.2969,-7.3809,0,0,0,0,-13.539,-6.563,0,0,0,0,-13.7309,-5.7318,0,0,0,0,-13.8718,-4.8906,0,0,0,0,-13.9611,-4.0423,0,0,0,0,-13.9987,-3.1901,0,0,0,0,-13.9843,-2.3372,0,0,0,0,-13.918,-1.4868,0,0,0,0,-13.8,-0.642,0,0,0,0,-13.6308,0.194,0,0,0,0,-13.411,1.0182,0,0,0,0,-13.1414,1.8275,0,0,0,0,-12.823,2.6188,0,0,0,0,-12.457,3.3893,0,0,0,0,-12.0448,4.1361,0,0,0,0,-11.5878,4.8564,0,0,0,0,-11.0879,5.5475,0,0,0,0,-10.5467,6.2069,0,0,0,0,-9.9665,6.8321,0,0,0,0,-9.3492,7.4208,0,0,0,0,-8.6972,7.9708,0,0,0,0,-8.013,8.4801,0,0,0,0,-7.299,8.9468,0,0,0,0,-6.5579,9.3691,0,0,0,0,-5.7924,9.7455,0,0,0,0,-5.0055,10.0746,0,0,0,0,-4.1999,10.3552,0,0,0,0,-3.3788,10.5862,0,0,0,0,-2.5451,10.7667,0,0,0,0,-1.702,10.8962,0,0,0,0,-0.8526,10.974,0,0,0,0,0.0,11.0,0,0,0,0,0.8526,10.974,0,0,0,0,1.702,10.8962,0,0,0,0,2.5451,10.7667,0,0,0,0,3.3788,10.5862,0,0,0,0,4.1999,10.3552,0,0,0,0,5.0055,10.0746,0,0,0,0,5.7924,9.7455,0,0,0,0,6.5579,9.3691,0,0,0,0,7.299,8.9468,0,0,0,0,8.013,8.4801,0,0,0,0,8.6972,7.9708,0,0,0,0,9.3492,7.4208,0,0,0,0,9.9665,6.8321,0,0,0,0,10.5467,6.2069,0,0,0,0,11.0879,5.5475,0,0,0,0,11.5878,4.8564,0,0,0,0,12.0448,4.1361,0,0,0,0,12.457,3.3893,0,0,0,0,12.823,2.6188,0,0,0,0,13.1414,1.8275,0,0,0,0,13.411,1.0182,0,0,0,0,13.6308,0.194,0,0,0,0,13.8,-0.642,0,0,0,0,13.918,-1.4868,0,0,0,0,13.9843,-2.3372,0,0,0,0,13.9987,-3.1901,0,0,0,0,13.9611,-4.0423,0,0,0,0,13.8718,-4.8906,0,0,0,0,13.7309,-5.7318,0,0,0,0,13.539,-6.563,0,0,0,0,13.2969,-7.3809,0,0,0,0,13.0054,-8.1825,0,0,0,0,8.3606,-6.3316,0,0,0,0,8.548,-5.8163,0,0,0,0,8.7037,-5.2905,0,0,0,0,8.827,-4.7562,0,0,0,0,8.9176,-4.2154,0,0,0,0,8.975,-3.67,0,0,0,0,8.9992,-3.1222,0,0,0,0,8.9899,-2.5739,0,0,0,0,8.9473,-2.0272,0,0,0,0,8.8714,-1.4842,0,0,0,0,8.7626,-0.9467,0,0,0,0,8.6213,-0.4169,0,0,0,0,8.448,0.1034,0,0,0,0,8.2433,0.6121,0,0,0,0,8.0081,1.1074,0,0,0,0,7.7431,1.5875,0,0,0,0,7.4493,2.0505,0,0,0,0,7.1279,2.4948,0,0,0,0,6.7801,2.9187,0,0,0,0,6.407,3.3206,0,0,0,0,6.0102,3.6991,0,0,0,0,5.5911,4.0526,0,0,0,0,5.1512,4.3801,0,0,0,0,4.6922,4.6801,0,0,0,0,4.2158,4.9516,0,0,0,0,3.7237,5.1935,0,0,0,0,3.2178,5.4051,0,0,0,0,2.7,5.5855,0,0,0,0,2.1721,5.734,0,0,0,0,1.6362,5.85,0,0,0,0,1.0942,5.9332,0,0,0,0,0.5481,5.9833,0,0,0,0,0.0,6.0,0,0,0,0,-0.5481,5.9833,0,0,0,0,-1.0942,5.9332,0,0,0,0,-1.6362,5.85,0,0,0,0,-2.1721,5.734,0,0,0,0,-2.7,5.5855,0,0,0,0,-3.2178,5.4051,0,0,0,0,-3.7237,5.1935,0,0,0,0,-4.2158,4.9516,0,0,0,0,-4.6922,4.6801,0,0,0,0,-5.1512,4.3801,0,0,0,0,-5.5911,4.0526,0,0,0,0,-6.0102,3.6991,0,0,0,0,-6.407,3.3206,0,0,0,0,-6.7801,2.9187,0,0,0,0,-7.1279,2.4948,0,0,0,0,-7.4493,2.0505,0,0,0,0,-7.7431,1.5875,0,0,0,0,-8.0081,1.1074,0,0,0,0,-8.2433,0.6121,0,0,0,0,-8.448,0.1034,0,0,0,0,-8.6213,-0.4169,0,0,0,0,-8.7626,-0.9467,0,0,0,0,-8.8714,-1.4842,0,0,0,0,-8.9473,-2.0272,0,0,0,0,-8.9899,-2.5739,0,0,0,0,-8.9992,-3.1222,0,0,0,0,-8.975,-3.67,0,0,0,0,-8.9176,-4.2154,0,0,0,0,-8.827,-4.7562,0,0,0,0,-8.7037,-5.2905,0,0,0,0,-8.548,-5.8163,0,0,0,0,-8.3606,-6.3316)}
@@ -51,10 +54,10 @@ patch_seed = 620260
 dune_height = 0.12
 terrain_form = 1
 dune_spacing = 8.5
-edge_feather = 1.5
-sand_color = Color(0.8863,0.8314,0.7137,1)
-shadow_color = Color(0.7255,0.6627,0.5176,1)
-ripple_strength = 0.18
+edge_feather = 1.8
+sand_color = Color(0.91, 0.859, 0.731, 1)
+shadow_color = Color(0.766, 0.658, 0.484, 1)
+ripple_strength = 0.23
 mesh_detail = 80
 recall_enabled = true
 recall_anchor = NodePath("../ArrivalRecall")
@@ -67,23 +70,29 @@ palette_preset = 0
 palette = ExtResource("sea_palette")
 water_seed = 620261
 block_water_entry = false
-foam_amount = 0.55
-foam_width = 0.38
+foam_amount = 0.44
+foam_width = 0.39
 shore_obstacles = Array[NodePath]([NodePath("../Headland")])
 recall_enabled = true
+shore_field_quality = 1
 
 [node name="ArrivalRecall" parent="Scenery" type="Marker3D"]
 position = Vector3(-11.37,0,0.1565)
 
 [node name="HeadlandRecall" parent="Scenery" type="Marker3D"]
-position = Vector3(10,0,3)
+position = Vector3(6.25, 0, 6.9)
 
-[node name="Headland" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cliff")]
+[node name="Headland" parent="Scenery" node_paths=PackedStringArray("recall_anchor", "ridge_routes") instance=ExtResource("cliff")]
 position = Vector3(13,0,-8)
 footprint = Vector2(12,12)
 cliff_height = 3.2
 recall_enabled = true
 recall_anchor = NodePath("../HeadlandRecall")
+ridge_routes = [NodePath("../HeadlandWalk"), NodePath("../ToDunes")]
+body_color = Color(0.61, 0.587, 0.469, 1)
+accent_color = Color(0.465, 0.571, 0.338, 1)
+trim_color = Color(0.751, 0.668, 0.495, 1)
+pigment_strength = 0.6
 
 [node name="Lighthouse" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("lighthouse")]
 position = Vector3(13,3.2,-8)
@@ -107,21 +116,29 @@ edge_softness = 0.25
 visible = false
 collision_enabled = false
 
-[node name="HeadlandWalk" parent="Scenery" instance=ExtResource("path")]
+[node name="HeadlandWalk" parent="Scenery" instance=ExtResource("stone")]
 curve = SubResource("HeadlandWalkCurve")
 path_width = 2.4
-paving_color = Color(0.7412,0.7333,0.6235,1)
-end_fade = Vector2(1.2, 0)
+paving_color = Color(0.653, 0.594, 0.449, 1)
+end_fade = Vector2(2.4, 3.8)
 slab_length = 2.0
-edge_softness = 0.25
+edge_softness = 0.51
+stone_color = Color(0.779, 0.713, 0.557, 1)
+shoulder_color = Color(0.548, 0.595, 0.391, 1)
+stone_size = 0.88
+joint_width = 0.021
+crown_height = 0.0
 
-[node name="ToDunes" parent="Scenery" instance=ExtResource("path")]
+[node name="ToDunes" parent="Scenery" instance=ExtResource("earth")]
 curve = SubResource("ToDunesCurve")
 path_width = 2.5
-paving_color = Color(0.7725,0.7373,0.6275,1)
-end_fade = Vector2(0, 1.8)
+paving_color = Color(0.733, 0.658, 0.463, 1)
+end_fade = Vector2(4.15, 6.5)
 slab_length = 2.0
-edge_softness = 0.25
+edge_softness = 0.63
+shoulder_color = Color(0.567, 0.602, 0.4, 1)
+detail_density = 0.24
+crown_height = 0.0
 
 [node name="CovePlant1" parent="Scenery" instance=ExtResource("jungle")]
 position = Vector3(-14.0007,0,-8.098)
@@ -695,6 +712,94 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
+
+[node name="HeadlandScrub1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-12.55, 0.02, 3.25)
+footprint = Vector2(1.45, 1.22)
+bush_height = 0.6
+bush_seed = 620571
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.049
+recall_enabled = true
+react_to_explorers = true
+
+[node name="HeadlandScrub2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.65, 0.02, 7.25)
+footprint = Vector2(1.55, 1.30)
+bush_height = 0.52
+bush_seed = 620572
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.049
+recall_enabled = true
+react_to_explorers = true
+
+[node name="HeadlandScrub3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(20.7, 0.81, -0.45)
+footprint = Vector2(1.05, 0.88)
+bush_height = 0.45
+bush_seed = 620573
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.049
+recall_enabled = true
+react_to_explorers = true
+
+[node name="HeadlandScrub4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(23.45, 1.31, -6.0)
+footprint = Vector2(1.2, 1.01)
+bush_height = 0.49
+bush_seed = 620574
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.049
+recall_enabled = true
+react_to_explorers = true
+
+[node name="HeadlandScrub5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(13.25, 2.92, -14.3)
+footprint = Vector2(1.35, 1.13)
+bush_height = 0.49
+bush_seed = 620575
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.049
+recall_enabled = true
+react_to_explorers = true
+
+[node name="HeadlandScrub6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(17.6, 1.82, -22.2)
+footprint = Vector2(1.4, 1.18)
+bush_height = 0.54
+bush_seed = 620576
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.049
+recall_enabled = true
+react_to_explorers = true
+
+[node name="HeadlandScrub7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(23.15, 0.95, -24.55)
+footprint = Vector2(1.2, 1.01)
+bush_height = 0.44
+bush_seed = 620577
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.049
+recall_enabled = true
+react_to_explorers = true
+
+[node name="HeadlandScrub8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(27.9, 0.285, -23.25)
+footprint = Vector2(1.14, 0.96)
+bush_height = 0.51
+bush_seed = 620578
+palette_preset = 0
+palette = ExtResource("green")
+wind_strength = 0.049
+recall_enabled = true
+react_to_explorers = true
 
 [node name="Fragment" parent="."]
 position = Vector3(13,3.32,-4.2)

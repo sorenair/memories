@@ -107,6 +107,20 @@ func run() -> void:
 	check(zones[1].get_fragment().try_activate(player),"The gathering fragment must be reachable without entering the stage or tree")
 	world.get_node("Controls/FragmentInteraction").advance_note()
 	await create_timer(0.2).timeout
+	var lighting: Node3D = zones[1].get_node("Scenery/TreeLighting")
+	var controller: Node = world.get_node("InteractionController")
+	var batch: MultiMesh = lighting.get_node("Lights").multimesh
+	var tap := camera.unproject_position(lighting.to_global(Vector3(0, 0.84, 0)))
+	check(controller.pick_interactable(tap) == lighting, "The tree lantern must be tappable from the gathering")
+	check(controller.request_interaction(lighting), "Tapping the lantern must start the tree lighting")
+	await create_timer(2.55).timeout
+	check(batch.visible_instance_count > 76, "The tree lighting must finish with a burst above the crown")
+	check(not controller.request_interaction(lighting), "Repeat taps must wait until the light show fades")
+	if "--capture-tree-lighting" in args:
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("res://docs/previews/christmas-market-tree-lighting.png")
+	await create_timer(2.4).timeout
+	check(batch.visible_instance_count == 0 and controller.is_available(lighting), "Tree lighting must clear and rearm")
 	for point in [Vector3(-6,0,-11.4),Vector3(-4.5,0,-9.8),Vector3(-2.8,0,-7.4),Vector3(0,0,-5.5),Vector3(0,0,1),Vector3(0,0,5.4)]:
 		check(await walk_to(player,point),"The whole route must also work in reverse")
 	await create_timer(1.0).timeout

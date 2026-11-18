@@ -32,6 +32,7 @@ canvas_size = Vector2(1.85, 2.23)
 recall_enabled = true
 transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 4.29694, 0, -3.07441)
 artwork = ExtResource("monet")
+animate_artwork_on_tap = true
 canvas_size = Vector2(2.6, 1.57)
 
 [node name="Bench" parent="Scenery" index="3" instance=ExtResource("display")]

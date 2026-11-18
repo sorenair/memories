@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ca0j5s76i15ek"]
+[gd_scene load_steps=11 format=3 uid="uid://ca0j5s76i15ek"]
 
 [ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
 [ext_resource type="PackedScene" path="res://components/scenery/concert/dj/painterly_dj_booth.tscn" id="dj"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" path="res://components/scenery/concert/speakers/painterly_speaker_stack.tscn" id="speaker"]
 [ext_resource type="PackedScene" path="res://components/scenery/concert/stage/painterly_stage.tscn" id="stage"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+
+[ext_resource type="PackedScene" path="res://components/activities/concert_encore/concert_encore.tscn" id="encore"]
 
 [node name="ConcertZone" instance=ExtResource("zone")]
 zone_id = &"concert"
@@ -214,6 +216,11 @@ shade_color = Color(0.55, 0.55, 0.66, 1)
 density = 0.32
 puff_opacity = 0.1
 wisp_opacity = 0.17
+
+[node name="EncorePad" parent="Scenery" index="15" node_paths=PackedStringArray("screen", "rig") instance=ExtResource("encore")]
+position = Vector3(1.35, 0.035, -3.65)
+screen = NodePath("../PaintedScreen")
+rig = NodePath("../StageLights")
 
 [node name="Fragment" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -2.8)

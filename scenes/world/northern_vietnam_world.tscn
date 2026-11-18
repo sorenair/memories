@@ -5,10 +5,11 @@
 [node name="MemoryWorld" instance=ExtResource("base")]
 recalled_spawn_offset = Vector3(0,0,0)
 [node name="Memory" parent="." index="4" instance=ExtResource("memory")]
-[node name="CameraRig" parent="." index="5" node_paths=PackedStringArray("lake_zone","bay_zone")]
+[node name="CameraRig" parent="." index="5" node_paths=PackedStringArray("street_zone", "lake_zone", "bay_zone")]
 script = ExtResource("camera")
+street_zone = NodePath("../Memory/Zones/OldQuarter")
 lake_zone = NodePath("../Memory/Zones/HoanKiem")
 bay_zone = NodePath("../Memory/Zones/HaLong")
 [node name="Camera3D" parent="CameraRig" index="0"]
-size = 3.5
+size = 4.7
 far = 180.0

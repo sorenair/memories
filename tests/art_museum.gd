@@ -85,6 +85,32 @@ func run() -> void:
 		check(zone.get_fragment().try_activate(player),"Each zone's story fragment must activate")
 		world.get_node("Controls/FragmentInteraction").advance_note()
 		for frame in 4: await physics_frame
+		if index == 2:
+			var painting: PainterlyGalleryDisplay = zone.get_node("Scenery/Grainstack")
+			var controller: Node = world.get_node("InteractionController")
+			var camera: Camera3D = world.get_node("CameraRig/Camera3D")
+			check(not controller.is_available(painting), "Monet must be out of reach from the gallery fragment")
+			check(await walk_to(player, painting.to_global(Vector3(0, 0, 1.85))),
+				"The Monet canvas must have a clear approach")
+			await create_timer(1.6).timeout
+			var canvas_center := camera.unproject_position(painting.to_global(Vector3(0, 2, 0.12)))
+			check(controller.pick_interactable(canvas_center) == painting,
+				"The shared picker must recognize the Monet canvas")
+			check(controller.request_interaction(painting), "Tapping Monet must start the light study")
+			await create_timer(1.9).timeout
+			var strokes: MultiMeshInstance3D = painting.get_node("CanvasBrushstrokes")
+			check(strokes.multimesh.visible_instance_count > 0, "Pigment must leave the canvas during the interaction")
+			check(float(painting._material.get_shader_parameter("artwork_light_phase")) > 0.12,
+				"The painting shader must advance through the light study")
+			check(not controller.request_interaction(painting), "The light study must reject overlapping taps")
+			if "--capture-monet" in OS.get_cmdline_user_args():
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png("res://docs/previews/museum-monet-escaped-brushstrokes.png")
+			await create_timer(2.7).timeout
+			check(strokes.multimesh.visible_instance_count == 0, "All pigment must return to the canvas")
+			check(controller.is_available(painting), "The light study must be replayable")
+			check(await walk_to(player, zone.get_fragment().global_position + Vector3(0.8, 0, 1.0)),
+				"The gallery aisle must remain open on return")
 	check(world.get_node("CameraRig/Camera3D").size<4.9,"The camera must move close for exhibit exploration")
 	var crowd: PainterlyCrowd = zones[3].get_node("Scenery/Visitors")
 	check(crowd.generated_count==34 and not crowd.is_processing(),"Crowded room must reuse the existing batched GPU crowd")

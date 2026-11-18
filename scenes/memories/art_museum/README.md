@@ -29,6 +29,8 @@ Planning searched the current library before adding geometry:
 - Reused **PainterlyLightWash** for quiet gallery light, and **PainterlyCrowd** for the occupied room. Visitors retain existing batched GPU idle poses and chunked static hitboxes; no new crowd simulation was added.
 - The museum-specific models are reusable **MuseumPortico**, **MarbleStatue**, **MuseumHighlight**, and **GalleryDisplay** scenes under `components/scenery/museum/`. They inherit the stadium's existing batched scenery foundation and First Meeting's geometry builder/material language. A gallery display can be a framed painting partition or a bench. **MuseumHighlight** reuses the existing **BoulderGeometry** generator for the irregular jade relief; its other variant is the seated armor. The existing statue component adds the veiled bust variant.
 
+In the paintings gallery, approach Monet’s **Grainstack, Sun in the Mist** and tap the highlighted canvas. Gold, mauve, and rose brushstrokes curl out into the gallery before sweeping back into the canvas. Tap again to replay it. **Animate Artwork on Tap** enables the effect on a gallery display.
+
 ## Editing
 
 Open the individual zone scenes:

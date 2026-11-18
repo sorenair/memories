@@ -1,41 +1,64 @@
 extends "res://scripts/follow_camera.gd"
-## Close jungle arrival, a temple/limestone reveal, terraces and imperial court.
+## A steady walking view with held reveals at four authored viewpoints.
 @export var mountain_zone: Node3D
 @export var rice_zone: Node3D
 @export var hue_zone: Node3D
-@export var walking_size := 3.5
-@export var mountain_size := 15.0
-@export var fields_size := 15.0
-@export var gate_size := 12.0
-@export var palace_size := 9.0
+@export var walking_size := 4.7
+@export var mountain_size := 17.6
+@export var fields_size := 14.0
+@export var gate_size := 11.6
+@export var palace_size := 8.8
+
+const WALKING_OFFSET := Vector3(0, 0.80, -0.73)
+const EXIT_MARGIN := 0.62
+
+class View:
+	var zone: Node3D
+	var area: Rect2
+	var focus: Vector3
+	var size: float
+
+	func _init(anchor: Node3D, bounds: Rect2, center: Vector3, zoom: float) -> void:
+		zone = anchor
+		area = bounds
+		focus = center
+		size = zoom
+
+	func contains(position: Vector3, margin: float) -> bool:
+		if not is_instance_valid(zone):
+			return false
+		var local := zone.to_local(position)
+		return area.grow(margin).has_point(Vector2(local.x, local.z))
+
+var _views: Array[View] = []
+var _held: View
+
+@onready var _camera: Camera3D = $Camera3D
+
 func _ready() -> void:
-	framing_offset = Vector3(0,0.8,-0.6)
-	$Camera3D.size = walking_size
+	_views = [
+		View.new(mountain_zone, Rect2(-3.5, 1.7, 7.4, 4.3), Vector3(-1.45, 5.2, -2.7), mountain_size),
+		View.new(rice_zone, Rect2(10.75, -3.15, 3.05, 2.95), Vector3(7.0, 1.8, 0.32), fields_size),
+		View.new(hue_zone, Rect2(-3.1, 3.0, 6.2, 8.2), Vector3(0, 2.3, 5.25), gate_size),
+		View.new(hue_zone, Rect2(-3.5, -9.0, 7.0, 3.9), Vector3(0.0, 1.7, -8.7), palace_size),
+	]
+	framing_offset = WALKING_OFFSET
+	_camera.size = walking_size
 	super._ready()
+
 func _process(delta: float) -> void:
 	if is_instance_valid(target):
-		var at := target.get_global_transform_interpolated().origin
-		var size := walking_size
-		var offset := Vector3(0,0.8,-0.6)
-		if is_instance_valid(mountain_zone):
-			var p := mountain_zone.to_local(at)
-			var reveal := (1.0-smoothstep(5.0,9.5,absf(p.x)))*(1.0-smoothstep(6.0,9.0,p.z))
-			size = lerpf(size,mountain_size,reveal)
-			offset = offset.lerp(Vector3(0,3.2,-3.6),reveal)
-		if is_instance_valid(rice_zone):
-			var p := rice_zone.to_local(at)
-			var fields := smoothstep(0.35,1.2,p.y)*(1.0-smoothstep(13.3,17.5,p.x))*(1.0-smoothstep(-1.5,2.0,p.z))
-			size = lerpf(size,fields_size,fields)
-			offset = offset.lerp(Vector3(-5.0,0.9,-0.5),fields)
-		if is_instance_valid(hue_zone):
-			var p := hue_zone.to_local(at)
-			var gate := (1.0-smoothstep(10.0,14.0,p.z))*smoothstep(0.0,3.0,p.z)*(1.0-smoothstep(3.0,7.0,absf(p.x)))
-			size = lerpf(size,gate_size,gate)
-			offset = offset.lerp(Vector3(0,2.2,5)-p,gate)
-			var palace := (1.0-smoothstep(-5.0,0.0,p.z))*(1.0-smoothstep(4.0,8.0,absf(p.x)))
-			size = lerpf(size,palace_size,palace)
-			offset = offset.lerp(Vector3(0,1.1,-1.7),palace)
-		var blend := 1.0-exp(-3.0*delta)
-		framing_offset = framing_offset.lerp(offset,blend)
-		$Camera3D.size = lerpf($Camera3D.size,size,blend)
+		var position := target.get_global_transform_interpolated().origin
+		if _held and not _held.contains(position, EXIT_MARGIN):
+			_held = null
+		if not _held:
+			for view in _views:
+				if view.contains(position, 0.0):
+					_held = view
+					break
+		var size := _held.size if _held else walking_size
+		var offset := _held.zone.to_global(_held.focus) - position if _held else WALKING_OFFSET
+		var blend := 1.0 - exp(-3.0 * delta)
+		framing_offset = framing_offset.lerp(offset, blend)
+		_camera.size = lerpf(_camera.size, size, blend)
 	super._process(delta)

@@ -35,6 +35,8 @@ Planning searched the existing component scenes, READMEs, and exports as require
 - New **MarketHut**, **FestiveLights**, and **MarketStage** cover missing market-specific silhouettes. They reuse First Meeting's geometry builder and the existing batched painterly scenery material. Vendor and musician bodies/heads reuse the crowd's cached meshes, recolored with the same matte material. No new global shader or lighting system was added.
 - The stage animates three body roots and two connected arms per performer. Instrument-specific wrist targets keep sleeves outside the instrument bodies; the violin bow translates across its string plane. Meshes stay static and only joint transforms change. Visitor idle motion and flakes remain on the GPU; trees retain their existing wind shader. The decorated pine is a scene composition of existing pine plus light trimming.
 
+Tap the highlighted **lantern beside the gathering tree** to send a spiral of gold lights up the evergreen. A chime starts the show, and a crown of sparks scatters from the top before the lantern becomes available again.
+
 ## Editing
 
 - Open either zone scene and select **Fragment → Note Title / Notes** to replace its placeholder text.

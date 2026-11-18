@@ -104,7 +104,7 @@ func run() -> void:
 	check(zones.size()==3 and memory.memory_id==&"southern_vietnam","Three ordered zones need a separate shared memory ID")
 	check(zones[0].zone_id==&"bai_mon" and zones[1].zone_id==&"sand_dunes" and zones[2].zone_id==&"saigon","The final Vietnam memory must preserve cove, dunes and city order")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both arrivals must fit the supported crescent beach")
-	check(camera.size<4.0,"The beach arrival should remain intimate")
+	check(absf(camera.size - 4.7) < 0.15,"The beach arrival should begin at the walking zoom")
 	for trail in [shore,climb,to_dunes,dunes,to_city,city]:
 		for index in 81:
 			check(floor.contains_ground_point(trail.to_global(trail.point_at(trail.get_path_length()*index/80.0)),0.3),"Every authored path must fit inside the finite floor: "+trail.name)
@@ -112,35 +112,44 @@ func run() -> void:
 	await capture("cove-arrival")
 	await walk_trail(player,shore,0,0.5)
 	await create_timer(2.0).timeout
-	check(camera.size>8.4 and camera.size<9.4,"The cove's middle should open a controlled sea view")
+	check(absf(camera.size - 10.0) < 0.15,"The cove's middle should open a controlled sea view")
 	check(beach_sand._stamp_count>0 and zones[0].ambience.playing,"The beach needs real footsteps and quiet surf")
 	await capture("cove-shore")
 	await walk_trail(player,shore,0.5,1)
+	var headland: PainterlyCoastalHeadland = zones[0].get_node("Scenery/Headland")
+	check(headland.ridge_routes.size() == 2 and not headland._ridge_faces.is_empty(),"Both coastal paths must sit on faceted rock shoulders")
 	await walk_trail(player,climb,0,1)
 	await create_timer(2.5).timeout
 	check(player.global_position.y>3.15 and player.global_position.y<3.4,"The actual explorer must climb onto the supported cliff")
-	check(camera.size>14.2 and camera.size<15.3,"The cliff landing must reveal the existing lighthouse")
+	check(absf(camera.size - 17.2) < 0.15,"The cliff landing must reveal the existing lighthouse")
 	check(zones[0].get_node("Scenery/Lighthouse").get_recall_controller().progress>0.99,"The lighthouse must recall from the reachable low beach approach")
 	await capture("lighthouse-overlook")
 	await read_fragment(world,zones[0].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The second hint must descend from the headland and enter the dunes")
-	await walk_trail(player,to_dunes,0,1)
+	await walk_trail(player,to_dunes,0,0.72)
+	await capture("headland-descent")
+	await walk_trail(player,to_dunes,0.72,1)
 	var distance := dunes.curve.get_closest_offset(dunes.to_local(zones[1].get_fragment().global_position))
 	var ratio := distance/dunes.get_path_length()
 	await walk_trail(player,dunes,0,ratio)
 	await create_timer(2.5).timeout
 	check(absf(player.global_position.y-dune_sand.get_surface_height(player.global_position))<0.10,"The dune path must follow the actual sculpted terrain")
 	check(player.global_position.y>0.2 and dune_sand._stamp_count>0,"The dunes must have real relief and new footprints")
-	check(camera.size>8.0 and camera.size<8.8 and zones[1].ambience.playing,"The dune fragment should have its own intimate reveal and ambient bed")
+	check(absf(camera.size - 9.7) < 0.15 and zones[1].ambience.playing,"The dune fragment should have its own reveal and ambient bed")
 	await capture("dunes-walk")
 	await read_fragment(world,zones[1].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The final requested hint must lead from the dunes into the city crowd")
 	await walk_trail(player,dunes,ratio,1)
 	await walk_trail(player,to_city,0,1)
 	await create_timer(2.5).timeout
-	check(camera.size>9.8 and camera.size<10.8 and zones[2].ambience.playing,"City arrival must open between the towers with a crowd bed")
+	check(absf(camera.size - 4.7) < 0.15 and zones[2].ambience.playing,"City arrival should keep the walking zoom while its crowd bed blends in")
 	await capture("saigon-arrival")
-	await walk_trail(player,city,0,1)
+	var city_center := city.curve.get_closest_offset(Vector3(1.6, 0, 2)) / city.get_path_length()
+	await walk_trail(player,city,0,city_center)
+	await create_timer(2.4).timeout
+	check(absf(camera.size - 11.4) < 0.15,"The boulevard should open up from within the crowd")
+	await capture("saigon-center")
+	await walk_trail(player,city,city_center,1)
 	await create_timer(2.0).timeout
 	for name in ["LotusTower","SpireTower"]:
 		check(zones[2].get_node("Scenery/"+name).get_recall_controller().progress>0.99,"The skyline should recall from the accessible promenade")
@@ -154,7 +163,7 @@ func run() -> void:
 	await walk_trail(player,climb,1,0)
 	await walk_trail(player,shore,1,0)
 	await create_timer(2.0).timeout
-	check(camera.size<4.0,"Returning to the cove arrival must restore close framing")
+	check(absf(camera.size - 4.7) < 0.15,"Returning to the cove arrival must restore close framing")
 	if "--capture" in args: await capture_views(world,memory,camera)
 	world.free()
 	await process_frame

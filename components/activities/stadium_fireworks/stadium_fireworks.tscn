@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://components/activities/stadium_fireworks/stadium_fireworks.gd" id="1"]
+
+[sub_resource type="StandardMaterial3D" id="Maroon"]
+albedo_color = Color(0.42, 0.055, 0.13, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="Console"]
+material = SubResource("Maroon")
+size = Vector3(1.12, 0.94, 0.91)
+
+[sub_resource type="StandardMaterial3D" id="Gold"]
+albedo_color = Color(0.96, 0.66, 0.20, 1)
+roughness = 0.85
+
+[sub_resource type="CylinderMesh" id="Button"]
+material = SubResource("Gold")
+top_radius = 0.44
+bottom_radius = 0.49
+height = 0.16
+radial_segments = 16
+rings = 1
+
+[sub_resource type="BoxShape3D" id="Collision"]
+size = Vector3(1.12, 0.94, 0.91)
+
+[node name="StadiumFireworks" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Console" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.47, 0)
+mesh = SubResource("Console")
+
+[node name="Button" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.02, 0)
+mesh = SubResource("Button")
+
+[node name="Body" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
+position = Vector3(0, 0.47, 0)
+shape = SubResource("Collision")
+
+[node name="Sparks" type="MultiMeshInstance3D" parent="."]
+cast_shadow = 0

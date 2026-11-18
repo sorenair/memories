@@ -2,8 +2,8 @@
 
 Three connected memory clusters: **Hanoi Old Quarter → Hoan Kiem Lake → Ha Long Bay**.
 Open `res://scenes/world/northern_vietnam_world.tscn` with F6, or recall Northern
-Vietnam between Tokyo and Vineyard on the timeline. This is a compressed memory
-composition, not a geographic walking route between Hanoi and the bay.
+Vietnam after Tokyo on the timeline. The three clusters compress the journey
+from Hanoi to the bay.
 
 ## Brief and layout
 
@@ -14,17 +14,20 @@ placeholders and lighting uses the shared soft daylight.
 
 - **Old Quarter:** ten narrow shophouses mix ochre, faded pink, pale plaster and
   green shutters. Two or three floors, roof profiles, balcony rails, planters and
-  striped awnings vary the street silhouette. Existing shader-animated crowds leave
-  a clear shared lane. The near row sits back far enough to keep the fragment and
-  explorers visible, without a building cutaway.
+  striped awnings vary the street silhouette. Short strips of warm stone outline
+  the shop thresholds and dissolve into the painted lane. Existing shader-animated
+  crowds leave a clear shared route past the fragment.
 - **Hoan Kiem:** a short wooded promenade leads across a real arched red footbridge
   to a small Ngoc Son-inspired pavilion. A separate Turtle Tower sits offshore.
-  The island is a small playable branch: return across the bridge, then follow the
-  curved bank toward the bay. The temple is a scenic exterior, not an enterable room.
+  The bridge, temple and Turtle Tower recall from **BridgeView** at the near
+  landing. Short stretches of gravel dissolve before the junctions. The red
+  bridge guides the turn toward the island, and benches and planting carry the
+  bank route after the return crossing. The dock recalls from **ShoreTurn**,
+  beyond the final break in the path.
 - **Ha Long:** an existing timber dock opens into a T-shaped overlook over muted
-  jade-blue water. Eight differently seeded limestone formations layer fluted cliffs,
-  irregular crowns and merged vegetation. Reused jungle foliage dresses the shore
-  and selected rocky shelves. The dock is walkable; islands and water are scenery.
+  jade water. Eight limestone formations mix split ridges, slender spires and
+  shelved bluffs, with deeper greens in the foreground and cooler cliffs at
+  the back. Mint shallows follow the rock contours around the open channels.
 
 The scene reuses **PainterlyWater, PainterlyCurvedPath, PainterlyPaving, PainterlyStreet,
 PainterlyCrowd, PainterlyWoodenDock**, broadleaf trees, bushes, grass, and the existing
@@ -45,21 +48,20 @@ Title / Notes** in these files for personal wording:
 | `hoan_kiem_zone.tscn` | On the lake |
 | `ha_long_zone.tscn` | Between the limestone islands |
 
-Edit `lake_water.tres` / `bay_water.tres` for the restrained water palettes. The 55 foliage
-components (including 19 jungle plants) reuse Tokyo's forest-green palette and
-respond to both explorers. Recall is on
-for all recallable scenery; the offshore tower and karsts use reachable viewing
-anchors. Move **BayView** with the dock when rearranging the overlook.
+Edit `lake_water.tres` and `bay_water.tres` for the water palettes. The bay
+has its own `bay_foliage.tres` palette for the shore and crown trees. All 105
+foliage components respond to both explorers within the 149 recallable pieces. Move **BridgeView** with the
+near bridge landing and **BayView** with the dock when rearranging the overlooks.
 
 `../../../scripts/northern_vietnam_memory.gd` derives requested hint routes from the
 same authored curves, samples the bridge's arched surface, and uses the dock's
 placement anchors. When changing bridge or dock dimensions, align adjacent paths,
 fragment and finite floor as well. No hint starts automatically after a note.
 
-`../../../scripts/northern_vietnam_camera.gd` starts at **3.5**, opens to **5.2** in
-the street, **12.5** at the lake, returns to **6.5** at the island note, and reveals
-the bay at **22** from the dock. Transitions follow movement, reverse smoothly and
-retain the inherited fixed yaw.
+`../../../scripts/northern_vietnam_camera.gd` uses **4.7** for everyday walking,
+including the island note and dock approach. It holds **6.1** at the street
+fragment, **13.4** at the bridge landing and **22.8** at the end of the dock.
+Each reveal eases in and out with fixed yaw.
 
 Quiet existing street, jungle and open-air recordings are temporary ambience beds,
 not location recordings. Tune each zone's **Ambience Stream / Volume / Size / Blend
@@ -83,10 +85,16 @@ transitions, ambience and timeline avatar choice. Separate `-- host` / `-- guest
 processes exercise the shared LAN framework on isolated UDP **24735**. Production
 IP entry stays on 24680. Physical phone/Wi-Fi performance is not measured.
 
-Component, full-route, timeline, First Meeting guidance, Vineyard regression,
-all-memory recall/foliage audit and two-process LAN checks pass.
+The Vietnam component tests, full route in both directions, targeted recall and
+foliage audit, and two-process LAN avatar and movement checks pass.
 
 Native Mobile-renderer previews live in `docs/previews/northern_vietnam-memory-*.png`.
 Existing macOS shader-cache case and shutdown-resource warnings may appear.
+
+[Before and after at four gameplay stops](../../../docs/previews/northern-vietnam-polish-comparison.jpg).
+The before captures use the earlier camera and scenery after repairing the scene
+load and clearing the bench from the bank route. The later
+[path and karst revision](../../../docs/previews/northern-vietnam-paths-karsts.jpg)
+shows the approach and overlook in the walking camera.
 
 ![Northern Vietnam composition](../../../docs/previews/northern_vietnam-memory-overview.png)

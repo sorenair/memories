@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/buildings/market_hut/painterly_market_hut.tscn" id="hut"]
 [ext_resource type="PackedScene" path="res://components/lighting/festive_lights/painterly_festive_lights.tscn" id="lights"]
@@ -17,6 +17,8 @@
 
 [ext_resource type="Resource" path="res://scenes/memories/christmas_market/winter_evergreen.tres" id="winter_evergreen"]
 
+[ext_resource type="PackedScene" path="res://components/activities/tree_lighting/tree_lighting.tscn" id="tree_lighting"]
+
 [node name="MusicGatheringZone" instance=ExtResource("zone")]
 zone_id = &"music_gathering"
 display_name = "Under the lights, listening together"
@@ -32,6 +34,10 @@ position = Vector3(1.2, 0, -4.0)
 
 [node name="ChristmasTree" parent="Scenery" instance=ExtResource("tree")]
 position = Vector3(-3, 0, -1)
+
+[node name="TreeLighting" parent="Scenery" node_paths=PackedStringArray("tree") instance=ExtResource("tree_lighting")]
+position = Vector3(-1.55, 0.04, -0.45)
+tree = NodePath("../ChristmasTree")
 
 [node name="SweetHut" parent="Scenery" instance=ExtResource("hut")]
 recall_enabled = true

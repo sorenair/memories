@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/museum_room.wav" id="air"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/urban_paver_path.tscn" id="path"]
 [ext_resource type="PackedScene" path="res://components/scenery/vietnam/imperial/painterly_meridian_gate.tscn" id="gate"]
 [ext_resource type="PackedScene" path="res://components/scenery/vietnam/imperial/painterly_thai_hoa_hall.tscn" id="hall"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
@@ -28,13 +28,22 @@ ambience_blend_distance = 4.0
 
 [node name="GateApproach" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("GateApproachCurve")
-path_width = 3.0
-paving_color = Color(0.7843,0.7569,0.6667,1)
-end_fade = Vector2(1.2, 0)
+path_width = 2.65
+paving_color = Color(0.730, 0.685, 0.570, 1)
+end_fade = Vector2(3.7, 9.8)
 slab_length = 2.0
-edge_softness = 0.25
+edge_softness = 0.56
+stone_color = Color(0.82, 0.775, 0.648, 1)
+shoulder_color = Color(0.733, 0.715, 0.567, 1)
+stone_size = 1.1
+joint_width = 0.018
+crown_height = 0.0
 
-[node name="MeridianGate" parent="Scenery" instance=ExtResource("gate")]
+[node name="GateGardenView" type="Marker3D" parent="Scenery"]
+position = Vector3(-2.1, 0, 12.4)
+
+[node name="MeridianGate" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("gate")]
+recall_anchor = NodePath("../GateGardenView")
 position = Vector3(0,0,5)
 recall_enabled = true
 
@@ -43,18 +52,19 @@ position = Vector3(0,0,-12)
 recall_enabled = true
 
 [node name="Courtyard" parent="Scenery" instance=ExtResource("paving")]
-position = Vector3(0,0,-3.2)
-footprint = Vector2(7.4,10.0)
+position = Vector3(0, 0.006, -3.8)
+footprint = Vector2(7.1, 9.0)
 slab_length = 2.0
-paving_color = Color(0.7843,0.7569,0.6667,1)
-end_fade = Vector2(0.8,0.8)
+paving_color = Color(0.756, 0.713, 0.606, 1)
+end_fade = Vector2(1.8, 1.9)
+edge_softness = 0.52
 
 [node name="WestPond" parent="Scenery" instance=ExtResource("water")]
 position = Vector3(-6.3,-0.06,-3)
 footprint = Vector2(4.2,6.8)
 palette_preset = 3
 behavior_preset = 1
-foam_amount = 0.16
+foam_amount = 0.08
 block_water_entry = true
 recall_enabled = true
 
@@ -154,7 +164,7 @@ position = Vector3(6.3,-0.06,-3)
 footprint = Vector2(4.2,6.8)
 palette_preset = 3
 behavior_preset = 1
-foam_amount = 0.16
+foam_amount = 0.08
 block_water_entry = true
 recall_enabled = true
 
@@ -308,6 +318,36 @@ recall_enabled = true
 react_to_explorers = true
 palette_preset = 0
 palette = ExtResource("green")
+
+[node name="GateGardenShrub1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.4, 0.018, 13.1)
+footprint = Vector2(1.65, 1.29)
+bush_height = 0.67
+bush_seed = 615921
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="GateGardenShrub2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.2, 0.018, 15.65)
+footprint = Vector2(1.5, 1.17)
+bush_height = 0.56
+bush_seed = 615922
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="GateGardenShrub3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.3, 0.018, 10.45)
+footprint = Vector2(1.36, 1.06)
+bush_height = 0.47
+bush_seed = 615923
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.07,-7)
