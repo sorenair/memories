@@ -8,13 +8,13 @@ Verified against every world in `UI/memory_lane/memory_lane.gd` on November 17,
 | First Meeting | 44 | 24 |
 | Football in the snow | 4 | 0 |
 | Minneapolis Institute of Art | 15 | 0 |
-| Christmas market | 77 | 47 |
+| Christmas market | 127 | 95 |
 | New Year's Eve | 14 | 0 |
-| Como Conservatory | 140 | 130 |
+| Como Conservatory | 157 | 142 |
 | Postcard Cabin | 158 | 149 |
-| Mifflin Block Party | 76 | 48 |
+| Mifflin Block Party | 92 | 61 |
 | Graduation | 53 | 42 |
-| Tokyo | 97 | 82 |
+| Tokyo | 110 | 93 |
 | Northern Vietnam | 80 | 55 |
 | Central Vietnam | 110 | 97 |
 | Southern Vietnam | 81 | 63 |
@@ -24,7 +24,7 @@ Verified against every world in `UI/memory_lane/memory_lane.gd` on November 17,
 | Labor Day in Colorado | 170 | 87 |
 | Duluth in the Fall | 104 | 81 |
 | Seasonal Demo | 62 | 46 |
-| **Total** | **1703** | **1331** |
+| **Total** | **1799** | **1415** |
 
 The stadium, museum and New Year's Eve currently contain no reactive foliage.
 Their scenery, displays, crowds and lighting still recall. Library studies and

@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0e7jbapj4sy"]
+[gd_scene load_steps=4 format=3 uid="uid://c0e7jbapj4sy"]
 
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
 [ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_museum_portico.tscn" id="portico"]
 [ext_resource type="AudioStream" uid="uid://bkp2h00cuatg4" path="res://audio/samples/autumn_wind.wav" id="wind"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
@@ -15,14 +14,6 @@ ambience_blend_distance = 4.0
 
 [node name="Portico" parent="Scenery" index="0" instance=ExtResource("portico")]
 recall_enabled = true
-
-[node name="Forecourt" parent="Scenery" index="1" instance=ExtResource("paving")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.8)
-footprint = Vector2(6.3, 4.2)
-slab_length = 1.4
-irregularity = 0.3
-paving_color = Color(0.82, 0.81, 0.76, 1)
-end_fade = Vector2(0.5, 1.8)
 
 [node name="Fragment" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -0.0554118)

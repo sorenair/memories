@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/buildings/market_hut/painterly_market_hut.tscn" id="hut"]
 [ext_resource type="PackedScene" path="res://components/lighting/festive_lights/painterly_festive_lights.tscn" id="lights"]
@@ -15,6 +15,8 @@
 
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="winter_grass"]
 
+[ext_resource type="Resource" path="res://scenes/memories/christmas_market/winter_evergreen.tres" id="winter_evergreen"]
+
 [node name="MusicGatheringZone" instance=ExtResource("zone")]
 zone_id = &"music_gathering"
 display_name = "Under the lights, listening together"
@@ -23,7 +25,8 @@ ambience_volume_db = -30.0
 ambience_size = Vector2(19, 17)
 ambience_blend_distance = 4.0
 
-[node name="AcousticStage" parent="Scenery" instance=ExtResource("stage")]
+[node name="AcousticStage" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("stage")]
+recall_anchor = NodePath("../GatheringReveal")
 recall_enabled = true
 position = Vector3(1.2, 0, -4.0)
 
@@ -43,12 +46,13 @@ recall_enabled = true
 position = Vector3(-3.4436111158509157, 0.07, 3)
 footprint = Vector2(3.2, 3.0)
 light_color = Color(1, 0.79, 0.46, 1)
-intensity = 0.22
+intensity = 0.24
 softness = 0.85
 motion = 1
 motion_amount = 0.035
 
-[node name="CiderHut" parent="Scenery" instance=ExtResource("hut")]
+[node name="CiderHut" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("hut")]
+recall_anchor = NodePath("../GatheringReveal")
 recall_enabled = true
 position = Vector3(6, 0, 0)
 rotation_degrees = Vector3(0, -20, 0)
@@ -78,25 +82,25 @@ rotation_degrees = Vector3(0, 28, 0)
 
 [node name="GatheringLights" parent="Scenery" instance=ExtResource("lights")]
 recall_enabled = true
-position = Vector3(0, 0, 2.0)
+position = Vector3(0, 0, 2.32)
 span = 6.0
-height = 3.9
-sag = 0.52
+height = 4.05
+sag = 0.37
 
 [node name="TreeWarmth" parent="Scenery" instance=ExtResource("wash")]
 recall_enabled = true
-position = Vector3(-3, 0.07, -0.5)
-footprint = Vector2(5, 4)
+position = Vector3(-2.4, 0.075, 0.17)
+footprint = Vector2(4.9, 4.12)
 light_color = Color(1, 0.84, 0.54, 1)
-intensity = 0.18
+intensity = 0.31
 softness = 0.9
 
 [node name="StageWarmth" parent="Scenery" instance=ExtResource("wash")]
 recall_enabled = true
-position = Vector3(1.2, 0.07, -1.0)
-footprint = Vector2(6.5, 4)
-light_color = Color(1, 0.84, 0.55, 1)
-intensity = 0.18
+position = Vector3(1.34, 0.079, -1.67)
+footprint = Vector2(5.5, 3.85)
+light_color = Color(1, 0.84, 0.61, 1)
+intensity = 0.34
 softness = 0.9
 
 [node name="Listeners" parent="Scenery" instance=ExtResource("crowd")]
@@ -139,6 +143,9 @@ recall_enabled = true
 position = Vector3(4.0, 0, 3.9)
 rotation_degrees = Vector3(0, -25, 0)
 display_type = 1
+
+[node name="GatheringReveal" type="Marker3D" parent="Scenery"]
+position = Vector3(0, 0, 2.2)
 
 [node name="Fragment" parent="."]
 position = Vector3(0, 0.04, 0)
@@ -429,3 +436,393 @@ recall_enabled = true
 
 [node name="Trimming" parent="Scenery/BackPine"]
 recall_enabled = true
+
+[node name="PineGrove0" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+position = Vector3(-6.42, 0, -6.92)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+tree_type = 4
+tree_seed = 19800
+tree_height = 3.55
+crown_width = 2.34
+branch_count = 5
+leaf_sprays_per_cluster = 30
+trunk_radius = 0.12
+wind_strength = 0.052
+wind_speed = 0.44
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="PineGrove1" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+position = Vector3(-7.21, 0, -5.1)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+tree_type = 4
+tree_seed = 19801
+tree_height = 2.92
+crown_width = 1.85
+branch_count = 5
+leaf_sprays_per_cluster = 30
+trunk_radius = 0.12
+wind_strength = 0.052
+wind_speed = 0.495
+react_to_explorers = true
+
+[node name="PineGrove2" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+position = Vector3(-4.77, 0, -6.72)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+tree_type = 4
+tree_seed = 19802
+tree_height = 3.85
+crown_width = 2.65
+branch_count = 5
+leaf_sprays_per_cluster = 30
+trunk_radius = 0.12
+wind_strength = 0.052
+wind_speed = 0.55
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="PineGrove3" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+position = Vector3(-1.37, 0, -7.38)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+tree_type = 4
+tree_seed = 19803
+tree_height = 3.02
+crown_width = 1.95
+branch_count = 5
+leaf_sprays_per_cluster = 30
+trunk_radius = 0.12
+wind_strength = 0.052
+wind_speed = 0.605
+react_to_explorers = true
+
+[node name="PineGrove4" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+position = Vector3(3.93, 0, -7.3)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+tree_type = 4
+tree_seed = 19804
+tree_height = 3.9
+crown_width = 2.52
+branch_count = 5
+leaf_sprays_per_cluster = 30
+trunk_radius = 0.12
+wind_strength = 0.052
+wind_speed = 0.44
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="PineGrove5" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+position = Vector3(5.42, 0, -6.84)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+tree_type = 4
+tree_seed = 19805
+tree_height = 3.22
+crown_width = 2.18
+branch_count = 5
+leaf_sprays_per_cluster = 30
+trunk_radius = 0.12
+wind_strength = 0.052
+wind_speed = 0.495
+react_to_explorers = true
+
+[node name="PineGrove6" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+position = Vector3(7.02, 0, 1.8)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+tree_type = 4
+tree_seed = 19806
+tree_height = 2.25
+crown_width = 1.58
+branch_count = 5
+leaf_sprays_per_cluster = 30
+trunk_radius = 0.12
+wind_strength = 0.052
+wind_speed = 0.55
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="DriftShrub0" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(-6.92, 0, -4.22)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+bush_seed = 19820
+footprint = Vector2(2.2, 1.5)
+bush_height = 0.72
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.65
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="DriftShrub1" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(-5.75, 0, -3.95)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+bush_seed = 19821
+footprint = Vector2(1.6, 1.32)
+bush_height = 0.56
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.7050000000000001
+react_to_explorers = true
+
+[node name="DriftShrub2" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(-4.37, 0, -4.35)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+bush_seed = 19822
+footprint = Vector2(1.75, 1.43)
+bush_height = 0.52
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.76
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="DriftShrub3" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(-4.17, 0, -2.27)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+bush_seed = 19823
+footprint = Vector2(1.5, 1.12)
+bush_height = 0.45
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.8150000000000001
+react_to_explorers = true
+
+[node name="DriftShrub4" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(-5.77, 0, 1.09)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+bush_seed = 19824
+footprint = Vector2(1.41, 1.06)
+bush_height = 0.45
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.65
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="DriftShrub5" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(-6.27, 0, 4.8)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+bush_seed = 19825
+footprint = Vector2(2.17, 1.4)
+bush_height = 0.67
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.7050000000000001
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="DriftShrub6" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(-4.84, 0, 4.6)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+bush_seed = 19826
+footprint = Vector2(1.2, 1.05)
+bush_height = 0.41
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.76
+react_to_explorers = true
+
+[node name="DriftShrub7" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(4.54, 0, -6.17)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+bush_seed = 19827
+footprint = Vector2(1.9, 1.35)
+bush_height = 0.6
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.8150000000000001
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="DriftShrub8" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(6.53, 0, -4.27)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+bush_seed = 19828
+footprint = Vector2(2.1, 1.63)
+bush_height = 0.71
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.65
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="DriftShrub9" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(6.72, 0, 2.45)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+bush_seed = 19829
+footprint = Vector2(1.75, 1.34)
+bush_height = 0.61
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.7050000000000001
+react_to_explorers = true
+
+[node name="DriftShrub10" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+position = Vector3(3.0, 0, 4.04)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+bush_seed = 19830
+footprint = Vector2(1.2, 0.95)
+bush_height = 0.4
+mass_count = 4
+sprays_per_mass = 28
+wind_strength = 0.045
+wind_speed = 0.76
+react_to_explorers = true
+palette = ExtResource("winter_evergreen")
+
+[node name="WinterSedge0" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+position = Vector3(-6.15, 0, -4.34)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+patch_seed = 19840
+patch_size = Vector2(3.3, 2.1)
+grass_height = 0.19
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
+wind_strength = 0.055
+wind_speed = 0.7
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+palette = ExtResource("winter_evergreen")
+
+[node name="WinterSedge1" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+position = Vector3(-4.4, 0, -2.9)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+patch_seed = 19841
+patch_size = Vector2(2.28, 2.2)
+grass_height = 0.225
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
+wind_strength = 0.055
+wind_speed = 0.7
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+palette = ExtResource("winter_evergreen")
+
+[node name="WinterSedge2" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+position = Vector3(-6.2, 0, 4.23)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+patch_seed = 19842
+patch_size = Vector2(2.5, 2.0)
+grass_height = 0.26
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
+wind_strength = 0.055
+wind_speed = 0.7
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+
+[node name="WinterSedge3" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+position = Vector3(-3.85, 0, 4.86)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+patch_seed = 19843
+patch_size = Vector2(2.04, 1.2)
+grass_height = 0.19
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
+wind_strength = 0.055
+wind_speed = 0.7
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+palette = ExtResource("winter_evergreen")
+
+[node name="WinterSedge4" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+position = Vector3(6.3, 0, -4.75)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+patch_seed = 19844
+patch_size = Vector2(3.34, 2.2)
+grass_height = 0.225
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
+wind_strength = 0.055
+wind_speed = 0.7
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+palette = ExtResource("winter_evergreen")
+
+[node name="WinterSedge5" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+position = Vector3(6.92, 0, 2.02)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 5
+patch_seed = 19845
+patch_size = Vector2(2.4, 2.0)
+grass_height = 0.26
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
+wind_strength = 0.055
+wind_speed = 0.7
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+
+[node name="WinterSedge6" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+position = Vector3(3.06, 0, 4.75)
+recall_anchor = NodePath("../ClearingGrove")
+recall_enabled = true
+palette_preset = 0
+patch_seed = 19846
+patch_size = Vector2(2.15, 1.36)
+grass_height = 0.19
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
+wind_strength = 0.055
+wind_speed = 0.7
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
+palette = ExtResource("winter_evergreen")
+
+[node name="ClearingGrove" type="Marker3D" parent="Scenery/WinterFoliage"]
+position = Vector3(0, 0, 2.2)

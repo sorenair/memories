@@ -10,7 +10,7 @@ Confirmed: Como Conservatory in Minnesota, January 14, 2026; a long two-lane flo
 - **Jungle:** a bent passage leads into six broadly crowned trees, four palms, three bamboo screens, sixteen bush groups, fifty-two tropical broadleaf/fern groups, low leaves, and a blue pool. One continuous Bézier ribbon curves through the planting, with its fragment attached to a point along the trail. Taller planting sits back from the route; lower foliage frames the camera-facing edge. There is no overhead wireframe in this room.
 - **Bonsai:** a short connection crosses the white space into three separated displays: upright, windswept, and half cascade, each with its own tray and pedestal. The fragment sits in the open viewing area before them. There is no overhead wireframe, crowd or extra planting bed. Walk up to each pedestal for an intimate view.
 
-One invisible custom-outline **MemoryPlatform** supports every room and connecting path, including the guest arrival 1.2 m to the right. Individual paths and garden edging provide visible ground; the shared floor creates no gray carpet or internal collision rims. The unsupported gaps between rooms remain void. Exit is a marker in the bonsai viewing area; use the inherited timeline button to return.
+One invisible custom-outline **MemoryPlatform** supports every room and connecting path, including the guest arrival 1.2 m to the right. Individual flagstone paths and garden edging provide visible ground; the shared floor creates no gray carpet or internal collision rims. The unsupported gaps between rooms remain void. Exit is a marker in the bonsai viewing area; use the inherited timeline button to return.
 
 ## Reuse and style
 
@@ -18,9 +18,26 @@ The component library was reviewed before building. Flower bushes, columnar cypr
 
 The flower garden alone retains `components/scenery/conservatory/frame/painterly_greenhouse_frame.tscn`: a few thin teal barrel-vault ribs and longitudinal members, built with the existing painted scenery workflow. There is no opaque roof or complete glass shell over the explorer. Size, eave height, roof rise, rib count, color, collision and recall anchor are editable. Open View Side omits the near/east half so roof members do not cross the player or displays. The garden frame recalls from a reachable approach marker; other scenery uses proximity recall, and foliage responds to both explorers. The jungle and bonsai rooms have no frame.
 
-The camera starts at First Meeting's 3.5 orthographic size. The garden opens only to 4.8, jungle exploration stays at 3.5, and individual bonsai views use 4.2. Fixed yaw and exponential blending preserve movement directions and work on the return route. The camera favors the explorer and nearby plants rather than fitting the entire room.
+The camera uses **4.4** for walking. Separate scenic frames ease to **6.4**
+at the fountain and **5.6** at the three bonsai displays, then return to the
+same walking zoom. The fountain's rear flower beds recall from the approach
+on either lane. Warm light and coral blooms frame the fountain, while cooler
+pools and low ferns bring out the blue water under the jungle canopy. The
+bonsai room keeps its three isolated displays and a soft daylight pool.
 
-The new reusable `components/groundcover/paving/painterly_curved_path.tscn` is a Path3D with editable Curve3D handles. It generates one continuous painterly ribbon, matching walking collision and planting exclusions. `scripts/conservatory_memory.gd` places the jungle fragment at **Jungle Fragment Ratio** and derives both requested guidance legs from the same curve. Editing the trail therefore updates the route, collision, note position and hints together. Large plants are authored independently; keep their stems outside the path when reshaping it. See [curved-path authoring](../../../components/groundcover/paving/README.md#curved-paths).
+All five visible lanes and connections use the existing
+[flagstone surface preset](../../../components/groundcover/paths/README.md)
+with a shared pale limestone palette and fine joints. Soft edges and opposing
+fades carry the limestone through the jungle threshold. One continuous curve
+leads from the jungle to the bonsai room, fading before the display space.
+The shared floor supports walking independently of the stone mesh or its fades.
+
+Edit the native Curve3D handles to reshape the paths. The curve still supplies
+planting exclusions. `scripts/conservatory_memory.gd` places the jungle note at
+**Jungle Fragment Ratio** and derives the route hints from the threshold,
+jungle trail and bonsai approach. Keep large stems outside the tread when
+reshaping it.
+
 
 ## Editing
 
@@ -50,4 +67,4 @@ godot --headless --path . --script tests/memory_effects.gd
 
 The scene check walks both flower lanes and both water crossings, pushes against the rill bank and both end caps, follows the actual curved jungle centerline to the three displays, activates every fragment, requests guidance for each leg, approaches all three bonsai pedestals, and walks back to arrival. It checks grounded joins, supported paired spawns, audio, camera changes, dated timeline recall, and character choice. Add `-- host` / `-- guest` in separate processes for the local LAN presence/walking check; omit `--fixed-fps` in that mode.
 
-Rendered scene previews live in `docs/previews/como-conservatory-{arrival,flowers,fountain,jungle-entry,jungle,jungle-exit,bonsai,overview}.png`. Component-study previews retain their separate `conservatory-*` names. Local tests do not establish physical iOS frame rate or physical network behavior.
+[Before and after views](../../../docs/previews/como-conservatory-polish-comparison.jpg) compare the same stops with the revised framing. Rendered scene previews live in `docs/previews/como-conservatory-{arrival,flowers,fountain,jungle-entry,jungle,jungle-exit,bonsai,overview}.png`. Component-study previews retain their separate `conservatory-*` names. Local tests do not establish physical iOS frame rate or physical network behavior.

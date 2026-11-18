@@ -28,6 +28,11 @@ const WASH = preload("res://components/lighting/light_wash/painterly_light_wash.
 	set(value):
 		light_count = clampi(value,0,20)
 		_request_rebuild()
+## Cycles along the strand. An empty palette uses warm ivory.
+@export var bulb_colors := PackedColorArray():
+	set(value):
+		bulb_colors = value
+		_request_rebuild()
 @export_range(0.0, 1.5, 0.05) var light_sag: float = 0.55:
 	set(value):
 		light_sag = clampf(value,0.0,1.5)
@@ -171,10 +176,12 @@ func rebuild() -> void:
 		for i in range(light_count):
 			var t := float(i+1)/(light_count+1)
 			var p := sample_light(t)-Vector3.UP*rng.randf_range(0.08,0.14)
+			var tint := Color("fff1d0") if bulb_colors.is_empty() else bulb_colors[i % bulb_colors.size()]
+			var glow_tint := Color(1.0, 0.97, 0.87) if bulb_colors.is_empty() else tint.srgb_to_linear()
 			bulbs.rod(sample_light(t),p,0.008,Color("a79b81"),6)
-			bulbs.ball(p,Vector3(0.06,0.095,0.06),Color("fff1d0"),2.0)
+			bulbs.ball(p,Vector3(0.06,0.095,0.06),tint,2.0)
 			batch.set_instance_transform(i,Transform3D(Basis.IDENTITY.scaled(Vector3.ONE*0.55),p))
-			batch.set_instance_custom_data(i,Color(t,0,0,1))
+			batch.set_instance_custom_data(i,Color(glow_tint.r,glow_tint.g,glow_tint.b,t))
 			bounds = bounds.expand(p)
 		batch.custom_aabb = bounds.grow(0.5)
 		_mesh(bulbs,"SuspendedBulbs",PAINT)

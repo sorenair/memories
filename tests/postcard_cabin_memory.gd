@@ -123,7 +123,9 @@ func run() -> void:
 		check(await walk_to(player,point),"The clearing must leave an open passage around the chairs and pit")
 	var cabin: PainterlyPostcardCabin = zones[1].get_node("Scenery/Cabin")
 	var pit: PainterlyFirePit = zones[1].get_node("Scenery/FirePit")
-	check(cabin.get_recall_controller().progress>0.99 and pit.get_recall_controller().progress>0.99 and pit.get_node("Fire").get_recall_controller().progress>0.99,"Cabin, pit and nested fire must recall from reachable approaches")
+	var fire := pit.get_node("Fire") as PainterlySculptedFire
+	check(fire != null and fire.get_recall_anchor() == pit.get_recall_anchor(),"The cabin must use sculpted fire with the pit's reachable recall anchor")
+	check(cabin.get_recall_controller().progress>0.99 and pit.get_recall_controller().progress>0.99 and fire != null and fire.get_recall_controller().progress>0.99,"Cabin, pit and nested fire must recall from reachable approaches")
 	check(not snow.excludes_ground_point(cabin.global_position) and not snow.excludes_ground_point(pit.global_position),"Snow must exclude the cabin shell, steps and fire bowl")
 	await capture("fireside")
 	check(zones[1].get_fragment().try_activate(player),"The clearing fragment must be reachable beside the fire")

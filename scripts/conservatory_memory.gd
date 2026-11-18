@@ -7,9 +7,9 @@ extends MemoryScene
 		if is_node_ready(): _update_jungle_route()
 
 func _ready() -> void:
-	var trail: PainterlyCurvedPath = get_node("Zones/Jungle/Scenery/WindingPath")
-	if trail.curve and not trail.curve.changed.is_connected(_update_jungle_route):
-		trail.curve.changed.connect(_update_jungle_route)
+	for path in [$Environment/GardenToJungle, $Zones/Jungle/Scenery/WindingPath, $Environment/ToBonsai]:
+		if path.curve and not path.curve.changed.is_connected(_update_jungle_route):
+			path.curve.changed.connect(_update_jungle_route)
 	_update_jungle_route()
 
 func _update_jungle_route() -> void:
@@ -17,12 +17,14 @@ func _update_jungle_route() -> void:
 	var trail: PainterlyCurvedPath = get_node("Zones/Jungle/Scenery/WindingPath")
 	var fragment: MemoryFragment = get_node("Zones/Jungle/Fragment")
 	fragment.global_position = trail.to_global(trail.point_at(trail.get_path_length()*jungle_fragment_ratio))+Vector3.UP*0.04
-	var approach := PackedVector3Array([to_global(Vector3(2.7,0.76,-8.9)),to_global(Vector3(0,0.76,-8.9)),to_global(Vector3(0,0.76,-12.5))])
+	var threshold: PainterlyCurvedPath = $Environment/GardenToJungle
+	var approach := PackedVector3Array([to_global(Vector3(2.7, 0.76, -8.9))])
+	approach.append_array(threshold.get_route_points())
 	approach.append_array(trail.get_route_points(0.0,jungle_fragment_ratio))
 	_assign_route(get_node("Environment/Guidance/IntoTheGreen"),approach)
 	var departure := trail.get_route_points(jungle_fragment_ratio,1.0)
-	for point in [Vector3(7,0.76,-24.5),Vector3(10,0.76,-24.5),Vector3(13,0.76,-24.5)]:
-		departure.append(to_global(point))
+	var bonsai_approach: PainterlyCurvedPath = $Environment/ToBonsai
+	departure.append_array(bonsai_approach.get_route_points())
 	_assign_route(get_node("Environment/Guidance/ToSmallWorlds"),departure)
 
 func _assign_route(guide: FragmentBrushstrokeGuide,world_points: PackedVector3Array) -> void:

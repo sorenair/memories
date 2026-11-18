@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" path="res://components/scenery/graduation/landmarks/painterly_campus_arches.tscn" id="arches"]
 [ext_resource type="PackedScene" path="res://components/foliage/presets/cherry_blossom_tree.tscn" id="cherry"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="air"]
+
+[ext_resource type="PackedScene" path="res://components/lighting/painted_light/painterly_light_pattern.tscn" id="painted_light"]
+[ext_resource type="PackedScene" path="res://components/foliage/leaf_litter/painterly_leaf_litter.tscn" id="petals"]
 
 [sub_resource type="Curve3D" id="CampusRoute"]
 bake_interval = 0.05
@@ -32,7 +35,7 @@ recall_enabled = true
 [node name="CampusWalk" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("CampusRoute")
 path_width = 2.4
-paving_color = Color(0.79,0.77,0.70,1)
+paving_color = Color(0.81, 0.77, 0.69, 1)
 end_fade = Vector2(1.1,4.0)
 slab_length = 2.0
 edge_softness = 0.28
@@ -40,7 +43,7 @@ edge_softness = 0.28
 [node name="OtherPassage" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("OtherPassage")
 path_width = 2.0
-paving_color = Color(0.79,0.77,0.70,1)
+paving_color = Color(0.81, 0.77, 0.69, 1)
 end_fade = Vector2(1.0,0.0)
 
 [node name="Cherry1" parent="Scenery" instance=ExtResource("cherry")]
@@ -190,6 +193,57 @@ flower_color = Color(0.67,0.50,0.71,1)
 flower_highlight = Color(0.97,0.89,0.89,1)
 recall_enabled = true
 react_to_explorers = true
+
+[node name="ShadeAtArches" parent="Scenery" node_paths=PackedStringArray("receivers") instance=ExtResource("painted_light")]
+position = Vector3(-9.05, 1.35, 8.75)
+rotation = Vector3(-0.88, -0.55, 0.10)
+receivers = [NodePath("../StoneArches"), NodePath("../CampusWalk"), NodePath("../OtherPassage")]
+pattern = 2
+footprint = Vector3(11.8, 8.5, 9)
+light_color = Color(1, 0.94, 0.77, 1)
+accent_color = Color(0.62, 0.68, 0.60, 1)
+strength = 0.61
+pattern_scale = 1.07
+motion_speed = 0.53
+
+[node name="PetalsOnArrival" parent="Scenery" instance=ExtResource("petals")]
+position = Vector3(-8.55, 0.027, 12.6)
+footprint = Vector2(1.5, 3.0)
+leaf_seed = 51590
+leaf_count = 31
+size_range = Vector2(0.027, 0.058)
+edge_bias = 0.39
+ochre_color = Color(0.91, 0.63, 0.73, 1)
+rust_color = Color(0.79, 0.45, 0.61, 1)
+cream_color = Color(0.99, 0.84, 0.89, 1)
+flutter_strength = 0.013
+recall_enabled = true
+
+[node name="PetalsBelowArch" parent="Scenery" instance=ExtResource("petals")]
+position = Vector3(-8.56, 0.027, 7.2)
+footprint = Vector2(1.7, 2.8)
+leaf_seed = 51591
+leaf_count = 36
+size_range = Vector2(0.027, 0.058)
+edge_bias = 0.39
+ochre_color = Color(0.91, 0.63, 0.73, 1)
+rust_color = Color(0.79, 0.45, 0.61, 1)
+cream_color = Color(0.99, 0.84, 0.89, 1)
+flutter_strength = 0.013
+recall_enabled = true
+
+[node name="PetalsAtFork" parent="Scenery" instance=ExtResource("petals")]
+position = Vector3(-4.85, 0.027, 8.72)
+footprint = Vector2(1.36, 2.15)
+leaf_seed = 51592
+leaf_count = 24
+size_range = Vector2(0.027, 0.058)
+edge_bias = 0.39
+ochre_color = Color(0.91, 0.63, 0.73, 1)
+rust_color = Color(0.79, 0.45, 0.61, 1)
+cream_color = Color(0.99, 0.84, 0.89, 1)
+flutter_strength = 0.013
+recall_enabled = true
 
 [node name="Fragment" parent="."]
 position = Vector3(-7.71,0.04,5)

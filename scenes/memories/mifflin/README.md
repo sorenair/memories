@@ -3,7 +3,8 @@
 Two connected zones recall a spring block party at UW–Madison and a quieter bar
 interior. Six pastel houses, porch speakers and pennants frame the outdoor street;
 spring trees, bushes, blossoms, flowers and grass dissolve into the ivory void.
-Guests mingle across the entire asphalt surface, including the center. The bar
+Flowering curb pockets frame the arrival and interrupt the stretch of asphalt.
+Guests sway and bounce lightly across the street, including the center. The bar
 contains only the pool table, electronic jukebox and a freestanding counter with
 three stools, composed directly in the memory void.
 The block is an evocative composition rather than a reconstruction of addresses.
@@ -20,7 +21,8 @@ remain opaque.
   and bar. Its **Environment/Street** is the reusable
   [PainterlyStreet](../../../components/groundcover/street/README.md): edit Length,
   Width, asphalt color, seed and edge/end fades. The road is one continuous painted
-  surface; the two sidewalks and short bar approach retain the paving component.
+  surface. The two sidewalks use the original paving. The bar approach uses
+  curved urban setts with feathered ends to lead from the asphalt into the void.
 - `block_party_zone.tscn` owns the outdoor scenery, fragment and crowd/air bed.
   The house family, spring planting and porch props remain independently editable.
   Both speakers sit inside the west porch deck, clear of front/side rails and the
@@ -31,20 +33,20 @@ remain opaque.
   through **Ground Exclusions**. Existing seeded crowd scatter fills the rest of
   the road; its stationary capsules make walking feel like weaving through people.
   Sidewalks provide a less crowded alternative.
-- `scripts/mifflin_memory.gd` samples those same curves for requested guidance:
+- `scripts/mifflin_memory.gd` samples those curves and BarApproach for requested guidance:
   arrival → street/porch fragment, then back through the gathering → bar fragment.
   Editing handles updates both guidance and crowd clearance. Keep the branch's
   first point joined to the main curve and its endpoint at the street fragment.
 - `bar_zone.tscn` contains **PoolTable**, **Jukebox** and **BarCounter** under
   Scenery. The standalone counter reuses the bar kit's painted geometry and
   collision/recall framework, with adjustable dimensions and stool count. There
-  are no visible walls, room floor, sign or lighting decorations. The shared
-  hidden ground supports an open walk around the props and between pool/stools.
+  are three faint pools of color painted onto the ivory void under Presentation.
+  The shared hidden ground supports an open walk around the pool and stools.
 - Edit each zone's **Fragment → Interaction → Note Title / Notes** for the story.
   Each Notes entry is one page. Fragments retain the standard tap/read lifecycle.
-- `scripts/mifflin_camera.gd` exposes the existing street/porch sizes plus **Bar
-  Size** (4.4). Zoom and framing blend through the approach without rotating the
-  camera. The bar stays close enough to read the activities.
+- `scripts/mifflin_camera.gd` exposes **Walking Size** (4.7), **Party Size** (8.2)
+  and **Bar Size** (6.1). The fixed-angle camera opens up briefly at the porch
+  branch to reveal the busy block, and frames all three bar props near its fragment.
 
 Keep the single MemoryPlatform outline around every new route; separate touching
 platforms would introduce blocking perimeter rims. Ground exclusions on the
@@ -87,5 +89,7 @@ Physical-phone performance and Wi-Fi still need target-device review.
 
 Native captures are `docs/previews/mifflin-{arrival,street,porch,bar,pool,overview}.png`;
 the overview shows the complete recalled composition.
+
+[Before and after at arrival, the street and the bar](../../../docs/previews/mifflin-polish-comparison.jpg)
 
 ![Street and bar](../../../docs/previews/mifflin-overview.png)

@@ -34,10 +34,10 @@ func walk_to(player: MemoryExplorer, point: Vector3) -> bool:
 	push_error("Mifflin walk stopped at %s on the way to %s" % [player.global_position,point])
 	return false
 
-func capture(name: String) -> void:
+func capture(name: String, settle_time: float = 1.3) -> void:
 	if not "--capture" in OS.get_cmdline_user_args(): return
-	await create_timer(1.3).timeout
-	await RenderingServer.frame_post_draw
+	await create_timer(settle_time).timeout
+	RenderingServer.force_draw(false)
 	root.get_texture().get_image().save_png("res://docs/previews/mifflin-"+name+".png")
 
 func walk_path(player: MemoryExplorer,path: PainterlyCurvedPath,from: float,to: float) -> bool:
@@ -90,7 +90,7 @@ func run() -> void:
 	check(memory.memory_id==&"mifflin" and zones.size()==2 and zones[1].zone_id==&"bar","Mifflin must contain the street and bar as two standard zones")
 	check(world._bounded_memory and player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both explorers must arrive safely on finite ground")
 	check(street.length==42 and street.width==9.4 and not street.has_node("PaintedSlabs"),"The road must use the continuous configurable street component")
-	check(camera.size<3.7 and memory.get_audio().music.playing and zones[0].ambience.playing,"Arrival stays close with music and outdoor crowd ambience")
+	check(absf(camera.size - 4.7) < 0.15 and memory.get_audio().music.playing and zones[0].ambience.playing,"Arrival stays close with music and outdoor crowd ambience")
 	var people := 0
 	for crowd: PainterlyCrowd in memory.find_children("*","PainterlyCrowd",true,false):
 		check(crowd.generated_count==crowd.count,"All authored people must fit: "+str(crowd.name)+" "+str(crowd.generated_count))
@@ -111,9 +111,11 @@ func run() -> void:
 		var bounds: AABB = house.global_transform.affine_inverse()*visual.global_transform*visual.mesh.get_aabb()
 		check(bounds.position.z>house.footprint.y*0.5+0.12 and bounds.end.z<house.footprint.y*0.5+house.porch_depth-0.18,"Speaker cabinets must clear the house wall and front guardrail")
 		check(absf(bounds.position.x)<house.footprint.x*0.45-0.1 and absf(bounds.end.x)<house.footprint.x*0.45-0.1,"Speaker cabinets must clear side railings")
-	await capture("arrival")
+	await capture("arrival", 4.7)
 	check(world.get_node("GuidanceController").request_guidance(),"Guidance must follow the winding gaps to the first fragment")
 	check(await walk_path(player,weave,0,split),"The actual explorer must weave through the central crowd")
+	await create_timer(1.0).timeout
+	check(absf(camera.size - 8.2) < 0.25,"The block opens up to a wide view at the porch branch")
 	await capture("street")
 	check(await walk_path(player,branch,0,1),"The porch branch must wind past guests safely")
 	await create_timer(1.0).timeout
@@ -133,7 +135,7 @@ func run() -> void:
 	for point in [Vector3(0,0,-24.5),Vector3(0,0,-27.2),Vector3(2.4,0,-28.8),Vector3(2.4,0,-30.1)]:
 		check(await walk_to(player,point),"The same finite floor must connect into the bar without a rim or step snag")
 	await create_timer(2.0).timeout
-	check(camera.size>4.2 and camera.size<4.6,"The bar must keep an intimate camera")
+	check(absf(camera.size - 6.1) < 0.15,"The bar viewpoint must frame the furnishings together")
 	check(zones[1].ambience.playing and zones[0]._gain<0.05,"Street noise must blend into the bar room bed")
 	var pool: PainterlyPoolTable = zones[1].get_node("Scenery/PoolTable")
 	var jukebox: PainterlyJukebox = zones[1].get_node("Scenery/Jukebox")
@@ -163,7 +165,7 @@ func run() -> void:
 		check(await walk_to(player,point),"The bar exit must return smoothly to the street")
 	check(await walk_path(player,weave,1,0),"The populated street must remain traversable back to arrival")
 	await create_timer(1.0).timeout
-	check(camera.size<3.7,"Returning to entry must restore the close camera")
+	check(absf(camera.size - 4.7) < 0.15,"Returning to entry must restore the close camera")
 	if "--capture" in args:
 		for prop in memory.find_children("*","Node3D",true,false):
 			if prop.has_method("get_recall_controller"):

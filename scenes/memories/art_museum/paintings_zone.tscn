@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://c21rxv62o7hio"]
+[gd_scene load_steps=8 format=3 uid="uid://c21rxv62o7hio"]
 
 [ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_gallery_display.tscn" id="display"]
 [ext_resource type="Texture2D" uid="uid://daru3tqq8fwe2" path="res://components/scenery/museum/art/monet_landscape.jpg" id="monet"]
 [ext_resource type="Texture2D" uid="uid://l0ffmxykal1w" path="res://components/scenery/museum/art/olive_trees.jpg" id="olive"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
 [ext_resource type="Texture2D" uid="uid://do5tq36yflqkc" path="res://components/scenery/museum/art/lucretia.jpg" id="portrait"]
 [ext_resource type="AudioStream" uid="uid://b6ls2c3svvj1v" path="res://audio/samples/museum_room.wav" id="room"]
 [ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
@@ -39,13 +38,6 @@ canvas_size = Vector2(2.6, 1.57)
 recall_enabled = true
 transform = Transform3D(0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 3.9, 0, 3.8)
 display_type = 1
-
-[node name="RememberedFloorboards" parent="Scenery" index="4" instance=ExtResource("paving")]
-footprint = Vector2(5.4, 7)
-slab_length = 1.9
-irregularity = 0.2
-paving_color = Color(0.87, 0.83, 0.77, 1)
-end_fade = Vector2(2.1, 2.1)
 
 [node name="AfternoonWash" parent="Scenery" index="5" instance=ExtResource("wash")]
 recall_enabled = true

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://components/scenery/camp/fire_pit/painterly_fire_pit.gd" id="pit"]
+[ext_resource type="PackedScene" path="res://components/vfx/sculpted_fire/painterly_sculpted_fire.tscn" id="fire"]
+
+[node name="PainterlySculptedFirePit" type="Node3D"]
+script = ExtResource("pit")
+
+[node name="Fire" parent="." instance=ExtResource("fire")]
+position = Vector3(0, 0.21, 0)
+fire_size = Vector2(0.89, 1.08)
+body_fullness = 0.76
+intensity = 0.94
+animation_speed = 0.91
+wind = Vector2(-0.05, -0.13)
+glow_strength = 0.16
+smoke_amount = 0.33
+smoke_height = 1.56
+smoke_spread = 0.52
+smoke_color = Color(0.48, 0.50, 0.53, 1)
+spark_amount = 0.48
+spark_size = 0.022

@@ -36,7 +36,7 @@ func walk_to(player: MemoryExplorer, point: Vector3) -> bool:
 func capture(name: String) -> void:
 	if not "--capture" in OS.get_cmdline_user_args(): return
 	await create_timer(1.2).timeout
-	await RenderingServer.frame_post_draw
+	RenderingServer.force_draw(false)
 	root.get_texture().get_image().save_png("res://docs/previews/new-years-eve-"+name+".png")
 
 func verify_dj(dj: PainterlyDJBooth) -> void:
@@ -94,28 +94,30 @@ func run() -> void:
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position,0.5)
 		and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both explorers must start on supported ground behind the audience")
 	check(world._bounded_memory and not world.get_node("DreamSurface").visible,"The concert must emerge from finite ground in the void")
-	check(camera.size<3.7,"Arrival behind the crowd should be intimate")
+	check(absf(camera.size - 4.7) < 0.15,"Arrival behind the crowd should be intimate")
 	await capture("arrival")
 	var people := 0
 	for crowd: PainterlyCrowd in memory.find_children("*","PainterlyCrowd",true,false):
 		check(crowd.generated_count==crowd.count,"The complete authored audience must fit its area")
+		check(crowd.dance_bounce > 0.0 and not crowd.is_processing(), "Concert dancers should bounce on the GPU")
 		people += crowd.generated_count
 		for pose: Transform3D in crowd._placements:
 			var at := crowd.to_global(pose.origin)
 			check(absf(at.x)>1.6,"The central path must remain clear of audience hitboxes")
 			check(floor.contains_ground_point(at,0.2),"Every audience member must stand on the remembered floor")
-	check(people>=200,"The stage approach must have a substantial crowd")
+	check(people>=175,"The stage approach must have a substantial crowd")
 	check(memory.get_audio().music.playing and memory.get_audio().music.bus==&"Music"
 		and zones[0].ambience.playing,"Original electronic music and crowd ambience must mix on their standard buses")
 	check(world.get_node("GuidanceController").request_guidance(),"Requested guidance must lead through the crowd to the fragment")
-	for point in [Vector3(0,0,10),Vector3(0,0,5.9),Vector3(-4,0,5.9),Vector3(0,0,5.9)]:
+	for point in [Vector3(0,0,6.7),Vector3(0,0,3.0),Vector3(-4,0,3.0),Vector3(0,0,3.0)]:
 		check(await walk_to(player,point),"The central aisle and middle cross-passage must be walkable")
 		check(player.is_on_floor(),"The explorer must remain grounded in the audience")
+	check(absf(camera.size - 4.7) < 0.15, "The center aisle should retain the walking zoom")
 	await capture("crowd")
-	for point in [Vector3(0,0,1),Vector3(0,0,-3),Vector3(0,0,-5.0)]:
+	for point in [Vector3(0,0,1),Vector3(0,0,-0.7),Vector3(0,0,-2.4)]:
 		check(await walk_to(player,point),"The path must reach the front viewing area without crossing the crowd")
 	await create_timer(1.0).timeout
-	check(camera.size>10.2 and camera.size<10.6,"The stage approach should open the composition smoothly")
+	check(absf(camera.size - 10.9) < 0.25,"The stage approach should open the composition smoothly")
 	var scenery := zones[0].get_node("Scenery")
 	var rig: PainterlyRaveLights = scenery.get_node("StageLights")
 	var before := rig._heads[0].transform
@@ -130,15 +132,15 @@ func run() -> void:
 	check(zones[0].get_fragment().try_activate(player),"The single fragment must be reachable from the viewing apron")
 	world.get_node("Controls/FragmentInteraction").advance_note()
 	await create_timer(0.3).timeout
-	for point in [Vector3(0,0,-6.7),Vector3(0,0,-10.8),Vector3(-3,0,-10.8),Vector3(-3,0,-12.8)]:
+	for point in [Vector3(0,0,-3.7),Vector3(0,0,-7.8),Vector3(-3,0,-7.8),Vector3(-3,0,-9.8)]:
 		check(await walk_to(player,point),"The continuous ramp and stage must be walkable around the console")
 		check(player.is_on_floor(),"Ramp and deck must support the player")
 	check(player.global_position.y>0.4,"The ramp must lift the player onto the stage deck")
 	await capture("dj")
-	for point in [Vector3(-3,0,-10.8),Vector3(0,0,-10.8),Vector3(0,0,-6.7),Vector3(0,0,0),Vector3(0,0,15.2)]:
+	for point in [Vector3(-3,0,-7.8),Vector3(0,0,-7.8),Vector3(0,0,-3.7),Vector3(0,0,0),Vector3(0,0,8.7)]:
 		check(await walk_to(player,point),"The concert route must also work in reverse")
 	await create_timer(1.0).timeout
-	check(camera.size<3.7,"Returning to the rear should restore the intimate arrival camera")
+	check(absf(camera.size - 4.7) < 0.15,"Returning to the rear should restore the intimate arrival camera")
 	if "--capture" in OS.get_cmdline_user_args():
 		var camera_rig: Node3D = world.get_node("CameraRig")
 		camera_rig.set_process(false)

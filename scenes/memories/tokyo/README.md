@@ -2,13 +2,13 @@
 
 Three zones connect a forest approach to Meiji Shrine, the lantern gate and
 courtyard at Sensō-ji, and a busy Shibuya Crossing. The composition reuses all seven
-Tokyo scenery presets. Dense green canopies, shrubs, groundcover and a few pale
-flowers frame the shrine and temple; towers, screens, crossing stripes and small
-crowds replace the planting in the city. Paths dissolve between the three places
-through the warm ivory void. Their adjacency is a memory composition, not a street
+Tokyo scenery presets. Dense green canopies, shrubs, ferns and a few pale
+flowers frame the shrine and temple. Towers, moving screens and a crowd around
+the zebra stripes give the city a different rhythm. Paths dissolve between the
+three places through the warm ivory void. Their adjacency is a memory composition, not a street
 map or a claim about the actual journey or time of day.
 
-Recall **Tokyo — MAY 28, 2026** between Graduation and Vineyard, or open
+Recall **Tokyo — MAY 28, 2026** between Graduation and Northern Vietnam, or open
 `res://scenes/world/tokyo_world.tscn` with F6. The inherited world retains the shared
 avatars, IP-entry LAN, reading panel, audio buses, requested guidance and return UI.
 
@@ -22,32 +22,36 @@ avatars, IP-entry LAN, reading panel, audio buses, requested guidance and return
   **Torii**, and reaches **WorshipHall**. The first fragment is on its raised
   veranda, reached by the component's real steps/ramp. Sixteen trees combine
   columnar, layered and broadleaf forms with 20 bushes and eight groundcover
-  patches. Distant trees recall from nearby path markers, keeping the forest
-  visible without requiring a detour into each grove. **ToAsakusa** branches from the approach after descending the steps.
+  patches. Ferns and two low stone lanterns mark the gravel approach. Distant
+  trees recall from nearby path markers, keeping the forest visible from the
+  trail. **ToAsakusa** branches from the approach after descending the steps.
 - `sensoji_zone.tscn` continues through **Hozomon**, then approaches **MainHall**
   and the second veranda fragment. The gate stands far enough in front of the
   hall to keep the player visible beyond its roof. The separate five-story **Pagoda** recalls
-  from reachable **TempleView**. Ten trees, 14 shrubs, six flowering bushes and
-  eight grass patches form uneven side gardens, preserving the gate, hall steps
-  and the path out through **ToShibuya**.
+  from reachable **TempleView**. Ten trees, 14 shrubs, six flowering bushes, ferns
+  and eight grass patches form uneven side gardens around the broader paver walk.
+  The space between planting groups frames the gate, hall steps and pagoda.
 - `shibuya_zone.tscn` uses **PainterlyScrambleCrossing**, five differently shaped
   city towers, animated billboards, two subtle sign-color washes and two existing
   crowd components. **CrossingRoute** is a hidden, non-colliding curved guide and
   crowd exclusion: it crosses the junction diagonally, bends around a signal post
   and reaches the final fragment at the far corner. People occupy the road while
-  leaving a narrow route through it. The two crowd counts request 96 and 12;
+  leaving a narrow route through it. Small shifts in weight and pose run on the
+  existing crowd shader. The screens animate at different speeds and spill soft
+  pink and blue onto the asphalt. The two crowd counts request 96 and 12;
   placement caps safely if authoring edits reduce capacity. Towers recall from
   the reachable **CityRecall** marker at the crossing arrival.
 
-All 97 recallable components are enabled; all 82 foliage components respond to
+All 110 recallable components are enabled, and all 93 foliage components respond to
 both explorers. Solid scenery keeps its collision throughout recall. Outer temple trees also recall from the reachable gate/courtyard markers. Tree seeds,
 shape variation and leaf density reuse the existing generators. **forest_green.tres**
 and **temple_green.tres** supply restrained deep/soft green palettes. No new model
 component is needed for the landmarks. The walks now use the
 [surface-path family](../../../components/groundcover/paths/README.md): compacted
 gravel at Meiji and running-bond stone paving at Sensō-ji and its outgoing
-connection. Their original curves, heights and guidance links remain intact;
-Shibuya's hidden route and road-marking component keep their existing roles.
+connection. The connectors feather through ivory with the finite floor providing
+uninterrupted support. Their curves still drive fragment guidance, and Shibuya
+uses the crossing markings as its visible route.
 
 ## Authoring
 
@@ -62,11 +66,10 @@ supports their **Veranda** surfaces and validates capsule clearance over the ram
 profile, keeping walls and columns solid. When moving halls, update the adjacent
 path endpoints as well. Keep the crossing's final bend clear of its signal post.
 
-`../../../scripts/tokyo_camera.gd` keeps **Walking Size** at 3.5. It opens to 8.5 for
-the torii, 10.5 for the shrine approach, 12 for the lantern gate, 12.5 for the main
-hall approach and 9 around the crossing. **Veranda Size** 5.5 restores intimacy
-beside the first two notes. All reveals are smooth and reversible with fixed yaw;
-city tower tops may crop to retain a sense of scale at street level.
+`../../../scripts/tokyo_camera.gd` uses **Walking Size** 4.5 at arrival, between
+landmarks and near the notes. It holds wider frames at the torii, shrine approach,
+Hōzōmon, temple courtyard and center of the crossing. The camera tips lower at
+Hōzōmon to expose the hanging lantern. Its yaw stays fixed for movement controls.
 
 Zone roots reuse quiet forest breeze/bird-like audio, subdued courtyard murmur and
 an outdoor city/crowd bed. Tune **Ambience Volume / Size / Blend Distance** on each
@@ -96,5 +99,8 @@ remain; inspect the rendered Mobile views for visual review.
 [Meiji](../../../docs/previews/tokyo-memory-meiji-overview.png) ·
 [Sensō-ji](../../../docs/previews/tokyo-memory-sensoji-overview.png) ·
 [Shibuya](../../../docs/previews/tokyo-memory-shibuya-overview.png)
+
+[Before and after at four gameplay stops](../../../docs/previews/tokyo-polish-comparison.jpg)
+· [Shibuya from the center of the crossing](../../../docs/previews/tokyo-memory-shibuya-center.png)
 
 ![Tokyo memory composition](../../../docs/previews/tokyo-memory-overview.png)

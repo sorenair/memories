@@ -20,12 +20,14 @@ Soren/Vivian selection, LAN presence, fragments, audio mixing and requested guid
   preset. **CampusWalk** passes through the left arch to the first fragment;
   **OtherPassage** provides a second way through. The last four meters of
   CampusWalk dissolve, ending before the portico. Three additional cherry trees
-  line the route before the arches; flowers and short grass keep both openings clear.
+  line the route before the arches. Low planting leaves both openings clear,
+  with scattered petals and soft canopy shade on the stone.
 - `portico_zone.tscn` reuses **PainterlyClassicalPortico** from the campus landmarks
   study. A broad, walkable grass courtyard replaces the continuous paved approach.
   **CourtyardLawn / CourtyardLawnEdge** overlap naturally, excluding the portico
   and the visible part of CampusWalk. Its actual shallow treads lead to the second
-  fragment on the landing.
+  fragment on the landing. Trees and spring planting frame the outer stairs
+  and the first garden bend. The center of the colonnade stays open.
   The center column gap opens onto **GardenWalk**, a continuous curved path
   descending from landing height to the ceremony. Keep its first point aligned
   with the rear landing and its last point/tangent aligned with the ceremony aisle.
@@ -37,10 +39,13 @@ Soren/Vivian selection, LAN presence, fragments, audio mixing and requested guid
   Minnesota occupies the right bank: maroon gowns, gold caps and stoles. Two
   waiting graduates on each side and the two stage banners use the same palettes.
   Graduate idle motion and cloth movement reuse the kit's batched shaders.
+  Low flower groups mark the aisle entrance and frame the stage. Canopy Shade
+  drifts across the timber, and the stage framing lifts slightly toward the banners.
 
 All authored recallable scenery has **Recall Enabled**, including the nested
 ceremony props and flowers; all foliage responds to both explorers. Collision
-stays supported throughout recall. No new model component was necessary.
+stays supported throughout recall. The portico and stage framing plants recall
+from reachable approach markers.
 
 ## Editing
 

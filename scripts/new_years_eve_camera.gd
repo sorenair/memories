@@ -1,28 +1,29 @@
 extends "res://scripts/follow_camera.gd"
-## Walk into the crowd before the stage opens up. Fixed yaw, reversible framing.
-@export var arrival_size := 3.5
-@export var crowd_size := 5.5
-@export var stage_size := 10.5
-@export var deck_size := 5.0
+## Stable exploration zoom, with a wide shot from the front of the crowd.
+@export var walking_size := 4.7
+@export var stage_size := 10.9
+
+const WALKING_OFFSET := Vector3(0, 0.9, -0.65)
+const SCENIC_FOCUS := Vector3(0, 2.95, -5.75)
+var _stage_view := false
 
 func _ready() -> void:
-	framing_offset = Vector3(0,0.75,-0.6)
-	$Camera3D.size = arrival_size
+	framing_offset = WALKING_OFFSET
+	$Camera3D.size = walking_size
 	super._ready()
 
 func _process(delta: float) -> void:
 	if is_instance_valid(target):
 		var at := target.get_global_transform_interpolated().origin
-		var among_crowd := 1.0-smoothstep(4.0,13.0,at.z)
-		var near_stage := 1.0-smoothstep(-5.0,2.0,at.z)
-		var on_deck := 1.0-smoothstep(-11.0,-9.4,at.z)
-		var desired_size := lerpf(lerpf(arrival_size,crowd_size,among_crowd),stage_size,near_stage)
-		desired_size = lerpf(desired_size,deck_size,on_deck)
-		var desired_offset := Vector3(0,0.75,-0.6).lerp(Vector3(-0.4,2.5,-4.2),near_stage)
-		# Look a little back toward the controls after climbing onto the deck.
-		var deck_offset := Vector3(clampf(-at.x*0.25,-0.8,0.8),1.0,0.6)
-		desired_offset = desired_offset.lerp(deck_offset,on_deck)
-		var blend := 1.0-exp(-2.5*delta)
-		framing_offset = framing_offset.lerp(desired_offset,blend)
-		$Camera3D.size = lerpf($Camera3D.size,desired_size,blend)
+		if _stage_view:
+			_stage_view = at.z < 0.4 and at.z > -6.4 and absf(at.x) < 4.4
+		else:
+			_stage_view = at.z < -1.1 and at.z > -5.8 and absf(at.x) < 3.8
+		var offset := SCENIC_FOCUS - at if _stage_view else WALKING_OFFSET
+		if at.z < -7.4:
+			offset.z = 0.5
+		var size := stage_size if _stage_view else walking_size
+		var blend := 1.0 - exp(-3.3 * delta)
+		framing_offset = framing_offset.lerp(offset, blend)
+		$Camera3D.size = lerpf($Camera3D.size, size, blend)
 	super._process(delta)

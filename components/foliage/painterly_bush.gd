@@ -14,6 +14,8 @@ const PALETTES = preload("res://components/foliage/shared/foliage_palettes.gd")
 const RECALL = preload("res://components/effects/recall/component_recall.gd")
 
 @export_group("Recall")
+## Optional approach point for a bed seen from across water or another barrier.
+@export var recall_anchor: Node3D
 ## Hide at runtime and recall this component independently on approach.
 @export var recall_enabled: bool = false:
 	set(value):
@@ -23,6 +25,9 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 		if is_node_ready() and not Engine.is_editor_hint():
 			rebuild()
 var _recall_effect: Node
+
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
 
 func get_recall_controller() -> Node:
 	return _recall_effect

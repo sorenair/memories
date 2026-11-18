@@ -5,8 +5,10 @@
 [node name="MemoryWorld" instance=ExtResource("world")]
 recalled_spawn_offset = Vector3(0, 0, 0)
 [node name="Memory" parent="." index="4" instance=ExtResource("memory")]
-[node name="CameraRig" parent="." index="5"]
+[node name="CameraRig" parent="." index="5" node_paths=PackedStringArray("fountain_viewpoint", "bonsai_viewpoint")]
 script = ExtResource("camera")
+fountain_viewpoint = NodePath("../Memory/Zones/FlowerGarden/Fragment")
+bonsai_viewpoint = NodePath("../Memory/Zones/Bonsai/Fragment")
 [node name="Camera3D" parent="CameraRig" index="0"]
-size = 3.5
+size = 4.4
 far = 160.0

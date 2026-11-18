@@ -6,7 +6,11 @@ varying vec3 proxy_position;
 varying flat vec3 cloud_lower;
 varying flat vec3 cloud_upper;
 varying flat vec4 billow[7];
-varying flat float billow_opacity[7];
+// Pack the scalars so they fit the Mobile renderer's varying budget.
+varying flat vec4 billow_opacity[2];
+float opacity_at(int index) {
+	return billow_opacity[index / 4][index % 4];
+}
 float cloud_union(float a, float b, float k) {
 	float h = clamp(0.5+0.5*(b-a)/k,0.0,1.0);
 	return mix(b,a,h)-k*h*(1.0-h);
@@ -15,7 +19,7 @@ float cloud_distance(vec3 p) {
 	float d = 100.0;
 	float k = smoke_spread*0.22;
 	for (int i=0;i<7;i++) {
-		if (billow_opacity[i]<0.01) { continue; }
+		if (opacity_at(i)<0.01) { continue; }
 		float sphere = length((p-billow[i].xyz)*vec3(1.0,0.90,1.0))-billow[i].w;
 		d = cloud_union(d,sphere,k);
 	}
@@ -29,7 +33,8 @@ float cloud_opacity(vec3 origin, vec3 rd, float surface_distance) {
 	float a = dot(v,v);
 	float opacity = 0.0;
 	for (int i=0;i<7;i++) {
-		if (billow_opacity[i]<0.01) { continue; }
+		float billow_alpha = opacity_at(i);
+		if (billow_alpha<0.01) { continue; }
 		vec3 q = (origin-billow[i].xyz)*metric;
 		float radius = billow[i].w+smoke_spread*0.22;
 		float b = dot(q,v);
@@ -40,7 +45,7 @@ float cloud_opacity(vec3 origin, vec3 rd, float surface_distance) {
 		float first = (-b-root)/a;
 		float last = (-b+root)/a;
 		float chord = max(last-max(first,surface_distance),0.0);
-		opacity = max(opacity,billow_opacity[i]*clamp(chord/(2.0*radius),0.0,1.0));
+		opacity = max(opacity,billow_alpha*clamp(chord/(2.0*radius),0.0,1.0));
 	}
 	return opacity;
 }
@@ -48,6 +53,8 @@ void vertex() {
 	float t = fire_clock(TIME);
 	cloud_lower = vec3(1000.0);
 	cloud_upper = vec3(-1000.0);
+	billow_opacity[0] = vec4(0.0);
+	billow_opacity[1] = vec4(0.0);
 	for (int i=0;i<7;i++) {
 		float index = float(i);
 		float age = fract(t*0.135+index/7.0);
@@ -57,8 +64,9 @@ void vertex() {
 		float radius = smoke_spread*(0.16+0.58*pow(age,0.60));
 		radius *= 1.0+sin(phase+age*7.0)*0.16*smoke_turbulence;
 		billow[i] = vec4(center,radius);
-		billow_opacity[i] = smoothstep(0.0,0.12,age)*(1.0-smoothstep(0.58,0.96,age));
-		if (billow_opacity[i]>=0.01) {
+		float opacity = smoothstep(0.0,0.12,age)*(1.0-smoothstep(0.58,0.96,age));
+		billow_opacity[i / 4][i % 4] = opacity;
+		if (opacity>=0.01) {
 			vec3 reach = vec3(radius,radius/0.90,radius)+vec3(smoke_spread*0.22+0.01);
 			cloud_lower = min(cloud_lower,center-reach);
 			cloud_upper = max(cloud_upper,center+reach);

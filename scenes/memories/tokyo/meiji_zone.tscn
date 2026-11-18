@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paths/gravel_walk.tscn" id="path"]
@@ -10,6 +10,9 @@
 [ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/meiji_wooden_torii.tscn" id="torii"]
 [ext_resource type="PackedScene" path="res://components/scenery/tokyo/shrines/meiji_worship_hall.tscn" id="hall"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="air"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
+[ext_resource type="PackedScene" path="res://components/scenery/gardens/painterly_stone_lantern.tscn" id="lantern"]
 
 [sub_resource type="Curve3D" id="ForestWalkCurve"]
 bake_interval = 0.05
@@ -39,19 +42,35 @@ recall_enabled = true
 
 [node name="ForestWalk" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ForestWalkCurve")
-path_width = 2.5
-paving_color = Color(0.784314,0.756863,0.658824,1)
-end_fade = Vector2(1.3,0)
-edge_softness = 0.28
+path_width = 2.7
+paving_color = Color(0.74, 0.714, 0.637, 1)
+end_fade = Vector2(1.15, 0.5)
+edge_softness = 0.43
 crown_height = 0.008
+stone_color = Color(0.83, 0.796, 0.717, 1)
+shoulder_color = Color(0.666, 0.695, 0.565, 1)
+paving_seed = 528202
+breakup_size = 0.36
+detail_density = 0.85
+width_variation = 0.15
+
 
 [node name="ToAsakusa" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ToAsakusaCurve")
-path_width = 2.3
-paving_color = Color(0.784314,0.756863,0.658824,1)
-end_fade = Vector2(0.5,1.8)
-edge_softness = 0.28
+path_width = 2.55
+paving_color = Color(0.74, 0.714, 0.637, 1)
+end_fade = Vector2(1.05, 4.6)
+edge_softness = 0.43
 crown_height = 0.008
+stone_color = Color(0.83, 0.796, 0.717, 1)
+shoulder_color = Color(0.666, 0.695, 0.565, 1)
+paving_seed = 528202
+breakup_size = 0.36
+detail_density = 0.85
+width_variation = 0.22
+position = Vector3(0, -0.006, 0)
+collision_enabled = false
+
 
 [node name="ForestTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
 position = Vector3(-6.8,0,13.8)
@@ -676,3 +695,87 @@ position = Vector3(0,0,11)
 position = Vector3(0,0,4.4)
 [node name="ForestRecallHall" parent="Scenery" type="Marker3D"]
 position = Vector3(0,0,1.4)
+
+[node name="ForestFern1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-1.85, 0, 14.2)
+rotation_degrees = Vector3(0, 16, 0)
+plant_height = 0.54
+spread = 1.48
+plant_seed = 528640
+palette = ExtResource("leaves")
+wind_strength = 0.055
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestFern2" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(2.1, 0, 12.45)
+rotation_degrees = Vector3(0, -37, 0)
+plant_height = 0.63
+spread = 1.72
+plant_seed = 528641
+palette = ExtResource("leaves")
+wind_strength = 0.055
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestFern3" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-2.35, 0, 9.65)
+rotation_degrees = Vector3(0, 73, 0)
+plant_height = 0.66
+spread = 1.64
+plant_seed = 528642
+palette = ExtResource("leaves")
+wind_strength = 0.055
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestFern4" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(2.35, 0, 7.8)
+rotation_degrees = Vector3(0, 108, 0)
+plant_height = 0.58
+spread = 1.42
+plant_seed = 528643
+palette = ExtResource("leaves")
+wind_strength = 0.055
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestFern5" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-2.22, 0, 3.55)
+rotation_degrees = Vector3(0, -52, 0)
+plant_height = 0.48
+spread = 1.32
+plant_seed = 528644
+palette = ExtResource("leaves")
+wind_strength = 0.055
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ForestFern6" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(10.75, 0, -3.55)
+rotation_degrees = Vector3(0, 30, 0)
+plant_height = 0.5
+spread = 1.42
+plant_seed = 528645
+palette = ExtResource("leaves")
+wind_strength = 0.055
+recall_enabled = true
+react_to_explorers = true
+
+[node name="StoneLantern1" parent="Scenery" instance=ExtResource("lantern")]
+position = Vector3(-2.35, 0, 11.0)
+rotation_degrees = Vector3(0, -18, 0)
+lantern_height = 0.86
+body_color = Color(0.46, 0.48, 0.43, 1)
+accent_color = Color(0.58, 0.585, 0.499, 1)
+trim_color = Color(0.66, 0.638, 0.515, 1)
+recall_enabled = true
+
+[node name="StoneLantern2" parent="Scenery" instance=ExtResource("lantern")]
+position = Vector3(2.5, 0, 9.8)
+rotation_degrees = Vector3(0, 14, 0)
+lantern_height = 1.02
+body_color = Color(0.46, 0.48, 0.43, 1)
+accent_color = Color(0.58, 0.585, 0.499, 1)
+trim_color = Color(0.66, 0.638, 0.515, 1)
+recall_enabled = true

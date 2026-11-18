@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, blend_mix, cull_disabled, depth_prepass_alpha, fog_disabled;
+#include "res://components/lighting/painted_light/painted_light.gdshaderinc"
 
 uniform vec4 paving_color : source_color = vec4(0.74,0.72,0.66,1.0);
 uniform vec2 footprint = vec2(1.6,13.5);
@@ -12,6 +13,7 @@ uniform float paint_phase = 0.0;
 uniform bool use_path_uv = false;
 varying vec2 position_on_strip;
 varying vec3 surface_normal;
+varying vec3 paving_world_position;
 varying float paint_layer;
 
 float hash(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
@@ -24,6 +26,7 @@ float noise(vec2 p) {
 void vertex() {
 	position_on_strip = use_path_uv ? UV : VERTEX.xz;
 	surface_normal = MODEL_NORMAL_MATRIX*NORMAL;
+	paving_world_position = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	paint_layer = UV2.x;
 }
 
@@ -53,6 +56,6 @@ void fragment() {
 	float opacity = pow(pressure,0.85)*broken;
 	if (paint_layer>0.5) { opacity *= 0.32; }
 	if (opacity<0.008) { discard; }
-	ALBEDO = pigment;
+	ALBEDO = apply_painted_light(pigment, paving_world_position, normalize(surface_normal), 1.0);
 	ALPHA = opacity;
 }

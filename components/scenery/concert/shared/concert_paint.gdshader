@@ -2,6 +2,7 @@ shader_type spatial;
 render_mode unshaded, cull_disabled, fog_disabled;
 // Same broad pigment pools and softened toon bands as the arcade props.
 #include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
+#include "res://components/lighting/painted_light/painted_light.gdshaderinc"
 uniform float pigment_strength = 0.55;
 uniform float paint_phase = 0.0;
 uniform float beat_bpm = 0.0;
@@ -43,6 +44,7 @@ void fragment() {
 	float lens = step(1.5, material_kind) * (1.0 - step(2.5, material_kind));
 	float pulse = light_intensity * (1.0 - pulse_amount + pulse_amount * beat);
 	color = mix(color, COLOR.rgb * (0.86 + pulse * 0.25), lens);
+	color = apply_painted_light(color, assembly_position, mat3(INV_VIEW_MATRIX) * NORMAL, 1.0 - lens);
 	ALBEDO = mix(color, vec3(0.87, 0.86, 0.77), haze);
 	EMISSION = COLOR.rgb * lens * pulse * 0.32 * (1.0 - haze);
 	float assembly = assembly_clarity(assembly_position);

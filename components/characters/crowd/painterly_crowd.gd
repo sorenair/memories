@@ -128,6 +128,11 @@ const PALETTES := [
 	set(value):
 		motion_speed = clampf(value, 0, 2)
 		_apply_motion()
+## Optional rhythmic hops for a dance crowd. Hitboxes stay on the floor.
+@export_range(0.0, 0.18, 0.01) var dance_bounce: float = 0.0:
+	set(value):
+		dance_bounce = clampf(value, 0.0, 0.18)
+		_apply_motion()
 
 @export_group("Hitboxes")
 ## One stationary capsule per person. Visual idle motion does not move obstacles.
@@ -222,6 +227,7 @@ func _apply_motion() -> void:
 	if _material:
 		_material.set_shader_parameter("motion_strength", motion_strength)
 		_material.set_shader_parameter("motion_speed", motion_speed)
+		_material.set_shader_parameter("dance_bounce", dance_bounce)
 		_material.set_shader_parameter("pose_strength", pose_strength)
 
 func _standing_points(rng: RandomNumberGenerator) -> PackedVector2Array:

@@ -33,7 +33,7 @@ func walk_to(player: MemoryExplorer, point: Vector3) -> bool:
 func capture(name: String) -> void:
 	if not "--capture" in OS.get_cmdline_user_args(): return
 	await create_timer(1.3).timeout
-	await RenderingServer.frame_post_draw
+	RenderingServer.force_draw(false)
 	root.get_texture().get_image().save_png("res://docs/previews/christmas-market-"+name+".png")
 func run() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -65,7 +65,7 @@ func run() -> void:
 		check(snow.excludes_ground_point(at),"Snow must connect the lane and music clearing without internal seams")
 	check(not snow.excludes_ground_point(Vector3(-4,0,2)) and not snow.excludes_ground_point(Vector3(-4.8,0,-19)),"Snow must exclude hut interiors and the stage")
 	check(not floor.contains_ground_point(Vector3(5,0,-18)),"Open space beside the gathering must remain void")
-	check(camera.size<3.7,"The market must start with an intimate camera")
+	check(absf(camera.size - 4.5) < 0.12,"The market must start with an intimate camera")
 	await capture("arrival")
 	var huts := memory.find_children("*","PainterlyMarketHut",true,false)
 	var goods := {}
@@ -95,10 +95,14 @@ func run() -> void:
 	for point in [Vector3(0,0,-5.5),Vector3(-2.8,0,-7.4),Vector3(-4.5,0,-9.8),Vector3(-6,0,-11.4),Vector3(-6,0,-14)]:
 		check(await walk_to(player,point),"The two zones must share a clear, supported connecting route")
 		check(player.is_on_floor(),"The player must stay grounded across the snow joins")
+		if is_equal_approx(point.z, -9.8):
+			check(absf(camera.size - 4.5) < 0.12, "The bend should keep the same walking zoom as the hut lane")
+			await capture("bend")
 	await create_timer(1.0).timeout
-	check(camera.size>7.3 and camera.size<7.6,"The tree and music should receive a modest wider composition")
+	check(absf(camera.size - 8.8) < 0.18,"The tree and music should receive a modest wider composition")
 	check(snow._stamp_count>20,"Walking through both zones must leave a continuous footprint history")
 	check(zones[1].ambience.playing and memory.get_audio().music.playing,"The music gathering must blend its crowd bed alongside music")
+	check(stage.get_recall_controller().progress > 0.95, "The performers should be visible when the scenic view opens")
 	await capture("music")
 	check(zones[1].get_fragment().try_activate(player),"The gathering fragment must be reachable without entering the stage or tree")
 	world.get_node("Controls/FragmentInteraction").advance_note()
@@ -106,7 +110,7 @@ func run() -> void:
 	for point in [Vector3(-6,0,-11.4),Vector3(-4.5,0,-9.8),Vector3(-2.8,0,-7.4),Vector3(0,0,-5.5),Vector3(0,0,1),Vector3(0,0,5.4)]:
 		check(await walk_to(player,point),"The whole route must also work in reverse")
 	await create_timer(1.0).timeout
-	check(camera.size<3.7,"Returning to arrival must restore the close camera")
+	check(absf(camera.size - 4.5) < 0.12,"Returning to arrival must restore the close camera")
 	if "--capture" in args:
 		var rig: Node3D = world.get_node("CameraRig")
 		rig.set_process(false)

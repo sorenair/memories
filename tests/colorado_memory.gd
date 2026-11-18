@@ -1,6 +1,7 @@
 extends SceneTree
 ## Walk the Flatirons meadow, Quandary summit and elk lake shore.
 const WORLD := "res://scenes/world/colorado_world.tscn"
+const WALKING_SIZE := 4.8
 var failures := 0
 class WalkingInput extends Node:
 	var axis := Vector2.ZERO
@@ -125,13 +126,15 @@ func run() -> void:
 	check(zones.size()==3 and memory.memory_id==&"colorado","Colorado needs three ordered zones and its own LAN identity")
 	check(zones[0].zone_id==&"colorado_flatirons" and zones[1].zone_id==&"colorado_quandary" and zones[2].zone_id==&"colorado_rmnp","Preserve Flatirons, Quandary and national-park lake order")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,.5),"Both arrivals must fit the clear golden-field approach")
-	check(camera.size<4.0,"The meadow arrival should start close")
+	check(absf(camera.size - WALKING_SIZE) < 0.1, "Meadow arrival should start at the normal walking zoom")
 	for path in [field,to_summit,climb,descent,lake_walk]:
 		for i in 81:
 			check(floor.contains_ground_point(path.to_global(path.point_at(path.get_path_length()*i/80.0)),.3),"Every route must fit the finite floor: "+path.name)
 	await capture("field-arrival")
 	check(world.get_node("GuidanceController").request_guidance(),"The first requested hint must lead across the golden field")
-	await walk_trail(player,field,0,1)
+	await walk_trail(player,field,0,.42)
+	check(absf(camera.size - WALKING_SIZE) < 0.15, "The meadow approach should hold the walking zoom")
+	await walk_trail(player,field,.42,1)
 	await create_timer(3.0).timeout
 	check(absf(camera.size-29.0)<.4 and zones[0].ambience.playing,"The meadow viewpoint should reveal the Flatirons with quiet wind")
 	for name in ["ClassicFlatiron","SplitFlatiron","BrokenFlatiron"]:
@@ -144,12 +147,17 @@ func run() -> void:
 	await read_fragment(world,zones[0].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The second hint must follow the real summit ascent")
 	check(not to_summit.visible and not to_summit.collision_enabled,"The meadow gap uses the finite floor and still participates in requested guidance")
-	await walk_trail(player,to_summit,0,.56)
+	var near_view := 2.05 / to_summit.get_path_length()
+	await walk_trail(player,to_summit,0,near_view)
+	check(absf(camera.size - 29.0) < 0.4, "The scenic shot should hold while the explorer shifts around its edge")
+	await walk_trail(player,to_summit,near_view,.56)
+	check(absf(camera.size - WALKING_SIZE) < 0.15, "The foothill crossing should return to the walking zoom")
 	await capture("foothill-gap")
 	await walk_trail(player,to_summit,.56,1)
 	await walk_trail(player,climb,0,.52)
 	await create_timer(.8).timeout
-	check(player.global_position.y > 1.0 and camera.size < 3.6, "The camera should stay close while climbing the granite ledge")
+	check(player.global_position.y > 1.0 and absf(camera.size - WALKING_SIZE) < 0.15,
+		"The granite ledge should use the same zoom as the meadow approach")
 	await capture("quandary-climb")
 	await walk_trail(player,climb,.52,1)
 	await create_timer(3.0).timeout
@@ -169,10 +177,12 @@ func run() -> void:
 	check(world.get_node("GuidanceController").request_guidance(),"The final hint must descend to the forested lake bank")
 	await walk_trail(player,descent,0,.40)
 	await create_timer(.8).timeout
-	check(camera.size < 3.6,"Leaving the summit viewpoint should return to close ridge walking")
+	check(absf(camera.size - WALKING_SIZE) < 0.15, "Leaving the summit should return to the walking zoom")
 	await capture("ridge-descent")
 	await walk_trail(player,descent,.40,1)
-	await walk_trail(player,lake_walk,0,1)
+	await walk_trail(player,lake_walk,0,.48)
+	check(absf(camera.size - WALKING_SIZE) < 0.15, "The lake approach should hold the walking zoom until the overlook")
+	await walk_trail(player,lake_walk,.48,1)
 	await create_timer(4.0).timeout
 	var water: PainterlyWater=zones[2].get_node("Scenery/ForestLake")
 	var herd: PainterlyElkHerd=zones[2].get_node("Scenery/ElkHerd")
@@ -194,7 +204,8 @@ func run() -> void:
 	await walk_trail(player,to_summit,1,0)
 	await walk_trail(player,field,1,0)
 	await create_timer(2.0).timeout
-	check(camera.size<4.0 and player.is_on_floor(),"Returning to the field arrival should restore close, supported exploration")
+	check(absf(camera.size - WALKING_SIZE) < 0.15 and player.is_on_floor(),
+		"Returning to the field should restore supported exploration at the normal zoom")
 	for trail in [field, to_summit, lake_walk]:
 		check_passing_space(player, trail)
 	for trail in [climb, descent]:

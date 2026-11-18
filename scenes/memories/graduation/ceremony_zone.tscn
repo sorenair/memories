@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
@@ -9,6 +9,10 @@
 [ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="air"]
 
 [ext_resource type="PackedScene" path="res://components/scenery/graduation/graduates/painterly_graduate_crowd.tscn" id="graduates"]
+
+[ext_resource type="PackedScene" path="res://components/lighting/painted_light/painterly_light_pattern.tscn" id="painted_light"]
+[ext_resource type="PackedScene" path="res://components/foliage/leaf_litter/painterly_leaf_litter.tscn" id="petals"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 
 [sub_resource type="Curve3D" id="AisleRoute"]
 bake_interval = 0.05
@@ -28,6 +32,9 @@ ambience_blend_distance = 4.0
 [node name="CommencementStage" parent="Scenery/Setup"]
 recall_enabled = true
 ramp_width = 2.0
+body_color = Color(0.73, 0.58, 0.41, 1)
+pigment_strength = 0.68
+banner_wind = 0.067
 individual_banner_colors = true
 left_banner_color = Color(0.29,0.16,0.47,1)
 left_banner_trim = Color(0.96,0.95,0.92,1)
@@ -87,7 +94,7 @@ react_to_explorers = true
 [node name="Aisle" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("AisleRoute")
 path_width = 2.1
-paving_color = Color(0.83,0.80,0.73,1)
+paving_color = Color(0.81, 0.77, 0.69, 1)
 end_fade = Vector2(0,0)
 
 [node name="CeremonyGrass1" parent="Scenery" instance=ExtResource("grass")]
@@ -138,23 +145,153 @@ recall_enabled = true
 react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../Aisle"),NodePath("../Setup/CommencementStage"),NodePath("../Setup/Chairs"),NodePath("../Setup/WaitingGraduates")])
 
-[node name="Cherry1" parent="Scenery" instance=ExtResource("cherry")]
-position = Vector3(-6.0, 0, 1.0)
+[node name="Cherry1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cherry")]
+position = Vector3(-5.7, 0, -2.55)
 tree_seed = 810
 tree_height = 3.4
 crown_width = 3.6
 falling_leaf_count = 12
 recall_enabled = true
+recall_anchor = NodePath("../AisleApproach")
 react_to_explorers = true
 
-[node name="Cherry2" parent="Scenery" instance=ExtResource("cherry")]
-position = Vector3(5.9, 0, -0.3)
+[node name="Cherry2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cherry")]
+position = Vector3(5.55, 0, -2.18)
 tree_seed = 841
 tree_height = 3.4
 crown_width = 3.6
 falling_leaf_count = 12
 recall_enabled = true
+recall_anchor = NodePath("../AisleApproach")
 react_to_explorers = true
+
+[node name="StageBackdropTree" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-2.75, 0, -4.5)
+tree_seed = 51642
+tree_type = 0
+tree_height = 3.25
+crown_width = 3.3
+palette_preset = 2
+wind_strength = 0.048
+falling_leaf_count = 10
+falling_leaf_rate = 0.48
+recall_enabled = true
+recall_anchor = NodePath("../AisleApproach")
+react_to_explorers = true
+
+[node name="WestStageFringe" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-4.6, 0, -3.15)
+patch_size = Vector2(4, 4.4)
+patch_seed = 51643
+palette_preset = 2
+grass_height = 0.16
+ground_leaf_scale = 0.62
+tufts_per_square_meter = 11.0
+leaves_per_square_meter = 20.0
+recall_enabled = true
+recall_anchor = NodePath("../AisleApproach")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../Setup/CommencementStage"), NodePath("../Setup/Chairs")])
+
+[node name="EastStageFringe" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(4.65, 0, -3.1)
+patch_size = Vector2(3.6, 4.4)
+patch_seed = 51644
+palette_preset = 2
+grass_height = 0.16
+ground_leaf_scale = 0.62
+tufts_per_square_meter = 11.0
+leaves_per_square_meter = 20.0
+recall_enabled = true
+recall_anchor = NodePath("../AisleApproach")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../Setup/CommencementStage"), NodePath("../Setup/Chairs")])
+
+[node name="BehindStageLilacs" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(-2.22, 0, -3.51)
+footprint = Vector2(2.55, 1.64)
+bush_height = 0.86
+bush_seed = 51645
+mass_count = 4
+sprays_per_mass = 31
+flower_count = 52
+flower_size = 0.071
+flower_color = Color(0.58, 0.47, 0.75, 1)
+flower_highlight = Color(0.88, 0.82, 0.96, 1)
+recall_enabled = true
+recall_anchor = NodePath("../AisleApproach")
+react_to_explorers = true
+
+[node name="BehindStageFlowers" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(3.48, 0, -3.48)
+footprint = Vector2(2.2, 1.54)
+bush_height = 0.69
+bush_seed = 51646
+mass_count = 4
+sprays_per_mass = 31
+flower_count = 52
+flower_size = 0.071
+flower_color = Color(0.78, 0.47, 0.61, 1)
+flower_highlight = Color(0.98, 0.81, 0.86, 1)
+recall_enabled = true
+recall_anchor = NodePath("../AisleApproach")
+react_to_explorers = true
+
+[node name="WestAisleFlowers" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-1.78, 0, 8.6)
+footprint = Vector2(1.12, 1.13)
+bush_height = 0.42
+bush_seed = 51647
+mass_count = 4
+sprays_per_mass = 31
+flower_count = 52
+flower_size = 0.071
+flower_color = Color(0.58, 0.47, 0.75, 1)
+flower_highlight = Color(0.88, 0.82, 0.96, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="EastAisleFlowers" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(1.76, 0, 8.3)
+footprint = Vector2(1.2, 1.21)
+bush_height = 0.46
+bush_seed = 51648
+mass_count = 4
+sprays_per_mass = 31
+flower_count = 52
+flower_size = 0.071
+flower_color = Color(0.86, 0.71, 0.43, 1)
+flower_highlight = Color(0.99, 0.92, 0.68, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PetalsByStage" parent="Scenery" instance=ExtResource("petals")]
+position = Vector3(-4.15, 0.012, -1.23)
+footprint = Vector2(1.85, 2.55)
+leaf_seed = 51652
+leaf_count = 33
+size_range = Vector2(0.027, 0.058)
+edge_bias = 0.39
+ochre_color = Color(0.91, 0.63, 0.73, 1)
+rust_color = Color(0.79, 0.45, 0.61, 1)
+cream_color = Color(0.99, 0.84, 0.89, 1)
+flutter_strength = 0.013
+recall_enabled = true
+
+[node name="StageCanopyShade" parent="Scenery" node_paths=PackedStringArray("receivers") instance=ExtResource("painted_light")]
+position = Vector3(-3.26, 1.6, -0.67)
+rotation = Vector3(-0.88, -0.55, 0.10)
+receivers = [NodePath("../Setup/CommencementStage")]
+pattern = 2
+footprint = Vector3(9.5, 6, 8.6)
+light_color = Color(1, 0.94, 0.77, 1)
+accent_color = Color(0.62, 0.68, 0.60, 1)
+strength = 0.63
+pattern_scale = 1.03
+motion_speed = 0.53
+
+[node name="AisleApproach" type="Marker3D" parent="Scenery"]
+position = Vector3(0, 0, 7.75)
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.49,0.9)

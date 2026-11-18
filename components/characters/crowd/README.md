@@ -31,6 +31,9 @@ ceremony chair rows for a seated audience, with shared GPU animation and hitboxe
   clothing palette to stay colorful. This is opaque shading, not transparent people.
 - **Motion Strength / Speed:** subtle asynchronous GPU motion with planted feet.
   Zero strength freezes every figure; zero speed holds each person's idle pose.
+- **Dance Bounce:** optional rhythmic hops with individual timing. Use a higher
+  value near a stage and a lower value farther back. The default is zero and
+  hitboxes stay on the ground.
 - **Pose Mix:** Everyday Mix distributes all 12 poses; Quiet omits the social gestures;
   Social favors listening, conversational, and greeting poses. Garments and heads
   are selected independently of poses. **Pose Strength** blends arms toward neutral.

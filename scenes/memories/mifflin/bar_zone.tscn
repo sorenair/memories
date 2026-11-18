@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/activities/bar/counter/painterly_bar_counter.tscn" id="counter"]
 [ext_resource type="PackedScene" path="res://components/activities/bar/pool/painterly_pool_table.tscn" id="pool"]
 [ext_resource type="PackedScene" path="res://components/activities/bar/jukebox/painterly_jukebox.tscn" id="jukebox"]
 [ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="room"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
 
 [node name="BarZone" instance=ExtResource("zone")]
 zone_id = &"bar"
@@ -20,10 +21,11 @@ counter_length = 4.2
 stool_count = 3
 recall_anchor = NodePath("../..")
 recall_enabled = true
+stool_color = Color(0.65, 0.37, 0.33, 1)
 
 [node name="PoolTable" parent="Scenery" instance=ExtResource("pool")]
 position = Vector3(0.2, 0, -0.4)
-cloth_color = Color(0.36,0.51,0.47,1)
+cloth_color = Color(0.31, 0.46, 0.41, 1)
 recall_enabled = true
 
 [node name="Jukebox" parent="Scenery" instance=ExtResource("jukebox")]
@@ -37,3 +39,29 @@ recall_enabled = true
 position = Vector3(2.4,0.08,1.4)
 note_title = "A quieter corner"
 notes = PackedStringArray("[Placeholder] A quieter corner after the party, with the pool table and music nearby. Replace this with our memory of the bar.")
+
+[node name="Presentation" type="Node3D" parent="."]
+
+[node name="CounterLamplight" parent="Presentation" instance=ExtResource("wash")]
+position = Vector3(-2.34, 0, 0.05)
+footprint = Vector2(4.9, 6.1)
+light_color = Color(0.91, 0.70, 0.48, 1)
+intensity = 0.36
+softness = 0.89
+recall_enabled = true
+
+[node name="PoolLamplight" parent="Presentation" instance=ExtResource("wash")]
+position = Vector3(0.43, 0.004, -0.2)
+footprint = Vector2(5.7, 4.5)
+light_color = Color(0.824, 0.776, 0.624, 1)
+intensity = 0.20
+softness = 0.94
+recall_enabled = true
+
+[node name="JukeboxTint" parent="Presentation" instance=ExtResource("wash")]
+position = Vector3(2.88, 0.008, -0.5)
+footprint = Vector2(3.1, 3.9)
+light_color = Color(0.69, 0.77, 0.813, 1)
+intensity = 0.16
+softness = 0.94
+recall_enabled = true

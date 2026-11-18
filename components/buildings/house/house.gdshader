@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, fog_disabled;
 #include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
+#include "res://components/lighting/painted_light/painted_light.gdshaderinc"
 uniform float pigment_strength = 0.65;
 uniform float paint_phase = 0.0;
 uniform float wall_top = 3.25;
@@ -37,6 +38,7 @@ void fragment() {
 	float at_foundation = 1.0 - smoothstep(foundation_height + 0.04, foundation_height + 0.38, p.y);
 	color *= 1.0 - plaster * (under_eave * 0.085 + at_foundation * 0.045);
 	color *= 1.0 + roof * brush * pigment_strength * 0.018;
+	color = apply_painted_light(color, assembly_position, mat3(INV_VIEW_MATRIX) * NORMAL, 1.0 - glow);
 	ALBEDO = mix(color, vec3(0.87, 0.86, 0.77), haze);
 	EMISSION = color * glow * 0.18 * (1.0 - haze);
 	float assembly = assembly_clarity(assembly_position);

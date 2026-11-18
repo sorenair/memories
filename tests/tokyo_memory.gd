@@ -105,8 +105,8 @@ func run() -> void:
 	check(zones[0].zone_id==&"meiji_shrine" and zones[1].zone_id==&"sensoji" and zones[2].zone_id==&"shibuya_crossing","The three places must follow their requested story order")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both arrivals must be supported on the forest approach")
 	check(world._bounded_memory and not world.get_node("DreamSurface").visible,"Tokyo needs finite ground in the memory void")
-	check(memory.find_children("*","PainterlyTree",true,false).size()==26,"The shrine and temple must reuse a generous green tree canopy")
-	check(camera.size<3.8 and zones[0].ambience.playing,"Arrival should begin close with a quiet forest bed")
+	check(zones[0].find_children("ForestTree*","PainterlyTree",true,false).size() == 16 and zones[1].find_children("TempleTree*","PainterlyTree",true,false).size() == 10,"Both shrine and temple must retain their green tree canopies")
+	check(absf(camera.size - 4.5) < 0.15 and zones[0].ambience.playing,"Arrival should begin close with a quiet forest bed")
 	for route in [forest,asakusa,temple,to_city,crossing]:
 		for index in 61:
 			var point: Vector3 = route.to_global(route.point_at(route.get_path_length()*index/60.0))
@@ -119,6 +119,7 @@ func run() -> void:
 	check(zones[0].get_node("Scenery/Torii").get_recall_controller().progress>0.99,"The wooden gate must be present during its camera reveal")
 	check(await walk_to(player,Vector3(-10,0,20)),"The full torii reveal must remain on the forest route")
 	await create_timer(2.0).timeout
+	check(absf(camera.size - 8.4) < 0.15,"The torii framing must hold across the approach")
 	await capture("meiji-torii")
 	await walk_trail(player,forest,0,1)
 	await create_timer(2.0).timeout
@@ -126,7 +127,7 @@ func run() -> void:
 	check(await walk_to(player,zones[0].get_fragment().global_position),"The explorer must climb the shrine veranda steps")
 	check(player.global_position.y>0.42,"The first fragment must stand on the real raised veranda")
 	await create_timer(1.2).timeout
-	check(camera.size<6.2,"The camera should return close beside the shrine fragment")
+	check(absf(camera.size - 4.5) < 0.25,"The camera should return to walking zoom beside the shrine fragment")
 	await read_fragment(world,zones[0].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The second requested hint must leave the veranda and enter the lantern gate")
 	check(await walk_to(player,meiji.get_anchor(&"Approach").global_position),"Shrine steps must also descend cleanly")
@@ -155,10 +156,16 @@ func run() -> void:
 		check(not crossing.excludes_ground_point(crowd.to_global(pose.origin)),"Crowd hitboxes must preserve the narrow winding crossing route")
 	for tower: PainterlyCityTower in zones[2].find_children("*Tower","PainterlyCityTower",true,false):
 		check(tower.get_recall_controller().progress>0.99 and tower._display_material!=null,"City facades and screens must recall from the reachable crossing arrival")
-	check(zones[2].ambience.playing and camera.size>8.5 and camera.size<9.2,"City arrival should reveal the street while the crowd bed blends in")
+	check(zones[2].ambience.playing and absf(camera.size - 4.5) < 0.15,"Arrival at the city curb should keep the walking zoom while the crowd bed blends in")
 	await capture("shibuya-arrival")
-	await walk_trail(player,crossing,0,1)
-	await create_timer(1.5).timeout
+	var center_ratio := crossing.curve.get_closest_offset(Vector3.ZERO) / crossing.get_path_length()
+	await walk_trail(player,crossing,0,center_ratio)
+	await create_timer(2.0).timeout
+	check(absf(camera.size - 10.7) < 0.15,"The center of the junction should reveal the crossing and its screens")
+	await capture("shibuya-center")
+	await walk_trail(player,crossing,center_ratio,1)
+	await create_timer(1.7).timeout
+	check(absf(camera.size - 4.5) < 0.25,"The crossing reveal must release at the far-corner fragment")
 	await capture("shibuya-crossing")
 	await read_fragment(world,zones[2].get_fragment())
 	check(not world.get_node("GuidanceController").request_guidance(),"Completed Tokyo notes should leave no automatic or repeated hint")
@@ -173,7 +180,7 @@ func run() -> void:
 	check(await walk_to(player,meiji.get_anchor(&"Approach").global_position),"The shrine's returning stair descent must work")
 	await walk_trail(player,forest,1,0)
 	await create_timer(3.0).timeout
-	check(camera.size<3.8,"Returning to the forest arrival must restore the intimate camera")
+	check(absf(camera.size - 4.5) < 0.15,"Returning to the forest arrival must restore the intimate camera")
 	if "--capture" in args: await capture_views(world,memory,camera)
 	world.free()
 	await process_frame

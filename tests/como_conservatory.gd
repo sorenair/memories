@@ -37,7 +37,7 @@ func walk_to(player: MemoryExplorer, point: Vector3) -> bool:
 func capture(name: String) -> void:
 	if not "--capture" in OS.get_cmdline_user_args(): return
 	await create_timer(1.3).timeout
-	await RenderingServer.frame_post_draw
+	RenderingServer.force_draw(false)
 	root.get_texture().get_image().save_png("res://docs/previews/como-conservatory-"+name+".png")
 
 func walk_trail(player: MemoryExplorer,trail: PainterlyCurvedPath,from: float,to: float) -> void:
@@ -92,7 +92,7 @@ func run() -> void:
 		and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both explorers must arrive safely before the water channel")
 	check(world._bounded_memory and not world.get_node("DreamSurface").visible
 		and not floor.contains_ground_point(Vector3(6,0,-16)),"The three rooms must preserve unsupported pockets of memory void")
-	check(camera.size<3.7,"The conservatory should begin at First Meeting's intimate scale")
+	check(absf(camera.size - 4.4) < 0.15,"The conservatory should begin at the steady walking scale")
 	check(memory.find_children("*","PainterlyFlowerBush",true,false).size()>=16,"The formal garden needs substantial flowering beds")
 	check(zones[2].find_children("*","PainterlyBonsai",true,false).size()==3,"The quiet room must contain exactly three bonsai pedestals")
 	for zone: MemoryZone in zones:
@@ -115,7 +115,7 @@ func run() -> void:
 	for point in [Vector3(2.7,0,4),Vector3(2.7,0,0),Vector3(2.7,0,-5.4)]:
 		check(await walk_to(player,point),"The path must continue beside the rill to the fountain")
 	await create_timer(1.0).timeout
-	check(camera.size>4.6 and camera.size<4.9,"The garden reveal must retain an intimate scale")
+	check(absf(camera.size - 6.4) < 0.2,"The fountain viewpoint must open to its wider composition")
 	await capture("fountain")
 	check(zones[0].get_fragment().try_activate(player),"The garden fragment must be reachable beside the fountain")
 	world.get_node("Controls/FragmentInteraction").advance_note()
@@ -134,7 +134,7 @@ func run() -> void:
 		check(await walk_to(player,point),"The winding jungle route must be clear of water, tree trunks and floor rims")
 	await walk_trail(player,trail,0.0,memory.jungle_fragment_ratio)
 	await create_timer(1.0).timeout
-	check(camera.size>3.4 and camera.size<3.7,"The jungle camera must stay at the close exploration scale")
+	check(absf(camera.size - 4.4) < 0.15,"The jungle camera must keep the walking scale")
 	check(zones[1].ambience.playing,"Leaf/air ambience must accompany the jungle room")
 	await capture("jungle")
 	check(zones[1].get_fragment().try_activate(player),"The jungle fragment must be reachable from its path")
@@ -146,7 +146,7 @@ func run() -> void:
 	for point in [Vector3(7,0,-24.5),Vector3(10,0,-24.5),Vector3(13,0,-24.5),Vector3(13,0,-23.3)]:
 		check(await walk_to(player,point),"The bonsai displays must have a supported, uncluttered approach")
 	await create_timer(1.0).timeout
-	check(camera.size>4.0 and camera.size<4.4 and zones[2].ambience.playing,"The bonsai room must use quiet local audio and closer individual display views")
+	check(absf(camera.size - 5.6) < 0.18 and zones[2].ambience.playing,"The bonsai room must use quiet local audio and closer individual display views")
 	check(zones[2].get_fragment().try_activate(player),"The final fragment must be reachable before the three pedestals")
 	world.get_node("Controls/FragmentInteraction").advance_note()
 	await create_timer(0.2).timeout
@@ -159,7 +159,7 @@ func run() -> void:
 	for point in [Vector3(0,0,-12.5),Vector3(0,0,-8.9),Vector3(-2.7,0,-8.9),Vector3(-2.7,0,9.4),Vector3(0,0,10.3)]:
 		check(await walk_to(player,point),"All three rooms must remain explorable in reverse")
 	await create_timer(1.0).timeout
-	check(camera.size<3.7,"Returning to arrival must restore the intimate camera")
+	check(absf(camera.size - 4.4) < 0.15,"Returning to arrival must restore the intimate camera")
 	if "--capture" in args:
 		var rig: Node3D = world.get_node("CameraRig")
 		rig.set_process(false)

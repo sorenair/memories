@@ -1,10 +1,10 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/scenery/conservatory/frame/painterly_greenhouse_frame.tscn" id="frame"]
 [ext_resource type="PackedScene" path="res://components/scenery/conservatory/walls/painterly_stone_wall.tscn" id="wall"]
 [ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="water"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/flagstone_path.tscn" id="paving"]
 [ext_resource type="Resource" path="res://components/foliage/palettes/conservatory.tres" id="greens"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flower"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" path="res://components/scenery/water/water_palette.gd" id="water_palette"]
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
 
 [sub_resource type="Resource" id="RillColors"]
 script = ExtResource("water_palette")
@@ -24,6 +26,14 @@ foam_color = Color(0.91, 0.91, 0.82, 1)
 [sub_resource type="Curve2D" id="RillOutline"]
 _data = {"points": PackedVector2Array(0, 0, 0, 0, -0.65, -6, 0, 0, 0, 0, 0.65, -6, 0, 0, 0, 0, 0.65, 6, 0, 0, 0, 0, -0.65, 6, 0, 0, 0, 0, -0.65, -6)}
 point_count = 5
+
+[sub_resource type="Curve3D" id="WestStoneCurve"]
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -2.7, 0, 10.525, 0, 0, 0, 0, 0, 0, -2.7, 0, -9.025), "tilts": PackedFloat32Array(0, 0)}
+point_count = 2
+
+[sub_resource type="Curve3D" id="EastStoneCurve"]
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 2.7, 0, 10.525, 0, 0, 0, 0, 0, 0, 2.7, 0, -9.025), "tilts": PackedFloat32Array(0, 0)}
+point_count = 2
 
 [node name="FlowerGarden" instance=ExtResource("zone")]
 zone_id = &"flower_garden"
@@ -65,14 +75,21 @@ foam_width = 0.06
 foam_cell_size = 1.0
 
 [node name="WestLane" parent="Scenery" instance=ExtResource("paving")]
-position = Vector3(-2.7, 0, 0.75)
-rotation_degrees = Vector3(0, 180, 0)
-footprint = Vector2(2.15, 19.55)
-paving_color = Color(0.86, 0.84, 0.77, 1)
 paving_seed = 140180
-end_fade = Vector2(0.6, 0.6)
-slab_length = 1.35
 irregularity = 0.5
+curve = SubResource("WestStoneCurve")
+path_width = 2.15
+end_fade = Vector2(1.15, 1.27)
+width_variation = 0.035
+edge_softness = 0.42
+collision_enabled = false
+paving_color = Color(0.836, 0.81, 0.746, 1)
+shoulder_color = Color(0.852, 0.831, 0.772, 1)
+stone_color = Color(0.87, 0.849, 0.791, 1)
+stone_size = 0.91
+joint_width = 0.014
+crown_height = 0.0
+breakup_size = 0.34
 
 [node name="WestRillCoping" parent="Scenery" instance=ExtResource("wall")]
 position = Vector3(-0.81, 0, 2)
@@ -118,7 +135,7 @@ sprays_per_mass = 44
 flower_count = 80
 flower_style = 0
 flower_size = 0.105
-flower_color = Color(0.58, 0.32, 0.61, 1)
+flower_color = Color(0.68, 0.38, 0.57, 1)
 flower_highlight = Color(0.91, 0.64, 0.78, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -148,7 +165,7 @@ sprays_per_mass = 44
 flower_count = 80
 flower_style = 1
 flower_size = 0.105
-flower_color = Color(0.66, 0.29, 0.48, 1)
+flower_color = Color(0.79, 0.36, 0.50, 1)
 flower_highlight = Color(0.91, 0.64, 0.78, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -178,12 +195,13 @@ sprays_per_mass = 44
 flower_count = 80
 flower_style = 2
 flower_size = 0.105
-flower_color = Color(0.58, 0.32, 0.61, 1)
+flower_color = Color(0.75, 0.43, 0.62, 1)
 flower_highlight = Color(0.91, 0.64, 0.78, 1)
 recall_enabled = true
 react_to_explorers = true
 
-[node name="WestCypress4" parent="Scenery" instance=ExtResource("tree")]
+[node name="WestCypress4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+recall_anchor = NodePath("../FountainBedReveal")
 position = Vector3(-5.7, 0, -6.4)
 tree_type = 5
 tree_seed = 14094
@@ -198,7 +216,8 @@ wind_speed = 0.45
 recall_enabled = true
 react_to_explorers = true
 
-[node name="WestOuterFlowers4" parent="Scenery" instance=ExtResource("flower")]
+[node name="WestOuterFlowers4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+recall_anchor = NodePath("../FountainBedReveal")
 position = Vector3(-5.1500, 0.0000, -6.1500)
 footprint = Vector2(2.2, 3.6)
 bush_seed = 14194
@@ -208,7 +227,7 @@ sprays_per_mass = 44
 flower_count = 80
 flower_style = 0
 flower_size = 0.105
-flower_color = Color(0.66, 0.29, 0.48, 1)
+flower_color = Color(0.71, 0.35, 0.54, 1)
 flower_highlight = Color(0.91, 0.64, 0.78, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -223,7 +242,7 @@ sprays_per_mass = 38
 flower_style = 0
 flower_count = 50
 flower_size = 0.095
-flower_color = Color(0.69, 0.34, 0.38, 1)
+flower_color = Color(0.73, 0.38, 0.45, 1)
 flower_highlight = Color(0.94, 0.65, 0.61, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -238,7 +257,7 @@ sprays_per_mass = 38
 flower_style = 0
 flower_count = 50
 flower_size = 0.095
-flower_color = Color(0.69, 0.34, 0.38, 1)
+flower_color = Color(0.77, 0.42, 0.42, 1)
 flower_highlight = Color(0.94, 0.65, 0.61, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -253,12 +272,13 @@ sprays_per_mass = 38
 flower_style = 0
 flower_count = 50
 flower_size = 0.095
-flower_color = Color(0.69, 0.34, 0.38, 1)
+flower_color = Color(0.75, 0.33, 0.44, 1)
 flower_highlight = Color(0.94, 0.65, 0.61, 1)
 recall_enabled = true
 react_to_explorers = true
 
-[node name="WestInnerFlowers4" parent="Scenery" instance=ExtResource("flower")]
+[node name="WestInnerFlowers4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+recall_anchor = NodePath("../FountainBedReveal")
 position = Vector3(-1.1000, 0.0000, -3.0000)
 footprint = Vector2(0.85, 3.0)
 bush_seed = 14294
@@ -268,12 +288,13 @@ sprays_per_mass = 38
 flower_style = 0
 flower_count = 50
 flower_size = 0.095
-flower_color = Color(0.69, 0.34, 0.38, 1)
+flower_color = Color(0.83, 0.48, 0.47, 1)
 flower_highlight = Color(0.94, 0.65, 0.61, 1)
 recall_enabled = true
 react_to_explorers = true
 
-[node name="WestFountainFlowers" parent="Scenery" instance=ExtResource("flower")]
+[node name="WestFountainFlowers" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+recall_anchor = NodePath("../FountainBedReveal")
 position = Vector3(-2, 0, -8)
 footprint = Vector2(1.6, 1.7)
 bush_seed = 14399
@@ -286,14 +307,21 @@ react_to_explorers = true
 sprays_per_mass = 42
 
 [node name="EastLane" parent="Scenery" instance=ExtResource("paving")]
-position = Vector3(2.7, 0, 0.75)
-rotation_degrees = Vector3(0, 180, 0)
-footprint = Vector2(2.15, 19.55)
-paving_color = Color(0.86, 0.84, 0.77, 1)
 paving_seed = 140399
-end_fade = Vector2(0.6, 0.6)
-slab_length = 1.35
 irregularity = 0.5
+curve = SubResource("EastStoneCurve")
+path_width = 2.15
+end_fade = Vector2(1.15, 1.27)
+width_variation = 0.035
+edge_softness = 0.42
+collision_enabled = false
+paving_color = Color(0.836, 0.81, 0.746, 1)
+shoulder_color = Color(0.852, 0.831, 0.772, 1)
+stone_color = Color(0.87, 0.849, 0.791, 1)
+stone_size = 0.91
+joint_width = 0.014
+crown_height = 0.0
+breakup_size = 0.34
 
 [node name="EastRillCoping" parent="Scenery" instance=ExtResource("wall")]
 position = Vector3(0.81, 0, 2)
@@ -339,7 +367,7 @@ sprays_per_mass = 44
 flower_count = 80
 flower_style = 0
 flower_size = 0.105
-flower_color = Color(0.58, 0.32, 0.61, 1)
+flower_color = Color(0.68, 0.38, 0.57, 1)
 flower_highlight = Color(0.91, 0.64, 0.78, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -369,7 +397,7 @@ sprays_per_mass = 44
 flower_count = 80
 flower_style = 1
 flower_size = 0.105
-flower_color = Color(0.66, 0.29, 0.48, 1)
+flower_color = Color(0.79, 0.36, 0.50, 1)
 flower_highlight = Color(0.91, 0.64, 0.78, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -399,12 +427,13 @@ sprays_per_mass = 44
 flower_count = 80
 flower_style = 2
 flower_size = 0.105
-flower_color = Color(0.58, 0.32, 0.61, 1)
+flower_color = Color(0.75, 0.43, 0.62, 1)
 flower_highlight = Color(0.91, 0.64, 0.78, 1)
 recall_enabled = true
 react_to_explorers = true
 
-[node name="EastCypress4" parent="Scenery" instance=ExtResource("tree")]
+[node name="EastCypress4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+recall_anchor = NodePath("../FountainBedReveal")
 position = Vector3(5.7, 0, -6.4)
 tree_type = 5
 tree_seed = 14112
@@ -419,7 +448,8 @@ wind_speed = 0.45
 recall_enabled = true
 react_to_explorers = true
 
-[node name="EastOuterFlowers4" parent="Scenery" instance=ExtResource("flower")]
+[node name="EastOuterFlowers4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+recall_anchor = NodePath("../FountainBedReveal")
 position = Vector3(5.1500, 0.0000, -6.1500)
 footprint = Vector2(2.2, 3.6)
 bush_seed = 14212
@@ -429,7 +459,7 @@ sprays_per_mass = 44
 flower_count = 80
 flower_style = 0
 flower_size = 0.105
-flower_color = Color(0.66, 0.29, 0.48, 1)
+flower_color = Color(0.71, 0.35, 0.54, 1)
 flower_highlight = Color(0.91, 0.64, 0.78, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -444,7 +474,7 @@ sprays_per_mass = 38
 flower_style = 0
 flower_count = 50
 flower_size = 0.095
-flower_color = Color(0.69, 0.34, 0.38, 1)
+flower_color = Color(0.73, 0.38, 0.45, 1)
 flower_highlight = Color(0.94, 0.65, 0.61, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -459,7 +489,7 @@ sprays_per_mass = 38
 flower_style = 0
 flower_count = 50
 flower_size = 0.095
-flower_color = Color(0.69, 0.34, 0.38, 1)
+flower_color = Color(0.77, 0.42, 0.42, 1)
 flower_highlight = Color(0.94, 0.65, 0.61, 1)
 recall_enabled = true
 react_to_explorers = true
@@ -474,12 +504,13 @@ sprays_per_mass = 38
 flower_style = 0
 flower_count = 50
 flower_size = 0.095
-flower_color = Color(0.69, 0.34, 0.38, 1)
+flower_color = Color(0.75, 0.33, 0.44, 1)
 flower_highlight = Color(0.94, 0.65, 0.61, 1)
 recall_enabled = true
 react_to_explorers = true
 
-[node name="EastInnerFlowers4" parent="Scenery" instance=ExtResource("flower")]
+[node name="EastInnerFlowers4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+recall_anchor = NodePath("../FountainBedReveal")
 position = Vector3(1.1000, 0.0000, -3.0000)
 footprint = Vector2(0.85, 3.0)
 bush_seed = 14312
@@ -489,12 +520,13 @@ sprays_per_mass = 38
 flower_style = 0
 flower_count = 50
 flower_size = 0.095
-flower_color = Color(0.69, 0.34, 0.38, 1)
+flower_color = Color(0.83, 0.48, 0.47, 1)
 flower_highlight = Color(0.94, 0.65, 0.61, 1)
 recall_enabled = true
 react_to_explorers = true
 
-[node name="EastFountainFlowers" parent="Scenery" instance=ExtResource("flower")]
+[node name="EastFountainFlowers" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+recall_anchor = NodePath("../FountainBedReveal")
 position = Vector3(2, 0, -8)
 footprint = Vector2(1.6, 1.7)
 bush_seed = 14401
@@ -513,6 +545,26 @@ fountain_height = 1.7
 flow_speed = 0.7
 recall_enabled = true
 water_color = Color(0.34, 0.57, 0.72, 1)
+
+[node name="LightAcrossTheRill" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(2.72, 0.018, 2.7)
+rotation_degrees = Vector3(0, 28, 0)
+footprint = Vector2(3.1, 5.1)
+light_color = Color(0.82, 0.92, 0.86, 1)
+wash_shape = 2
+intensity = 0.23
+softness = 0.85
+recall_enabled = true
+
+[node name="FountainDaylight" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(1.16, 0.02, -6.1)
+rotation_degrees = Vector3(0, -14, 0)
+footprint = Vector2(5.15, 3.85)
+light_color = Color(1, 0.88, 0.71, 1)
+wash_shape = 0
+intensity = 0.23
+softness = 0.85
+recall_enabled = true
 
 [node name="Fragment" parent="."]
 position = Vector3(2.7, 0.04, -5.8)
@@ -695,3 +747,86 @@ wind_strength = 0.02
 recall_enabled = true
 react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../WestLane"), NodePath("../EastLane"), NodePath("../Fountain")])
+
+[node name="BedEdgeFern0" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-4.15, 0, 7.6)
+rotation_degrees = Vector3(0, 0, 0)
+plant_seed = 16620
+plant_height = 0.48
+spread = 1.12
+fullness = 0.56
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BedEdgeFern1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-4.32, 0, 1.8)
+rotation_degrees = Vector3(0, 27, 0)
+plant_seed = 16621
+plant_height = 0.53
+spread = 1.32
+fullness = 0.56
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BedEdgeFern2" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-4.19, 0, -3.15)
+rotation_degrees = Vector3(0, 54, 0)
+plant_seed = 16622
+plant_height = 0.56
+spread = 1.35
+fullness = 0.56
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BedEdgeFern3" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(4.0, 0, 7.13)
+rotation_degrees = Vector3(0, 81, 0)
+plant_seed = 16623
+plant_height = 0.46
+spread = 1.06
+fullness = 0.56
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BedEdgeFern4" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(4.2, 0, 3.66)
+rotation_degrees = Vector3(0, 108, 0)
+plant_seed = 16624
+plant_height = 0.52
+spread = 1.22
+fullness = 0.56
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BedEdgeFern5" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(4.22, 0, -2.95)
+rotation_degrees = Vector3(0, 135, 0)
+plant_seed = 16625
+plant_height = 0.56
+spread = 1.42
+fullness = 0.56
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BedEdgeFern6" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.97, 0, -7.48)
+rotation_degrees = Vector3(0, 162, 0)
+plant_seed = 16626
+plant_height = 0.41
+spread = 1.08
+fullness = 0.56
+recall_enabled = true
+react_to_explorers = true
+
+[node name="BedEdgeFern7" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-3.94, 0, -7.59)
+rotation_degrees = Vector3(0, 189, 0)
+plant_seed = 16627
+plant_height = 0.49
+spread = 1.11
+fullness = 0.56
+recall_enabled = true
+react_to_explorers = true
+
+[node name="FountainBedReveal" type="Marker3D" parent="Scenery"]
+position = Vector3(0, 0, -4.58)

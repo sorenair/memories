@@ -126,6 +126,7 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 		_appearance_changed()
 
 @export_group("Recall")
+@export var recall_anchor: Node3D
 @export var recall_enabled: bool = false:
 	set(value):
 		recall_enabled = value
@@ -149,6 +150,9 @@ func _ready() -> void:
 
 func get_recall_controller() -> Node:
 	return _recall
+
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
 
 func recall_materials() -> Array[ShaderMaterial]:
 	return _materials

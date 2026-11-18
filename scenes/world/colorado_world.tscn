@@ -11,5 +11,5 @@ field_zone = NodePath("../Memory/Zones/Flatirons")
 summit_zone = NodePath("../Memory/Zones/Summit")
 lake_zone = NodePath("../Memory/Zones/ForestLake")
 [node name="Camera3D" parent="CameraRig" index="0"]
-size = 3.25
+size = 4.8
 far = 200.0

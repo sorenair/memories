@@ -1,8 +1,8 @@
 @tool
 extends MemoryScene
-## One editable weave drives crowd clearance and requested routes through people.
+## Editable paths drive crowd clearance and fragment guidance.
 func _ready() -> void:
-	for path: PainterlyCurvedPath in [$Environment/StreetWeave,$Environment/PorchWeave]:
+	for path: PainterlyCurvedPath in [$Environment/StreetWeave, $Environment/PorchWeave, $Environment/BarApproach]:
 		if not path.curve.changed.is_connected(_update_routes): path.curve.changed.connect(_update_routes)
 	_update_routes()
 
@@ -21,7 +21,13 @@ func _update_routes() -> void:
 	_assign($Environment/Guidance/ToThePorch,porch)
 	var bar := branch.get_route_points(1,0)
 	bar.append_array(street.get_route_points(split,1))
-	for point in [Vector3(0,0.76,-24.5),Vector3(0,0.76,-27.2),Vector3(2.4,0.76,-28.8),Vector3(2.4,0.76,-30.1)]:
+	var approach: PainterlyCurvedPath = $Environment/BarApproach
+	var street_end := street.to_global(street.point_at(street.get_path_length()))
+	var approach_length := approach.get_path_length()
+	if approach_length > 0.0:
+		var join_distance := approach.curve.get_closest_offset(approach.to_local(street_end))
+		bar.append_array(approach.get_route_points(join_distance / approach_length))
+	for point in [Vector3(2.4,0.76,-28.8),Vector3(2.4,0.76,-30.1)]:
 		bar.append(to_global(point))
 	_assign($Environment/Guidance/ToTheBar,bar)
 

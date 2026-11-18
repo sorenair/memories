@@ -23,7 +23,7 @@ func walk_to(player: MemoryExplorer, point: Vector3) -> bool:
 func capture(name: String) -> void:
 	if not "--capture" in OS.get_cmdline_user_args(): return
 	await create_timer(1.2).timeout
-	await RenderingServer.frame_post_draw
+	RenderingServer.force_draw(false)
 	root.get_texture().get_image().save_png("res://docs/previews/museum-"+name+".png")
 func run() -> void:
 	root.content_scale_size = Vector2i(1600,738)

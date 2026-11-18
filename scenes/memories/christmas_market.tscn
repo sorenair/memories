@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
 [ext_resource type="PackedScene" path="res://components/groundcover/snow/painterly_snow_patch.tscn" id="ground_snow"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
 [ext_resource type="AudioStream" path="res://audio/samples/christmas_market_waltz.wav" id="music"]
 [ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
 
 [sub_resource type="Curve2D" id="MarketOutline"]
 _data = {"points": PackedVector2Array(0, 0, 0, 0, -14, -22.55, 0, 0, 0, 0, -13.55, -23, 0, 0, 0, 0, 2.05, -23, 0, 0, 0, 0, 2.5, -22.55, 0, 0, 0, 0, 2.5, -10.45, 0, 0, 0, 0, 2.05, -10, 0, 0, 0, 0, -2.05, -10, 0, 0, 0, 0, -2.5, -9.7, 0, 0, 0, 0, -2.5, -9.1, 0, 0, 0, 0, -2.05, -8.8, 0, 0, 0, 0, 6.05, -8.8, 0, 0, 0, 0, 6.5, -8.35, 0, 0, 0, 0, 6.5, 7.05, 0, 0, 0, 0, 6.05, 7.5, 0, 0, 0, 0, -6.05, 7.5, 0, 0, 0, 0, -6.5, 7.05, 0, 0, 0, 0, -6.5, -9.55, 0, 0, 0, 0, -6.95, -10, 0, 0, 0, 0, -13.55, -10, 0, 0, 0, 0, -14, -10.45, 0, 0, 0, 0, -14, -22.55)}
@@ -59,8 +61,28 @@ flutter = 0.3
 flake_size = Vector2(0.07, 0.17)
 opacity = 0.9
 
+[node name="LanternSpillAtBend" parent="Environment" instance=ExtResource("wash")]
+position = Vector3(-1.75, 0.059, -6.6)
+rotation_degrees = Vector3(0, 49, 0)
+footprint = Vector2(3.1, 4.6)
+light_color = Color(0.961, 0.806, 0.604, 1)
+intensity = 0.16
+softness = 0.94
+wash_seed = 191244
+recall_enabled = true
+
+[node name="LanternSpillAtClearing" parent="Environment" instance=ExtResource("wash")]
+position = Vector3(-5.17, 0.059, -10.45)
+rotation_degrees = Vector3(0, 29, 0)
+footprint = Vector2(3.8, 4.8)
+light_color = Color(0.978, 0.842, 0.657, 1)
+intensity = 0.13
+softness = 0.94
+wash_seed = 191245
+recall_enabled = true
+
 [node name="GatheringFocus" type="Marker3D" parent="Environment"]
-position = Vector3(-6.7, 1.4, -16.5)
+position = Vector3(-6.05, 1.65, -16.5)
 
 [node name="Guidance" type="Node3D" parent="Environment"]
 

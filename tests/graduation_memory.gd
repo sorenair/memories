@@ -123,6 +123,8 @@ func run() -> void:
 	check(await walk_to(player,Vector3(4,0,-3.5)),"The grass courtyard must join the portico stairs")
 	await create_timer(2.0).timeout
 	check(camera.size>12.8 and camera.size<13.7,"The portico approach should reveal the colonnade without losing the player")
+	var portico_tree: PainterlyTree = zones[1].get_node("Scenery/WestPorticoTree")
+	check(portico_tree.get_recall_controller().progress>0.4,"The courtyard must recall the portico's framing trees before the stair climb")
 	await capture("portico")
 	check(await walk_to(player,zones[1].get_fragment().global_position),"The real explorer must climb every portico step")
 	check(player.global_position.y>0.80 and zones[1].ambience.playing,"The portico note must stand on the raised landing, with blended ambience")
@@ -138,6 +140,8 @@ func run() -> void:
 	check(await walk_to(player,Vector3(-6,0,-27.0)),"The 2.2m occupied seating aisle must connect to the stage ramp")
 	await create_timer(2.0).timeout
 	check(camera.size>6.3 and camera.size<6.7,"The ceremony camera must stay comfortably close")
+	var stage_tree: PainterlyTree = zones[2].get_node("Scenery/StageBackdropTree")
+	check(stage_tree.get_recall_controller().progress>0.4,"The aisle must recall the stage backdrop before reaching the ramp")
 	await capture("ceremony")
 	check(await walk_to(player,zones[2].get_fragment().global_position),"The central ramp must lead onto the commencement stage")
 	check(player.global_position.y>0.42,"The ceremony fragment must be supported by the deck")

@@ -1052,15 +1052,216 @@ facing_variation = 90.0
 palette = 4
 clothing_colors = PackedColorArray(0.70,0.25,0.29,1, 0.88,0.84,0.73,1, 0.60,0.29,0.33,1, 0.38,0.48,0.53,1)
 pose_mix = 2
-motion_strength = 0.70
-motion_speed = 0.95
+motion_strength = 0.86
+motion_speed = 1.1
 softness = 0.10
 recall_enabled = true
 chunk_size = 8.0
 visibility_distance = 65.0
 ground_exclusions = Array[NodePath]([NodePath("../../../../Environment/StreetWeave"), NodePath("../../../../Environment/PorchWeave")])
+dance_bounce = 0.048
 
 [node name="Fragment" parent="."]
 position = Vector3(-5.4, 0.04, -1)
 note_title = "Spring on Mifflin"
 notes = PackedStringArray("[Placeholder] A spring afternoon on Mifflin Street, surrounded by the party and the first green leaves. Replace this with our memory of April 25, 2026.")
+
+[node name="ArrivalPlantingReveal" type="Marker3D" parent="Scenery"]
+position = Vector3(0, 0, 17.2)
+
+[node name="WestCurbPlantingReveal" type="Marker3D" parent="Scenery"]
+position = Vector3(-2, 0, 4.4)
+
+[node name="EastCurbPlantingReveal" type="Marker3D" parent="Scenery"]
+position = Vector3(2, 0, -3.2)
+
+[node name="SpringCanopyPocket0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+recall_anchor = NodePath("../ArrivalPlantingReveal")
+position = Vector3(-4.6, 0, 18.5)
+tree_type = 2
+tree_seed = 425900
+tree_height = 2.7
+crown_width = 1.65
+palette_preset = 2
+wind_speed = 0.49
+wind_strength = 0.061
+leaf_sprays_per_cluster = 38
+trunk_collision = false
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringCanopyPocket1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+recall_anchor = NodePath("../ArrivalPlantingReveal")
+position = Vector3(4.5, 0, 16.2)
+tree_type = 2
+tree_seed = 425901
+tree_height = 2.92
+crown_width = 1.8
+palette_preset = 2
+wind_speed = 0.55
+wind_strength = 0.061
+leaf_sprays_per_cluster = 38
+trunk_collision = false
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringCanopyPocket2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+recall_anchor = NodePath("../WestCurbPlantingReveal")
+position = Vector3(-7.2, 0, 6.1)
+tree_type = 0
+tree_seed = 425902
+tree_height = 3.65
+crown_width = 2.32
+palette_preset = 2
+wind_speed = 0.61
+wind_strength = 0.061
+leaf_sprays_per_cluster = 38
+trunk_collision = true
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringCanopyPocket3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+recall_anchor = NodePath("../EastCurbPlantingReveal")
+position = Vector3(7.08, 0, -5.2)
+tree_type = 0
+tree_seed = 425903
+tree_height = 3.4
+crown_width = 2.15
+palette_preset = 2
+wind_speed = 0.67
+wind_strength = 0.061
+leaf_sprays_per_cluster = 38
+trunk_collision = true
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringCanopyPocket4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6.85, 0, -16.55)
+tree_type = 0
+tree_seed = 425904
+tree_height = 3.15
+crown_width = 1.96
+palette_preset = 2
+wind_speed = 0.73
+wind_strength = 0.061
+leaf_sprays_per_cluster = 38
+trunk_collision = true
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringBorder0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bloom")]
+recall_anchor = NodePath("../ArrivalPlantingReveal")
+position = Vector3(-3.7, 0, 18.8)
+footprint = Vector2(1.56, 1.19)
+bush_height = 0.61
+bush_seed = 425920
+palette_preset = 2
+flower_color = Color(0.83, 0.54, 0.62, 1)
+flower_highlight = Color(0.98, 0.82, 0.76, 1)
+flower_count = 31
+wind_strength = 0.051
+wind_speed = 0.62
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringBorder1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bloom")]
+recall_anchor = NodePath("../ArrivalPlantingReveal")
+position = Vector3(3.9, 0, 16)
+footprint = Vector2(1.69, 1.28)
+bush_height = 0.54
+bush_seed = 425921
+palette_preset = 2
+flower_color = Color(0.83, 0.54, 0.62, 1)
+flower_highlight = Color(0.98, 0.82, 0.76, 1)
+flower_count = 31
+wind_strength = 0.051
+wind_speed = 0.62
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringBorder2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bloom")]
+recall_anchor = NodePath("../ArrivalPlantingReveal")
+position = Vector3(-6.2, 0, 15.9)
+footprint = Vector2(1.9, 1.44)
+bush_height = 0.78
+bush_seed = 425922
+palette_preset = 2
+flower_color = Color(0.83, 0.54, 0.62, 1)
+flower_highlight = Color(0.98, 0.82, 0.76, 1)
+flower_count = 31
+wind_strength = 0.051
+wind_speed = 0.62
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringBorder3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bloom")]
+recall_anchor = NodePath("../WestCurbPlantingReveal")
+position = Vector3(-6.82, 0, 5.61)
+footprint = Vector2(1.43, 1.09)
+bush_height = 0.65
+bush_seed = 425923
+palette_preset = 2
+flower_color = Color(0.83, 0.54, 0.62, 1)
+flower_highlight = Color(0.98, 0.82, 0.76, 1)
+flower_count = 31
+wind_strength = 0.051
+wind_speed = 0.62
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringBorder4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bloom")]
+recall_anchor = NodePath("../EastCurbPlantingReveal")
+position = Vector3(6.2, 0, -4.83)
+footprint = Vector2(1.35, 1.03)
+bush_height = 0.52
+bush_seed = 425924
+palette_preset = 2
+flower_color = Color(0.83, 0.54, 0.62, 1)
+flower_highlight = Color(0.98, 0.82, 0.76, 1)
+flower_count = 31
+wind_strength = 0.051
+wind_speed = 0.62
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringBorder5" parent="Scenery" instance=ExtResource("bloom")]
+position = Vector3(6.16, 0, -18.25)
+footprint = Vector2(1.74, 1.32)
+bush_height = 0.7
+bush_seed = 425925
+palette_preset = 2
+flower_color = Color(0.83, 0.54, 0.62, 1)
+flower_highlight = Color(0.98, 0.82, 0.76, 1)
+flower_count = 31
+wind_strength = 0.051
+wind_speed = 0.62
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringBorder6" parent="Scenery" instance=ExtResource("bloom")]
+position = Vector3(-4.05, 0, -19.2)
+footprint = Vector2(1.31, 1.00)
+bush_height = 0.53
+bush_seed = 425926
+palette_preset = 2
+flower_color = Color(0.83, 0.54, 0.62, 1)
+flower_highlight = Color(0.98, 0.82, 0.76, 1)
+flower_count = 31
+wind_strength = 0.051
+wind_speed = 0.62
+recall_enabled = true
+react_to_explorers = true
+
+[node name="SpringBorder7" parent="Scenery" instance=ExtResource("bloom")]
+position = Vector3(3.65, 0, -19.9)
+footprint = Vector2(1.37, 1.04)
+bush_height = 0.63
+bush_seed = 425927
+palette_preset = 2
+flower_color = Color(0.83, 0.54, 0.62, 1)
+flower_highlight = Color(0.98, 0.82, 0.76, 1)
+flower_count = 31
+wind_strength = 0.051
+wind_speed = 0.62
+recall_enabled = true
+react_to_explorers = true

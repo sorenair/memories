@@ -9,18 +9,18 @@
 [ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
 
 [sub_resource type="Curve2D" id="ConcertOutline"]
-_data = {"points": PackedVector2Array(0, 0, 0, 0, -3.2, 18, 0, 0, 0, 0, -4.4, 16, 0, 0, 0, 0, -8, 14, 0, 0, 0, 0, -10.6, 10.5, 0, 0, 0, 0, -11, 2, 0, 0, 0, 0, -10, -4, 0, 0, 0, 0, -7.8, -7, 0, 0, 0, 0, -7.8, -14.7, 0, 0, 0, 0, -5.8, -16, 0, 0, 0, 0, 5.8, -16, 0, 0, 0, 0, 7.8, -14.7, 0, 0, 0, 0, 7.8, -7, 0, 0, 0, 0, 10, -4, 0, 0, 0, 0, 11, 2, 0, 0, 0, 0, 10.6, 10.5, 0, 0, 0, 0, 8, 14, 0, 0, 0, 0, 4.4, 16, 0, 0, 0, 0, 3.2, 18, 0, 0, 0, 0, -3.2, 18)}
-point_count = 19
+_data = {"points": PackedVector2Array(0, 0, 0, 0, -4.15, 10.65, 0, 0, 0, 0, -7.8, 9.9, 0, 0, 0, 0, -10.7, 8.1, 0, 0, 0, 0, -11, 2.7, 0, 0, 0, 0, -10.3, -2.2, 0, 0, 0, 0, -8, -4.6, 0, 0, 0, 0, -8, -11.7, 0, 0, 0, 0, -6, -13, 0, 0, 0, 0, 6, -13, 0, 0, 0, 0, 8, -11.7, 0, 0, 0, 0, 8, -4.6, 0, 0, 0, 0, 10.3, -2.2, 0, 0, 0, 0, 11, 2.7, 0, 0, 0, 0, 10.7, 8.1, 0, 0, 0, 0, 7.8, 9.9, 0, 0, 0, 0, 4.15, 10.65, 0, 0, 0, 0, -4.15, 10.65)}
+point_count = 17
 
 [node name="Memory" instance=ExtResource("base")]
 memory_id = &"new_years_eve"
 display_name = "New Year's Eve"
 
 [node name="Entry" parent="."]
-position = Vector3(0, 0.04, 14.2)
+position = Vector3(0, 0.04, 8.7)
 
 [node name="Exit" parent="."]
-position = Vector3(-3, 0.5, -11)
+position = Vector3(-3, 0.5, -8)
 
 [node name="ConcertFloor" parent="Environment" instance=ExtResource("platform")]
 visible = false
@@ -35,11 +35,11 @@ pigment_strength = 0.012
 edge_inset = 0.2
 
 [node name="WornAisle" parent="Environment" instance=ExtResource("paving")]
-position = Vector3(0, 0, 4.8)
-footprint = Vector2(1.8, 22)
+position = Vector3(0, 0, 3.15)
+footprint = Vector2(2.2, 12.3)
 paving_seed = 311225
 paving_color = Color(0.80, 0.79, 0.83, 1)
-end_fade = Vector2(2.5, 3.5)
+end_fade = Vector2(2.4, 2.45)
 irregularity = 0.3
 slab_length = 3.0
 
@@ -56,6 +56,6 @@ fragment_sound = ExtResource("chime")
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Concert/Fragment")
-waypoints = PackedVector3Array(0, 0.76, 11, 0, 0.76, 6, 0, 0.76, 0, 0, 0.76, -4.5)
+waypoints = PackedVector3Array(0, 0.76, 6.5, 0, 0.76, 3.0, 0, 0.76, 0, 0, 0.76, -2.0)
 stroke_width = 0.34
 opacity = 0.92

@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
 [ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/flower_garden_zone.tscn" id="garden"]
 [ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/jungle_zone.tscn" id="jungle"]
 [ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/bonsai_zone.tscn" id="bonsai"]
@@ -10,9 +9,19 @@
 [ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="Script" path="res://scripts/conservatory_memory.gd" id="route"]
 
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/flagstone_path.tscn" id="curved"]
+
 [sub_resource type="Curve2D" id="RoomsOutline"]
 _data = {"points": PackedVector2Array(0, 0, 0, 0, -6.8, 12, 0, 0, 0, 0, 6.8, 12, 0, 0, 0, 0, 7.3, 10.5, 0, 0, 0, 0, 7.3, -8.5, 0, 0, 0, 0, 6.5, -10, 0, 0, 0, 0, 2, -10, 0, 0, 0, 0, 2, -13, 0, 0, 0, 0, 4.5, -13, 0, 0, 0, 0, 4.5, -22.5, 0, 0, 0, 0, 8, -22.5, 0, 0, 0, 0, 8, -19.3, 0, 0, 0, 0, 18.5, -19.3, 0, 0, 0, 0, 19, -20, 0, 0, 0, 0, 19, -28.5, 0, 0, 0, 0, 18.3, -29.3, 0, 0, 0, 0, 8.6, -29.3, 0, 0, 0, 0, 8, -28.5, 0, 0, 0, 0, 8, -26.5, 0, 0, 0, 0, 4.5, -26.5, 0, 0, 0, 0, 4.5, -28, 0, 0, 0, 0, 3.5, -28.5, 0, 0, 0, 0, -9.5, -28.5, 0, 0, 0, 0, -10.5, -27.5, 0, 0, 0, 0, -10.5, -14, 0, 0, 0, 0, -9.5, -13, 0, 0, 0, 0, -2, -13, 0, 0, 0, 0, -2, -10, 0, 0, 0, 0, -6.5, -10, 0, 0, 0, 0, -7.3, -8.5, 0, 0, 0, 0, -7.3, 10.5, 0, 0, 0, 0, -6.8, 12)}
 point_count = 31
+
+[sub_resource type="Curve3D" id="JungleThresholdCurve"]
+_data = {"points": PackedVector3Array(0,0,0, 0,0,-0.8, 0,0,-8.9, 0.33,0,0.62, -0.33,0,-0.62, -0.2,0,-11.95, 0.08,0,0.78, 0,0,0, -3,0,-14), "tilts": PackedFloat32Array(0,0,0)}
+point_count = 3
+
+[sub_resource type="Curve3D" id="BonsaiWalkCurve"]
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 3.6, 0, -24.5, 0, 0, 0, 0, 0, 0, 13.42, 0, -24.5), "tilts": PackedFloat32Array(0, 0)}
+point_count = 2
 
 [node name="Memory" instance=ExtResource("base")]
 script = ExtResource("route")
@@ -32,35 +41,38 @@ outline_detail = 96
 pillar_depth = 9.0
 edge_inset = 0.16
 
-[node name="GardenToJungle" parent="Environment" instance=ExtResource("paving")]
-position = Vector3(0, 0, -10.8)
-rotation_degrees = Vector3(0, 180, 0)
-footprint = Vector2(2.4, 4.4)
-paving_color = Color(0.86, 0.84, 0.77, 1)
+[node name="GardenToJungle" parent="Environment" instance=ExtResource("curved")]
+curve = SubResource("JungleThresholdCurve")
+path_width = 2.32
 paving_seed = 140158
-end_fade = Vector2(0.6, 0.6)
-slab_length = 1.35
-irregularity = 0.5
+end_fade = Vector2(1.12, 0.78)
+width_variation = 0.06
+edge_softness = 0.42
+collision_enabled = false
+paving_color = Color(0.836, 0.81, 0.746, 1)
+shoulder_color = Color(0.852, 0.831, 0.772, 1)
+stone_color = Color(0.87, 0.849, 0.791, 1)
+stone_size = 0.91
+joint_width = 0.014
+crown_height = 0.0
+breakup_size = 0.34
 
-[node name="BentThreshold" parent="Environment" instance=ExtResource("paving")]
-position = Vector3(-1.5, 0, -13.7)
-rotation_degrees = Vector3(0, -128.66, 0)
-footprint = Vector2(2.4, 4.292)
-paving_color = Color(0.86, 0.84, 0.77, 1)
-paving_seed = 140168
-end_fade = Vector2(0.6, 0.6)
-slab_length = 1.35
-irregularity = 0.5
-
-[node name="ToBonsai" parent="Environment" instance=ExtResource("paving")]
-position = Vector3(5.9, 0, -24.5)
-rotation_degrees = Vector3(0, 90, 0)
-footprint = Vector2(2.2, 6.25)
-paving_color = Color(0.86, 0.84, 0.77, 1)
+[node name="ToBonsai" parent="Environment" instance=ExtResource("curved")]
 paving_seed = 140178
-end_fade = Vector2(0.6, 0.6)
-slab_length = 1.35
 irregularity = 0.5
+curve = SubResource("BonsaiWalkCurve")
+path_width = 2.12
+end_fade = Vector2(0.83, 2.15)
+width_variation = 0.06
+edge_softness = 0.45
+collision_enabled = false
+paving_color = Color(0.836, 0.81, 0.746, 1)
+shoulder_color = Color(0.852, 0.831, 0.772, 1)
+stone_color = Color(0.87, 0.849, 0.791, 1)
+stone_size = 0.91
+joint_width = 0.014
+crown_height = 0.0
+breakup_size = 0.34
 
 [node name="Guidance" type="Node3D" parent="Environment"]
 

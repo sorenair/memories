@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, fog_disabled;
 #include "res://components/effects/recall/shaders/assembled_recall.gdshaderinc"
+#include "res://components/lighting/painted_light/painted_light.gdshaderinc"
 uniform float pigment_strength = 0.65;
 uniform float paint_phase = 0.0;
 varying vec3 paint;
@@ -28,6 +29,7 @@ void fragment() {
 	float glow = smoothstep(1.5, 1.8, material_kind);
 	vec3 color = paint * mix(0.94, 1.045, band * pigment_strength + (1.0 - pigment_strength) * 0.5);
 	color = mix(color, COLOR.rgb, glow * 0.7);
+	color = apply_painted_light(color, assembly_position, mat3(INV_VIEW_MATRIX) * NORMAL, 1.0 - glow * 0.8);
 	ALBEDO = mix(color, vec3(0.87, 0.86, 0.77), haze);
 	EMISSION = COLOR.rgb * glow * 0.16 * (1.0 - haze);
 	float assembly = assembly_clarity(assembly_position);

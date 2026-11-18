@@ -6,6 +6,7 @@ The scene retains the bungalow, big autumn tree, short front walk, and sidewalk 
 
 - A low, pale diamond fence, with a 2.3 m opening centered on the walk and a right-hand side fence. Both player spawns fit safely outside it and can enter together.
 - Fuller orange meadow dabs, orange shrubs with red accents, and smooth, softly folded oval leaves scattered over paving, stair treads, and the lower roof slope. Each leaf-litter patch is one opaque draw with tiny optional GPU flutter.
+- Crossing the open gate lifts a quick eddy of loose gold, orange, and scarlet leaves. The leaves reuse the tree's curved mesh and drift in the explorer's direction of travel. The sidewalk scatter follows the paved span.
 - Broad house pigment, irregular shingles, opaque curtain/window paint, and a small warm porch lamp, still merged into one house mesh.
 - A fuller orange/red doorway vine arch and corner creeper. The main autumn tree sits within the front yard, left of the walk and behind the fence. Birds have been removed from this memory.
 
@@ -36,11 +37,13 @@ The shared mixer has **Master**, **Music**, **Ambience**, **SFX**, and **UI** co
 
 Past the house, the arcade is remembered as an open autumn glade rather than an enclosed room. Under `Zones/Arcade/Scenery/Machines`, centered at `(15, 0, 1)`, pinball, punching bag, and the band form a loose triangle with clear white space between them. Small gold/red foliage islands soften their bases. Two slender birches and an interrupted suspended strand of warm bulbs quietly connect the stations.
 
-The house sidewalk gives way to faint, separated paving impressions and scattered leaves. A few fading floorboard strokes and soft pigment pools suggest traces of the bar around the activities. The original rectangular arcade floor, walls, bar furniture, and hedge-like perimeter are no longer placed in this memory. All walking ground is the existing finite platform.
+The house sidewalk gives way to scattered leaves. The arcade keeps its ivory walking ground, with the pinball cabinet's teal and the punching machine's coral among the autumn foliage. The suspended lights alternate amber, peach, and mint. All walking ground is the existing finite platform.
 
 The reusable activities are **Pinball**, **PunchingBag**, and **MechanicalBand**. Their painted models are preserved; pinball adds a shooter guide, movable ball, and live score display. The band remains one component containing guitar, kick, snare, piano, mechanisms, and four control buttons. Pinball is registered with the shared `InteractionController`: approach its front controls and tap or click the cabinet to launch the ball. Its exported Interaction Range defaults to 1.35 m; it becomes unavailable while running and available again after `score_awarded(score)`. Direct `start_interaction()` / `interaction_requested` hooks remain available for previews. Tap or click the punching bag near its front approach for anticipation, a painted hit, damped leather swing, and a random three-digit strength result. It stays busy until the bag settles. The band's four individual caps use the same controller, highlighting only the selected cap and playing the associated mechanism and short instrument sound. See [the component guide](../../components/activities/arcade/README.md).
 
-`Zones/Arcade/Scenery/Machines/Echoes` owns only decorative floor traces, suspended bulbs/halos, and pale surface pigment; it adds no collision. The arcade props are grounded directly on the platform. House, original arrival, gate, camera, and 34 × 19 m platform remain unchanged. Exit sits in the arcade's open foreground.
+`Zones/Arcade/Scenery/Machines/Echoes` supplies the colored bulbs, halos, and pale surface pigment. Floor traces are disabled here. `BandFlourishes` listens for instrument input and draws a brief curling paint stroke and two dabs in each instrument's own color. It also supports overlapping notes. Exit sits in the arcade's open foreground.
+
+[Gate leaf study](../../docs/previews/first-meeting-vivid-gate.jpg) · [Arcade before and after](../../docs/previews/first-meeting-vivid-arcade.jpg) · [Band brushstroke study](../../docs/previews/first-meeting-vivid-band.jpg)
 
 `tests/arcade_components.gd` checks the approved props. `tests/arcade_echoes.gd` checks the lightweight decorative kit. `tests/first_meeting_arcade.gd` verifies platform coverage, absence of room blockers, and real walking from the original arrival to every activity anchor across the open glade.
 

@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="murmur"]
 [ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
 [ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_museum_highlight.tscn" id="highlight"]
 [ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_marble_statue.tscn" id="statue"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
 [ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
 
 [node name="CrowdedRoomZone" instance=ExtResource("zone")]
@@ -53,13 +52,6 @@ position = Vector3(3.8, 0, -3.4)
 rotation_degrees = Vector3(0, -15, 0)
 figure = 3
 
-[node name="WarmGalleryFloor" parent="Scenery" instance=ExtResource("paving")]
-position = Vector3(0, 0, 0)
-footprint = Vector2(7.4, 9.5)
-paving_color = Color(0.87, 0.83, 0.76, 1)
-slab_length = 2.1
-end_fade = Vector2(1.5, 2.8)
-irregularity = 0.2
 [node name="WarmLight" parent="Scenery" instance=ExtResource("wash")]
 recall_enabled = true
 position = Vector3(0, 0, 0)

@@ -39,24 +39,19 @@ func run() -> void:
 		await physics_frame
 	Input.action_release("move_right")
 	check(player.global_position.distance_to(start) > 0.2, "First Meeting must accept normal walking input")
-	for frame in range(45):
-		await physics_frame
+	await create_timer(1.5).timeout
 	check(rig.global_position.distance_to(player.global_position + rig.framing_offset) < 0.08, "Camera framing must follow movement without drifting away")
 	world.get_node("Controls/ReturnToTimeline").return_to_timeline()
 	await create_timer(1.7).timeout
 	check(current_scene.scene_file_path == MENU and current_scene.selected_index == 0, "Return must reopen First Meeting in the timeline")
-	for index in range(current_scene.MEMORIES.size()):
-		if current_scene.MEMORIES[index].scene == "res://scenes/world/memory_world.tscn":
-			current_scene.select_memory(index)
-			break
 	current_scene.recall()
-	await create_timer(0.6).timeout
-	check(current_scene.scene_file_path == "res://scenes/world/memory_world.tscn", "Demo entry must recall the retained demo world")
-	check(current_scene.get_node("Memory").memory_id == &"foliage_demo", "Demo entry must load the seasonal content, not First Meeting")
+	await create_timer(1.0).timeout
+	check(current_scene.scene_file_path == FIRST, "The selected timeline entry must recall First Meeting")
+	check(current_scene.get_node("Memory").memory_id == &"first_meeting", "Timeline recall must retain the First Meeting identity")
 	if current_scene.has_node("MemoryArrival"):
 		await current_scene.get_node("MemoryArrival").finished
 	await physics_frame
 	await physics_frame
-	check(current_scene.get_node("Explorer").is_on_floor(), "Retained demo must still complete arrival with a grounded player")
+	check(current_scene.get_node("Explorer").is_on_floor(), "Timeline recall must end with a grounded player")
 	print("First Meeting integration: ", "PASS" if failures == 0 else "FAIL")
 	quit(failures)

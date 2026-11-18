@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="trail"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/flagstone_path.tscn" id="trail"]
 [ext_resource type="Resource" path="res://components/foliage/palettes/conservatory.tres" id="greens"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="palm"]
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_bamboo.tscn" id="bamboo"]
+
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
 
 [sub_resource type="Curve3D" id="JungleTrail"]
 bake_interval = 0.05
@@ -452,6 +454,26 @@ recall_enabled = true
 react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../JunglePool"), NodePath("../WindingPath")])
 
+[node name="CanopyLight" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(0.5, 0.021, -2.9)
+rotation_degrees = Vector3(0, 23, 0)
+footprint = Vector2(5.65, 4.25)
+light_color = Color(0.8, 0.9, 0.68, 1)
+wash_shape = 2
+intensity = 0.25
+softness = 0.85
+recall_enabled = true
+
+[node name="BluePoolLight" parent="Scenery" instance=ExtResource("wash")]
+position = Vector3(-4.45, 0.017, 2.32)
+rotation_degrees = Vector3(0, -17, 0)
+footprint = Vector2(3.8, 2.45)
+light_color = Color(0.69, 0.86, 0.89, 1)
+wash_shape = 0
+intensity = 0.22
+softness = 0.85
+recall_enabled = true
+
 [node name="Fragment" parent="."]
 position = Vector3(0.6, 0.04, -2.5)
 fragment_seed = 140127
@@ -462,11 +484,19 @@ notes = Array[String](["Placeholder: Write your memory of the warm jungle room a
 curve = SubResource("JungleTrail")
 path_width = 2.15
 sample_spacing = 0.22
-slab_length = 1.5
 paving_seed = 140126
-paving_color = Color(0.85, 0.83, 0.76, 1)
-end_fade = Vector2(0.45, 0.6)
 irregularity = 0.55
+end_fade = Vector2(0.74, 0.86)
+width_variation = 0.09
+edge_softness = 0.43
+collision_enabled = false
+paving_color = Color(0.836, 0.81, 0.746, 1)
+shoulder_color = Color(0.852, 0.831, 0.772, 1)
+stone_color = Color(0.87, 0.849, 0.791, 1)
+stone_size = 0.91
+joint_width = 0.014
+crown_height = 0.0
+breakup_size = 0.34
 
 [node name="TropicalUnderstory1" parent="Scenery" instance=ExtResource("broad") ]
 position = Vector3(-6.1149, 0.0000, -2.9661)
@@ -1163,5 +1193,45 @@ plant_height = 3.5
 spread = 2.0
 fullness = 0.5
 growth_curve = 0.1
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PoolBankFern0" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-6.75, 0, -0.98)
+rotation_degrees = Vector3(0, 18, 0)
+plant_seed = 16742
+plant_height = 0.54
+spread = 1.32
+fullness = 0.64
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PoolBankFern1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-5.33, 0, -2.32)
+rotation_degrees = Vector3(0, 59, 0)
+plant_seed = 16743
+plant_height = 0.61
+spread = 1.38
+fullness = 0.64
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PoolBankFern2" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-4.53, 0, 2.7)
+rotation_degrees = Vector3(0, 100, 0)
+plant_seed = 16744
+plant_height = 0.48
+spread = 1.15
+fullness = 0.64
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PoolBankFern3" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-3.68, 0, -2.48)
+rotation_degrees = Vector3(0, 141, 0)
+plant_seed = 16745
+plant_height = 0.55
+spread = 1.22
+fullness = 0.64
 recall_enabled = true
 react_to_explorers = true

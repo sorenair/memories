@@ -20,6 +20,7 @@ uniform float softness : hint_range(0.0, 0.65) = 0.06;
 uniform float silhouette_variation : hint_range(0.0, 1.0) = 0.8;
 uniform float motion_strength : hint_range(0.0, 1.0) = 0.45;
 uniform float motion_speed : hint_range(0.0, 2.0) = 0.75;
+uniform float dance_bounce : hint_range(0.0, 0.18) = 0.0;
 // A non-negative value freezes the shader clock for deterministic previews/tests.
 uniform float preview_time = -1.0;
 // Optional academic geometry uses reserved material tags; ordinary crowds are unchanged.
@@ -78,6 +79,16 @@ void vertex() {
 		VERTEX.z += sign(rest_position.x) * mix(-0.047, 0.047, choice(identity, 14.0)) * foot * pose_strength;
 	}
 	float height = smoothstep(0.12, 1.17, VERTEX.y);
+	if (dance_bounce > 0.0) {
+		// Offset the 120 BPM rhythm by row and by dancer. Some dancers
+		// move in half time, so the banks never rise as a single block.
+		float rhythm = t * 12.56637 * mix(0.5, 1.0, step(0.28, choice(identity, 17.0)));
+		rhythm += MODEL_MATRIX[3].z * 0.57 + (identity - 0.5) * 2.4;
+		float hop = max(0.0, sin(rhythm));
+		float amplitude = dance_bounce * motion_strength;
+		VERTEX.y += hop * hop * amplitude * mix(0.42, 1.0, choice(identity, 18.0));
+		VERTEX.x += sin(rhythm * 0.5 + phase) * height * amplitude * 0.32;
+	}
 	VERTEX.x += (choice(identity, 6.0) - 0.5) * 0.065 * height * height * shape;
 	VERTEX.z += (choice(identity, 7.0) - 0.5) * 0.050 * height * height * shape;
 	// Fixed feet, quiet weight shift, very slight breathing; never a whole-body bob.

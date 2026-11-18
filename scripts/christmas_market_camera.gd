@@ -1,24 +1,32 @@
 extends "res://scripts/follow_camera.gd"
-## Close arrival among the huts; a little space opens around the tree and music.
+## One walking frame, with a separate view of the tree and performers.
+
 @export var gathering_focus: Node3D
-@export var arrival_size := 3.5
-@export var lane_size := 4.5
-@export var gathering_size := 7.5
+@export var gathering_viewpoint: Node3D
+@export var walking_size := 4.5
+@export var gathering_size := 8.8
+
+const WALKING_OFFSET := Vector3(0, 0.85, -0.62)
+const VIEW_ENTER_RADIUS := 1.55
+const VIEW_EXIT_RADIUS := 2.75
+
+var _at_gathering := false
+@onready var _camera: Camera3D = $Camera3D
+
 func _ready() -> void:
-	framing_offset = Vector3(0,0.75,-0.6)
-	$Camera3D.size = arrival_size
+	framing_offset = WALKING_OFFSET
+	_camera.size = walking_size
 	super._ready()
+
 func _process(delta: float) -> void:
-	if is_instance_valid(target) and is_instance_valid(gathering_focus):
+	if is_instance_valid(target) and is_instance_valid(gathering_viewpoint) and is_instance_valid(gathering_focus):
 		var at := target.get_global_transform_interpolated().origin
-		var gathering := 1.0-smoothstep(2.5,7.5,gathering_focus.to_local(at).z)
-		var browsing := 1.0-smoothstep(1.0,5.0,at.z)
-		var desired_size := lerpf(lerpf(arrival_size,lane_size,browsing),gathering_size,gathering)
-		var close_offset := Vector3(0,0.75,-0.6).lerp(Vector3(0,1.0,-0.8),browsing)
-		# Keep following the explorer inside the plaza rather than locking the view
-		# to a scenic camera when they go around the tree or browse the last huts.
-		var wide_offset := Vector3(-0.7,1.4,-1.5)
-		var blend := 1.0-exp(-2.5*delta)
-		framing_offset = framing_offset.lerp(close_offset.lerp(wide_offset,gathering),blend)
-		$Camera3D.size = lerpf($Camera3D.size,desired_size,blend)
+		var offset := gathering_viewpoint.global_position - at
+		var radius := VIEW_EXIT_RADIUS if _at_gathering else VIEW_ENTER_RADIUS
+		_at_gathering = Vector2(offset.x, offset.z).length_squared() <= radius * radius
+		var focus_offset := gathering_focus.global_position - at if _at_gathering else WALKING_OFFSET
+		var size := gathering_size if _at_gathering else walking_size
+		var blend := 1.0 - exp(-3.3 * delta)
+		framing_offset = framing_offset.lerp(focus_offset, blend)
+		_camera.size = lerpf(_camera.size, size, blend)
 	super._process(delta)

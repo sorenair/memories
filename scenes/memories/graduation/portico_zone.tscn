@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flowers"]
 [ext_resource type="PackedScene" path="res://components/scenery/graduation/landmarks/painterly_classical_portico.tscn" id="portico"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="air"]
+
+[ext_resource type="PackedScene" path="res://components/lighting/painted_light/painterly_light_pattern.tscn" id="painted_light"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 
 [sub_resource type="Curve3D" id="GardenRoute"]
 bake_interval = 0.05
@@ -21,12 +24,13 @@ ambience_size = Vector2(17,18)
 ambience_blend_distance = 4.0
 
 [node name="Portico" parent="Scenery" instance=ExtResource("portico")]
+stone_color = Color(0.88, 0.83, 0.74, 1)
 recall_enabled = true
 
 [node name="GardenWalk" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("GardenRoute")
 path_width = 2.1
-paving_color = Color(0.82,0.80,0.73,1)
+paving_color = Color(0.81, 0.77, 0.69, 1)
 end_fade = Vector2(0.0,0.0)
 slab_length = 2.5
 edge_softness = 0.20
@@ -174,6 +178,121 @@ flower_color = Color(0.61,0.31,0.39,1)
 flower_highlight = Color(0.97,0.89,0.89,1)
 recall_enabled = true
 react_to_explorers = true
+
+[node name="WestPorticoTree" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.55, 0, -1.85)
+tree_seed = 51610
+tree_type = 0
+tree_height = 4.3
+crown_width = 4.6
+palette_preset = 2
+wind_strength = 0.048
+falling_leaf_count = 10
+falling_leaf_rate = 0.48
+recall_enabled = true
+recall_anchor = NodePath("../StairApproach")
+react_to_explorers = true
+
+[node name="EastPorticoTree" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(7.35, 0, -3.05)
+tree_seed = 51611
+tree_type = 0
+tree_height = 3.55
+crown_width = 3.6
+palette_preset = 2
+wind_strength = 0.048
+falling_leaf_count = 10
+falling_leaf_rate = 0.48
+recall_enabled = true
+recall_anchor = NodePath("../StairApproach")
+react_to_explorers = true
+
+[node name="WestFoundationPlanting" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-7.5, 0, -0.2)
+patch_size = Vector2(3.5, 6.8)
+patch_seed = 51612
+palette_preset = 2
+grass_height = 0.16
+ground_leaf_scale = 0.62
+tufts_per_square_meter = 11.0
+leaves_per_square_meter = 20.0
+recall_enabled = true
+recall_anchor = NodePath("../StairApproach")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../Portico"), NodePath("../GardenWalk")])
+
+[node name="EastFoundationPlanting" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(7.35, 0, -1.75)
+patch_size = Vector2(3.5, 5.2)
+patch_seed = 51613
+palette_preset = 2
+grass_height = 0.16
+ground_leaf_scale = 0.62
+tufts_per_square_meter = 11.0
+leaves_per_square_meter = 20.0
+recall_enabled = true
+recall_anchor = NodePath("../StairApproach")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../Portico"), NodePath("../GardenWalk")])
+
+[node name="WestStairLilacs" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(-6.45, 0, 2.65)
+footprint = Vector2(1.9, 2.22)
+bush_height = 0.81
+bush_seed = 51614
+mass_count = 4
+sprays_per_mass = 31
+flower_count = 52
+flower_size = 0.071
+flower_color = Color(0.58, 0.47, 0.75, 1)
+flower_highlight = Color(0.88, 0.82, 0.96, 1)
+recall_enabled = true
+recall_anchor = NodePath("../StairApproach")
+react_to_explorers = true
+
+[node name="EastFoundationFlowers" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flowers")]
+position = Vector3(7.25, 0, 0.37)
+footprint = Vector2(1.95, 1.8)
+bush_height = 0.7
+bush_seed = 51615
+mass_count = 4
+sprays_per_mass = 31
+flower_count = 52
+flower_size = 0.071
+flower_color = Color(0.86, 0.71, 0.43, 1)
+flower_highlight = Color(0.99, 0.92, 0.68, 1)
+recall_enabled = true
+recall_anchor = NodePath("../StairApproach")
+react_to_explorers = true
+
+[node name="GardenBendLilacs" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-4.0, 0, -6.95)
+footprint = Vector2(1.9, 1.65)
+bush_height = 0.71
+bush_seed = 51616
+mass_count = 4
+sprays_per_mass = 31
+flower_count = 52
+flower_size = 0.071
+flower_color = Color(0.58, 0.47, 0.75, 1)
+flower_highlight = Color(0.88, 0.82, 0.96, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PorticoCanopyShade" parent="Scenery" node_paths=PackedStringArray("receivers") instance=ExtResource("painted_light")]
+position = Vector3(-5.4, 2.2, 1.78)
+rotation = Vector3(-0.88, -0.55, 0.10)
+receivers = [NodePath("../Portico")]
+pattern = 2
+footprint = Vector3(11.4, 10.8, 11.2)
+light_color = Color(1, 0.94, 0.77, 1)
+accent_color = Color(0.62, 0.68, 0.60, 1)
+strength = 0.71
+pattern_scale = 0.88
+motion_speed = 0.53
+
+[node name="StairApproach" type="Marker3D" parent="Scenery"]
+position = Vector3(0, 0, 7.35)
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.88,0.85)

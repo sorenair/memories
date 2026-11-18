@@ -47,10 +47,11 @@ Edit **Fragment → Note Title / Notes** in each zone scene:
 | Summit | On Quandary Peak |
 | Forest Lake | By the forest lake |
 
-The [camera script](../../../scripts/colorado_camera.gd) holds size **3.25**
+The [camera script](../../../scripts/colorado_camera.gd) holds size **4.8**
 through the field, foothill gap, mountain ascent and descent, and the forest
-approach. It opens inside small areas around the three viewpoints, easing to
-**29** for the Flatirons, **8.8** for the goats and **16.5** for the lake and herd.
+approach. Near each fragment it eases into a fixed scenic frame at **29** for the
+Flatirons, **8.8** for the goats and **16.5** for the lake and herd. A slightly
+larger exit area holds the wide view while players move around the viewpoint.
 Review the camera focus and note's screen space together when moving a viewpoint.
 
 Edit **Ambience Stream** on each zone root to replace its placeholder recording.

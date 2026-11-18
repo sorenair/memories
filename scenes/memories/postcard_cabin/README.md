@@ -19,10 +19,13 @@ LAN partners, interaction, guidance, audio mixing and return to the timeline.
   layered forest. The paving mesh stays hidden below the snow. Edit the curve's
   handles for the winding route, then keep tree trunks and water banks clear of
   that route. The memory script derives the first fragment and requested guidance
-  from the same curve; **Hike Fragment Ratio** moves its pause point.
+  from the same curve; **Hike Fragment Ratio** moves its pause point. Low slate
+  groups mark selected bends and ice banks.
 - `clearing_zone.tscn` owns the cabin, fire pit, chairs and enclosing foliage.
   Cabin entry faces local +Z; its large window faces -X. The authored 90° rotation
   presents that warm window on arrival and leaves the steps reachable to the east.
+  The picture window spills warm light onto the snow, and a separate firelight
+  pattern tints the two chairs.
 - Edit each zone's **Fragment → Interaction → Note Title / Notes** to replace
   “Through the quiet pines” and “A warm place in the woods.” Each Notes entry is
   one page. These are placeholder personal notes.
@@ -40,7 +43,9 @@ keep the hike on snow. It is scenery rather than a skating surface.
 ## Reused pieces and additions
 
 The scene reuses the existing cabin, trees, bushes, grass tufts, snow/footprints,
-weather, curved path, warm light washes, fragments and original painterly fire.
+weather, curved path, warm light washes and fragments. The fire ring uses the
+[sculpted 3D fire](../../../components/vfx/sculpted_fire/README.md) with a compact
+flame, light smoke and small sparks.
 New reusable pieces are [Adirondack chairs and a fire pit](../../../components/scenery/camp/README.md)
 and [frozen water](../../../components/scenery/water/README.md). Snow-colored pine
 crowns and the pale roof suggest settled snow; this is authored color, rather

@@ -9,5 +9,5 @@ recalled_spawn_offset = Vector3(0, 0, 0)
 [node name="CameraRig" parent="." index="5"]
 script = ExtResource("camera")
 [node name="Camera3D" parent="CameraRig" index="0"]
-size = 3.5
+size = 4.7
 far = 160.0

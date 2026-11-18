@@ -90,7 +90,7 @@ func run() -> void:
 	check(memory.memory_id==&"vineyard" and zones.size()==2,"Vineyard must have two standard zones and its own LAN identity")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both avatars must have supported arrivals between the grape rows")
 	check(world._bounded_memory and not world.get_node("DreamSurface").visible,"The memory must use finite ground in the void")
-	check(memory.find_children("GrapeBush*","PainterlyBush",true,false).size()==36,"Six rows must reuse the existing bush foliage")
+	check(memory.find_children("GrapeBush*","PainterlyGrapevine",true,false).size()==36,"Six rows must contain rooted grapevines")
 	check(camera.size<3.7 and zones[0].ambience.playing,"Arrival must remain intimate with a summer ambience bed")
 	var field: PainterlyGrassPatch = zones[1].get_node("Scenery/FieldGrass1")
 	check(field.get_recall_anchor()!=null and field.get_recall_controller().progress==0,"Scenic meadow must wait for the reachable overlook")

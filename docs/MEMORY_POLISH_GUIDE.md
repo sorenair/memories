@@ -1,9 +1,8 @@
 # Memory polish guide: all memories
 
-Updated November 17, 2026. Use this guide to delegate visual and experiential
-polish of the existing memories. It generalizes the First Meeting visual review;
-it does not mean that every memory has the same deficiencies or needs the same
-camera, palette, density or effects.
+Updated November 17, 2026. Use this guide to plan visual and experiential polish
+of the existing memories. The First Meeting and Colorado passes provide examples.
+Choose camera, palette, density and effects to suit each place.
 
 **Goal: beautiful, lush, engaging places remembered in fragments, with the ivory
 void remaining an active part of their composition.** Improve the existing
@@ -42,7 +41,8 @@ a forest trail, an open beach and a bare summit.
 The void belongs **within views and between groups**, as well as outside the
 memory. Keep porous edges, gaps between silhouettes, open approaches and visible
 breathing space. Zone transitions can use interrupted paths, loose planting and
-fading pigment; they do not need continuous reconstructed buildings or landscape.
+fading pigment. Give players enough visual cues to cross the opening and keep
+the walking surface supported through the gap.
 
 There is no fixed percentage of white space or universal object-count target.
 Make the relationship deliberate at the actual gameplay camera.
@@ -56,10 +56,17 @@ Make the relationship deliberate at the actual gameplay camera.
 | Concert, market, street party or city | Existing crowd groups, selected stalls/stage/city landmarks, changing silhouettes, light rhythm and fragments of a route. | Use clustered activity and suggested urban edges; avoid automatically completing a street grid, stadium shell or room around them. |
 
 **Bar example:** a counter, a few stools, existing game/music props, warm light
-pools and some suspended lights or fading floorboard strokes can evoke the place.
+pools and some suspended lights can evoke the place. Colored spill on nearby
+props helps define the setting.
 Supported walking ground can remain visually ivory. Adding a whole building and
 continuous floor to justify those objects can make the zone feel detached from
 the memory world. Improve the chosen details and their relationship first.
+
+**Museum example:** let freestanding works and plinths carry the gallery. Add a
+backdrop when it helps an artwork read in the walking camera. Use a consistent
+floor material through connected galleries and passages. Vary the width and
+coverage to distinguish rooms from corridors, and feather the edges and ends
+so floor traces blend into each other or fade gently into ivory.
 
 **Nature example:** deepen a forest with overlapping crowns, uneven understory,
 smaller ground plants, stones and a softly planted bank. Allow the path to pass
@@ -84,24 +91,54 @@ nonessential structure and uniform coverage while retaining its meaningful core.
 Apply these according to runtime evidence. The first pass should address the
 largest relationships in the frame before polishing small accents.
 
-### Composition, camera and navigation
+### Composition and camera
 
 - Stage arrival, the first landmark/fragment, major interactions, scenic pauses,
   and the approach to the next zone. Establish a leading subject in each view.
 - Compose through the real follow camera, not only a high overview. Preserve
   readable players, nearby destinations and comfortable mobile touch targets.
   Use existing scenic framing and transitions where they already work.
-- Tune size, focus and foreground placement together. A First Meeting study of
-  sizes 3.5 / 5.5 / 6.5 is evidence for that scene, not a new global camera rule.
-  Avoid continuous zoom pumping or camera rotations that undermine movement.
+- Establish one steady exploration zoom across ordinary travel and between zones.
+  Keep the framing close enough to read the explorers and nearby details, with
+  room to see the footing, next turn and a second player. Tune zoom, focus and
+  foreground placement together in the real follow camera. Choose a size for
+  the scene's scale and check it at the supported aspect ratios.
+- Reserve wider framing for a named viewpoint, reveal or other high-impact
+  moment. Compose each wide shot around what the player came to see. Ease into
+  it, hold it while the player looks or moves around the vantage point, and
+  ease back to the same walking zoom as they leave. A slightly larger exit
+  area than entry area can prevent repeated transitions near the edge.
+  Keep movement orientation stable through the transition.
 - Frame landmarks with asymmetric vegetation/architecture and leave openings
   toward the void. Keep foreground leaves, roofs and signs from hiding players,
   fragments and controls. Solve placement before adding complicated occlusion FX.
+
+### Routes and landform
+
+- Treat a visible path as one source of wayfinding. Let it thin or fade between
+  zones where the void helps the composition. Carry the route with an opening
+  between plant groups, a sequence of stones, worn ground, or the silhouette of
+  the next landmark. Check that the next cue is visible at walking zoom from
+  both directions, before requesting a guide stroke.
+- Make elevation changes part of the landform. On a mountain, a walkable ledge
+  can cut into the rising rock on one side and fall away on the other. Use
+  exposed rock faces and scree to mark bends and vary the grade. Fit the tread
+  into the surrounding geometry and align collision with the surfaces players
+  see and walk on.
 - Keep both arrivals, passing space, routes, ramps, stairs and return travel safe.
   Update ground outlines, exclusions, guidance and bounds alongside layout edits.
-  Existing curve-based paths should remain the source of connected route data.
+  Existing curves should remain the source of connected route data where a path
+  fades or its visible surface is built into the terrain. Keep finite support
+  beneath the walkable connection.
 
 ### Nature enrichment and foliage hierarchy
+
+- Favor lush, lively planting where it suits the place, including winter scenes.
+  Layer evergreen groves, frosted shrubs and grasses around huts, bends and
+  clearings. Vary their height, density and sway while keeping aisles and
+  sightlines open. Preserve fuller snowfall where it defines the atmosphere.
+  Check whether framing and contrast keep the focal subject readable in motion
+  before reducing the weather effect.
 
 - Nature scenes can generally gain more depth and richness. Identify thin spots
   and build intentional pockets of overlapping large, medium and small forms.
@@ -127,19 +164,29 @@ largest relationships in the frame before polishing small accents.
   palette. Use selective canopy/eave shading, grounded object bases and readable
   recesses to connect objects to the place. Unshaded painted materials need their
   own coordinated shading; changing a world light alone may not affect them.
+- Use moving light on selected surfaces. First Meeting uses the same component
+  for warm leaf dapples across the porch and amber/teal spill on arcade cabinets.
+  Choose the receivers, palette, footprint and motion for each place. Check the
+  result at the gameplay camera on the Mobile renderer.
+  [Painted light component](../components/lighting/painted_light/painterly_light_pattern.tscn)
 - Build value hierarchy before adding saturation. Support lush scenery with
   quieter areas; concentrate stronger contrast and color around meaningful
   subjects. Give each memory/zone its own appropriate relationships rather than
   spreading First Meeting's amber palette across the whole game.
+- Keep any color grade subtle enough to preserve vivid local colors and the
+  ivory void. Reserve glow and glints for a few highlights such as bulbs,
+  fragments, glass or water.
 - Distinguish wood, stone, fabric, leather, glass and metal through broad directed
   strokes, soft material-specific shading and selective edges. Brushwork should
   describe structure. Avoid adding uniform noise or photographic wear everywhere.
 - Balance large shapes, medium detail and small accents. Soften appropriate prop
   corners and simplify thin repetitive detail that flickers or dominates on a
   phone. Preserve recognizable proportions, markings and personal objects.
-- Match terrain to the geometry and palette of nearby components. For exposed
-  rock, use defined boulder silhouettes and broad planar faces. Carry walkable
-  grades through those forms so the trail reads as part of the landform.
+- Match terrain to the shape, facet scale, palette and lighting of nearby
+  components. Start rocky landforms with distinct boulder masses, sharp
+  silhouettes and broad low-poly planes. Reuse existing boulder and outcrop
+  components where they fit. Keep surface paint quiet enough for the facets to
+  read and use it to reinforce the geometry.
 - Refine surface transitions: water to bank, snow to steps, soil to path, props to
   ground. Match footprints, exclusion fields, shore masks and physical support.
   Let visible surfaces fade into ivory before accidental platform sides or seams
@@ -245,8 +292,10 @@ save-system, timeline, avatar-identity or gameplay redesign.
    after enriching a zone. Keep the camera, visible ground and safe floor aligned.
 4. **Verify the result.** Walk both directions using the real explorer, check
    both arrival positions and two-player space, guidance, steps/ramps, exclusions,
-   recall and interaction access. Run checks relevant to changed behavior. Retain
-   safety/identity assertions when updating intentional layout expectations.
+   recall and interaction access. Cross gaps at walking zoom and move around
+   each viewpoint before leaving it to check that framing holds and returns
+   smoothly. Run checks relevant to changed behavior. Retain safety/identity
+   assertions when updating intentional layout expectations.
 5. **Compare honestly.** Match before/after viewpoint, resolution, recall state
    and animation time where possible. Label camera studies separately. Judge
    thumbnail hierarchy, normal close play and motion; keep distant inspection
@@ -271,6 +320,10 @@ Treat interiors/social places as selective evocative vignettes. Preserve visible
 ivory gaps and porous boundaries. Enrich natural areas through appropriate
 layering and variation while retaining paths, clearings, views and local ecology.
 
+Keep ordinary walking at a steady zoom and reserve wider framing for specific
+views. Let visible paths fade where other cues can carry a supported route.
+Fit walkable grades into terrain and use the same shape language as the props.
+
 Owned files/scope: <MEMORY / ZONES / LOCAL RESOURCES / SCRIPTS / TESTS>.
 Shared-system owner or dependencies: <IF APPLICABLE>.
 Priority opportunities: <OBSERVED ISSUES OR LEAVE TO RUNTIME INSPECTION>.
@@ -285,6 +338,8 @@ Report changes, checks and shared follow-ups. Keep unrelated work intact.
 - The place remains recognizable and retains its established content and order.
 - Each important gameplay view has a clear subject, readable players and useful
   approaches; scenery does not bury fragments or activity controls.
+- Walking framing stays steady across approaches and transitions. Wider shots
+  have a clear subject and hold while players move around the viewpoint.
 - Richness is concentrated and varied. Natural zones gain appropriate depth;
   intentionally open or minimal places retain that character.
 - The ivory void is visibly connected to the composition through gaps, porous
@@ -296,7 +351,8 @@ Report changes, checks and shared follow-ups. Keep unrelated work intact.
 - Motion and effects add life and meaning while preserving quiet areas. Recall,
   foliage response and requested guidance continue to use the shared systems.
 - Both players can enter, pass, approach activities and return safely. Physical
-  support remains valid even where visible scenery dissolves into ivory.
+  support remains valid even where visible scenery dissolves into ivory. The
+  route stays readable at walking zoom with or without requested guidance.
 - Evidence includes actual gameplay captures and a concise change/verification
   report. A global component-count increase or a distant beauty shot is not the
   acceptance target.
@@ -322,3 +378,15 @@ change Evermore's identity. First Meeting's November 16
 [arcade view](previews/first-meeting-visual-review-arcade.jpg) remain examples of
 the review method. They are historical evidence for that scene, not a completed
 all-memory audit or universal camera/palette/density prescription.
+
+### Colorado example
+
+[Colorado](../scenes/memories/colorado/README.md) uses one walking zoom across
+the meadow, ridge and forest approach, with wider framing at the Flatirons,
+summit goats and elk lake. The visible foothill trail fades and scattered
+sandstone and grass lead toward the next climb. On Quandary Peak, the tread
+follows a continuous ledge through faceted granite blocks. The ledge and boulders
+share a stone palette and face lighting. Compare the
+[foothill transition](previews/colorado-memory-foothill-gap.png),
+[climb at walking zoom](previews/colorado-memory-quandary-climb.png) and
+[wide summit view](previews/colorado-memory-quandary-goats.png).
