@@ -9,7 +9,8 @@ scene files save parameters. There are no per-frame geometry rebuilds or new tex
 | --- | --- | --- |
 | `buildings/painterly_hanoi_house.tscn` | Footprint, floors (1–5), floor height, parapet/tiled gable/stepped terrace, balconies, awning | Approach |
 | `bridge/painterly_red_bridge.tscn` | Length, width, arch rise | Shore (+Z), Island (−Z) |
-| `temple/painterly_lake_temple.tscn` | Ngoc Son Pavilion / Turtle Tower, footprint | Approach |
+| `temple/painterly_lake_temple.tscn` | Lake landmark profile, footprint, optional hall roof tiles | Approach |
+| `devotional/painterly_devotional_piece.tscn` | Seated Budai, Field Shrine or Censer, with shared paint and recall controls | Approach (shrine), Flame (censer) |
 | `karst/painterly_limestone_karst.tscn` | Formation profile, contour, footprint, height, peaks, seed | — |
 
 All expose body/accent/trim/roof colors, seed, pigment, collision, contact shadow,
@@ -28,9 +29,17 @@ and guidance. Both ends meet at Y=0.06. Match adjacent paving to that datum and 
 ordinary water-shore blocking off across the bridge. The shared guide planner
 recognizes BridgeRamp segments as supported slopes.
 
-**Lake landmarks** are compact interpretations: the pavilion has ochre walls,
-vermilion posts and layered terracotta roofs; Turtle Tower has three pale tiers and
-inset openings. Both are closed scenery. Supply island ground and foliage separately.
+**Lake landmarks** include the original Ngoc Son Pavilion and Turtle Tower, plus
+three profiles for the Jade Island composition. **Moon Gate** has a walk-through
+masonry arch and open round window. **Tran Ba Pavilion** has an open four-post
+silhouette. **Ngoc Son Hall** has a wide tiled roof, lacquered columns and a closed
+interior. Supply island ground and foliage separately and align bridge and path
+endpoints with the gate opening.
+
+**Devotional scenery** shares one scene with a profile for each prop. The seated
+Budai uses the lotus base, folded robe and raised knee to read at player scale.
+The field shrine has clear spaces between its four posts and a solid altar.
+The censer provides a **Flame** anchor for a separate sculpted fire instance.
 
 **Karsts** share one opaque mesh for stone and greenery. **Rounded Peaks** uses
 fluted rings and domed crowns. **Faceted Cliffs** uses irregular, offset rock
@@ -139,3 +148,16 @@ for the lotus and bamboo-like skyline silhouettes. No remote imagery is bundled.
 The lake pavilion also supports **Roof Tiles Enabled** for shallow, broad painted
 tile relief. Central Vietnam uses this with a green roof for its Marble Mountains
 clearing; the default pavilion and Turtle Tower presets retain their roof settings.
+
+## Fishing boat
+
+Instance [Painterly Fishing Boat](fishing_boat/painterly_fishing_boat.tscn) at the
+water surface, with local +Z pointing toward the bow. **Hull Length** and
+**Beam** set its proportions. **Body**, **Accent**, and **Trim Color** paint the
+hull, deck, and wheelhouse respectively. **Tire Fenders Enabled** controls the
+hanging tires and their ropes. **Bob Amount** sets the height of the floating
+motion. Set it to zero for a static display.
+
+The **Bow**, **Stern**, **PortMooring**, and **StarboardMooring** anchors can
+position props or mooring lines. The boat is scenic by default. Optional
+collision follows its resting hull and wheelhouse.

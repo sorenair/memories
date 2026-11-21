@@ -1,62 +1,73 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene format=3 uid="uid://b5oqwd5egp5fq"]
 
-[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
+[ext_resource type="AudioStream" uid="uid://jnxptqjypwac" path="res://audio/ambiance/ambiance_quietchatter.mp3" id="8_1nhwj"]
+[ext_resource type="AudioStream" uid="uid://dg77opg8ytgrw" path="res://audio/ambiance/ambiance_outdoorcrowd.mp3" id="10_4e58a"]
 [ext_resource type="PackedScene" path="res://scenes/memories/graduation/arches_zone.tscn" id="arches"]
-[ext_resource type="PackedScene" path="res://scenes/memories/graduation/portico_zone.tscn" id="portico"]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
 [ext_resource type="PackedScene" path="res://scenes/memories/graduation/ceremony_zone.tscn" id="ceremony"]
-[ext_resource type="Script" path="res://scripts/graduation_memory.gd" id="route"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://scenes/memories/graduation/portico_zone.tscn" id="portico"]
+[ext_resource type="Script" uid="uid://fl0oa6gduf6i" path="res://scripts/graduation_memory.gd" id="route"]
 
 [sub_resource type="Curve2D" id="WalkOutline"]
-_data = {"points": PackedVector2Array(0, 0, 0, 0, -13, 17, 0, 0, 0, 0, -1, 17, 0, 0, 0, 0, 2, 12, 0, 0, 0, 0, 2, 4, 0, 0, 0, 0, 7, 2, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 11, -3, 0, 0, 0, 0, 11, -12, 0, 0, 0, 0, 8, -15, 0, 0, 0, 0, 3, -20, 0, 0, 0, 0, 1, -22, 0, 0, 0, 0, 1, -33, 0, 0, 0, 0, -1, -35, 0, 0, 0, 0, -12, -35, 0, 0, 0, 0, -14, -32, 0, 0, 0, 0, -14, -22, 0, 0, 0, 0, -12, -20, 0, 0, 0, 0, -7, -20, 0, 0, 0, 0, -2, -16, 0, 0, 0, 0, 0, -12, 0, 0, 0, 0, -3, -12, 0, 0, 0, 0, -3, -7, 0, 0, 0, 0, -1, -4, 0, 0, 0, 0, -5, -1, 0, 0, 0, 0, -10, 2, 0, 0, 0, 0, -14, 5, 0, 0, 0, 0, -15, 12, 0, 0, 0, 0, -13, 17)}
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -13, 17, 0, 0, 0, 0, -1, 17, 0, 0, 0, 0, 2, 12, 0, 0, 0, 0, 2, 4, 0, 0, 0, 0, 7, 2, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 11, -3, 0, 0, 0, 0, 11, -12, 0, 0, 0, 0, 8, -15, 0, 0, 0, 0, 3, -20, 0, 0, 0, 0, 1, -22, 0, 0, 0, 0, 1, -33, 0, 0, 0, 0, -1, -35, 0, 0, 0, 0, -12, -35, 0, 0, 0, 0, -14, -32, 0, 0, 0, 0, -14, -22, 0, 0, 0, 0, -12, -20, 0, 0, 0, 0, -7, -20, 0, 0, 0, 0, -2, -16, 0, 0, 0, 0, 0, -12, 0, 0, 0, 0, -3, -12, 0, 0, 0, 0, -3, -7, 0, 0, 0, 0, -1, -4, 0, 0, 0, 0, -5, -1, 0, 0, 0, 0, -10, 2, 0, 0, 0, 0, -14, 5, 0, 0, 0, 0, -15, 12, 0, 0, 0, 0, -13, 17)
+}
 point_count = 28
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=543381400 instance=ExtResource("base")]
 script = ExtResource("route")
 memory_id = &"graduation"
 display_name = "Graduation"
 
-[node name="Entry" parent="."]
-position = Vector3(-7.71,0.04,15)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.71, 0.04, 15)
 
-[node name="Exit" parent="."]
-position = Vector3(-6,0.49,-29.1)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.49, -29.1)
 
-[node name="CampusFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="CampusFloor" parent="Environment" index="0" unique_id=1344127858 instance=ExtResource("floor")]
 visible = false
-custom_outline = SubResource("WalkOutline")
 outline_detail = 96
+custom_outline = SubResource("WalkOutline")
 edge_inset = 0.18
 
-[node name="Guidance" parent="Environment" type="Node3D"]
+[node name="Guidance" type="Node3D" parent="Environment" index="1" unique_id=581126142]
 
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="Arches" parent="Zones" instance=ExtResource("arches")]
-
-[node name="Portico" parent="Zones" instance=ExtResource("portico")]
-position = Vector3(4,0,-9)
-
-[node name="Ceremony" parent="Zones" instance=ExtResource("ceremony")]
-position = Vector3(-6,0,-30)
-
-[node name="ThroughTheArches" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="ThroughTheArches" parent="Environment/Guidance" index="0" unique_id=11723508 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Arches/Fragment")
+waypoints = PackedVector3Array(-7.71, 0.76, 15, -7.7099996, 0.76, 14.230772, -7.7099996, 0.76, 13.461542, -7.7099996, 0.76, 12.692308, -7.71, 0.76, 11.923079, -7.7099996, 0.76, 11.153845, -7.71, 0.76, 10.384612, -7.71, 0.76, 9.615378, -7.7100005, 0.76, 8.846152, -7.71, 0.76, 8.076881, -7.7100005, 0.76, 7.3076925, -7.7100005, 0.76, 6.5384617, -7.71, 0.76, 5.769231, -7.71, 0.76, 5)
 stroke_width = 0.32
 
-[node name="UpTheSteps" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="UpTheSteps" parent="Environment/Guidance" index="1" unique_id=1294348236 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Arches/Fragment")
 end_anchor = NodePath("../../../Zones/Portico/Fragment")
+waypoints = PackedVector3Array(-7.71, 0.76, 5, -7.560497, 0.76, 4.266974, -7.187397, 0.76, 3.6153858, -6.694354, 0.76, 3.0474305, -6.138451, 0.76, 2.5401964, -5.547537, 0.76, 2.0739493, -4.936498, 0.76, 1.6343021, -4.3145213, 0.76, 1.2102349, -3.68504, 0.76, 0.7974011, -3.0328257, 0.76, 0.42177722, -2.3594904, 0.76, 0.08535108, -1.673271, 0.76, -0.22411641, -0.98437583, 0.76, -0.5276191, -0.3033762, 0.76, -0.8483242, 0.36029607, 0.76, -1.2033663, 0.9999998, 0.76, -1.5999997, 4, 0.76, -3.35, 4, 0.76, -4.15, 4, 0.865, -4.3115387, 4, 0.865, -4.6, 4, 0.96999997, -4.7615385, 4, 0.96999997, -5.05, 4, 1.075, -5.2115383, 4, 1.075, -5.5, 4, 1.18, -5.661538, 4, 1.18, -5.95, 4, 1.285, -6.1115384, 4, 1.285, -6.4, 4, 1.39, -6.5615387, 4, 1.39, -6.85, 4, 1.495, -7.0115385, 4, 1.495, -7.3, 4, 1.6, -7.4615383, 4, 1.6, -7.75, 4, 1.64, -8.15)
 stroke_width = 0.32
 
-[node name="ToTheCeremony" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="ToTheCeremony" parent="Environment/Guidance" index="2" unique_id=164407171 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Portico/Fragment")
 end_anchor = NodePath("../../../Zones/Ceremony/Fragment")
+waypoints = PackedVector3Array(4, 1.64, -8.15, 4, 1.5999999, -10.15, 4, 1.5999999, -10.913983, 3.992764, 1.5911353, -11.67757, 3.8163333, 1.526, -12.41523, 3.4750426, 1.435322, -13.091585, 3.046517, 1.3370999, -13.716051, 2.575811, 1.241377, -14.31008, 2.0894833, 1.1545542, -14.89285, 1.60132, 1.0890565, -15.476839, 1.1075466, 1.0223575, -16.055992, 0.6032376, 0.95583165, -16.625998, 0.084291935, 0.8931615, -17.183147, -0.4535308, 0.8377454, -17.722866, -1.0152497, 0.79349756, -18.238682, -1.6072383, 0.7656854, -18.720554, -2.2398086, 0.76, -19.147957, -2.9265862, 0.76, -19.481606, -3.639902, 0.76, -19.754982, -4.359586, 0.76, -20.011421, -5.066001, 0.76, -20.301573, -5.7012253, 0.76, -20.719875, -6.000001, 0.76, -21.399998, -6, 0.76, -21.4, -6, 0.76, -22.133322, -6, 0.76, -22.866661, -6, 0.76, -23.6, -6, 0.76, -24.33334, -6, 0.76, -25.066679, -6, 0.76, -25.800001, -6, 0.76, -25.8, -6, 1.21, -28, -6, 1.21, -29.1, -6, 1.25, -29.1)
 stroke_width = 0.32
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Arches" parent="Zones" index="0" unique_id=927023885 instance=ExtResource("arches")]
+
+[node name="Portico" parent="Zones" index="1" unique_id=1765496416 instance=ExtResource("portico")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -9)
+ambience_stream = ExtResource("8_1nhwj")
+ambience_volume_db = -12.0
+
+[node name="Ceremony" parent="Zones" index="2" unique_id=1707166057 instance=ExtResource("ceremony")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -30)
+ambience_stream = ExtResource("10_4e58a")
+ambience_volume_db = -12.0

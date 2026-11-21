@@ -62,6 +62,7 @@ softness = 0.9
 
 [node name="Fragment" parent="." index="1"]
 position = Vector3(0, 0.04, -1.5)
+contrast = 1
 fragment_seed = 1216
 note_title = "Together in a crowded room"
 notes = Array[String](["Placeholder: Write your memory of being together in the crowded gallery here."])

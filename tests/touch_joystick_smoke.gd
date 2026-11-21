@@ -22,9 +22,12 @@ func run() -> void:
 	touch.position = stick.size * 0.5
 	touch.pressed = true
 	stick._input(touch)
-	check(stick._touch_id == -1, "Touches outside the fixed joystick must not capture movement")
-	touch.position = stick._origin
+	check(stick._touch_id == -1, "Touches outside the lower-left area must not capture movement")
+	var home: Vector2 = stick._origin
+	touch.position = Vector2(720, 530)
 	stick._input(touch)
+	check(stick._origin == touch.position and stick._draw_origin == touch.position, "Joystick must appear at the initial touch")
+	check(stick.get_movement() == Vector2.ZERO, "An initial tap must not move the player")
 	var drag := InputEventScreenDrag.new()
 	drag.index = 0
 	drag.position = stick._origin + Vector2(2, 0)
@@ -48,7 +51,9 @@ func run() -> void:
 	touch.canceled = true
 	stick._input(touch)
 	check(stick.get_movement() == Vector2.ZERO, "Cancelled touches must stop movement immediately")
+	check(stick._origin == home, "Release must reset the movement origin to the resting position")
 	stick._process(1.0)
+	check(stick._draw_origin.distance_to(home) < 0.01, "The visible joystick must glide back to its resting position")
 	check(stick._activity < 0.001 and stick._thumb_offset.length() < 0.01, "Joystick must fade and recenter after release")
 	touch.pressed = true
 	touch.canceled = false

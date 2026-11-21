@@ -6,8 +6,8 @@ extends "res://scripts/follow_camera.gd"
 @export var walking_size := 4.7
 @export var beach_size := 10.0
 @export var lighthouse_size := 17.2
-@export var dunes_size := 9.7
-@export var city_size := 11.4
+@export var dunes_size := 12.4
+@export var city_size := 13.9
 
 const WALKING_OFFSET := Vector3(0, 0.86, -0.79)
 const EXIT_MARGIN := 0.68
@@ -37,10 +37,10 @@ var _held_view: View
 
 func _ready() -> void:
 	_views = [
-		View.new(beach_zone, Rect2(-3.2, 6.75, 6.4, 3.65), Vector3(-0.6, 1.35, 5.75), beach_size),
-		View.new(beach_zone, Rect2(10.9, -7.8, 6.9, 4.7), Vector3(11.35, 5.65, -5.8), lighthouse_size),
-		View.new(dunes_zone, Rect2(-1.1, -0.7, 4.5, 4.45), Vector3(0.4, 1.1, 0.15), dunes_size),
-		View.new(city_zone, Rect2(-4.8, -3.3, 9.6, 8.0), Vector3(-0.15, 2.5, -0.9), city_size),
+		View.new(beach_zone, Rect2(-3.2, 6.75, 6.4, 3.65), Vector3(0.15, 1.17, 5.18), beach_size),
+		View.new(beach_zone, Rect2(10.9, -7.8, 6.9, 4.7), Vector3(9.02, 5.35, -4.17), lighthouse_size),
+		View.new(dunes_zone, Rect2(-0.75, -0.7, 3.65, 3.6), Vector3(1.0, 2.1, 1.15), dunes_size),
+		View.new(city_zone, Rect2(-4.8, -3.3, 9.6, 8.0), Vector3(0.75, 4.06, -4.1), city_size),
 	]
 	framing_offset = WALKING_OFFSET
 	_camera.size = walking_size

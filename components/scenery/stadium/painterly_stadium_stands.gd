@@ -57,8 +57,8 @@ func _build(b: RefCounted) -> void:
 	# Only the small upper deck is playable; surrounding tiers imply a huge bowl.
 	for row in 6:
 		_near_row(b, DECK_HEIGHT + 0.6 + row * 0.6, 15.0 + row * 1.05, 24.0, snow, true)
-	# Two short benches on the safe deck's rear, with a generous walking corridor.
-	for bench in [Vector2(-1.7, 2.6), Vector2(4.6, 6.2)]:
+	# Leave a gap to the fireworks console at the right end of the deck.
+	for bench in [Vector2(-1.7, 2.6), Vector2(1.98, 4.4)]:
 		var x: float = bench.x
 		var width: float = bench.y
 		b.box(Vector3(x, DECK_HEIGHT + 0.43, 13.45), Vector3(width, 0.14, 0.55), seat_color, 1.0)

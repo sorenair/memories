@@ -1,39 +1,42 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene format=3 uid="uid://h5k6731rn83p"]
+
+[ext_resource type="AudioStream" uid="uid://jnxptqjypwac" path="res://audio/ambiance/ambiance_quietchatter.mp3" id="10_ejsuo"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
-[ext_resource type="PackedScene" path="res://scenes/memories/art_museum/entrance_zone.tscn" id="entrance"]
-[ext_resource type="PackedScene" path="res://scenes/memories/art_museum/marble_zone.tscn" id="marble"]
-[ext_resource type="PackedScene" path="res://scenes/memories/art_museum/paintings_zone.tscn" id="paintings"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://scenes/memories/art_museum/crowded_room_zone.tscn" id="crowded"]
+[ext_resource type="PackedScene" uid="uid://c0e7jbapj4sy" path="res://scenes/memories/art_museum/entrance_zone.tscn" id="entrance"]
+[ext_resource type="Shader" uid="uid://dfbunypnd8vs8" path="res://scenes/memories/art_museum/museum_floor.gdshader" id="floor_paint"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://scenes/memories/art_museum/marble_zone.tscn" id="marble"]
+[ext_resource type="PackedScene" uid="uid://c21rxv62o7hio" path="res://scenes/memories/art_museum/paintings_zone.tscn" id="paintings"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
 
-
-[ext_resource type="Shader" path="res://scenes/memories/art_museum/museum_floor.gdshader" id="floor_paint"]
+[sub_resource type="Curve2D" id="MuseumOutline"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -20.5, -21.5, 0, 0, 0, 0, -8.5, -21.5, 0, 0, 0, 0, -8.5, -12.5, 0, 0, 0, 0, -6, -12.5, 0, 0, 0, 0, -6, -14.5, 0, 0, 0, 0, 6, -14.5, 0, 0, 0, 0, 6, -12.5, 0, 0, 0, 0, 9, -12.5, 0, 0, 0, 0, 9, -22, 0, 0, 0, 0, 21.5, -22, 0, 0, 0, 0, 21.5, -9, 0, 0, 0, 0, 9, -9, 0, 0, 0, 0, 9, -9.2, 0, 0, 0, 0, 6, -9.2, 0, 0, 0, 0, 6, -6.5, 0, 0, 0, 0, 2.1, -6.5, 0, 0, 0, 0, 2.1, -3.65, 0, 0, 0, 0, 7.5, -3.65, 0, 0, 0, 0, 7.5, 8, 0, 0, 0, 0, -7.5, 8, 0, 0, 0, 0, -7.5, -3.65, 0, 0, 0, 0, -2.1, -3.65, 0, 0, 0, 0, -2.1, -6.5, 0, 0, 0, 0, -6, -6.5, 0, 0, 0, 0, -6, -9.2, 0, 0, 0, 0, -10, -9.2, 0, 0, 0, 0, -10, -10, 0, 0, 0, 0, -20.5, -10, 0, 0, 0, 0, -20.5, -21.5)
+}
+point_count = 29
 
 [sub_resource type="ShaderMaterial" id="FloorPaint"]
+render_priority = -10
 shader = ExtResource("floor_paint")
 
 [sub_resource type="PlaneMesh" id="FloorCanvas"]
 size = Vector2(42, 32)
 
-[sub_resource type="Curve2D" id="MuseumOutline"]
-_data = {"points": PackedVector2Array(0, 0, 0, 0, -20.5, -21.5, 0, 0, 0, 0, -8.5, -21.5, 0, 0, 0, 0, -8.5, -12.5, 0, 0, 0, 0, -6, -12.5, 0, 0, 0, 0, -6, -14.5, 0, 0, 0, 0, 6, -14.5, 0, 0, 0, 0, 6, -12.5, 0, 0, 0, 0, 9, -12.5, 0, 0, 0, 0, 9, -22, 0, 0, 0, 0, 21.5, -22, 0, 0, 0, 0, 21.5, -9, 0, 0, 0, 0, 9, -9, 0, 0, 0, 0, 9, -9.2, 0, 0, 0, 0, 6, -9.2, 0, 0, 0, 0, 6, -6.5, 0, 0, 0, 0, 2.1, -6.5, 0, 0, 0, 0, 2.1, -3.65, 0, 0, 0, 0, 7.5, -3.65, 0, 0, 0, 0, 7.5, 8, 0, 0, 0, 0, -7.5, 8, 0, 0, 0, 0, -7.5, -3.65, 0, 0, 0, 0, -2.1, -3.65, 0, 0, 0, 0, -2.1, -6.5, 0, 0, 0, 0, -6, -6.5, 0, 0, 0, 0, -6, -9.2, 0, 0, 0, 0, -10, -9.2, 0, 0, 0, 0, -10, -10, 0, 0, 0, 0, -20.5, -10, 0, 0, 0, 0, -20.5, -21.5)}
-point_count = 29
-
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=1332213075 instance=ExtResource("base")]
 memory_id = &"art_museum"
 display_name = "Minneapolis Institute of Art"
 
 [node name="Entry" parent="." index="0"]
-position = Vector3(0, 0.04, 6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 6)
 
 [node name="Exit" parent="." index="1"]
-position = Vector3(14.5, 0.04, -12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5, 0.04, -12)
 
-[node name="MuseumFloor" parent="Environment" instance=ExtResource("platform")]
-custom_outline = SubResource("MuseumOutline")
+[node name="MuseumFloor" parent="Environment" index="0" unique_id=667485163 instance=ExtResource("platform")]
 outline_detail = 96
+custom_outline = SubResource("MuseumOutline")
 pillar_depth = 10.0
 fade_start = 0.0
 fade_depth = 3.5
@@ -42,60 +45,53 @@ side_color = Color(0.94, 0.935, 0.89, 1)
 pigment_strength = 0.003
 edge_inset = 0.15
 
-[node name="ContinuousLimestone" type="MeshInstance3D" parent="Environment"]
-position = Vector3(0, 0.004, -6.5)
-cast_shadow = 0
+[node name="ContinuousLimestone" type="MeshInstance3D" parent="Environment" index="1" unique_id=1278200998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.004, -6.5)
 material_override = SubResource("FloorPaint")
+cast_shadow = 0
 mesh = SubResource("FloorCanvas")
 
-[node name="EntranceFocus" type="Marker3D" parent="Environment"]
-position = Vector3(0, 2.4, 0)
+[node name="EntranceFocus" type="Marker3D" parent="Environment" index="2" unique_id=182725489]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
 
-[node name="Guidance" type="Node3D" parent="Environment"]
+[node name="Guidance" type="Node3D" parent="Environment" index="3" unique_id=1497815499]
 
-[node name="Audio" parent="." index="6"]
-fragment_sound = ExtResource("chime")
-
-[node name="Entrance" parent="Zones" instance=ExtResource("entrance")]
-position = Vector3(0, 0, 0)
-
-[node name="Marble" parent="Zones" instance=ExtResource("marble")]
-position = Vector3(0, 0, -10)
-
-[node name="Paintings" parent="Zones" instance=ExtResource("paintings")]
-position = Vector3(-14.5, 0, -16)
-
-[node name="CrowdedRoom" parent="Zones" instance=ExtResource("crowded")]
-position = Vector3(14.5, 0, -16)
-
-[node name="Arrival" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="Arrival" parent="Environment/Guidance" index="0" unique_id=1839602086 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Entrance/Fragment")
 waypoints = PackedVector3Array()
-stroke_width = 0.34
-opacity = 0.92
 
-[node name="ToMarble" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="ToMarble" parent="Environment/Guidance" index="1" unique_id=312990494 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Entrance/Fragment")
 end_anchor = NodePath("../../../Zones/Marble/Fragment")
 waypoints = PackedVector3Array(0, 0.76, 3.6, 0, 1.06, 1.7, 0, 1.06, -1.7, 0, 0.76, -3.6, 0, 0.76, -6.5)
-stroke_width = 0.34
-opacity = 0.92
 
-[node name="ToPaintings" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="ToPaintings" parent="Environment/Guidance" index="2" unique_id=1459940914 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Marble/Fragment")
 end_anchor = NodePath("../../../Zones/Paintings/Fragment")
 waypoints = PackedVector3Array(-4.5, 0.76, -10.8, -7.5, 0.76, -10.8, -11, 0.76, -10.8, -14.5, 0.76, -13)
-stroke_width = 0.34
-opacity = 0.92
 
-[node name="ToCrowdedRoom" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="ToCrowdedRoom" parent="Environment/Guidance" index="3" unique_id=1689636145 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Paintings/Fragment")
 end_anchor = NodePath("../../../Zones/CrowdedRoom/Fragment")
 waypoints = PackedVector3Array(-14.5, 0.76, -13, -11, 0.76, -10.8, -7.5, 0.76, -10.8, -4.5, 0.76, -10.8, 0, 0.76, -10.8, 4.5, 0.76, -10.8, 7.5, 0.76, -10.8, 11, 0.76, -10.8, 14.5, 0.76, -13)
-stroke_width = 0.34
-opacity = 0.92
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Entrance" parent="Zones" index="0" unique_id=602215791 instance=ExtResource("entrance")]
+
+[node name="Marble" parent="Zones" index="1" unique_id=1288874644 instance=ExtResource("marble")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="Paintings" parent="Zones" index="2" unique_id=735209096 instance=ExtResource("paintings")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0, -16)
+
+[node name="CrowdedRoom" parent="Zones" index="3" unique_id=1945283847 instance=ExtResource("crowded")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5, 0, -16)
+ambience_stream = ExtResource("10_ejsuo")
+ambience_volume_db = -7.0

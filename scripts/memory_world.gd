@@ -21,6 +21,7 @@ var _remote_visit := 0
 @onready var memory: MemoryScene = $Memory
 
 func _ready() -> void:
+	$Controls/FragmentTracker.track_memory(memory)
 	_configure_platforms()
 	player.global_transform = memory.get_entry_transform()
 	var recalled := get_tree().root.has_meta(MemoryArrival.REQUEST_META)

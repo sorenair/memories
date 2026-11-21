@@ -46,4 +46,4 @@ The scene check walks the real explorer through the central aisle and cross-pass
 For a two-process LAN smoke check, run the same script with `-- host` and `-- guest` (without `--fixed-fps`). Both clients must pair, show the other chosen avatar, replicate walking down the rear aisle, and stay grounded. The local headless host/guest check passes; Godot's dummy renderer emits its existing null-material messages during avatar recall. This does not validate physical network or iOS rendering.
 
 
-Tap the **encore pad** beside the front viewing aisle. The stage screen switches to a painted sunburst, the beams swell, and colorful confetti spills over the stage. After the cue, the usual show resumes and the pad can be tapped again.
+Tap the **lavender encore button** in the open space to the right of the stage ramp. The stage screen switches to a painted sunburst, the beams swell, and colorful confetti spills over the stage. After the cue, the usual show resumes and the pad can be tapped again.

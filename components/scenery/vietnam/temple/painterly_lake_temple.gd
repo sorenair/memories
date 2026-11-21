@@ -1,9 +1,9 @@
 @tool
 class_name PainterlyLakeTemple
 extends PainterlyVietnamPiece
-@export_enum("Ngoc Son Pavilion", "Turtle Tower") var landmark := 0:
+@export_enum("Ngoc Son Pavilion", "Turtle Tower", "Moon Gate", "Tran Ba Pavilion", "Ngoc Son Hall") var landmark := 0:
 	set(value):
-		landmark = clampi(value,0,1)
+		landmark = clampi(value,0,4)
 		_request_rebuild()
 @export var footprint := Vector2(5.2,3.6):
 	set(value):

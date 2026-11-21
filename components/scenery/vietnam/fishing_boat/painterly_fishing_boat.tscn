@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/scenery/vietnam/fishing_boat/painterly_fishing_boat.gd" id="boat"]
+
+[node name="PainterlyFishingBoat" type="Node3D"]
+script = ExtResource("boat")
+body_color = Color(0.251, 0.631, 0.763, 1)
+accent_color = Color(0.647, 0.294, 0.255, 1)
+trim_color = Color(0.852, 0.694, 0.267, 1)
+collision_enabled = false
+contact_shadow_enabled = false

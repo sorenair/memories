@@ -1,112 +1,98 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene format=3 uid="uid://5shxh5a82rbv"]
 
+[ext_resource type="AudioStream" uid="uid://jnxptqjypwac" path="res://audio/ambiance/ambiance_quietchatter.mp3" id="8_g854r"]
+[ext_resource type="AudioStream" uid="uid://47rmu8fltn14" path="res://audio/ambiance/ambiance_jungle.mp3" id="10_gqs4e"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
-[ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/flower_garden_zone.tscn" id="garden"]
-[ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/jungle_zone.tscn" id="jungle"]
 [ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/bonsai_zone.tscn" id="bonsai"]
-[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
-[ext_resource type="Script" path="res://scripts/conservatory_memory.gd" id="route"]
-
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paths/flagstone_path.tscn" id="curved"]
+[ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/flower_garden_zone.tscn" id="garden"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="PackedScene" path="res://scenes/memories/como_conservatory/jungle_zone.tscn" id="jungle"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
+[ext_resource type="Script" uid="uid://bsqjuxoq036a3" path="res://scripts/conservatory_memory.gd" id="route"]
 
 [sub_resource type="Curve2D" id="RoomsOutline"]
-_data = {"points": PackedVector2Array(0, 0, 0, 0, -6.8, 12, 0, 0, 0, 0, 6.8, 12, 0, 0, 0, 0, 7.3, 10.5, 0, 0, 0, 0, 7.3, -8.5, 0, 0, 0, 0, 6.5, -10, 0, 0, 0, 0, 2, -10, 0, 0, 0, 0, 2, -13, 0, 0, 0, 0, 4.5, -13, 0, 0, 0, 0, 4.5, -22.5, 0, 0, 0, 0, 8, -22.5, 0, 0, 0, 0, 8, -19.3, 0, 0, 0, 0, 18.5, -19.3, 0, 0, 0, 0, 19, -20, 0, 0, 0, 0, 19, -28.5, 0, 0, 0, 0, 18.3, -29.3, 0, 0, 0, 0, 8.6, -29.3, 0, 0, 0, 0, 8, -28.5, 0, 0, 0, 0, 8, -26.5, 0, 0, 0, 0, 4.5, -26.5, 0, 0, 0, 0, 4.5, -28, 0, 0, 0, 0, 3.5, -28.5, 0, 0, 0, 0, -9.5, -28.5, 0, 0, 0, 0, -10.5, -27.5, 0, 0, 0, 0, -10.5, -14, 0, 0, 0, 0, -9.5, -13, 0, 0, 0, 0, -2, -13, 0, 0, 0, 0, -2, -10, 0, 0, 0, 0, -6.5, -10, 0, 0, 0, 0, -7.3, -8.5, 0, 0, 0, 0, -7.3, 10.5, 0, 0, 0, 0, -6.8, 12)}
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -6.8, 12, 0, 0, 0, 0, 6.8, 12, 0, 0, 0, 0, 7.3, 10.5, 0, 0, 0, 0, 7.3, -8.5, 0, 0, 0, 0, 6.5, -10, 0, 0, 0, 0, 2, -10, 0, 0, 0, 0, 2, -13, 0, 0, 0, 0, 4.5, -13, 0, 0, 0, 0, 4.5, -22.5, 0, 0, 0, 0, 8, -22.5, 0, 0, 0, 0, 8, -19.3, 0, 0, 0, 0, 18.5, -19.3, 0, 0, 0, 0, 19, -20, 0, 0, 0, 0, 19, -28.5, 0, 0, 0, 0, 18.3, -29.3, 0, 0, 0, 0, 8.6, -29.3, 0, 0, 0, 0, 8, -28.5, 0, 0, 0, 0, 8, -26.5, 0, 0, 0, 0, 4.5, -26.5, 0, 0, 0, 0, 4.5, -28, 0, 0, 0, 0, 3.5, -28.5, 0, 0, 0, 0, -9.5, -28.5, 0, 0, 0, 0, -10.5, -27.5, 0, 0, 0, 0, -10.5, -14, 0, 0, 0, 0, -9.5, -13, 0, 0, 0, 0, -2, -13, 0, 0, 0, 0, -2, -10, 0, 0, 0, 0, -6.5, -10, 0, 0, 0, 0, -7.3, -8.5, 0, 0, 0, 0, -7.3, 10.5, 0, 0, 0, 0, -6.8, 12)
+}
 point_count = 31
 
-[sub_resource type="Curve3D" id="JungleThresholdCurve"]
-_data = {"points": PackedVector3Array(0,0,0, 0,0,-0.8, 0,0,-8.9, 0.33,0,0.62, -0.33,0,-0.62, -0.2,0,-11.95, 0.08,0,0.78, 0,0,0, -3,0,-14), "tilts": PackedFloat32Array(0,0,0)}
-point_count = 3
-
 [sub_resource type="Curve3D" id="BonsaiWalkCurve"]
-_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 3.6, 0, -24.5, 0, 0, 0, 0, 0, 0, 13.42, 0, -24.5), "tilts": PackedFloat32Array(0, 0)}
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 3.6, 0, -24.5, 0, 0, 0, 0, 0, 0, 13.42, 0, -24.5),
+"tilts": PackedFloat32Array(0, 0)
+}
 point_count = 2
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=1740227037 instance=ExtResource("base")]
 script = ExtResource("route")
+jungle_fragment_ratio = 0.62
 memory_id = &"como_conservatory"
 display_name = "Como Conservatory"
 
-[node name="Entry" parent="."]
-position = Vector3(0, 0.04, 10.3)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 10.3)
 
-[node name="Exit" parent="."]
-position = Vector3(13, 0.04, -23.3)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.04, -23.3)
 
-[node name="ConservatoryFloor" parent="Environment" instance=ExtResource("platform")]
+[node name="ConservatoryFloor" parent="Environment" index="0" unique_id=1734746046 instance=ExtResource("platform")]
 visible = false
-custom_outline = SubResource("RoomsOutline")
 outline_detail = 96
+custom_outline = SubResource("RoomsOutline")
 pillar_depth = 9.0
 edge_inset = 0.16
 
-[node name="GardenToJungle" parent="Environment" instance=ExtResource("curved")]
-curve = SubResource("JungleThresholdCurve")
-path_width = 2.32
-paving_seed = 140158
-end_fade = Vector2(1.12, 0.78)
-width_variation = 0.06
-edge_softness = 0.42
-collision_enabled = false
-paving_color = Color(0.836, 0.81, 0.746, 1)
-shoulder_color = Color(0.852, 0.831, 0.772, 1)
-stone_color = Color(0.87, 0.849, 0.791, 1)
-stone_size = 0.91
-joint_width = 0.014
-crown_height = 0.0
-breakup_size = 0.34
-
-[node name="ToBonsai" parent="Environment" instance=ExtResource("curved")]
-paving_seed = 140178
-irregularity = 0.5
+[node name="ToBonsai" parent="Environment" index="1" unique_id=1501958138 instance=ExtResource("curved")]
 curve = SubResource("BonsaiWalkCurve")
-path_width = 2.12
-end_fade = Vector2(0.83, 2.15)
-width_variation = 0.06
-edge_softness = 0.45
-collision_enabled = false
-paving_color = Color(0.836, 0.81, 0.746, 1)
 shoulder_color = Color(0.852, 0.831, 0.772, 1)
 stone_color = Color(0.87, 0.849, 0.791, 1)
+width_variation = 0.06
+crown_height = 0.0
 stone_size = 0.91
 joint_width = 0.014
-crown_height = 0.0
+path_width = 2.12
+paving_seed = 140178
+paving_color = Color(0.836, 0.81, 0.746, 1)
+end_fade = Vector2(0.83, 2.15)
+edge_softness = 0.45
 breakup_size = 0.34
+collision_enabled = false
 
-[node name="Guidance" type="Node3D" parent="Environment"]
+[node name="Guidance" type="Node3D" parent="Environment" index="2" unique_id=1813042628]
 
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="FlowerGarden" parent="Zones" instance=ExtResource("garden")]
-
-[node name="Jungle" parent="Zones" instance=ExtResource("jungle")]
-position = Vector3(-3, 0, -20)
-
-[node name="Bonsai" parent="Zones" instance=ExtResource("bonsai")]
-position = Vector3(13, 0, -24.5)
-
-[node name="AlongTheRill" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="AlongTheRill" parent="Environment/Guidance" index="0" unique_id=181376054 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/FlowerGarden/Fragment")
 waypoints = PackedVector3Array(2.7, 0.76, 9.4, 2.7, 0.76, 5, 2.7, 0.76, 0, 2.7, 0.76, -4.5)
-stroke_width = 0.34
-opacity = 0.92
 
-[node name="IntoTheGreen" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="IntoTheGreen" parent="Environment/Guidance" index="1" unique_id=658892990 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/FlowerGarden/Fragment")
 end_anchor = NodePath("../../../Zones/Jungle/Fragment")
-waypoints = PackedVector3Array()
-stroke_width = 0.34
-opacity = 0.92
+waypoints = PackedVector3Array(2.7, 0.76, -8.9, 0, 0.76, -8.9, 0, 0.76, -12.5, -3, 0.76, -14, -2.8411841, 0.76, -14.743796, -2.3376431, 0.76, -15.3127365, -1.6731428, 0.76, -15.695049, -1.0111884, 0.76, -16.081251, -0.55830383, 0.76, -16.685389, -0.54455614, 0.76, -17.441881, -1.0055032, 0.76, -18.040398, -1.6710519, 0.76, -18.419281, -2.3859448, 0.76, -18.69777, -3.1136012, 0.76, -18.941652, -3.838457, 0.76, -19.193607, -4.540441, 0.76, -19.50238, -5.1516123, 0.76, -19.95957, -5.3997383, 0.76, -20.664982, -5.3545475, 0.76, -21.430748, -5.2196226, 0.76, -22.185665, -4.9700985, 0.76, -22.910324, -4.5742016, 0.76, -23.565489)
 
-[node name="ToSmallWorlds" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="ToSmallWorlds" parent="Environment/Guidance" index="2" unique_id=1169287129 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Jungle/Fragment")
 end_anchor = NodePath("../../../Zones/Bonsai/Fragment")
-waypoints = PackedVector3Array()
-stroke_width = 0.34
-opacity = 0.92
+waypoints = PackedVector3Array(-4.5742016, 0.76, -23.565489, -4.011203, 0.76, -24.085752, -3.3138235, 0.76, -24.403957, -2.5547059, 0.76, -24.522482, -1.7865019, 0.76, -24.569353, -1.0170559, 0.76, -24.58769, -0.24738741, 0.76, -24.58556, 0.5221505, 0.76, -24.57016, 1.2915154, 0.76, -24.54799, 2.0608697, 0.76, -24.525091, 2.8303528, 0.76, -24.507214, 3.6000004, 0.76, -24.5, 3.6, 0.76, -24.5, 4.3548822, 0.76, -24.5, 5.110333, 0.76, -24.5, 5.8686247, 0.76, -24.5, 6.621462, 0.76, -24.5, 7.376904, 0.76, -24.5, 8.13229, 0.76, -24.5, 8.887711, 0.76, -24.499998, 9.643096, 0.76, -24.5, 10.398539, 0.76, -24.5, 11.151376, 0.76, -24.5, 11.909667, 0.76, -24.5, 12.665118, 0.76, -24.5, 13.420001, 0.76, -24.5)
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="FlowerGarden" parent="Zones" index="0" unique_id=587040509 instance=ExtResource("garden")]
+ambience_stream = ExtResource("10_gqs4e")
+ambience_volume_db = -12.0
+
+[node name="Jungle" parent="Zones" index="1" unique_id=382592995 instance=ExtResource("jungle")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -20)
+ambience_stream = ExtResource("10_gqs4e")
+ambience_volume_db = -10.0
+
+[node name="Bonsai" parent="Zones" index="2" unique_id=1666296610 instance=ExtResource("bonsai")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -24.5)
+ambience_stream = ExtResource("8_g854r")
+ambience_volume_db = -9.0

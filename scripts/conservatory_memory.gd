@@ -7,7 +7,7 @@ extends MemoryScene
 		if is_node_ready(): _update_jungle_route()
 
 func _ready() -> void:
-	for path in [$Environment/GardenToJungle, $Zones/Jungle/Scenery/WindingPath, $Environment/ToBonsai]:
+	for path in [$Zones/Jungle/Scenery/WindingPath, $Environment/ToBonsai]:
 		if path.curve and not path.curve.changed.is_connected(_update_jungle_route):
 			path.curve.changed.connect(_update_jungle_route)
 	_update_jungle_route()
@@ -17,9 +17,10 @@ func _update_jungle_route() -> void:
 	var trail: PainterlyCurvedPath = get_node("Zones/Jungle/Scenery/WindingPath")
 	var fragment: MemoryFragment = get_node("Zones/Jungle/Fragment")
 	fragment.global_position = trail.to_global(trail.point_at(trail.get_path_length()*jungle_fragment_ratio))+Vector3.UP*0.04
-	var threshold: PainterlyCurvedPath = $Environment/GardenToJungle
-	var approach := PackedVector3Array([to_global(Vector3(2.7, 0.76, -8.9))])
-	approach.append_array(threshold.get_route_points())
+	# Keep the supported crossing and its hint without laying stone between rooms.
+	var approach := PackedVector3Array()
+	for point in [Vector3(2.7, 0.76, -8.9), Vector3(0, 0.76, -8.9), Vector3(0, 0.76, -12.5)]:
+		approach.append(to_global(point))
 	approach.append_array(trail.get_route_points(0.0,jungle_fragment_ratio))
 	_assign_route(get_node("Environment/Guidance/IntoTheGreen"),approach)
 	var departure := trail.get_route_points(jungle_fragment_ratio,1.0)

@@ -119,8 +119,11 @@ func run() -> void:
 			await capture("res://docs/previews/snowy-stadium-overlook.png")
 	var button: MeshInstance3D = fireworks.get_node("Button")
 	var sparks: MultiMeshInstance3D = fireworks.get_node("Sparks")
-	check(controller.pick_interactable(camera.unproject_position(button.global_position + Vector3.UP * 0.08)) == fireworks,
-		"The gold launch button must be tappable from the overlook")
+	for offset in [Vector3(0, 0.14, 0), Vector3(-0.75, 0.14, 0), Vector3(0.75, 0.14, 0), Vector3(0, 0.14, 0.75)]:
+		check(controller.pick_interactable(camera.unproject_position(button.to_global(offset))) == fireworks,
+			"Button tap failed at %s, projected to %s" % [offset, camera.unproject_position(button.to_global(offset))])
+	if "--capture-console" in OS.get_cmdline_user_args():
+		await capture("res://docs/previews/snowy-stadium-launch-console.png")
 	for center: Vector3 in fireworks.burst_centers:
 		check(camera.is_position_in_frustum(fireworks.to_global(center)),
 			"Burst centers must fit the stadium camera")

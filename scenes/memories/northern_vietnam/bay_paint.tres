@@ -2,14 +2,14 @@
 [ext_resource type="Script" path="res://components/scenery/water/water_settings.gd" id="1"]
 [resource]
 script = ExtResource("1")
-flow_speed = 0.13
-ripple_scale = 1.18
-wave_activity = 0.4
-wave_height = 0.007
-paint_contrast = 0.20
-depth_distance = 2.45
-caustic_strength = 0.22
-normal_strength = 0.3
-reflection_strength = 0.19
-highlight_amount = 0.61
-sky_color = Color(0.78, 0.908, 0.876, 1)
+flow_speed = 0.12
+ripple_scale = 0.85
+wave_activity = 0.35
+wave_height = 0.008
+paint_contrast = 0.63
+depth_distance = 2.75
+caustic_strength = 0.15
+normal_strength = 0.20
+reflection_strength = 0.28
+highlight_amount = 0.42
+sky_color = Color(0.79, 0.90, 0.89, 1)

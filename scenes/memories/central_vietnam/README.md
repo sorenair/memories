@@ -19,10 +19,9 @@ particular pagoda. Green roof tiles are the author's requested color. Personal
 wording, the rice field's precise location and time of day remain unspecified;
 notes are explicitly placeholders and the world uses shared soft daylight.
 
-Existing limestone karsts and the Vietnamese pavilion supply the architecture;
-the pavilion now supports optional broad tile relief. Jungle planting, trees,
-bushes, grass, the new surface paths, rice terraces, the open Meridian Gate and
-Thai Hoa-inspired hall are reused. No new mountain or jungle renderer is needed.
+The memory reuses the limestone karsts, water, jungle planting, surface paths,
+rice terraces, sculpted fire and crowd components. The devotional scenery
+profiles add the seated gold statue, field shrine and bronze censer.
 
 ## Layout
 
@@ -30,18 +29,21 @@ Thai Hoa-inspired hall are reused. No new mountain or jungle renderer is needed.
   ridges, spires and shelved bluffs frame the **NestledTemple**. **MountainRoute**
   follows a walkable flagstone curve from the jungle arrival, past the fragment
   in front of the temple, and onto **ToFields**. **TempleCourt** adds broad stone
-  paving. Exit planting guides the route where the flagstone and earth fade
-  apart. The temple and cliffs recall from **MountainView**.
+  paving, with a player-scale golden Budai on a lotus base to the temple's
+  right. Exit planting guides the route where the flagstone and earth fade
+  apart. The temple, statue and cliffs recall from **MountainView**.
 - **Rice:** `rice_zone.tscn` has eleven individually shaped, flooded paddies
-  at staggered levels. **BundWalk** winds between planted plots and climbs to
-  the fragment and overlook. **ToHue** descends along the same earthen bank
-  before its tread fades. Paddies, raised banks and crop rows share one
-  painted mesh. The rice shader animates the water and responds to both explorers.
+  at staggered levels. **BundWalk** winds between the plots and climbs to the
+  overlook. Halfway up, **ShrineVisit** wraps around an open, four-post shrine
+  on a dry terrace and leads to the relocated fragment beside the burning
+  censer. **ToHue** descends the earthen bank before its tread fades. Paddies,
+  banks and the dry clearing share one terrain mesh and collider.
 - **Hue:** `hue_zone.tscn` approaches the **MeridianGate** through its open central
-  arch, then reaches a partial ceremonial court and **ThaiHoaHall**. Muted gold
-  roofs, green gate wings, red timber, ochre masonry, two leafy ponds and partial
-  walls carry the identity. The garden shrubs and early gate recall guide the
-  approach where the field path fades. The fragment is in front of the hall.
+  arch, then reaches a lotus-pond court and **ThaiHoaHall**. Worn masonry courses,
+  glazed eaves, warm roofs, scarlet lattice and low stone balustrades take cues
+  from the Imperial City. Flowering bushes and ferns soften the court and gate
+  apron. Animated visitors gather to the sides of both. The fragment is in
+  front of the hall. [Vietnam Tourism's Huế virtual tour](https://vietnam.travel/sites/default/files/360Tour/Hue/index.htm)
 
 **Environment/VietnamFloor** is one hidden finite platform using
 `walk_outline.tres`, formed from the solid mountain clearing, buffered
@@ -63,14 +65,16 @@ Edit **Fragment → Note Title / Notes** in the relevant zone:
 
 `../../../scripts/central_vietnam_memory.gd` derives requested brushstroke routes
 from the authored curves. The first route ends at the temple fragment; the next
-continues along **MountainRoute**, **ToFields** and **BundWalk**. Update the
+continues along **MountainRoute**, **ToFields**, **BundWalk** and **ShrineVisit**.
+The Huế hint leads back around the shrine to the bund. Update the
 supported floor when extending a path; run `godot --headless --path . --script
 tools/rebuild_central_vietnam_floor.gd` to regenerate its connected outline.
-On **RiceTerraces**, edit **Paddy Contours** as closed, level local curves.
+On **RiceTerraces**, edit **Paddy Contours** and **Dry Clearings** as closed,
+level local curves.
 **Bund Paths** references **BundWalk** and **ToHue**, which should meet on
 the same grade and share a width. The bank rebuilds from those curves when
-they change. Keep the paddy shoulders clear of the footpath and align the
-fragment when moving the crest.
+they change. Keep the paddy shoulders clear of the footpath. Align the
+clearing, shrine approach and fragment when moving the detour.
 
 The camera holds **4.7** for walking, including between the paddies. It widens
 to **17.6** at the temple, **14.0** on the rice crest, **11.6** at the gate
@@ -93,7 +97,7 @@ godot --path . --fixed-fps 60 --script tests/central_vietnam_memory.gd -- --capt
 
 The real-explorer walkthrough covers both directions, supported arrival,
 finite path containment, the temple fragment, the rising/descending field
-routes, the central gate, all note tap targets, requested guidance, ambience,
+routes and shrine detour, the central gate, all note tap targets, requested guidance, ambience,
 camera changes and timeline avatar choice. Separate `-- host` / `-- guest`
 processes use isolated UDP **24745** for partner presence and movement;
 production IP entry stays on 24680. Native Mobile renders are saved in

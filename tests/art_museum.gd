@@ -21,10 +21,14 @@ func walk_to(player: MemoryExplorer, point: Vector3) -> bool:
 	push_error("Walking stopped at %s heading toward %s" % [player.global_position,point])
 	return false
 func capture(name: String) -> void:
-	if not "--capture" in OS.get_cmdline_user_args(): return
+	var args := OS.get_cmdline_user_args()
+	var contrast_capture := "--capture-fragment-contrast" in args
+	if not "--capture" in args and not contrast_capture: return
+	if contrast_capture and name not in ["forecourt", "marble", "paintings", "crowded-room"]: return
 	await create_timer(1.2).timeout
-	RenderingServer.force_draw(false)
-	root.get_texture().get_image().save_png("res://docs/previews/museum-"+name+".png")
+	await RenderingServer.frame_post_draw
+	var prefix := "museum-dark-fragment-" if contrast_capture else "museum-"
+	root.get_texture().get_image().save_png("res://docs/previews/"+prefix+name+".png")
 func run() -> void:
 	root.content_scale_size = Vector2i(1600,738)
 	var world := load(WORLD).instantiate() as Node3D
@@ -81,6 +85,10 @@ func run() -> void:
 		var approach_x := 0.0 if index==0 else 0.8
 		check(await walk_to(player,zone.get_fragment().global_position+Vector3(approach_x,0,1.0)),"Every exhibit fragment must be approachable")
 		check(player.is_on_floor(),"The explorer must stay supported at every exhibit")
+		var fragment: MemoryFragment = zone.get_fragment()
+		check(fragment.contrast == MemoryFragment.Contrast.DARK_INK
+			and fragment._material.get_shader_parameter("dark_ink"),
+			"Each pale museum zone must use the high-contrast fragment")
 		await capture(["forecourt","marble","paintings","crowded-room"][index])
 		check(zone.get_fragment().try_activate(player),"Each zone's story fragment must activate")
 		world.get_node("Controls/FragmentInteraction").advance_note()

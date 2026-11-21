@@ -17,7 +17,9 @@ The camera opens from size 3.5 to 64 along the connecting aisle, then frames a f
 
 The football field sits at Y=0, centered on Z=−26, more than ten meters below the deck. Twenty-two small players run on individually staggered, bending routes, turn with their movement, bob, and swing their legs. Defenders follow with varied reaction delays, and a football travels with a carrier. This is lightweight scenic animation, without gameplay physics or network traffic. Disable **Animate Players** for a static pose; **Show Teams** removes the figures. The broad field and layered distant seating provide scale beyond the compact playable fragment.
 
-Tap the gold button on the viewing platform to launch three maroon and gold fireworks over the field. The shared white outline shows when the console is in range. The show is local and can be replayed after the sparks fade.
+Tap the gold button on the viewing platform to launch three maroon and gold fireworks over the field. Each launch hisses from the console, followed by a boom and crackle from the burst over the field. The shared white outline shows when the console is in range. The show is local and can be replayed after the sparks fade.
+
+Select **Scenery / ViewingPlatform / Fireworks** in `stadium_zone.tscn` and assign imported audio files under **Sound Effects → Launch Sound** and **Burst Sound**. Clear either field to mute that cue.
 
 ## Editing
 

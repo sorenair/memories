@@ -14,8 +14,15 @@ The project's bus layout is `audio/default_bus_layout.tres`. Open Godot's **Audi
 | Ambience | Continuous environmental bed | Memory |
 | SFX | Band notes, fragment chimes, other gameplay effects | Memory |
 | UI | Interface sounds, independent of the memory fade | Master |
+| Menu Music | Shared title screen and timeline playlist | Master |
 
 Category buses start at 0 dB. Balance a particular track with its player-level dB setting; use a bus to change the whole category. The limiter is a backstop for overlapping peaks, rather than a substitute for balancing clips. This uses [Godot's native audio buses](https://docs.godotengine.org/en/4.4/tutorials/audio/audio_buses.html), so existing AudioStreamPlayer nodes can participate just by choosing their **Bus**.
+
+## Menu playlist
+
+Open `audio/menu_music.tscn`, select **MenuMusic**, and add imported WAV, Ogg Vorbis, or MP3 tracks to **Playlist** in the Inspector. The array can have any number of tracks. Adjust **Volume dB** on the same node.
+
+The player shuffles the remaining songs when either menu opens and keeps the current song playing across the transition. Once every track has played, it shuffles a new pass. Menu music fades out with Recall and fades in with a fresh pass when you return from a memory. An empty playlist is silent.
 
 ## Choose a memory's tracks
 

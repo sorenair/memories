@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" uid="uid://dol7foyhx3gxg" path="res://scripts/memory_world.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://xkovxofvhuc5" path="res://scenes/player/explorer.tscn" id="2"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/interaction/interaction_controller.gd" id="10"]
 [ext_resource type="PackedScene" path="res://UI/in_game/interact_button.tscn" id="11"]
 [ext_resource type="Script" path="res://components/guidance/brushstroke/guidance_controller.gd" id="guidance"]
+[ext_resource type="Script" path="res://UI/in_game/fragment_tracker.gd" id="fragment_tracker"]
 
 [sub_resource type="Environment" id="DreamEnvironment"]
 background_mode = 1
@@ -71,7 +72,7 @@ far = 160.0
 
 [node name="Controls" type="CanvasLayer" parent="."]
 
-[node name="ExplorationInput" type="Control" parent="Controls"]
+[node name="ExplorationInput" type="Control" parent="Controls" node_paths=PackedStringArray("interaction_controller")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,6 +81,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5")
+interaction_controller = NodePath("../../InteractionController")
 
 [node name="FPSLabel" type="Label" parent="Controls"]
 anchors_preset = 1
@@ -102,6 +104,16 @@ script = ExtResource("7")
 
 [node name="InteractButton" parent="Controls" node_paths=PackedStringArray("input_gate") instance=ExtResource("11")]
 input_gate = NodePath("../../InteractionController")
+
+[node name="FragmentTracker" type="Control" parent="Controls" node_paths=PackedStringArray("timeline_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("fragment_tracker")
+timeline_button = NodePath("../ReturnToTimeline")
 
 [node name="InteractionController" type="Node" parent="." node_paths=PackedStringArray("actor")]
 script = ExtResource("10")

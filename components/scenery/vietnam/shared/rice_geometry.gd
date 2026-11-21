@@ -64,12 +64,15 @@ func blade(a: Vector3,b: Vector3,c: Vector3,color: Color,wa: float,wb: float,wc:
 var _bank_faces := PackedVector3Array()
 
 ## Authored paddies share one surface, one collision body, and the existing rice shader.
-func paddies(c: Dictionary, contours: Array[Curve3D], bund: PackedVector3Array, bund_width: float) -> Dictionary:
+func paddies(c: Dictionary, contours: Array[Curve3D], bund: PackedVector3Array, bund_width: float, clearings: Array[Curve3D]) -> Dictionary:
 	begin(c)
 	for contour in contours:
 		if contour and contour.get_baked_length() > 1.0:
 			_paddy(contour, c.plants_per_square_meter)
 	_earthen_bund(bund, bund_width)
+	for clearing in clearings:
+		if clearing and clearing.get_baked_length() > 1.0:
+			_paddy(clearing, 0.0)
 	var result := finish()
 	result.terrain_faces = _bank_faces
 	return result
@@ -87,7 +90,7 @@ func _paddy(contour: Curve3D, density: float) -> void:
 	if triangles.is_empty():
 		return
 	var height := contour.get_point_position(0).y
-	var tone := accent.lerp(Color("98a059"), rng.randf_range(0.15, 0.48))
+	var tone := accent.lerp(Color("98a059"), rng.randf_range(0.15, 0.48)) if density > 0 else Color("9b9066")
 	_paddy_flat(outline, triangles, height, tone, 0.0, true)
 
 	for index in outline.size():
@@ -106,6 +109,8 @@ func _paddy(contour: Curve3D, density: float) -> void:
 		_bank_quad(crest_a, crest_b, lip_b, lip_a, tone.lerp(body, 0.41))
 		_bank_quad(lip_a, lip_b, toe_b, toe_a, body.lerp(tone, rng.randf_range(0.22, 0.43)))
 
+	if density <= 0.0:
+		return
 	for wet in Geometry2D.offset_polygon(outline, -0.27, Geometry2D.JOIN_ROUND):
 		var water_triangles := Geometry2D.triangulate_polygon(wet)
 		if water_triangles.is_empty():

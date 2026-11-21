@@ -7,9 +7,11 @@ const ThreadTransition := preload("res://UI/main_menu/timeline_transition.gd")
 const Arrival := preload("res://UI/memory_arrival/memory_arrival.gd")
 const FROM_MAIN_META := &"timeline_from_main_menu"
 const TIMELINE := "res://UI/memory_lane/memory_lane.tscn"
+const TITLE_RISE := 12.0
 var _title: Label
 var _proceed: Button
-var _proceed_intro: Tween
+var _menu_intro: Tween
+var _title_reveal := 0.0
 var _proceed_reveal := 0.0
 var _avatar_picker: HBoxContainer
 var _avatar_buttons: Array[Button] = []
@@ -18,12 +20,14 @@ var _lan_controls: Control
 var _layout_queued := false
 
 func _ready() -> void:
+	MenuMusic.enter_menu()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	var serif := SystemFont.new()
 	serif.font_names = PackedStringArray(["Georgia", "Noto Serif", "DejaVu Serif"])
 	_title = Label.new()
 	_title.name = "EvermoreTitle"
 	_title.text = "OUR STORY"
+	_title.modulate.a = 0.0
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -38,6 +42,7 @@ func _ready() -> void:
 	add_child(_proceed)
 	_avatar_picker = HBoxContainer.new()
 	_avatar_picker.name = "CharacterPicker"
+	_avatar_picker.modulate.a = 0.0
 	_avatar_picker.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_avatar_picker.add_theme_constant_override("separation", 8)
 	add_child(_avatar_picker)
@@ -57,11 +62,15 @@ func _ready() -> void:
 	LanSession.set_avatar(MemoryExplorer.preferred_avatar)
 	_lan_controls = preload("res://UI/main_menu/lan_controls.gd").new()
 	_lan_controls.name = "LAN"
+	_lan_controls.modulate.a = 0.0
 	add_child(_lan_controls)
 	resized.connect(_request_layout)
 	_layout()
-	_proceed_intro = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	_proceed_intro.tween_method(_reveal_proceed, 0.0, 1.0, 0.65).set_delay(0.15)
+	_menu_intro = create_tween().set_parallel().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_menu_intro.tween_method(_reveal_title, 0.0, 1.0, 0.75).set_delay(0.08)
+	_menu_intro.tween_method(_reveal_proceed, 0.0, 1.0, 0.67).set_delay(0.37)
+	_menu_intro.tween_property(_lan_controls, "modulate:a", 1.0, 0.48).set_delay(0.66)
+	_menu_intro.tween_property(_avatar_picker, "modulate:a", 1.0, 0.48).set_delay(0.66)
 	var veil_layer := get_tree().root.get_node_or_null(Arrival.VEIL_LAYER_NAME)
 	if veil_layer:
 		veil_layer.reparent(self)
@@ -87,6 +96,11 @@ func _finish_layout() -> void:
 	_layout_queued = false
 	_layout()
 
+func _reveal_title(progress: float) -> void:
+	_title_reveal = progress
+	_title.modulate.a = progress
+	_title.position.y = size.y * 0.34 + (1.0 - progress) * TITLE_RISE
+
 func _reveal_proceed(progress: float) -> void:
 	_proceed_reveal = progress
 	_proceed.modulate.a = progress
@@ -98,7 +112,7 @@ func _layout() -> void:
 	var portrait := size.y > size.x
 	var font_size := int(clampf(minf(size.x * 0.112, size.y * 0.16), 36.0, 144.0))
 	_title.add_theme_font_size_override("font_size", font_size)
-	_title.position = Vector2(24, size.y * 0.34)
+	_title.position = Vector2(24, size.y * 0.34 + (1.0 - _title_reveal) * TITLE_RISE)
 	_title.size = Vector2(size.x - 48, font_size * 1.5)
 	_proceed.size = Vector2(112, 96) if portrait else Vector2(144, 112)
 	_proceed.symbol_size = Vector2(88, 56) if portrait else Vector2(104, 64)
@@ -126,7 +140,7 @@ func enter_timeline() -> void:
 	if _travelling:
 		return
 	_travelling = true
-	_proceed_intro.kill()
+	_menu_intro.kill()
 	_lan_controls.set_locked(true)
 	_proceed.disabled = true
 	for button in _avatar_buttons:
@@ -156,7 +170,7 @@ func enter_timeline() -> void:
 		_travelling = false
 		_lan_controls.set_locked(false)
 		_lan_controls.modulate.a = 1.0
-		_title.modulate.a = 1.0
+		_reveal_title(1.0)
 		_proceed_reveal = 1.0
 		_proceed.modulate.a = 1.0
 		_proceed.show()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="air"]
@@ -11,6 +11,7 @@
 [ext_resource type="Resource" path="res://scenes/memories/southern_vietnam/dune_scrub.tres" id="dry_palette"]
 
 [ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="earth"]
+[ext_resource type="PackedScene" path="res://components/weather/blowing_sand/painterly_blowing_sand.tscn" id="blowing_sand"]
 
 [sub_resource type="Curve3D" id="DuneRouteCurve"]
 bake_interval = 0.05
@@ -23,8 +24,8 @@ _data = {"points": PackedVector3Array(0,0,0,0.64,0.0,-0.8,10,0,-11,-1.6,-0.0,1.6
 point_count = 4
 
 [sub_resource type="Curve2D" id="WindwardOutline"]
-_data = {"points": PackedVector2Array(0, 0, 0, 0, 15.3991, 0.0, 0, 0, 0, 0, 15.5548, 2.7427, 0, 0, 0, 0, 14.7862, 5.3817, 0, 0, 0, 0, 13.2058, 7.6243, 0, 0, 0, 0, 11.1919, 9.3911, 0, 0, 0, 0, 9.0908, 10.834, 0, 0, 0, 0, 7.0068, 12.1361, 0, 0, 0, 0, 4.8437, 13.3079, 0, 0, 0, 0, 2.5009, 14.1833, 0, 0, 0, 0, 0.0, 14.5983, 0, 0, 0, 0, -2.5643, 14.5431, 0, 0, 0, 0, -5.142, 14.1275, 0, 0, 0, 0, -7.7409, 13.4077, 0, 0, 0, 0, -10.3019, 12.2773, 0, 0, 0, 0, -12.5816, 10.5572, 0, 0, 0, 0, -14.2094, 8.2038, 0, 0, 0, 0, -14.9171, 5.4294, 0, 0, 0, 0, -14.7532, 2.6014, 0, 0, 0, 0, -14.0825, 0.0, 0, 0, 0, 0, -13.3445, -2.353, 0, 0, 0, 0, -12.7521, -4.6414, 0, 0, 0, 0, -12.1689, -7.0257, 0, 0, 0, 0, -11.2532, -9.4426, 0, 0, 0, 0, -9.7429, -11.6111, 0, 0, 0, 0, -7.644, -13.2399, 0, 0, 0, 0, -5.1847, -14.2448, 0, 0, 0, 0, -2.6056, -14.7773, 0, 0, 0, 0, -0.0, -15.0354, 0, 0, 0, 0, 2.6519, -15.0396, 0, 0, 0, 0, 5.3119, -14.5944, 0, 0, 0, 0, 7.7829, -13.4804, 0, 0, 0, 0, 9.8122, -11.6937, 0, 0, 0, 0, 11.3105, -9.4906, 0, 0, 0, 0, 12.4513, -7.1887, 0, 0, 0, 0, 13.5114, -4.9177, 0, 0, 0, 0, 14.5772, -2.5703)}
-point_count = 36
+_data = {"points": PackedVector2Array(-0.156, -1.056, 0.156, 1.056, -15, 8, -0.84, -0.732, 0.84, 0.732, -12.7, 12.4, -0.972, 0.012, 0.972, -0.012, -8, 14.1, -0.696, 0.39, 0.696, -0.39, -4.6, 12.3, -0.732, 0.108, 0.732, -0.108, -2.2, 10.85, -0.828, -0.306, 0.828, 0.306, 1.5, 11.4, -0.888, -0.084, 0.888, 0.084, 4.7, 13.4, -0.864, 0.576, 0.864, -0.576, 8.9, 12.1, -0.312, 0.828, 0.312, -0.828, 11.9, 8.6, -0.216, 0.732, 0.216, -0.732, 11.5, 5.2, -0.468, 0.756, 0.468, -0.756, 13.7, 2.5, -0.012, 0.978, 0.012, -0.978, 15.4, -1.1, 0.198, 1.008, -0.198, -1.008, 13.8, -5.65, 0.24, 0.864, -0.24, -0.864, 13.75, -9.5, 0.57, 0.6, -0.57, -0.6, 11.8, -12.85, 0.768, 0.078, -0.768, -0.078, 9, -14.5, 0.948, -0.3, -0.948, 0.3, 5.4, -13.5, 0.978, 0.084, -0.978, -0.084, 1.1, -12, 1.008, 0.228, -1.008, -0.228, -2.75, -14.2, 0.858, -0.384, -0.858, 0.384, -7.3, -13.9, 0.3, -0.864, -0.3, 0.864, -9.9, -11, 0.408, -0.744, -0.408, 0.744, -9.8, -6.7, 0.624, -0.726, -0.624, 0.726, -13.3, -4.8, 0.084, -1.008, -0.084, 1.008, -15, -0.65, -0, -1.038, 0, 1.038, -14, 3.6)}
+point_count = 25
 
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"sand_dunes"
@@ -42,16 +43,29 @@ patch_size = Vector2(30,30)
 patch_seed = 620262
 terrain_form = 0
 dune_height = 1.88
-dune_spacing = 9.65
-dune_direction = 43
-edge_feather = 4.2
+dune_spacing = 10.0
+dune_direction = -15.0
+edge_feather = 5.0
 sand_color = Color(0.90, 0.771, 0.578, 1)
-shadow_color = Color(0.649, 0.505, 0.334, 1)
-ripple_strength = 0.44
-mesh_detail = 96
+shadow_color = Color(0.593, 0.445, 0.298, 1)
+ripple_strength = 0.31
+mesh_detail = 100
 recall_enabled = true
 recall_anchor = NodePath("../DunesRecall")
 custom_outline = SubResource("WindwardOutline")
+dune_crests = PackedVector4Array(-6.5, 4.8, 2.70, 9.4, 1.06, 1.55, 3.20, 10.5, 8.35, -3.9, 2.58, 8.9)
+
+[node name="BlowingSand" parent="Scenery" node_paths=PackedStringArray("sand_surface") instance=ExtResource("blowing_sand")]
+sand_surface = NodePath("../DuneSand")
+footprint = Vector2(30, 30)
+wind_direction = Vector2(0.97, -0.24)
+wind_speed = 3.9
+grain_count = 1550
+grain_seed = 620263
+grain_size = Vector2(0.014, 0.053)
+lift_height = 0.37
+gust_strength = 0.84
+glitter_strength = 0.95
 
 [node name="DuneRoute" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("DuneRouteCurve")
@@ -67,12 +81,13 @@ collision_enabled = false
 curve = SubResource("ToSaigonCurve")
 path_width = 1.98
 paving_color = Color(0.807, 0.719, 0.551, 1)
-end_fade = Vector2(5.2, 6.5)
+end_fade = Vector2(4.1, 8.1)
 slab_length = 2.0
-edge_softness = 0.7
+edge_softness = 0.83
 shoulder_color = Color(0.715, 0.655, 0.469, 1)
-detail_density = 0.12
+detail_density = 0.1
 crown_height = 0.004
+collision_enabled = false
 
 [node name="DuneScrub1" parent="Scenery" instance=ExtResource("bush")]
 position = Vector3(-12,0,5)

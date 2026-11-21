@@ -218,7 +218,8 @@ puff_opacity = 0.1
 wisp_opacity = 0.17
 
 [node name="EncorePad" parent="Scenery" index="15" node_paths=PackedStringArray("screen", "rig") instance=ExtResource("encore")]
-position = Vector3(1.35, 0.035, -3.65)
+position = Vector3(3.5, 0.035, -5.15)
+confetti_offset = Vector3(-3.75, 2, -3)
 screen = NodePath("../PaintedScreen")
 rig = NodePath("../StageLights")
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/museum_room.wav" id="air"]
@@ -13,10 +13,22 @@
 [ext_resource type="PackedScene" path="res://components/scenery/conservatory/walls/painterly_stone_wall.tscn" id="wall"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
 
+[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flower"]
+
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/devotional/painterly_devotional_piece.tscn" id="devotional"]
+
 [sub_resource type="Curve3D" id="GateApproachCurve"]
 bake_interval = 0.05
 _data = {"points": PackedVector3Array(0,0,0,0.48,0.0,-0.48,-5,0,15,-0.8,-0.0,0.8,0.8,0.0,-0.8,-2,0,12,-0.32,-0.0,1.12,0.32,0.0,-1.12,0,0,10,-0.0,-0.0,1.76,0.0,0.0,-1.76,0,0,5,-0.0,-0.0,1.92,0.0,0.0,-1.92,0,0,-1,-0.0,-0.0,0.96,0,0,0,0,0,-7), "tilts": PackedFloat32Array(0,0,0,0,0,0)}
 point_count = 6
+
+[sub_resource type="Curve3D" id="GateApronCurve"]
+_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -0.75, 0, 0, 14.15, 0, 0, 0.75, 0, 0, 0, 0, 0, 7.6), "tilts": PackedFloat32Array(0, 0)}
+point_count = 2
 
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"hue_imperial_city"
@@ -30,9 +42,9 @@ ambience_blend_distance = 4.0
 curve = SubResource("GateApproachCurve")
 path_width = 2.65
 paving_color = Color(0.730, 0.685, 0.570, 1)
-end_fade = Vector2(3.7, 9.8)
+end_fade = Vector2(3.3, 11.1)
 slab_length = 2.0
-edge_softness = 0.56
+edge_softness = 0.65
 stone_color = Color(0.82, 0.775, 0.648, 1)
 shoulder_color = Color(0.733, 0.715, 0.567, 1)
 stone_size = 1.1
@@ -41,6 +53,28 @@ crown_height = 0.0
 
 [node name="GateGardenView" type="Marker3D" parent="Scenery"]
 position = Vector3(-2.1, 0, 12.4)
+
+[node name="WestGateApron" parent="Scenery" instance=ExtResource("path")]
+position = Vector3(-3.61, -0.03, 0)
+curve = SubResource("GateApronCurve")
+path_width = 4.7
+stone_size = 1.17
+paving_color = Color(0.736, 0.690, 0.585, 1)
+stone_color = Color(0.801, 0.751, 0.640, 1)
+end_fade = Vector2(1.7, 1.18)
+edge_softness = 0.75
+collision_enabled = false
+
+[node name="EastGateApron" parent="Scenery" instance=ExtResource("path")]
+position = Vector3(3.42, -0.03, -0.42)
+curve = SubResource("GateApronCurve")
+path_width = 4.72
+stone_size = 1.17
+paving_color = Color(0.736, 0.690, 0.585, 1)
+stone_color = Color(0.801, 0.751, 0.640, 1)
+end_fade = Vector2(1.7, 1.18)
+edge_softness = 0.75
+collision_enabled = false
 
 [node name="MeridianGate" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("gate")]
 recall_anchor = NodePath("../GateGardenView")
@@ -52,19 +86,19 @@ position = Vector3(0,0,-12)
 recall_enabled = true
 
 [node name="Courtyard" parent="Scenery" instance=ExtResource("paving")]
-position = Vector3(0, 0.006, -3.8)
-footprint = Vector2(7.1, 9.0)
+position = Vector3(0, 0.006, -3.86)
+footprint = Vector2(7.95, 10.3)
 slab_length = 2.0
-paving_color = Color(0.756, 0.713, 0.606, 1)
-end_fade = Vector2(1.8, 1.9)
+paving_color = Color(0.742, 0.665, 0.555, 1)
+end_fade = Vector2(1.35, 1.7)
 edge_softness = 0.52
 
 [node name="WestPond" parent="Scenery" instance=ExtResource("water")]
 position = Vector3(-6.3,-0.06,-3)
-footprint = Vector2(4.2,6.8)
+footprint = Vector2(4.3, 7.2)
 palette_preset = 3
 behavior_preset = 1
-foam_amount = 0.08
+foam_amount = 0.035
 block_water_entry = true
 recall_enabled = true
 
@@ -161,10 +195,10 @@ recall_enabled = true
 
 [node name="EastPond" parent="Scenery" instance=ExtResource("water")]
 position = Vector3(6.3,-0.06,-3)
-footprint = Vector2(4.2,6.8)
+footprint = Vector2(4.3, 7.2)
 palette_preset = 3
 behavior_preset = 1
-foam_amount = 0.08
+foam_amount = 0.035
 block_water_entry = true
 recall_enabled = true
 
@@ -348,6 +382,385 @@ palette_preset = 0
 palette = ExtResource("green")
 recall_enabled = true
 react_to_explorers = true
+
+[node name="PalaceVisitors1" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(-3.05, 0, -2.7)
+footprint = Vector2(2.1, 5.6)
+count = 23
+crowd_seed = 616006
+spacing = 0.55
+person_scale = 0.96
+facing_degrees = 151.0
+facing_variation = 75.0
+palette = 1
+pose_mix = 2
+motion_strength = 0.80
+motion_speed = 1.04
+dance_bounce = 0.032
+collision_enabled = false
+ground_exclusions = Array[NodePath]([NodePath("../GateApproach")])
+recall_enabled = true
+
+[node name="PalaceVisitors2" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(3.05, 0, -4.8)
+footprint = Vector2(2.1, 5.85)
+count = 23
+crowd_seed = 616017
+spacing = 0.55
+person_scale = 0.96
+facing_degrees = -144.0
+facing_variation = 75.0
+palette = 0
+pose_mix = 2
+motion_strength = 0.80
+motion_speed = 1.04
+dance_bounce = 0.032
+collision_enabled = false
+ground_exclusions = Array[NodePath]([NodePath("../GateApproach")])
+recall_enabled = true
+
+[node name="PalaceVisitors3" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(-3.67, 0, 10.7)
+footprint = Vector2(3.7, 3.05)
+count = 16
+crowd_seed = 616028
+spacing = 0.60
+person_scale = 0.96
+facing_degrees = 137.0
+facing_variation = 75.0
+palette = 1
+pose_mix = 2
+motion_strength = 0.80
+motion_speed = 1.04
+dance_bounce = 0.032
+collision_enabled = false
+ground_exclusions = Array[NodePath]([NodePath("../GateApproach")])
+recall_enabled = true
+
+[node name="PalaceVisitors4" parent="Scenery" instance=ExtResource("crowd")]
+position = Vector3(3.37, 0, 10.37)
+footprint = Vector2(3.2, 3.9)
+count = 17
+crowd_seed = 616039
+spacing = 0.60
+person_scale = 0.96
+facing_degrees = -165.0
+facing_variation = 75.0
+palette = 0
+pose_mix = 2
+motion_strength = 0.80
+motion_speed = 1.04
+dance_bounce = 0.032
+collision_enabled = false
+ground_exclusions = Array[NodePath]([NodePath("../GateApproach")])
+recall_enabled = true
+
+[node name="PalaceUnderstory1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-7.7, 0, 12.4)
+footprint = Vector2(1.72, 1.41)
+bush_height = 0.8
+bush_seed = 631697
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(5.93, 0, 12.5)
+footprint = Vector2(1.12, 0.918)
+bush_height = 0.66
+bush_seed = 631714
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.87, 0, 10.2)
+footprint = Vector2(1.25, 1.02)
+bush_height = 0.74
+bush_seed = 631731
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.4, 0, 8.5)
+footprint = Vector2(1.52, 1.25)
+bush_height = 0.85
+bush_seed = 631748
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-8.6, 0, 8.8)
+footprint = Vector2(1.37, 1.12)
+bush_height = 0.77
+bush_seed = 631765
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-8.9, 0, -1.9)
+footprint = Vector2(1.29, 1.06)
+bush_height = 0.82
+bush_seed = 631782
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.4, 0, -2.7)
+footprint = Vector2(1.61, 1.32)
+bush_height = 0.73
+bush_seed = 631799
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-7.4, 0, -7.52)
+footprint = Vector2(1.29, 1.06)
+bush_height = 0.69
+bush_seed = 631816
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.6, 0, -7.22)
+footprint = Vector2(1.51, 1.24)
+bush_height = 0.79
+bush_seed = 631833
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-8.1, 0, -9.45)
+footprint = Vector2(1.73, 1.42)
+bush_height = 0.79
+bush_seed = 632561
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.14, 0, -9.85)
+footprint = Vector2(1.44, 1.18)
+bush_height = 0.67
+bush_seed = 632579
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceUnderstory12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.6, 0, -14.3)
+footprint = Vector2(1.41, 1.16)
+bush_height = 0.77
+bush_seed = 632597
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceFern1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-6.93, 0, 11.42)
+plant_height = 0.68
+spread = 1.23
+plant_seed = 622100
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceFern2" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(7.5, 0, 9.3)
+plant_height = 0.64
+spread = 1.18
+plant_seed = 622111
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceFern3" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-7.45, 0, -6.67)
+plant_height = 0.55
+spread = 1.08
+plant_seed = 622122
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceFern4" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(7.65, 0, -6.25)
+plant_height = 0.58
+spread = 1.13
+plant_seed = 622133
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceFern5" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-7.28, 0, -9.33)
+plant_height = 0.66
+spread = 1.43
+plant_seed = 622144
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceFern6" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(7.2, 0, -11.35)
+plant_height = 0.57
+spread = 1.15
+plant_seed = 622155
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceFlower1" parent="Scenery" instance=ExtResource("flower")]
+position = Vector3(-5.85, 0, 13.2)
+bush_height = 0.66
+footprint = Vector2(1.35, 1.11)
+bush_seed = 624796
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 39
+flower_size = 0.103
+flower_color = Color(0.79, 0.42, 0.50, 1)
+
+[node name="PalaceFlower2" parent="Scenery" instance=ExtResource("flower")]
+position = Vector3(6.9, 0, 13.05)
+bush_height = 0.72
+footprint = Vector2(1.45, 1.19)
+bush_seed = 624809
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 39
+flower_size = 0.103
+flower_color = Color(0.85, 0.56, 0.26, 1)
+
+[node name="PalaceFlower3" parent="Scenery" instance=ExtResource("flower")]
+position = Vector3(-7.9, 0, -7.4)
+bush_height = 0.67
+footprint = Vector2(1.32, 1.08)
+bush_seed = 624822
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 39
+flower_size = 0.103
+flower_color = Color(0.79, 0.42, 0.50, 1)
+
+[node name="PalaceFlower4" parent="Scenery" instance=ExtResource("flower")]
+position = Vector3(7.89, 0, -8.34)
+bush_height = 0.68
+footprint = Vector2(1.49, 1.22)
+bush_seed = 624835
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 39
+flower_size = 0.103
+flower_color = Color(0.85, 0.56, 0.26, 1)
+
+[node name="PalaceFlower5" parent="Scenery" instance=ExtResource("flower")]
+position = Vector3(-6.55, 0, -12.2)
+bush_height = 0.53
+footprint = Vector2(1.08, 0.886)
+bush_seed = 624848
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 39
+flower_size = 0.103
+flower_color = Color(0.79, 0.42, 0.50, 1)
+
+[node name="PalaceFlower6" parent="Scenery" instance=ExtResource("flower")]
+position = Vector3(6.66, 0, -12.64)
+bush_height = 0.63
+footprint = Vector2(1.24, 1.02)
+bush_seed = 624861
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+flower_count = 39
+flower_size = 0.103
+flower_color = Color(0.85, 0.56, 0.26, 1)
+
+[node name="PalaceCanopy1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-8.65, 0, 12.23)
+tree_height = 3.85
+crown_width = 3.2
+tree_seed = 624803
+tree_type = 0
+leaf_sprays_per_cluster = 54
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceCanopy2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(7.15, 0, 13.0)
+tree_height = 3.5
+crown_width = 2.75
+tree_seed = 624816
+tree_type = 0
+leaf_sprays_per_cluster = 54
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="PalaceCanopy3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(9.3, 0, -9.0)
+tree_height = 3.97
+crown_width = 2.8
+tree_seed = 624829
+tree_type = 0
+leaf_sprays_per_cluster = 54
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="WestCourtBronze" parent="Scenery" instance=ExtResource("devotional")]
+position = Vector3(-3.0, 0.022, -7.95)
+profile = 2
+body_color = Color(0.43, 0.43, 0.295, 1)
+accent_color = Color(0.285, 0.33, 0.275, 1)
+trim_color = Color(0.55, 0.495, 0.31, 1)
+recall_enabled = true
+
+[node name="EastCourtBronze" parent="Scenery" instance=ExtResource("devotional")]
+position = Vector3(3.0, 0.022, -7.95)
+profile = 2
+body_color = Color(0.43, 0.43, 0.295, 1)
+accent_color = Color(0.285, 0.33, 0.275, 1)
+trim_color = Color(0.55, 0.495, 0.31, 1)
+recall_enabled = true
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.07,-7)

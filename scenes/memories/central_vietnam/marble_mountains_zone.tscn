@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/conservatory_jungle.wav" id="air"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/devotional/painterly_devotional_piece.tscn" id="devotional"]
 
 [sub_resource type="Curve3D" id="MountainRouteCurve"]
 bake_interval = 0.05
@@ -90,10 +92,11 @@ edge_softness = 0.52
 curve = SubResource("ToFieldsCurve")
 path_width = 2.23
 paving_color = Color(0.694, 0.671, 0.502, 1)
-end_fade = Vector2(5.2, 5.9)
+end_fade = Vector2(2.65, 7.2)
 crown_height = 0.008
-edge_softness = 0.58
+edge_softness = 0.70
 shoulder_color = Color(0.59, 0.647, 0.434, 1)
+detail_density = 0.12
 
 [node name="NestledTemple" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("temple")]
 position = Vector3(0,0.035,-0.8)
@@ -878,7 +881,7 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="TrailFern5" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(3.4000,0.0000,1.7000)
+position = Vector3(3.05, 0, 0.48)
 rotation_degrees = Vector3(0,189.44,0)
 plant_seed = 615654
 plant_height = 0.65
@@ -1116,6 +1119,17 @@ palette_preset = 0
 palette = ExtResource("green")
 recall_enabled = true
 react_to_explorers = true
+
+[node name="GoldenBudai" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("devotional")]
+position = Vector3(4.22, 0.035, 1.45)
+rotation_degrees = Vector3(0, -14, 0)
+scale = Vector3(1.07, 1.07, 1.07)
+body_color = Color(0.89, 0.63, 0.25, 1)
+accent_color = Color(0.73, 0.46, 0.16, 1)
+trim_color = Color(0.94, 0.76, 0.38, 1)
+pigment_strength = 0.38
+recall_enabled = true
+recall_anchor = NodePath("../MountainView")
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.065,4)

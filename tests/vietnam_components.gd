@@ -1,5 +1,6 @@
 extends SceneTree
 ## New reusable geometry must remain finite, seeded and safely serializable.
+const DEVOTIONAL_PIECE = preload("res://components/scenery/vietnam/devotional/painterly_devotional_piece.gd")
 var failures := 0
 func _initialize() -> void: call_deferred("run")
 func check(value: bool,message: String) -> void:
@@ -7,17 +8,18 @@ func check(value: bool,message: String) -> void:
 		failures += 1
 		push_error(message)
 func run() -> void:
-	for file in ["buildings/painterly_hanoi_house","bridge/painterly_red_bridge","temple/painterly_lake_temple","karst/painterly_limestone_karst","imperial/painterly_meridian_gate","imperial/painterly_thai_hoa_hall","terraces/painterly_rice_terraces","coast/painterly_coastal_headland","city/painterly_lotus_tower","city/painterly_clustered_spire_tower"]:
+	for file in ["buildings/painterly_hanoi_house","bridge/painterly_red_bridge","temple/painterly_lake_temple","karst/painterly_limestone_karst","imperial/painterly_meridian_gate","imperial/painterly_thai_hoa_hall","terraces/painterly_rice_terraces","coast/painterly_coastal_headland","city/painterly_lotus_tower","city/painterly_clustered_spire_tower","devotional/painterly_devotional_piece"]:
 		var prop: PainterlyConcertComponent = load("res://components/scenery/vietnam/"+file+".tscn").instantiate()
 		root.add_child(prop)
 		await process_frame
 		var variants := 1
-		if prop is PainterlyHanoiHouse or prop is PainterlyLakeTemple:
+		if prop is PainterlyHanoiHouse or prop is PainterlyLakeTemple or prop is DEVOTIONAL_PIECE:
 			variants = 3
 		elif prop is PainterlyLimestoneKarst:
 			variants = 5
 		for variant in variants:
 			if prop is PainterlyHanoiHouse: prop.profile = variant
+			if prop is DEVOTIONAL_PIECE: prop.profile = variant
 			if prop is PainterlyLimestoneKarst:
 				prop.formation_profile = mini(variant, 1)
 				prop.contour = maxi(variant - 1, 0)

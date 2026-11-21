@@ -7,8 +7,14 @@ signal note_requested(title: String, text: String)
 signal state_changed(state: State)
 
 enum State { INACTIVE, ACTIVE, DECAYING }
+enum Contrast { LUMINOUS, DARK_INK }
 
 @export_group("Appearance")
+## Dark Ink is suited to ivory floors, snow, and other bright backdrops.
+@export var contrast: Contrast = Contrast.LUMINOUS:
+	set(value):
+		contrast = value
+		_refresh()
 @export var glow_color := Color(1.0, 1.0, 1.0):
 	set(value):
 		glow_color = value
@@ -95,12 +101,14 @@ func _refresh() -> void:
 	if not is_instance_valid(_visual):
 		return
 	_visual.scale = Vector3.ONE * orb_radius
+	_material.set_shader_parameter("dark_ink", contrast == Contrast.DARK_INK)
 	_material.set_shader_parameter("glow_color", glow_color)
 	_material.set_shader_parameter("speed", animation_speed)
 	_material.set_shader_parameter("seed", float(fragment_seed))
 	_material.set_shader_parameter("mote_count", mote_count)
 	_material.set_shader_parameter("wisp_strength", wisp_strength)
 	var halo_material: ShaderMaterial = _visual.get_child(1).material_override
+	halo_material.set_shader_parameter("dark_ink", contrast == Contrast.DARK_INK)
 	halo_material.set_shader_parameter("glow_color", glow_color)
 	halo_material.set_shader_parameter("speed", animation_speed)
 	halo_material.set_shader_parameter("seed", float(fragment_seed))

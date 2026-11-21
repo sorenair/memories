@@ -96,13 +96,14 @@ func run() -> void:
 	var approach: PainterlyCurvedPath = zones[0].get_node("Scenery/MountainRoute")
 	var fields_path: PainterlyCurvedPath = zones[0].get_node("Scenery/ToFields")
 	var bund: PainterlyCurvedPath = zones[1].get_node("Scenery/BundWalk")
+	var shrine: PainterlyCurvedPath = zones[1].get_node("Scenery/ShrineVisit")
 	var hue_path: PainterlyCurvedPath = zones[1].get_node("Scenery/ToHue")
 	var gate_walk: PainterlyCurvedPath = zones[2].get_node("Scenery/GateApproach")
 	check(zones.size()==3 and memory.memory_id==&"central_vietnam","Central Vietnam needs three ordered zones and a distinct LAN identity")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both arrivals must fit on supported jungle path")
 	check(absf(player.global_position.y-approach.to_global(approach.point_at(0)).y)<0.08,"Arrival must sit on the flagstone path")
 	check(absf(camera.size - 4.7) < 0.15,"The mountain arrival must begin at the walking zoom")
-	for trail in [approach,fields_path,bund,hue_path,gate_walk]:
+	for trail in [approach,fields_path,bund,shrine,hue_path,gate_walk]:
 		for index in 81:
 			check(floor.contains_ground_point(trail.to_global(trail.point_at(trail.get_path_length()*index/80.0)),0.3),"Every path sample must stay inside the finite floor: "+trail.name)
 	check(world.get_node("GuidanceController").request_guidance(),"The first requested hint must follow the jungle approach to its temple fragment")
@@ -112,12 +113,13 @@ func run() -> void:
 	check(absf(player.global_position.y-0.035)<0.08,"The temple approach must remain grounded")
 	check(zones[0].zone_id==&"marble_mountains" and not zones[0].has_node("Scenery/Sea") and not zones[0].has_node("Scenery/CrescentSand"),"Marble Mountains must replace the beach")
 	check(zones[0].get_node("Scenery/NestledTemple").roof_color.g>zones[0].get_node("Scenery/NestledTemple").roof_color.r,"The nestled temple must have a green roof")
+	check(zones[0].get_node("Scenery/GoldenBudai").position.x > 3.5,"The seated gold sculpture should flank the temple on its right")
 	await create_timer(2.5).timeout
 	check(absf(camera.size - 17.6) < 0.15,"The clearing should reveal the temple and limestone peaks")
 	check(zones[0].ambience.playing,"The mountains should play their jungle ambient bed")
 	await capture("mountain-temple")
 	await read_fragment(world,zones[0].get_fragment())
-	check(world.get_node("GuidanceController").request_guidance(),"The next requested hint must climb to the rice overlook")
+	check(world.get_node("GuidanceController").request_guidance(),"The next requested hint must climb to the field shrine")
 	await walk_trail(player,approach,note_ratio,1)
 	await walk_trail(player,fields_path,0,0.87)
 	await capture("field-transition")
@@ -129,15 +131,22 @@ func run() -> void:
 	await create_timer(2.0).timeout
 	check(player.global_position.y > 0.5 and absf(camera.size - 4.7) < 0.15,"Exploration between the paddies must feel close and stay on the rising bund")
 	await capture("rice-bund")
-	await walk_trail(player,bund,middle,1)
+	var turn := bund.curve.get_closest_offset(bund.to_local(shrine.to_global(shrine.point_at(0.0)))) / bund.get_path_length()
+	await walk_trail(player,bund,middle,turn)
+	await walk_trail(player,shrine,0,1)
+	check(absf(player.global_position.y - 0.808) < 0.14,"The dry clearing must support the walk around the shrine")
+	check(zones[1].get_node("Scenery/GoldenCenser/CenserFlame").intensity > 0.5,"The shrine censer should hold an active sculpted flame")
+	await capture("rice-shrine")
+	await read_fragment(world,zones[1].get_fragment())
+	check(world.get_node("GuidanceController").request_guidance(),"The final hint must return to the bund and pass through the imperial gate")
+	await walk_trail(player,shrine,1,0)
+	await walk_trail(player,bund,turn,1)
 	check(player.global_position.y>1.35,"The real explorer must climb the raised field path")
 	await create_timer(3.0).timeout
 	check(absf(camera.size - 14.0) < 0.15,"The elevated bund should reveal the stepped rice contours")
 	check(zones[1].ambience.playing,"The fields should have a separate ambient bed")
 	check(zones[1].get_node("Scenery/RiceTerraces").get_recall_controller().progress>0.99,"Scenic rice shelves should recall from a reachable front bund")
 	await capture("rice-overlook")
-	await read_fragment(world,zones[1].get_fragment())
-	check(world.get_node("GuidanceController").request_guidance(),"The final hint must descend from the fields and pass through the imperial gate")
 	await walk_trail(player,hue_path,0,0.89)
 	await capture("hue-transition")
 	await walk_trail(player,hue_path,0.89,1)
@@ -145,6 +154,15 @@ func run() -> void:
 	await create_timer(2.5).timeout
 	check(camera.size>10.8 and camera.size<12.5,"The gate should open to its landmark framing after approach")
 	await capture("hue-gate")
+	var visitors := 0
+	for group: PainterlyCrowd in zones[2].find_children("PalaceVisitors*", "PainterlyCrowd", true, false):
+		visitors += group.generated_count
+		check(group.dance_bounce > 0.0 and not group.collision_enabled,"Keep the animated palace visitors clear of two-player movement")
+		for pose in group._placements:
+			var position := zones[2].to_local(group.to_global(pose.origin))
+			if position.z < 0.5:
+				check(absf(position.x) > 1.75 and absf(position.x) < 4.1,"Keep courtyard visitors beside the central walk and out of the ponds")
+	check(visitors >= 55,"The gate apron and palace court should both feel populated")
 	for z in [7.0,5.0,3.0,-1.0,-7.0]: check(await walk_to(player,zones[2].to_global(Vector3(0,0,z))),"The real explorer must walk through the central imperial arch")
 	await create_timer(2.5).timeout
 	check(camera.size>8.0 and camera.size<9.3,"The palace courtyard should frame the note and hall together")

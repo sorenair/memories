@@ -22,6 +22,12 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 	set(value):
 		dune_direction = value
 		_request_rebuild()
+## Optional sculpted crests. Entries store local X, local Z, rise and half-length.
+## Dune Direction crosses the ridges; Dune Spacing controls their slope width.
+@export var dune_crests := PackedVector4Array():
+	set(value):
+		dune_crests = value
+		_request_rebuild()
 @export_range(0.5, 5.0, 0.1) var edge_feather: float = 2.2:
 	set(value):
 		edge_feather = clampf(value, 0.5, 5)
@@ -112,6 +118,10 @@ func _edge_distance(point: Vector2) -> float:
 func _height(point: Vector2) -> float:
 	if not _noise:
 		return 0.004
+	var distance := _edge_distance(point)
+	var bank := smoothstep(0.0, edge_feather, distance)
+	if not dune_crests.is_empty():
+		return 0.004 + bank * (0.12 + _crest_height(point))
 	var q := (point - _field_center).rotated(-deg_to_rad(dune_direction))
 	var phase := float(posmod(patch_seed, 997)) * 0.071
 	var warp := _noise.get_noise_2d(q.y * 0.60 + 55, q.x * 0.18) * dune_spacing * 0.55
@@ -123,9 +133,25 @@ func _height(point: Vector2) -> float:
 		swell = pow(0.5 + 0.5 * sin(a + 0.28 * sin(a)), 1.45) * (0.78 + 0.22 * cos(b * 0.52))
 	else:
 		swell = pow((0.5 + 0.5 * sin(a * 0.72)) * (0.5 + 0.5 * sin(b)), 0.8)
-	var distance := _edge_distance(point)
-	var bank := smoothstep(0.0, edge_feather, distance)
 	return 0.004 + bank * (0.035 + dune_height * (0.09 + swell * 0.91))
+
+func _crest_height(point: Vector2) -> float:
+	var height := 0.0
+	var angle := -deg_to_rad(dune_direction)
+	for crest in dune_crests:
+		var q := (point - Vector2(crest.x, crest.y)).rotated(angle)
+		var along := absf(q.y) / maxf(1.0, crest.w)
+		# The ends of each crescent curve downwind and fall back into the sand.
+		var across := q.x - 1.75 * (minf(along, 1.4) ** 2.0)
+		var flank := dune_spacing * (0.67 if across < 0.0 else 0.57)
+		var profile := 1.0 - smoothstep(0.0, flank, absf(across))
+		var taper := 1.0 - smoothstep(0.12, 1.23, along)
+		var ridge := crest.z * profile * taper
+		# Round the meeting of two lee slopes without filling their swale.
+		var overlap := 1.0 - clampf(absf(height - ridge) / 0.38, 0.0, 1.0)
+		var smoothing := smoothstep(0.0, 0.38, minf(height, ridge))
+		height = maxf(height, ridge) + 0.095 * overlap * overlap * smoothing
+	return height
 
 func _oval_mesh_arrays() -> Array:
 	return _terrain_arrays()

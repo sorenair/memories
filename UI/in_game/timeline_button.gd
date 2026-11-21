@@ -30,8 +30,8 @@ func _draw() -> void:
 	var center := size * 0.5
 	var active := is_hovered() or has_focus() or button_pressed or _touch_id >= 0
 	var color := Color(1.0, 1.0, 1.0, 0.25 if disabled else 1.0)
-	draw_line(center - Vector2(24, 0), center + Vector2(24, 0), color, 3.0 if active else 2.5, true)
-	draw_circle(center, 6.0, color, true, -1, true)
+	draw_line(center - Vector2(33, 0), center + Vector2(33, 0), color, 3.6 if active else 3.0, true)
+	draw_circle(center, 10.0, color, true, -1, true)
 
 func _input(event: InputEvent) -> void:
 	if disabled or _returning or _world.has_node("MemoryArrival"):

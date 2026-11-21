@@ -1,57 +1,62 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene format=3 uid="uid://c4ywub271riqe"]
 
+[ext_resource type="AudioStream" uid="uid://ocom2pewgf3q" path="res://audio/ambiance/ambiance_winterwind.mp3" id="9_sph0w"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
-[ext_resource type="PackedScene" path="res://components/groundcover/snow/painterly_snow_patch.tscn" id="snow"]
-[ext_resource type="PackedScene" path="res://components/weather/snow/painterly_snow.tscn" id="flakes"]
-[ext_resource type="PackedScene" path="res://scenes/memories/postcard_cabin/hike_zone.tscn" id="hike"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://scenes/memories/postcard_cabin/clearing_zone.tscn" id="clearing"]
+[ext_resource type="PackedScene" path="res://components/weather/snow/painterly_snow.tscn" id="flakes"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-[ext_resource type="Script" path="res://scripts/postcard_cabin_memory.gd" id="route"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://scenes/memories/postcard_cabin/hike_zone.tscn" id="hike"]
+[ext_resource type="Script" uid="uid://2obanxxugrsb" path="res://scripts/postcard_cabin_memory.gd" id="route"]
+[ext_resource type="PackedScene" path="res://components/groundcover/snow/painterly_snow_patch.tscn" id="snow"]
 
 [sub_resource type="Curve2D" id="WinterOutline"]
-_data = {"points": PackedVector2Array(0, 0, 0, 0, -7.8, 12, 0, 0, 0, 0, 6.5, 12, 0, 0, 0, 0, 9.7, 8.5, 0, 0, 0, 0, 10.4, 1, 0, 0, 0, 0, 10.4, -9.5, 0, 0, 0, 0, 12, -16.5, 0, 0, 0, 0, 15.5, -20.5, 0, 0, 0, 0, 18, -25, 0, 0, 0, 0, 18, -36, 0, 0, 0, 0, 15, -40, 0, 0, 0, 0, 6, -41, 0, 0, 0, 0, -2.5, -38.5, 0, 0, 0, 0, -4.3, -32, 0, 0, 0, 0, -3, -25, 0, 0, 0, 0, -7.8, -21, 0, 0, 0, 0, -10.5, -13, 0, 0, 0, 0, -11, -2, 0, 0, 0, 0, -10, 6.5, 0, 0, 0, 0, -7.8, 12)}
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -7.8, 12, 0, 0, 0, 0, 6.5, 12, 0, 0, 0, 0, 9.7, 8.5, 0, 0, 0, 0, 10.4, 1, 0, 0, 0, 0, 10.4, -9.5, 0, 0, 0, 0, 12, -16.5, 0, 0, 0, 0, 15.5, -20.5, 0, 0, 0, 0, 18, -25, 0, 0, 0, 0, 18, -36, 0, 0, 0, 0, 15, -40, 0, 0, 0, 0, 6, -41, 0, 0, 0, 0, -2.5, -38.5, 0, 0, 0, 0, -4.3, -32, 0, 0, 0, 0, -3, -25, 0, 0, 0, 0, -7.8, -21, 0, 0, 0, 0, -10.5, -13, 0, 0, 0, 0, -11, -2, 0, 0, 0, 0, -10, 6.5, 0, 0, 0, 0, -7.8, 12)
+}
 point_count = 19
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=1042626178 instance=ExtResource("base")]
 script = ExtResource("route")
+hike_fragment_ratio = 0.4
 memory_id = &"postcard_cabin"
 display_name = "Postcard Cabin"
 
-[node name="Entry" parent="."]
-position = Vector3(0.0000, 0.0400, 9.0000)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 9)
 
-[node name="Exit" parent="."]
-position = Vector3(4.8000, 0.0400, -27.8000)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.04, -27.8)
 
-[node name="WinterFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="WinterFloor" parent="Environment" index="0" unique_id=39525492 instance=ExtResource("floor")]
 visible = false
-custom_outline = SubResource("WinterOutline")
 outline_detail = 96
+custom_outline = SubResource("WinterOutline")
 pillar_depth = 9.0
 edge_inset = 0.2
 
-[node name="ContinuousSnow" parent="Environment" instance=ExtResource("snow")]
+[node name="ContinuousSnow" parent="Environment" index="1" unique_id=1664167371 instance=ExtResource("snow")]
+physics_interpolation_mode = 2
 custom_outline = SubResource("WinterOutline")
 patch_seed = 21026
 snow_depth = 0.045
 puffiness = 0.044
 mesh_detail = 96
-footprint_quality = 2
-footprint_linger = 12.0
-footprint_fade_duration = 4.0
+ground_exclusions = Array[NodePath]([NodePath("../../Zones/Hike/Scenery/FrozenPond"), NodePath("../../Zones/Hike/Scenery/FrozenStream"), NodePath("../../Zones/Clearing/Scenery/Cabin"), NodePath("../../Zones/Clearing/Scenery/FirePit")])
 snow_color = Color(0.95, 0.967, 0.95, 1)
 shade_color = Color(0.71, 0.81, 0.89, 1)
 edge_color = Color(0.94, 0.935, 0.89, 1)
-ground_exclusions = Array[NodePath]([NodePath("../../Zones/Hike/Scenery/FrozenPond"), NodePath("../../Zones/Hike/Scenery/FrozenStream"), NodePath("../../Zones/Clearing/Scenery/Cabin"), NodePath("../../Zones/Clearing/Scenery/FirePit")])
+footprint_linger = 12.0
+footprint_fade_duration = 4.0
+footprint_quality = 2
 
-[node name="FallingSnow" parent="Environment" instance=ExtResource("flakes")]
-position = Vector3(3.5000, 0.0000, -13.5000)
+[node name="FallingSnow" parent="Environment" index="2" unique_id=1186848325 instance=ExtResource("flakes")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -13.5)
 footprint = Vector2(31, 55)
 snow_height = 7.0
-flake_count = 2600
 snow_seed = 21026
+flake_count = 2600
 intensity = 0.75
 fall_speed = 0.38
 wind = Vector2(0.18, 0.08)
@@ -59,28 +64,28 @@ flutter = 0.35
 flake_size = Vector2(0.07, 0.16)
 opacity = 0.84
 
-[node name="Guidance" type="Node3D" parent="Environment"]
+[node name="Guidance" type="Node3D" parent="Environment" index="3" unique_id=868481016]
 
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="Hike" parent="Zones" instance=ExtResource("hike")]
-
-[node name="Clearing" parent="Zones" instance=ExtResource("clearing")]
-position = Vector3(7.0000, 0.0000, -30.0000)
-
-[node name="ThroughThePines" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="ThroughThePines" parent="Environment/Guidance" index="0" unique_id=1497600434 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Hike/Fragment")
-waypoints = PackedVector3Array()
-stroke_width = 0.34
-opacity = 0.92
+waypoints = PackedVector3Array(0, 0.76, 9, 0.11274779, 0.76, 8.217388, 0.4477919, 0.76, 7.500877, 0.9402292, 0.76, 6.880002, 1.5087012, 0.76, 6.326604, 2.0925, 0.76, 5.7891374, 2.6337245, 0.76, 5.209603, 3.043752, 0.76, 4.533268, 3.2077014, 0.76, 3.76145, 3.0705469, 0.76, 2.9863489, 2.6577532, 0.76, 2.3115878, 2.1173959, 0.76, 1.7312907, 1.5198139, 0.76, 1.2094367, 0.8948631, 0.76, 0.72046775, 0.2581616, 0.76, 0.24682653, -0.37962082, 0.76, -0.22536796, -1.0085253, 0.76, -0.70927864, -1.6158347, 0.76, -1.2198918, -2.180478, 0.76, -1.7769655, -2.6599572, 0.76, -2.4077945, -2.9615545, 0.76, -3.1377065)
 
-[node name="ToTheFire" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="ToTheFire" parent="Environment/Guidance" index="1" unique_id=327667127 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Hike/Fragment")
 end_anchor = NodePath("../../../Zones/Clearing/Fragment")
-waypoints = PackedVector3Array()
-stroke_width = 0.34
-opacity = 0.92
+waypoints = PackedVector3Array(-2.9615545, 0.76, -3.1377065, -3.0021036, 0.76, -3.9285407, -3.0100367, 0.76, -4.722064, -3.0122995, 0.76, -5.5156026, -2.9988353, 0.76, -6.3090196, -2.9596546, 0.76, -7.1015525, -2.8823764, 0.76, -7.8912272, -2.7492013, 0.76, -8.673277, -2.531755, 0.76, -9.435827, -2.1830738, 0.76, -10.1467285, -1.6415653, 0.76, -10.720315, -0.913326, 0.76, -11.019958, -0.16693962, 0.76, -11.285512, 0.5203006, 0.76, -11.680615, 1.1477259, 0.76, -12.165751, 1.7249137, 0.76, -12.710014, 2.2641747, 0.76, -13.292051, 2.7775896, 0.76, -13.897092, 3.276602, 0.76, -14.514102, 3.7726362, 0.76, -15.13352, 4.2782273, 0.76, -15.745129, 4.793864, 0.76, -16.34822, 5.262438, 0.76, -16.988354, 5.675104, 0.76, -17.665905, 6.031259, 0.76, -18.374817, 6.330845, 0.76, -19.109426, 6.574214, 0.76, -19.864553, 6.7619667, 0.76, -20.635395, 6.8948917, 0.76, -21.41757, 6.973901, 0.76, -22.20703, 7.000001, 0.76, -23, 4, 0.76, -23.5, 4, 0.76, -27.8, 4.8, 0.76, -27.8)
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Hike" parent="Zones" index="0" unique_id=115043849 instance=ExtResource("hike")]
+ambience_stream = ExtResource("9_sph0w")
+ambience_volume_db = -5.0
+
+[node name="Clearing" parent="Zones" index="1" unique_id=1373639667 instance=ExtResource("clearing")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -30)
+ambience_stream = ExtResource("9_sph0w")
+ambience_volume_db = -10.0

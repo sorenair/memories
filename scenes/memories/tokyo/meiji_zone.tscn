@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paths/gravel_walk.tscn" id="path"]
@@ -13,6 +13,7 @@
 
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
 [ext_resource type="PackedScene" path="res://components/scenery/gardens/painterly_stone_lantern.tscn" id="lantern"]
+[ext_resource type="PackedScene" path="res://components/animals/bird/painterly_bird.tscn" id="bird"]
 
 [sub_resource type="Curve3D" id="ForestWalkCurve"]
 bake_interval = 0.05
@@ -20,7 +21,7 @@ _data = {"points": PackedVector3Array(0,0,0,0,0,-1.5,0,0,14,0,0,1.3,0,0,-1.3,0.2
 point_count = 4
 [sub_resource type="Curve3D" id="ToAsakusaCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,1.6,0,0,0,0,1.85,-1.5,0,0.1,1.5,0,-0.6,4.5,0,2.1,-1.7,0,1.1,1.7,0,-1.1,10.5,0,-1.5,-1.8,0,1,1,0,-0.7,18,0,-6,-0.8,0,0.7,0,0,0,20,0,-5.5), "tilts": PackedFloat32Array(0,0,0,0,0)}
+_data = {"points": PackedVector3Array(-1.5, 0, -0.19, 1.5, 0, 0.19, 0, 0, 1.85, -1.7, 0, 0.39, 1.7, 0, -0.39, 4.5, 0, 2, -2, 0, 1.32, 2, 0, -1.32, 10.5, 0, -1.5, -1.9, 0, 0.55, 1.9, 0, -0.55, 17, 0, -4.8, -0.85, 0, 0.22, 0.85, 0, -0.22, 20, 0, -5.5), "tilts": PackedFloat32Array(0, 0, 0, 0, 0)}
 point_count = 5
 
 [node name="MeijiZone" instance=ExtResource("zone")]
@@ -44,8 +45,8 @@ recall_enabled = true
 curve = SubResource("ForestWalkCurve")
 path_width = 2.7
 paving_color = Color(0.74, 0.714, 0.637, 1)
-end_fade = Vector2(1.15, 0.5)
-edge_softness = 0.43
+end_fade = Vector2(1.85, 1.65)
+edge_softness = 0.54
 crown_height = 0.008
 stone_color = Color(0.83, 0.796, 0.717, 1)
 shoulder_color = Color(0.666, 0.695, 0.565, 1)
@@ -59,8 +60,8 @@ width_variation = 0.15
 curve = SubResource("ToAsakusaCurve")
 path_width = 2.55
 paving_color = Color(0.74, 0.714, 0.637, 1)
-end_fade = Vector2(1.05, 4.6)
-edge_softness = 0.43
+end_fade = Vector2(4.5, 6.6)
+edge_softness = 0.61
 crown_height = 0.008
 stone_color = Color(0.83, 0.796, 0.717, 1)
 shoulder_color = Color(0.666, 0.695, 0.565, 1)
@@ -71,6 +72,46 @@ width_variation = 0.22
 position = Vector3(0, -0.006, 0)
 collision_enabled = false
 
+
+[node name="Crows" type="Node3D" parent="Scenery"]
+
+[node name="TrailsideCrow" parent="Scenery/Crows" instance=ExtResource("bird")]
+position = Vector3(-1.2, 0.01, 13.35)
+bird_seed = 178
+bird_size = 0.9
+ground_offset = 0.02
+behavior = 0
+hop_radius = 0.4
+
+[node name="GravelCrow" parent="Scenery/Crows" instance=ExtResource("bird")]
+position = Vector3(1.0, 0.012, 12.65)
+bird_seed = 192
+bird_size = 1.05
+ground_offset = 0.02
+behavior = 1
+hop_radius = 0.3
+scare_radius = 1.65
+flight_speed = 3.8
+ascent_speed = 2.6
+
+[node name="GateApproachCrow" parent="Scenery/Crows" instance=ExtResource("bird")]
+position = Vector3(-1.1, 0.012, 8.15)
+bird_seed = 216
+bird_size = 0.98
+ground_offset = 0.02
+behavior = 1
+hop_radius = 0.28
+scare_radius = 1.65
+flight_speed = 3.5
+ascent_speed = 2.8
+
+[node name="CourtyardCrow" parent="Scenery/Crows" instance=ExtResource("bird")]
+position = Vector3(1.18, 0.01, 4.8)
+bird_seed = 229
+bird_size = 0.95
+ground_offset = 0.02
+behavior = 0
+hop_radius = 0.44
 
 [node name="ForestTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
 position = Vector3(-6.8,0,13.8)
@@ -775,6 +816,195 @@ recall_enabled = true
 position = Vector3(2.5, 0, 9.8)
 rotation_degrees = Vector3(0, 14, 0)
 lantern_height = 1.02
+body_color = Color(0.46, 0.48, 0.43, 1)
+accent_color = Color(0.58, 0.585, 0.499, 1)
+trim_color = Color(0.66, 0.638, 0.515, 1)
+recall_enabled = true
+
+[node name="ShrineFlowerRose1" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-2.65, 0, 0.8)
+footprint = Vector2(1.48, 1.18)
+bush_height = 0.72
+bush_seed = 528681
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 1
+flower_count = 54
+flower_size = 0.115
+flower_color = Color(0.77, 0.27, 0.40, 1)
+flower_highlight = Color(0.97, 0.58, 0.66, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerCoral2" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-3.98, 0, 1.1)
+footprint = Vector2(1.26, 1.1)
+bush_height = 0.64
+bush_seed = 528682
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 0
+flower_count = 58
+flower_size = 0.125
+flower_color = Color(0.87, 0.37, 0.31, 1)
+flower_highlight = Color(0.99, 0.67, 0.53, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerPink3" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-4.94, 0, 0.2)
+footprint = Vector2(1.7, 1.3)
+bush_height = 0.83
+bush_seed = 528683
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 1
+flower_count = 50
+flower_size = 0.105
+flower_color = Color(0.76, 0.29, 0.49, 1)
+flower_highlight = Color(0.96, 0.65, 0.79, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerIvory4" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-5.52, 0, -1.08)
+footprint = Vector2(1.32, 1.18)
+bush_height = 0.62
+bush_seed = 528684
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 0
+flower_count = 54
+flower_size = 0.115
+flower_color = Color(0.91, 0.71, 0.43, 1)
+flower_highlight = Color(0.99, 0.90, 0.70, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerLavender5" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-4.65, 0, 2.51)
+footprint = Vector2(1.16, 0.92)
+bush_height = 0.56
+bush_seed = 528685
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 0
+flower_count = 58
+flower_size = 0.125
+flower_color = Color(0.57, 0.40, 0.72, 1)
+flower_highlight = Color(0.80, 0.66, 0.92, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerPink6" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(-2.65, 0, 4.75)
+footprint = Vector2(1.34, 1.05)
+bush_height = 0.59
+bush_seed = 528686
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 0
+flower_count = 50
+flower_size = 0.105
+flower_color = Color(0.76, 0.29, 0.49, 1)
+flower_highlight = Color(0.96, 0.65, 0.79, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerIvory7" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(2.66, 0, 0.19)
+footprint = Vector2(1.37, 1.14)
+bush_height = 0.64
+bush_seed = 528687
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 1
+flower_count = 54
+flower_size = 0.115
+flower_color = Color(0.91, 0.71, 0.43, 1)
+flower_highlight = Color(0.99, 0.90, 0.70, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerRose8" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(4.06, 0, 0.03)
+footprint = Vector2(1.56, 1.27)
+bush_height = 0.78
+bush_seed = 528688
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 1
+flower_count = 58
+flower_size = 0.125
+flower_color = Color(0.77, 0.27, 0.40, 1)
+flower_highlight = Color(0.97, 0.58, 0.66, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerLavender9" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(5.41, 0, -0.34)
+footprint = Vector2(1.37, 1.08)
+bush_height = 0.67
+bush_seed = 528689
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 0
+flower_count = 50
+flower_size = 0.105
+flower_color = Color(0.57, 0.40, 0.72, 1)
+flower_highlight = Color(0.80, 0.66, 0.92, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerCoral10" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(5.24, 0, -1.45)
+footprint = Vector2(1.35, 1.11)
+bush_height = 0.72
+bush_seed = 528690
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 0
+flower_count = 54
+flower_size = 0.115
+flower_color = Color(0.87, 0.37, 0.31, 1)
+flower_highlight = Color(0.99, 0.67, 0.53, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerPink11" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(2.55, 0, 4.83)
+footprint = Vector2(1.32, 0.96)
+bush_height = 0.6
+bush_seed = 528691
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 1
+flower_count = 58
+flower_size = 0.125
+flower_color = Color(0.76, 0.29, 0.49, 1)
+flower_highlight = Color(0.96, 0.65, 0.79, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="ShrineFlowerCoral12" parent="Scenery" instance=ExtResource("flowers")]
+position = Vector3(5.7, 0, 3.96)
+footprint = Vector2(1.26, 0.98)
+bush_height = 0.57
+bush_seed = 528692
+palette_preset = 0
+palette = ExtResource("leaves")
+flower_style = 0
+flower_count = 50
+flower_size = 0.105
+flower_color = Color(0.87, 0.37, 0.31, 1)
+flower_highlight = Color(0.99, 0.67, 0.53, 1)
+recall_enabled = true
+react_to_explorers = true
+
+[node name="AsakusaTrailLantern" parent="Scenery" instance=ExtResource("lantern")]
+position = Vector3(16.7, 0, -3.48)
+rotation_degrees = Vector3(0, -12, 0)
+lantern_height = 0.88
 body_color = Color(0.46, 0.48, 0.43, 1)
 accent_color = Color(0.58, 0.585, 0.499, 1)
 trim_color = Color(0.66, 0.638, 0.515, 1)

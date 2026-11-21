@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/conservatory_jungle.wav" id="air"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://components/scenery/vietnam/bridge/painterly_red_bridge.tscn" id="bridge"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
 [ext_resource type="PackedScene" path="res://components/scenery/vietnam/temple/painterly_lake_temple.tscn" id="temple"]
+[ext_resource type="PackedScene" path="res://components/animals/bird/painterly_bird.tscn" id="bird"]
 [ext_resource type="Resource" path="res://scenes/memories/northern_vietnam/foliage_green.tres" id="green"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_palm.tscn" id="jungle"]
@@ -33,14 +34,16 @@
 
 [ext_resource type="PackedScene" path="res://components/lighting/light_shaft/painterly_light_shaft.tscn" id="shaft"]
 
+[ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="bank"]
+
 [sub_resource type="Curve3D" id="LakeWalkCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.0,0.0,-0.48,-0.0,0,11,-0.0,-0.0,0.48,0,0,0,0,0,8), "tilts": PackedFloat32Array(0,0)}
+_data = {"points": PackedVector3Array(0, 0, 0.08, 0, 0, -0.08, 0, 0, 12, 0, 0, 0.08, 0, 0, -0.08, 0, 0, 11.04), "tilts": PackedFloat32Array(0, 0)}
 point_count = 2
 
 [sub_resource type="Curve3D" id="ToBayCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,1.12,0.0,-0.064,0,0,11,-2.08,-0.0,0.8,2.08,0.0,-0.8,7,0,10.6,-1.76,-0.0,1.536,1.76,0.0,-1.536,13,0,6,-1.92,-0.0,1.76,1.92,0.0,-1.76,18,0,1,-1.12,-0.0,0.96,0,0,0,25,0,-5), "tilts": PackedFloat32Array(0,0,0,0,0)}
+_data = {"points": PackedVector3Array(-1.26, 0, 0.04, 1.26, 0, -0.17, 0, 0, 12, -2.1, 0, 0.64, 2.1, 0, -0.64, 7, 0, 10.6, -1.75, 0, 1.5, 1.75, 0, -1.5, 13, 0, 6, -1.95, 0, 1.77, 1.95, 0, -1.77, 18, 0, 1, -1.2, 0, 0.94, 1.2, 0, -0.94, 25, 0, -5), "tilts": PackedFloat32Array(0, 0, 0, 0, 0)}
 point_count = 5
 
 [node name="MemoryZone" instance=ExtResource("zone")]
@@ -73,14 +76,44 @@ shore_field_quality = 1
 curve = SubResource("LakeWalkCurve")
 path_width = 2.45
 paving_color = Color(0.738, 0.722, 0.625, 1)
-end_fade = Vector2(2.05, 0.15)
+end_fade = Vector2(0.45, 0.17)
 slab_length = 2.0
 edge_softness = 0.49
 
 detail_density = 0.52
 
 crown_height = 0
+collision_enabled = false
 
+[node name="BridgeShore" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bank")]
+position = Vector3(-0.85, -0.034, 11.27)
+patch_size = Vector2(6.2, 3.15)
+patch_seed = 606976
+terrain_form = 1
+dune_height = 0.0
+edge_feather = 0.63
+ripple_strength = 0.0
+sand_color = Color(0.64, 0.66, 0.49, 1)
+shadow_color = Color(0.45, 0.50, 0.33, 1)
+edge_color = Color(0.53, 0.58, 0.37, 1)
+collision_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../BridgeView")
+
+[node name="BenchBank" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bank")]
+position = Vector3(-3.95, -0.032, 9.64)
+patch_size = Vector2(3.1, 2.7)
+patch_seed = 606977
+terrain_form = 1
+dune_height = 0.0
+edge_feather = 0.62
+ripple_strength = 0.0
+sand_color = Color(0.64, 0.66, 0.49, 1)
+shadow_color = Color(0.45, 0.50, 0.33, 1)
+edge_color = Color(0.53, 0.58, 0.37, 1)
+collision_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../BridgeView")
 
 [node name="ToBay" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ToBayCurve")
@@ -101,18 +134,21 @@ width_variation = 0.17
 
 
 [node name="RedBridge" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bridge")]
-position = Vector3(0,0,3)
+position = Vector3(0, 0, 4.5)
 recall_anchor = NodePath("../BridgeView")
-bridge_length = 10.0
+bridge_length = 13.0
 bridge_width = 2.5
-arch_rise = 0.42
+arch_rise = 0.56
 recall_enabled = true
+body_color = Color(0.63, 0.20, 0.15, 1)
+accent_color = Color(0.72, 0.235, 0.17, 1)
+
 
 [node name="Island" parent="Scenery" instance=ExtResource("paving")]
-position = Vector3(0,0.015,-5)
-footprint = Vector2(7.3,6.8)
+position = Vector3(0, 0.015, -5.95)
+footprint = Vector2(6.4, 7.9)
 slab_length = 2.0
-end_fade = Vector2(0.8,0.8)
+end_fade = Vector2(1.3, 0.65)
 paving_color = Color(0.745098,0.741176,0.650980,1)
 edge_softness = 0.62
 
@@ -121,20 +157,22 @@ edge_softness = 0.62
 position = Vector3(0, 0, 10.75)
 
 [node name="NgocSonTemple" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("temple")]
-position = Vector3(0,0,-6.4)
-footprint = Vector2(4.8,3.2)
+position = Vector3(-0.40, 0, -7.75)
+footprint = Vector2(5.2, 3.0)
 recall_enabled = true
 recall_anchor = NodePath("../BridgeView")
 
 roof_tiles_enabled = true
 
-roof_color = Color(0.584314,0.415686,0.294118,1)
+roof_color = Color(0.53, 0.31, 0.20, 1)
 
-body_color = Color(0.823529,0.737255,0.568627,1)
+body_color = Color(0.78, 0.69, 0.50, 1)
 
-accent_color = Color(0.603922,0.333333,0.282353,1)
+accent_color = Color(0.47, 0.212, 0.145, 1)
 
 trim_color = Color(0.741176,0.694118,0.564706,1)
+landmark = 4
+
 
 [node name="TowerView" parent="Scenery" type="Marker3D"]
 position = Vector3(3,0,10.6)
@@ -148,11 +186,35 @@ roof_color = Color(0.4667,0.498,0.451,1)
 recall_enabled = true
 recall_anchor = NodePath("../BridgeView")
 
-[node name="TowerIslet" parent="Scenery" instance=ExtResource("paving")]
-position = Vector3(7.3,0,-0.5)
-footprint = Vector2(3.6,3.3)
-end_fade = Vector2(0.8,0.8)
-paving_color = Color(0.643137,0.686275,0.545098,1)
+[node name="TempleBirds" type="Node3D" parent="Scenery"]
+position = Vector3(-0.1, 0, -5.25)
+
+[node name="TempleBirdLow" parent="Scenery/TempleBirds" instance=ExtResource("bird")]
+bird_seed = 303
+bird_size = 1.0
+palette_preset = 5
+behavior = 2
+circle_radius = 4.2
+circle_height = 4.5
+flight_speed = 2.7
+
+[node name="TempleBirdMiddle" parent="Scenery/TempleBirds" instance=ExtResource("bird")]
+bird_seed = 304
+bird_size = 1.1
+palette_preset = 5
+behavior = 2
+circle_radius = 4.7
+circle_height = 4.95
+flight_speed = 3.0
+
+[node name="TempleBirdHigh" parent="Scenery/TempleBirds" instance=ExtResource("bird")]
+bird_seed = 305
+bird_size = 0.95
+palette_preset = 5
+behavior = 2
+circle_radius = 5.2
+circle_height = 5.4
+flight_speed = 3.4
 
 [node name="LakeTree1" parent="Scenery" instance=ExtResource("tree")]
 position = Vector3(-5.4,0,13.4)
@@ -292,7 +354,7 @@ palette = ExtResource("green")
 wind_strength = 0.045
 
 [node name="LakeTree9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-3,0,-5.2)
+position = Vector3(-3.65, 0, -6.34)
 recall_anchor = NodePath("../BridgeView")
 tree_seed = 606338
 tree_height = 3.7
@@ -309,8 +371,9 @@ palette = ExtResource("green")
 
 wind_strength = 0.045
 
+
 [node name="LakeTree10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(3,0,-7.4)
+position = Vector3(2.65, 0, -8.6)
 recall_anchor = NodePath("../BridgeView")
 tree_seed = 606339
 tree_height = 4.2
@@ -327,8 +390,9 @@ palette = ExtResource("green")
 
 wind_strength = 0.045
 
+
 [node name="LakeTropical1" parent="Scenery" instance=ExtResource("jungle")]
-position = Vector3(-4,0,10.8)
+position = Vector3(-5.25, 0, 11.15)
 plant_form = 0
 plant_seed = 606350
 plant_height = 1.2
@@ -432,7 +496,7 @@ palette = ExtResource("green")
 wind_strength = 0.045
 
 [node name="LakeShrub1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-3.9,0,11.6)
+position = Vector3(-4.72, 0, 11.95)
 bush_seed = 606380
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -440,6 +504,7 @@ recall_enabled = true
 react_to_explorers = true
 palette_preset = 0
 palette = ExtResource("green")
+
 
 [node name="LakeShrub2" parent="Scenery" instance=ExtResource("bush")]
 position = Vector3(-6.3,0,12.8)
@@ -642,8 +707,8 @@ ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../LakeWalk")
 [node name="BankTrailFragments" parent="Scenery" type="Node3D"]
 script = ExtResource("breaks")
 source_path = NodePath("../ToBay")
-visible_spans = PackedVector2Array(0.13, 0.42, 0.54, 0.86)
-fade_length = 2.45
+visible_spans = PackedVector2Array(0.07, 0.53, 0.62, 0.93)
+fade_length = 3.15
 
 
 [node name="BankUnderstory1" parent="Scenery" instance=ExtResource("bush")]
@@ -691,7 +756,7 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="BankUnderstory5" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(8.25, 0, 11.0)
+position = Vector3(8.48, 0, 12.15)
 bush_height = 0.7552767398441163
 footprint = Vector2(2.46,1.45)
 bush_seed = 606784
@@ -780,7 +845,7 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="BankFern1" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(-4.0000,0.0000,10.0000)
+position = Vector3(-5.1, 0, 9.76)
 plant_height = 0.55
 spread = 1.45
 fullness = 0.4
@@ -978,22 +1043,24 @@ react_to_explorers = true
 ground_exclusions = Array[NodePath]([NodePath("../Lake"),NodePath("../ToBay"),NodePath("../Island")])
 
 [node name="PromenadeBench1" parent="Scenery" instance=ExtResource("detail")]
-position = Vector3(-3.0000,0.0000,11.6000)
-rotation_degrees = Vector3(0.0000,0.0000,0.0000)
+position = Vector3(-3.15, 0, 9.32)
+rotation_degrees = Vector3(0, 160, 0)
 detail_kind = 1
 body_color = Color(0.556863,0.498039,0.384314,1)
 accent_color = Color(0.337255,0.431373,0.376471,1)
 trim_color = Color(0.729412,0.741176,0.650980,1)
 recall_enabled = true
 
+
 [node name="PromenadeBench2" parent="Scenery" instance=ExtResource("detail")]
-position = Vector3(10.2, 0, 11.35)
-rotation_degrees = Vector3(0, 145, 0)
+position = Vector3(7.64, 0, 9.0)
+rotation_degrees = Vector3(0, -142, 0)
 detail_kind = 1
 body_color = Color(0.556863,0.498039,0.384314,1)
 accent_color = Color(0.337255,0.431373,0.376471,1)
 trim_color = Color(0.729412,0.741176,0.650980,1)
 recall_enabled = true
+
 
 [node name="IslandStone1" parent="Scenery" instance=ExtResource("rock")]
 position = Vector3(-3.0000,-0.0800,-3.8000)
@@ -1071,7 +1138,259 @@ ground_wash_enabled = false
 mote_size = Vector2(0.018,0.035)
 recall_enabled = true
 
+[node name="JadeIslandBank" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bank")]
+position = Vector3(0.15, -0.034, -6.03)
+patch_size = Vector2(10.2, 8.7)
+patch_seed = 606978
+terrain_form = 1
+dune_height = 0.0
+edge_feather = 0.45
+ripple_strength = 0.0
+sand_color = Color(0.47, 0.53, 0.325, 1)
+shadow_color = Color(0.38, 0.42, 0.27, 1)
+edge_color = Color(0.43, 0.48, 0.30, 1)
+collision_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../BridgeView")
+
+[node name="TowerGardenBank" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bank")]
+position = Vector3(7.3, -0.037, -0.65)
+patch_size = Vector2(3.88, 3.45)
+patch_seed = 606979
+terrain_form = 1
+dune_height = 0.0
+edge_feather = 0.41
+ripple_strength = 0.0
+sand_color = Color(0.47, 0.53, 0.325, 1)
+shadow_color = Color(0.38, 0.42, 0.27, 1)
+edge_color = Color(0.43, 0.48, 0.30, 1)
+collision_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../BridgeView")
+
+[node name="MoonGate" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("temple")]
+position = Vector3(0, 0, -3.32)
+landmark = 2
+footprint = Vector2(3.4, 2.0)
+prop_seed = 606705
+body_color = Color(0.62, 0.68, 0.65, 1)
+accent_color = Color(0.55, 0.36, 0.28, 1)
+roof_color = Color(0.43, 0.49, 0.44, 1)
+trim_color = Color(0.73, 0.64, 0.42, 1)
+recall_enabled = true
+recall_anchor = NodePath("../BridgeView")
+
+[node name="TranBaPavilion" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("temple")]
+position = Vector3(3.56, 0, -5.97)
+rotation_degrees = Vector3(0, -13, 0)
+landmark = 3
+footprint = Vector2(2.15, 2.0)
+prop_seed = 606706
+body_color = Color(0.70, 0.71, 0.62, 1)
+accent_color = Color(0.56, 0.29, 0.20, 1)
+roof_color = Color(0.52, 0.36, 0.26, 1)
+trim_color = Color(0.68, 0.65, 0.50, 1)
+recall_enabled = true
+recall_anchor = NodePath("../BridgeView")
+
+[node name="IslandGarden1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.6, 0, -3.4)
+footprint = Vector2(1.18, 0.97)
+bush_height = 0.66
+bush_seed = 607022
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.5, 0, -5.1)
+footprint = Vector2(1.34, 1.10)
+bush_height = 0.83
+bush_seed = 607023
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.1, 0, -7.1)
+footprint = Vector2(1.26, 1.03)
+bush_height = 0.63
+bush_seed = 607024
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.3, 0, -8.55)
+footprint = Vector2(1.45, 1.19)
+bush_height = 0.83
+bush_seed = 607025
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.7, 0, -8.9)
+footprint = Vector2(1.4, 1.15)
+bush_height = 0.73
+bush_seed = 607026
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.75, 0, -7.67)
+footprint = Vector2(1.36, 1.12)
+bush_height = 0.73
+bush_seed = 607027
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden7" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(2.8, 0, -3.16)
+footprint = Vector2(0.95, 0.78)
+bush_height = 0.49
+bush_seed = 607028
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.13, 0, -1.08)
+footprint = Vector2(0.72, 0.59)
+bush_height = 0.34
+bush_seed = 607029
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(6.8, 0, 0.5)
+footprint = Vector2(0.67, 0.55)
+bush_height = 0.35
+bush_seed = 607030
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.85, 0, 0.52)
+footprint = Vector2(0.73, 0.60)
+bush_height = 0.3
+bush_seed = 607031
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.52, 0, -1.02)
+footprint = Vector2(0.73, 0.60)
+bush_height = 0.39
+bush_seed = 607032
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandGarden12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(7.91, 0, -1.83)
+footprint = Vector2(0.68, 0.56)
+bush_height = 0.36
+bush_seed = 607033
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandBroadleaf1" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(-4, 0, -4.64)
+plant_seed = 607211
+plant_height = 1.15
+spread = 1.42
+fullness = 0.60
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandBroadleaf2" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(-3.9, 0, -8.22)
+plant_seed = 607212
+plant_height = 0.99
+spread = 1.22
+fullness = 0.60
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandBroadleaf3" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(3.52, 0, -7.92)
+plant_seed = 607213
+plant_height = 1.28
+spread = 1.35
+fullness = 0.60
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandBroadleaf4" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(3.15, 0, -4.4)
+plant_seed = 607214
+plant_height = 0.83
+spread = 1.06
+fullness = 0.60
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandBroadleaf5" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(6.1, 0, -0.33)
+plant_seed = 607215
+plant_height = 0.48
+spread = 0.64
+fullness = 0.60
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandBroadleaf6" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(8.43, 0, -0.14)
+plant_seed = 607216
+plant_height = 0.54
+spread = 0.68
+fullness = 0.60
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
+[node name="IslandBroadleaf7" parent="Scenery" instance=ExtResource("broad")]
+position = Vector3(7.4, 0, -1.76)
+plant_seed = 607217
+plant_height = 0.53
+spread = 0.66
+fullness = 0.60
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+
 [node name="Fragment" parent="."]
-position = Vector3(0,0.065,-3.0)
+position = Vector3(0, 0.065, -4.82)
 note_title = "On the lake"
 notes = PackedStringArray("Placeholder: add your own words about Hoan Kiem Lake and the island temple.")

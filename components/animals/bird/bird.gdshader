@@ -1,17 +1,19 @@
 shader_type spatial;
-render_mode unshaded, fog_disabled;
+render_mode unshaded, fog_disabled, cull_disabled;
+
 varying vec3 paint;
-varying float haze;
+varying vec3 local_position;
+
 void vertex() {
-	vec3 world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	float light = dot(normalize(MODEL_NORMAL_MATRIX * NORMAL), normalize(vec3(-0.45, 0.82, -0.35))) * 0.5 + 0.5;
-	float middle = smoothstep(0.30, 0.43, light);
-	float sun = smoothstep(0.69, 0.82, light);
-	paint = mix(COLOR.rgb * 0.76, COLOR.rgb, middle);
-	float pigment = smoothstep(0.03, 0.12, max(COLOR.r, max(COLOR.g, COLOR.b)));
-	paint = mix(paint, mix(COLOR.rgb, vec3(1.0, 0.98, 0.90), 0.16 * pigment), sun);
-	haze = smoothstep(12.0, 30.0, length((VIEW_MATRIX * vec4(world, 1.0)).xyz));
+	float key = dot(normalize(MODEL_NORMAL_MATRIX * NORMAL), normalize(vec3(-0.45, 0.82, -0.35)));
+	float shade = mix(0.86, 1.0, smoothstep(-0.46, 0.64, key));
+	// Shared soft lighting at the body and wing roots keeps the hinge seam quiet.
+	shade = mix(shade, 0.94, UV2.x * 0.78);
+	paint = COLOR.rgb * shade;
+	local_position = VERTEX;
 }
+
 void fragment() {
-	ALBEDO = mix(paint, vec3(0.94, 0.935, 0.89), haze);
+	float wash = sin(local_position.z * 14.0 + local_position.x * 7.0 + sin(local_position.x * 12.0));
+	ALBEDO = paint * (0.98 + wash * 0.018);
 }

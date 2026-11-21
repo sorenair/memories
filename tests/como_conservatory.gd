@@ -35,9 +35,11 @@ func walk_to(player: MemoryExplorer, point: Vector3) -> bool:
 	return false
 
 func capture(name: String) -> void:
-	if not "--capture" in OS.get_cmdline_user_args(): return
+	var args := OS.get_cmdline_user_args()
+	if not "--capture" in args and not ("--capture-layout" in args and name in ["fountain", "garden-jungle-crossing", "bonsai"]):
+		return
 	await create_timer(1.3).timeout
-	RenderingServer.force_draw(false)
+	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://docs/previews/como-conservatory-"+name+".png")
 
 func walk_trail(player: MemoryExplorer,trail: PainterlyCurvedPath,from: float,to: float) -> void:
@@ -94,7 +96,7 @@ func run() -> void:
 		and not floor.contains_ground_point(Vector3(6,0,-16)),"The three rooms must preserve unsupported pockets of memory void")
 	check(absf(camera.size - 4.4) < 0.15,"The conservatory should begin at the steady walking scale")
 	check(memory.find_children("*","PainterlyFlowerBush",true,false).size()>=16,"The formal garden needs substantial flowering beds")
-	check(zones[2].find_children("*","PainterlyBonsai",true,false).size()==3,"The quiet room must contain exactly three bonsai pedestals")
+	check(zones[2].find_children("*","PainterlyBonsai",true,false).size()==5,"Five bonsai pedestals must frame the room")
 	for zone: MemoryZone in zones:
 		check(zone.ambience_stream!=null and zone.get_fragment()!=null,"Every room must contain its own ambient bed and story fragment")
 	check(zones[0].ambience.playing,"Water ambience must accompany the flower garden")
@@ -117,6 +119,9 @@ func run() -> void:
 	await create_timer(1.0).timeout
 	check(absf(camera.size - 6.4) < 0.2,"The fountain viewpoint must open to its wider composition")
 	await capture("fountain")
+	check(zones[0].get_node("Scenery/EastLane").get_node("PaintedRibbon").material_override.render_priority
+		< zones[0].get_fragment()._material.render_priority, "The path paint must draw behind the floating fragment")
+	check(not memory.has_node("Environment/GardenToJungle"), "The garden and jungle must have no visible connector path")
 	check(zones[0].get_fragment().try_activate(player),"The garden fragment must be reachable beside the fountain")
 	world.get_node("Controls/FragmentInteraction").advance_note()
 	await create_timer(0.2).timeout
@@ -147,6 +152,7 @@ func run() -> void:
 	check(world.get_node("GuidanceController").request_guidance(),"Guidance must follow the connected passage into the jungle")
 	for point in [Vector3(0,0,-8.9),Vector3(0,0,-12.5),trail.to_global(trail.point_at(0.0))]:
 		check(await walk_to(player,point),"The winding jungle route must be clear of water, tree trunks and floor rims")
+		if point == Vector3(0, 0, -12.5): await capture("garden-jungle-crossing")
 	await walk_trail(player,trail,0.0,memory.jungle_fragment_ratio)
 	await create_timer(1.0).timeout
 	check(absf(camera.size - 4.4) < 0.15,"The jungle camera must keep the walking scale")
@@ -161,12 +167,12 @@ func run() -> void:
 	for point in [Vector3(7,0,-24.5),Vector3(10,0,-24.5),Vector3(13,0,-24.5),Vector3(13,0,-23.3)]:
 		check(await walk_to(player,point),"The bonsai displays must have a supported, uncluttered approach")
 	await create_timer(1.0).timeout
-	check(absf(camera.size - 5.6) < 0.18 and zones[2].ambience.playing,"The bonsai room must use quiet local audio and closer individual display views")
-	check(zones[2].get_fragment().try_activate(player),"The final fragment must be reachable before the three pedestals")
+	check(absf(camera.size - 6.6) < 0.18 and zones[2].ambience.playing,"The bonsai room must use quiet local audio and closer individual display views")
+	check(zones[2].get_fragment().try_activate(player),"The final fragment must be reachable inside the bonsai semicircle")
 	world.get_node("Controls/FragmentInteraction").advance_note()
 	await create_timer(0.2).timeout
-	for point in [Vector3(10.3,0,-24.8),Vector3(13,0,-25.6),Vector3(15.8,0,-24.5),Vector3(13,0,-24.5)]:
-		check(await walk_to(player,point),"All three bonsai must have an accessible intimate viewing position")
+	for point in [Vector3(10.3,0,-23.3),Vector3(10.3,0,-24.8),Vector3(13,0,-25.6),Vector3(15.8,0,-24.5),Vector3(15.7,0,-23.3),Vector3(13,0,-24.5)]:
+		check(await walk_to(player,point),"All five bonsai must have an accessible intimate viewing position")
 		if point==Vector3(13,0,-25.6): await capture("bonsai")
 	for point in [Vector3(7,0,-24.5),trail.to_global(trail.point_at(trail.get_path_length()))]:
 		check(await walk_to(player,point),"The bonsai connection must work in reverse")

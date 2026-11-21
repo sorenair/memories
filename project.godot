@@ -28,6 +28,7 @@ buses/default_bus_layout="res://audio/default_bus_layout.tres"
 
 LanSession="*res://scripts/network/lan_session.gd"
 AudioMixer="*res://audio/audio_mixer.gd"
+MenuMusic="*res://audio/menu_music.tscn"
 
 [display]
 

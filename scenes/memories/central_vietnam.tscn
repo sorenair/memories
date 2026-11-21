@@ -1,64 +1,73 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene format=3 uid="uid://o66tlos0ebss"]
 
+[ext_resource type="AudioStream" uid="uid://47rmu8fltn14" path="res://audio/ambiance/ambiance_jungle.mp3" id="8_csx3m"]
+[ext_resource type="AudioStream" uid="uid://jnxptqjypwac" path="res://audio/ambiance/ambiance_quietchatter.mp3" id="10_l5gtm"]
+[ext_resource type="AudioStream" uid="uid://dg77opg8ytgrw" path="res://audio/ambiance/ambiance_outdoorcrowd.mp3" id="12_mw4pj"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="Script" path="res://scripts/central_vietnam_memory.gd" id="script"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
-[ext_resource type="PackedScene" path="res://scenes/memories/central_vietnam/marble_mountains_zone.tscn" id="MarbleMountains"]
-[ext_resource type="PackedScene" path="res://scenes/memories/central_vietnam/rice_zone.tscn" id="Rice"]
-[ext_resource type="PackedScene" path="res://scenes/memories/central_vietnam/hue_zone.tscn" id="Hue"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-
-
+[ext_resource type="PackedScene" path="res://scenes/memories/central_vietnam/hue_zone.tscn" id="Hue"]
+[ext_resource type="PackedScene" path="res://scenes/memories/central_vietnam/marble_mountains_zone.tscn" id="MarbleMountains"]
 [ext_resource type="Curve2D" path="res://scenes/memories/central_vietnam/walk_outline.tres" id="outline"]
+[ext_resource type="PackedScene" path="res://scenes/memories/central_vietnam/rice_zone.tscn" id="Rice"]
+[ext_resource type="Script" uid="uid://ch5e87k83205y" path="res://scripts/central_vietnam_memory.gd" id="script"]
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=514008346 instance=ExtResource("base")]
 script = ExtResource("script")
 memory_id = &"central_vietnam"
 display_name = "Central Vietnam"
 
-[node name="Entry" parent="."]
-position = Vector3(-10,0.08,22)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.08, 22)
 
-[node name="Exit" parent="."]
-position = Vector3(54,0.07,-46)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 0.07, -46)
 
-[node name="VietnamFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="VietnamFloor" parent="Environment" index="0" unique_id=2061161327 instance=ExtResource("floor")]
 visible = false
-custom_outline = ExtResource("outline")
 outline_detail = 96
+custom_outline = ExtResource("outline")
 edge_inset = 0.18
 boundary_height = 3.0
 
-[node name="Guidance" parent="Environment" type="Node3D"]
+[node name="Guidance" type="Node3D" parent="Environment" index="1" unique_id=1412135006]
 
-
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="MarbleMountains" parent="Zones" instance=ExtResource("MarbleMountains")]
-position = Vector3(0,0,14)
-
-[node name="Rice" parent="Zones" instance=ExtResource("Rice")]
-position = Vector3(26,0,-14)
-
-[node name="Hue" parent="Zones" instance=ExtResource("Hue")]
-position = Vector3(54,0,-39)
-
-[node name="MarbleMountainsMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="MarbleMountainsMemory" parent="Environment/Guidance" index="0" unique_id=7198743 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/MarbleMountains/Fragment")
+waypoints = PackedVector3Array(-10, 0.795, 22, -9.79269, 0.795, 21.670061, -9.591256, 0.795, 21.336472, -9.389892, 0.795, 21.002825, -9.186372, 0.795, 20.670471, -8.979138, 0.795, 20.34044, -8.766552, 0.795, 20.013838, -8.546533, 0.795, 19.692204, -8.315934, 0.795, 19.378077, -8.069237, 0.795, 19.076502, -7.8041873, 0.795, 18.790813, -7.532007, 0.795, 18.511898, -7.243184, 0.795, 18.250559, -6.9248905, 0.795, 18.026377, -6.574098, 0.795, 17.857702, -6.2017994, 0.795, 17.7436, -5.8188086, 0.795, 17.672792, -5.4297376, 0.795, 17.656523, -5.0397215, 0.795, 17.68103, -4.6543837, 0.795, 17.73046, -4.269836, 0.795, 17.793571, -3.8860009, 0.795, 17.86094, -3.5014796, 0.79499996, 17.924221, -3.1151147, 0.795, 17.974869, -2.7281125, 0.795, 18.003555, -2.3372142, 0.795, 18.02113, -1.9477373, 0.795, 18.034084, -1.5581188, 0.795, 18.04021, -1.1684599, 0.795, 18.03841, -0.7789033, 0.795, 18.029705, -0.38938776, 0.795, 18.016254, -1.8626451e-09, 0.795, 18)
 stroke_width = 0.32
 
-[node name="FieldsMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="FieldsMemory" parent="Environment/Guidance" index="1" unique_id=476084700 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/MarbleMountains/Fragment")
 end_anchor = NodePath("../../../Zones/Rice/Fragment")
+waypoints = PackedVector3Array(-1.8626451e-09, 0.795, 18, 0.3926542, 0.795, 17.982267, 0.78525984, 0.795, 17.96329, 1.1777651, 0.795, 17.94247, 1.5701385, 0.795, 17.919289, 1.962336, 0.795, 17.893291, 2.3543072, 0.795, 17.864092, 2.7459996, 0.795, 17.831373, 3.137359, 0.795, 17.794876, 3.5283284, 0.795, 17.754402, 3.9188452, 0.795, 17.709805, 4.3094726, 0.795, 17.666151, 4.7010665, 0.795, 17.632265, 5.093127, 0.795, 17.604328, 5.48529, 0.795, 17.577805, 5.877206, 0.795, 17.54787, 6.268371, 0.795, 17.509459, 6.6579337, 0.795, 17.457355, 7.044483, 0.795, 17.386404, 7.4259257, 0.795, 17.291855, 7.799478, 0.795, 17.169878, 8.161922, 0.795, 17.018091, 8.508454, 0.795, 16.832949, 8.836793, 0.795, 16.617067, 9.149524, 0.795, 16.379051, 9.449175, 0.795, 16.12473, 9.738006, 0.795, 15.858158, 10.018016, 0.795, 15.5823345, 10.2911005, 0.795, 15.299624, 10.559188, 0.795, 15.012202, 10.824755, 0.795, 14.722393, 11.091706, 0.795, 14.433902, 11.369997, 0.795, 14.1565, 11.37, 0.76, 14.1565, 11.923208, 0.76, 13.585525, 12.486432, 0.76, 13.024317, 13.050165, 0.76, 12.463605, 13.611303, 0.76, 11.90032, 14.167815, 0.76, 11.332464, 14.717703, 0.76, 10.758192, 15.258489, 0.76, 10.17535, 15.7866, 0.76, 9.581004, 16.296103, 0.76, 8.970671, 16.775452, 0.76, 8.336477, 17.204105, 0.76, 7.667092, 17.597368, 0.76, 6.9761434, 17.958357, 0.76, 6.2678103, 18.28271, 0.76, 5.541993, 18.563763, 0.76, 4.798377, 18.791473, 0.76, 4.036786, 18.950531, 0.76, 3.2581139, 19.017399, 0.76, 2.466464, 18.9483, 0.76, 1.6762686, 18.692263, 0.76, 0.9248524, 18.32816, 0.76, 0.21844387, 17.90394, 0.76, -0.45384312, 17.443144, 0.76, -1.101718, 16.960196, 0.76, -1.7333317, 16.46826, 0.76, -2.3579636, 15.999999, 0.76, -3.000002, 16, 0.76, -3, 16.216549, 0.7781075, -3.3293915, 16.428957, 0.7960419, -3.6568527, 16.64346, 0.81405056, -3.9853106, 16.860153, 0.8320314, -4.31231, 17.080236, 0.84997207, -4.6370506, 17.305481, 0.8678486, -4.9582424, 17.539463, 0.88560784, -5.2731915, 17.78549, 0.9030869, -5.5785627, 18.039772, 0.9204018, -5.881177, 18.297356, 0.93726385, -6.1731744, 18.565487, 0.9541436, -6.4595523, 18.843788, 0.97098875, -6.7360797, 19.133883, 0.9878615, -7.0001736, 19.43745, 1.0047939, -7.249339, 19.747803, 1.0212369, -7.48856, 20.06409, 1.0373943, -7.7207055, 20.386742, 1.0534949, -7.9439707, 20.716879, 1.0697203, -8.155966, 21.056213, 1.0862482, -8.352842, 21.407265, 1.1032939, -8.527814, 21.773682, 1.1211573, -8.667174, 22.158976, 1.1397042, -8.736362, 22.55102, 1.1582257, -8.744546, 22.942566, 1.1766168, -8.721386, 23.333551, 1.195068, -8.689686, 23.725355, 1.2138503, -8.671214, 24.116451, 1.2331816, -8.694582, 24.496626, 1.2528616, -8.788801, 24.864378, 1.272501, -8.924956, 25.221186, 1.2920423, -9.087658, 25.569033, 1.3115368, -9.268805, 25.909948, 1.3310769, -9.462746, 26.246008, 1.3507947, -9.665038, 26.575127, 1.3707746, -9.877808, 26.883226, 1.3906577, -10.120413, 27.179262, 1.4104517, -10.377651, 27.473179, 1.4303296, -10.63733, 27.773893, 1.4504745, -10.889035, 28.091095, 1.4710572, -11.119465, 28.435503, 1.4920862, -11.305601, 28.80306, 1.5126772, -11.441962, 29.180933, 1.5327079, -11.546702, 29.2, 1.575, -11.46, 28.994007, 1.5947828, -10.739606, 28.875902, 1.597, -9.99963, 28.827623, 1.597, -9.251987, 28.920296, 1.5970001, -8.5092125, 29.171795, 1.5970001, -7.805591, 29.605911, 1.597, -7.1973405, 30.309998, 1.5980002, -7.0200005, 30.31, 1.631, -7.02)
 stroke_width = 0.32
 
-[node name="ImperialMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="ImperialMemory" parent="Environment/Guidance" index="2" unique_id=1762077834 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Rice/Fragment")
 end_anchor = NodePath("../../../Zones/Hue/Fragment")
+waypoints = PackedVector3Array(30.309998, 1.5980002, -7.0200005, 29.605911, 1.597, -7.1973405, 29.171795, 1.5970001, -7.805591, 28.920296, 1.5970001, -8.5092125, 28.827623, 1.597, -9.251987, 28.875902, 1.597, -9.99963, 28.994007, 1.5947828, -10.739606, 29.2, 1.575, -11.46, 29.180933, 1.5327079, -11.546702, 29.562593, 1.5525045, -11.625177, 29.948278, 1.572595, -11.680755, 30.336515, 1.5934165, -11.713701, 30.725872, 1.6155615, -11.721729, 31.112387, 1.6392812, -11.681079, 31.488598, 1.663337, -11.580583, 31.856993, 1.687569, -11.454289, 32.224068, 1.7122505, -11.324244, 32.596493, 1.7377596, -11.210558, 32.979134, 1.7644144, -11.14157, 33.36671, 1.7917513, -11.159518, 33.74683, 1.8183081, -11.24275, 34.116707, 1.844319, -11.364262, 34.475876, 1.8702329, -11.514333, 34.823887, 1.8965037, -11.688699, 35.159035, 1.923681, -11.886557, 35.47677, 1.9526572, -12.110933, 35.760178, 1.9862182, -12.376396, 36.008293, 2.0225751, -12.675105, 36.233734, 2.058315, -12.991556, 36.44836, 2.0909772, -13.315801, 36.662556, 2.1185317, -13.640794, 36.887283, 2.1391068, -13.962618, 37.11545, 2.1510797, -14.275272, 37.34353, 2.1581483, -14.591801, 37.570583, 2.1625586, -14.909146, 37.796986, 2.1652932, -15.226985, 38.022934, 2.1669037, -15.545139, 38.24861, 2.1677935, -15.8635235, 38.474094, 2.1684103, -16.181871, 38.699997, 2.1699996, -16.5, 38.7, 2.17, -16.5, 39.389282, 2.224399, -16.847027, 40.050644, 2.247539, -17.246544, 40.592194, 2.1725907, -17.788717, 40.925674, 1.9852827, -18.459698, 41.16971, 1.7619771, -19.159548, 41.39364, 1.5286157, -19.862953, 41.634983, 1.2958398, -20.560673, 41.95382, 1.080526, -21.231186, 42.433037, 0.9116647, -21.812965, 43.074364, 0.81151706, -22.227753, 43.79015, 0.76919705, -22.519268, 44.518574, 0.74596727, -22.779814, 45.2596, 0.7392555, -23.003857, 46.005127, 0.73924035, -23.212643, 46.752884, 0.7428243, -23.413177, 47.501923, 0.7485173, -23.608864, 48.25154, 0.7551405, -23.802418, 49, 0.76, -24, 49, 0.76, -24, 49.55084, 0.76, -24.550838, 50.101727, 0.76, -25.101723, 50.652603, 0.76, -25.652603, 51.20348, 0.76, -26.203476, 51.754345, 0.76, -26.754345, 52.32302, 0.76, -27.285984, 52.962505, 0.76, -27.730404, 53.56935, 0.76, -28.215797, 53.96276, 0.76, -28.881456, 54.111782, 0.76, -29.64423, 54.14221, 0.76, -30.422413, 54.12259, 0.76, -31.201157, 54.082127, 0.76, -31.979156, 54.038483, 0.76, -32.756977, 54.00658, 0.76, -33.535347, 54, 0.76, -34.31431, 54, 0.76, -35.093365, 54, 0.76, -35.87241, 54, 0.76, -36.65146, 54, 0.76, -37.430504, 54, 0.76, -38.20955, 54, 0.76, -38.9886, 54, 0.76, -39.767647, 54, 0.76, -40.546646, 54, 0.76, -41.325726, 54, 0.76, -42.104774, 54, 0.76, -42.883827, 54, 0.76, -43.662872, 54, 0.76, -44.44195, 54, 0.76, -45.22099, 54, 0.76, -46, 54, 0.83, -46)
 stroke_width = 0.32
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="MarbleMountains" parent="Zones" index="0" unique_id=466524086 instance=ExtResource("MarbleMountains")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 14)
+ambience_stream = ExtResource("8_csx3m")
+ambience_volume_db = -12.0
+
+[node name="Rice" parent="Zones" index="1" unique_id=284274332 instance=ExtResource("Rice")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, -14)
+ambience_stream = ExtResource("10_l5gtm")
+ambience_volume_db = -8.0
+
+[node name="Hue" parent="Zones" index="2" unique_id=659450267 instance=ExtResource("Hue")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 0, -39)
+ambience_stream = ExtResource("12_mw4pj")
+ambience_volume_db = -10.0

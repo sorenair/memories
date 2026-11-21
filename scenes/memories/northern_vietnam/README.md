@@ -12,20 +12,21 @@ an intimate, inhabited street to a leafy island temple and then an open limeston
 seascape. Personal stories and time of day were not supplied; notes remain explicit
 placeholders and lighting uses the shared soft daylight.
 
-- **Old Quarter:** ten narrow shophouses mix ochre, faded pink, pale plaster and
-  green shutters. Two or three floors, roof profiles, balcony rails, planters and
-  striped awnings vary the street silhouette. Short strips of warm stone outline
-  the shop thresholds and dissolve into the painted lane. Existing shader-animated
-  crowds leave a clear shared route past the fragment.
-- **Hoan Kiem:** a short wooded promenade leads across a real arched red footbridge
-  to a small Ngoc Son-inspired pavilion. A separate Turtle Tower sits offshore.
-  The bridge, temple and Turtle Tower recall from **BridgeView** at the near
-  landing. Short stretches of gravel dissolve before the junctions. The red
-  bridge guides the turn toward the island, and benches and planting carry the
-  bank route after the return crossing. The dock recalls from **ShoreTurn**,
-  beyond the final break in the path.
-- **Ha Long:** an existing timber dock opens into a T-shaped overlook over muted
-  jade water. Eight limestone formations mix split ridges, slender spires and
+- **Old Quarter:** ten narrow shophouses sit among layered curbside shrubs and
+  tropical leaves. Four uneven gatherings use varied facing, stances and
+  shader-driven sway, with a shared lane past the fragment. **ToLake** is visible
+  at the street turn. Warm setts curve between planting pockets and dissolve
+  before the lake landing.
+- **Hoan Kiem:** Thê Húc bridge begins at the dry bank. A lakeside bench faces the
+  water, and low planting frames Turtle Tower's islet. On Jade Island the bridge
+  meets the walk-through Đắc Nguyệt Lâu gate and opens into a small courtyard
+  framed by a tiled hall and open Trấn Ba pavilion. The composition takes its
+  architectural cues from the site's arrangement and the round gate window.
+  [Hanoi Department of Culture and Sports](https://sovhtt.hanoi.gov.vn/en/hoan-kiem-lake-ngoc-son-temple-special-national-monuments-famous-scenic-spots-capital/)
+  · [Vietnam Pictorial photo reference](https://vietnam.vnanet.vn/spanish/print/templo-ngoc-son-20767.html)
+- **Ha Long:** an existing timber dock opens into a T-shaped overlook over
+  tropical blue water painted with the shared water shader's broad pigment
+  shapes and soft highlights. Eight limestone formations mix split ridges, slender spires and
   shelved bluffs, with deeper greens in the foreground and cooler cliffs at
   the back. Mint shallows follow the rock contours around the open channels.
 
@@ -49,8 +50,8 @@ Title / Notes** in these files for personal wording:
 | `ha_long_zone.tscn` | Between the limestone islands |
 
 Edit `lake_water.tres` and `bay_water.tres` for the water palettes. The bay
-has its own `bay_foliage.tres` palette for the shore and crown trees. All 105
-foliage components respond to both explorers within the 149 recallable pieces. Move **BridgeView** with the
+has its own `bay_foliage.tres` palette for the shore and crown trees. All 144
+foliage components respond to both explorers within the 197 recallable pieces. Move **BridgeView** with the
 near bridge landing and **BayView** with the dock when rearranging the overlooks.
 
 `../../../scripts/northern_vietnam_memory.gd` derives requested hint routes from the
@@ -59,9 +60,10 @@ placement anchors. When changing bridge or dock dimensions, align adjacent paths
 fragment and finite floor as well. No hint starts automatically after a note.
 
 `../../../scripts/northern_vietnam_camera.gd` uses **4.7** for everyday walking,
-including the island note and dock approach. It holds **6.1** at the street
-fragment, **13.4** at the bridge landing and **22.8** at the end of the dock.
-Each reveal eases in and out with fixed yaw.
+including the island note and dock approach. It tips overhead in the island
+courtyard to keep the explorer readable between the roofs. It holds **6.1** at
+the street fragment, **13.4** at the bridge landing and **22.8** at the end of the
+dock. Each reveal eases in and out with fixed yaw.
 
 Quiet existing street, jungle and open-air recordings are temporary ambience beds,
 not location recordings. Tune each zone's **Ambience Stream / Volume / Size / Blend
@@ -96,5 +98,9 @@ The before captures use the earlier camera and scenery after repairing the scene
 load and clearing the bench from the bank route. The later
 [path and karst revision](../../../docs/previews/northern-vietnam-paths-karsts.jpg)
 shows the approach and overlook in the walking camera.
+
+[Old Quarter exit](../../../docs/previews/northern_vietnam-memory-old-quarter-exit.png)
+· [Bridge and temple approach](../../../docs/previews/northern_vietnam-memory-lake-arrival.png)
+· [Hạ Long overlook](../../../docs/previews/northern_vietnam-memory-bay-overlook.png)
 
 ![Northern Vietnam composition](../../../docs/previews/northern_vietnam-memory-overview.png)

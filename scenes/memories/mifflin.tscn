@@ -1,130 +1,141 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene format=3 uid="uid://dd6nlx01hfl71"]
 
-[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
-[ext_resource type="PackedScene" path="res://components/groundcover/street/painterly_street.tscn" id="street"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="AudioStream" uid="uid://dg77opg8ytgrw" path="res://audio/ambiance/ambiance_outdoorcrowd.mp3" id="11_thwgk"]
+[ext_resource type="AudioStream" uid="uid://b74tl1hwkwuk1" path="res://audio/ambiance/ambiance_bar.mp3" id="13_cyou6"]
 [ext_resource type="PackedScene" path="res://scenes/memories/mifflin/bar_zone.tscn" id="bar"]
-[ext_resource type="Script" path="res://scripts/mifflin_memory.gd" id="routes"]
-[ext_resource type="PackedScene" path="res://scenes/memories/mifflin/block_party_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-[ext_resource type="AudioStream" path="res://audio/samples/mifflin_groove.wav" id="music"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="AudioStream" uid="uid://b8dhwb7b05gvo" path="res://audio/samples/mifflin_groove.wav" id="music"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_curved_path.tscn" id="path"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paving/painterly_paving.tscn" id="paving"]
+[ext_resource type="Script" uid="uid://u7x0j3eo14ph" path="res://scripts/mifflin_memory.gd" id="routes"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paths/urban_paver_path.tscn" id="setts"]
+[ext_resource type="PackedScene" path="res://components/groundcover/street/painterly_street.tscn" id="street"]
+[ext_resource type="PackedScene" path="res://scenes/memories/mifflin/block_party_zone.tscn" id="zone"]
 
 [sub_resource type="Curve2D" id="BlockOutline"]
-_data = {"points": PackedVector2Array(0, 0, 0, 0, -3.5, 21, 0, 0, 0, 0, 3.5, 21, 0, 0, 0, 0, 6.8, 19, 0, 0, 0, 0, 14.5, 18.5, 0, 0, 0, 0, 17, 15, 0, 0, 0, 0, 17, 6, 0, 0, 0, 0, 16, 2, 0, 0, 0, 0, 17, -5, 0, 0, 0, 0, 17, -14, 0, 0, 0, 0, 14, -19, 0, 0, 0, 0, 6.5, -20.8, 0, 0, 0, 0, 3, -22, 0, 0, 0, 0, 2, -24.5, 0, 0, 0, 0, 5.4, -26.4, 0, 0, 0, 0, 6, -28, 0, 0, 0, 0, 6, -35.7, 0, 0, 0, 0, 4.8, -37, 0, 0, 0, 0, -4.8, -37, 0, 0, 0, 0, -6, -35.7, 0, 0, 0, 0, -6, -28, 0, 0, 0, 0, -5.4, -26.4, 0, 0, 0, 0, -2, -24.5, 0, 0, 0, 0, -3, -22, 0, 0, 0, 0, -6.5, -20.8, 0, 0, 0, 0, -14, -19, 0, 0, 0, 0, -17, -14, 0, 0, 0, 0, -17, -5, 0, 0, 0, 0, -16, 2, 0, 0, 0, 0, -17, 6, 0, 0, 0, 0, -17, 15, 0, 0, 0, 0, -14.5, 18.5, 0, 0, 0, 0, -6.8, 19, 0, 0, 0, 0, -3.5, 21)}
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -3.5, 21, 0, 0, 0, 0, 3.5, 21, 0, 0, 0, 0, 6.8, 19, 0, 0, 0, 0, 14.5, 18.5, 0, 0, 0, 0, 17, 15, 0, 0, 0, 0, 17, 6, 0, 0, 0, 0, 16, 2, 0, 0, 0, 0, 17, -5, 0, 0, 0, 0, 17, -14, 0, 0, 0, 0, 14, -19, 0, 0, 0, 0, 6.5, -20.8, 0, 0, 0, 0, 3, -22, 0, 0, 0, 0, 2, -24.5, 0, 0, 0, 0, 5.4, -26.4, 0, 0, 0, 0, 6, -28, 0, 0, 0, 0, 6, -35.7, 0, 0, 0, 0, 4.8, -37, 0, 0, 0, 0, -4.8, -37, 0, 0, 0, 0, -6, -35.7, 0, 0, 0, 0, -6, -28, 0, 0, 0, 0, -5.4, -26.4, 0, 0, 0, 0, -2, -24.5, 0, 0, 0, 0, -3, -22, 0, 0, 0, 0, -6.5, -20.8, 0, 0, 0, 0, -14, -19, 0, 0, 0, 0, -17, -14, 0, 0, 0, 0, -17, -5, 0, 0, 0, 0, -16, 2, 0, 0, 0, 0, -17, 6, 0, 0, 0, 0, -17, 15, 0, 0, 0, 0, -14.5, 18.5, 0, 0, 0, 0, -6.8, 19, 0, 0, 0, 0, -3.5, 21)
+}
 point_count = 33
 
 [sub_resource type="Curve3D" id="StreetRoute"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0, 0, 0, 0, 0, -1.8, 0, 0, 18, 0, 0, 1.8, 0, 0, -1.8, -1.25, 0, 12, 0, 0, 1.8, 0, 0, -1.8, 1.35, 0, 6.5, 0, 0, 1.8, 0, 0, -1.8, -0.8, 0, 1, 0, 0, 1.8, 0, 0, -1.8, 0.8, 0, -5.5, 0, 0, 1.8, 0, 0, -1.8, -1.1, 0, -11.5, 0, 0, 1.8, 0, 0, -1.8, 0.4, 0, -17.5, 0, 0, 1.8, 0, 0, 0, 0, 0, -22), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0)}
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, -1.8, 0, 0, 18, 0, 0, 1.8, 0, 0, -1.8, -1.25, 0, 12, 0, 0, 1.8, 0, 0, -1.8, 1.35, 0, 6.5, 0, 0, 1.8, 0, 0, -1.8, -0.8, 0, 1, 0, 0, 1.8, 0, 0, -1.8, 0.8, 0, -5.5, 0, 0, 1.8, 0, 0, -1.8, -1.1, 0, -11.5, 0, 0, 1.8, 0, 0, -1.8, 0.4, 0, -17.5, 0, 0, 1.8, 0, 0, 0, 0, 0, -22),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0)
+}
 point_count = 8
 
 [sub_resource type="Curve3D" id="PorchRoute"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0, 0, 0, -1.0, 0, 0, -0.8, 0, 1, 1.0, 0, 0, -1.0, 0, 0, -3, 0, 0.6, 1.0, 0, 0, 0, 0, 0, -5.4, 0, -1), "tilts": PackedFloat32Array(0, 0, 0)}
+_data = {
+"points": PackedVector3Array(0, 0, 0, -1, 0, 0, -0.8, 0, 1, 1, 0, 0, -1, 0, 0, -3, 0, 0.6, 1, 0, 0, 0, 0, 0, -5.4, 0, -1),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
 point_count = 3
 
 [sub_resource type="Curve3D" id="BarThresholdCurve"]
-_data = {"points": PackedVector3Array(0,0,0, 0,0,-0.82, 0,0,-20, 0.18,0,0.8, -0.18,0,-0.8, 0.17,0,-23, 0,0,0.8, 0,0,0, 0.12,0,-28.1), "tilts": PackedFloat32Array(0,0,0)}
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, -0.82, 0, 0, -20, 0.18, 0, 0.8, -0.18, 0, -0.8, 0.17, 0, -23, 0, 0, 0.8, 0, 0, 0, 0.12, 0, -28.1),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
 point_count = 3
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=924977192 instance=ExtResource("base")]
 script = ExtResource("routes")
 memory_id = &"mifflin"
 display_name = "Mifflin Block Party"
 
-[node name="Entry" parent="."]
-position = Vector3(0.0000, 0.0400, 18.0000)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 18)
 
-[node name="Exit" parent="."]
-position = Vector3(2.4, 0.08, -30.1)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0.08, -30.1)
 
-[node name="BlockFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="BlockFloor" parent="Environment" index="0" unique_id=585790122 instance=ExtResource("floor")]
 visible = false
-custom_outline = SubResource("BlockOutline")
 outline_detail = 96
+custom_outline = SubResource("BlockOutline")
 edge_inset = 0.2
 
-[node name="Street" parent="Environment" instance=ExtResource("street")]
-position = Vector3(0,0,-0.5)
-length = 42.0
-width = 9.4
+[node name="Street" parent="Environment" index="1" unique_id=1654087339 instance=ExtResource("street")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 asphalt_color = Color(0.567, 0.587, 0.59, 1)
 end_fade = Vector2(4.5, 3.15)
 
-[node name="StreetWeave" parent="Environment" instance=ExtResource("path")]
+[node name="StreetWeave" parent="Environment" index="2" unique_id=287828249 instance=ExtResource("path")]
 visible = false
 curve = SubResource("StreetRoute")
 path_width = 1.35
+end_fade = Vector2(0, 0)
 edge_softness = 0.04
-end_fade = Vector2(0,0)
 collision_enabled = false
 
-[node name="PorchWeave" parent="Environment" instance=ExtResource("path")]
+[node name="PorchWeave" parent="Environment" index="3" unique_id=373972621 instance=ExtResource("path")]
 visible = false
 curve = SubResource("PorchRoute")
 path_width = 1.35
+end_fade = Vector2(0, 0)
 edge_softness = 0.04
-end_fade = Vector2(0,0)
 collision_enabled = false
 
-[node name="BarApproach" parent="Environment" instance=ExtResource("setts")]
+[node name="BarApproach" parent="Environment" index="4" unique_id=215550204 instance=ExtResource("setts")]
 curve = SubResource("BarThresholdCurve")
-path_width = 2.48
-paving_color = Color(0.825, 0.80, 0.744, 1)
 shoulder_color = Color(0.864, 0.846, 0.795, 1)
 stone_color = Color(0.872, 0.849, 0.793, 1)
-end_fade = Vector2(2.15, 2.75)
-edge_softness = 0.45
-crown_height = 0.0
 stone_size = 0.88
 joint_width = 0.018
+path_width = 2.48
+paving_color = Color(0.825, 0.8, 0.744, 1)
+end_fade = Vector2(2.15, 2.75)
+edge_softness = 0.45
 collision_enabled = false
 
-[node name="WestSidewalk" parent="Environment" instance=ExtResource("paving")]
-position = Vector3(-5.5000, 0.0120, -1.0000)
-footprint = Vector2(1.6500, 38.0000)
+[node name="WestSidewalk" parent="Environment" index="5" unique_id=1475602414 instance=ExtResource("paving")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.012, -1)
+footprint = Vector2(1.65, 38)
 slab_length = 1.8
-paving_color = Color(0.87059, 0.85882, 0.78824, 1)
 paving_seed = 42526
 irregularity = 0.18
-end_fade = Vector2(2.6000, 2.6000)
-
-[node name="EastSidewalk" parent="Environment" instance=ExtResource("paving")]
-position = Vector3(5.5000, 0.0120, -1.0000)
-footprint = Vector2(1.6500, 38.0000)
-slab_length = 1.8
 paving_color = Color(0.87059, 0.85882, 0.78824, 1)
+end_fade = Vector2(2.6, 2.6)
+
+[node name="EastSidewalk" parent="Environment" index="6" unique_id=370967110 instance=ExtResource("paving")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0.012, -1)
+footprint = Vector2(1.65, 38)
+slab_length = 1.8
 paving_seed = 42528
 irregularity = 0.18
-end_fade = Vector2(2.6000, 2.6000)
+paving_color = Color(0.87059, 0.85882, 0.78824, 1)
+end_fade = Vector2(2.6, 2.6)
 
-[node name="Guidance" type="Node3D" parent="Environment"]
+[node name="Guidance" type="Node3D" parent="Environment" index="7" unique_id=1277443848]
 
-[node name="ToThePorch" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="ToThePorch" parent="Environment/Guidance" index="0" unique_id=415638583 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/BlockParty/Fragment")
-waypoints = PackedVector3Array(0,0.76,18, 0,0.76,11, 0,0.76,4.5, 0,0.76,-1, -2,0.76,-1, -5.4,0.76,-1)
-stroke_width = 0.34
-opacity = 0.92
+waypoints = PackedVector3Array(0, 0.76, 18, -0.067254655, 0.76, 17.20805, -0.22556563, 0.76, 16.428627, -0.4310292, 0.76, 15.660077, -0.65568304, 0.76, 14.896873, -0.8774369, 0.76, 14.13283, -1.0733435, 0.76, 13.361817, -1.2123644, 0.76, 12.578797, -1.238042, 0.76, 11.785251, -1.0281283, 0.76, 11.020692, -0.66243297, 0.76, 10.314914, -0.22813602, 0.76, 9.648475, 0.22770207, 0.76, 8.996429, 0.67006916, 0.76, 8.335262, 1.0565228, 0.76, 7.640385, 1.3117455, 0.76, 6.8890295, 1.3162496, 0.76, 6.097777, 1.0974749, 0.76, 5.334441, 0.7611527, 0.76, 4.613857, 0.37326023, 0.76, 3.9193032, -0.02378292, 0.76, 3.2298832, -0.39174572, 0.76, 2.5246842, -0.6789778, 0.76, 1.7836186, -0.8000001, 0.76, 0.9999999, -0.8, 0.76, 1, -1.5395786, 0.76, 0.9104401, -2.2534864, 0.76, 0.69135445, -2.9927988, 0.76, 0.6000874, -3.6751292, 0.76, 0.33518052, -4.197635, 0.76, -0.197298, -4.7192554, 0.76, -0.73069364, -5.4000006, 0.76, -1)
 
-[node name="Audio" parent="."]
+[node name="ToTheBar" parent="Environment/Guidance" index="1" unique_id=149308578 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+visible = false
+start_anchor = NodePath("../../../Zones/BlockParty/Fragment")
+end_anchor = NodePath("../../../Zones/Bar/Fragment")
+waypoints = PackedVector3Array(-5.4000006, 0.76, -1, -4.7192554, 0.76, -0.73069364, -4.197635, 0.76, -0.197298, -3.6751292, 0.76, 0.33518052, -2.9927988, 0.76, 0.6000874, -2.2534864, 0.76, 0.69135445, -1.5395786, 0.76, 0.9104401, -0.8, 0.76, 1, -0.8000001, 0.76, 0.9999999, -0.71961653, 0.76, 0.21200255, -0.5395307, 0.76, -0.5602425, -0.31096494, 0.76, -1.3197222, -0.06045622, 0.76, -2.0722945, 0.19393148, 0.76, -2.8235753, 0.43545368, 0.76, -3.5790644, 0.64277685, 0.76, -4.3445435, 0.7795499, 0.76, -5.125354, 0.7693091, 0.76, -5.9162693, 0.5884146, 0.76, -6.6876464, 0.3167481, 0.76, -7.43264, 0.0028389741, 0.76, -8.161022, -0.32304904, 0.76, -8.884166, -0.635312, 0.76, -9.613249, -0.90302545, 0.76, -10.359651, -1.0758487, 0.76, -11.1328, -1.0749131, 0.76, -11.923939, -0.9291413, 0.76, -12.703033, -0.70816886, 0.76, -13.464668, -0.45149145, 0.76, -14.215158, -0.18583113, 0.76, -14.96253, 0.06506476, 0.76, -15.7149515, 0.27250862, 0.76, -16.48031, 0.391861, 0.76, -17.263714, 0.38689184, 0.76, -18.05648, 0.32268557, 0.76, -18.84691, 0.21730325, 0.76, -19.63303, 0.10562086, 0.76, -20.418285, 0.026780449, 0.76, -21.207409, 0, 0.76, -22, 0.20101222, 0.76, -21.983732, 0.2084301, 0.76, -22.74959, 0.10964505, 0.76, -23.505827, 0.080391616, 0.76, -24.2713, 0.07468527, 0.76, -25.042902, 0.08025136, 0.76, -25.803402, 0.092384614, 0.76, -26.569292, 0.10784588, 0.76, -27.335598, 0.11999999, 0.76, -28.099998, 2.4, 0.76, -28.8, 2.4, 0.76, -30.1)
+
+[node name="Audio" parent="." index="6"]
 music_stream = ExtResource("music")
 music_volume_db = -19.0
 fragment_sound = ExtResource("chime")
 
-[node name="BlockParty" parent="Zones" instance=ExtResource("zone")]
+[node name="BlockParty" parent="Zones" index="0" unique_id=197451176 instance=ExtResource("zone")]
+ambience_stream = ExtResource("11_thwgk")
+ambience_volume_db = -7.0
 
-[node name="Bar" parent="Zones" instance=ExtResource("bar")]
-position = Vector3(0,0,-31.5)
-
-[node name="ToTheBar" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
-visible = false
-start_anchor = NodePath("../../../Zones/BlockParty/Fragment")
-end_anchor = NodePath("../../../Zones/Bar/Fragment")
-stroke_width = 0.34
-opacity = 0.92
+[node name="Bar" parent="Zones" index="1" unique_id=829719371 instance=ExtResource("bar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -31.5)
+ambience_stream = ExtResource("13_cyou6")
+ambience_volume_db = -10.0

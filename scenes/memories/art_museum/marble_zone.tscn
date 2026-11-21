@@ -39,6 +39,7 @@ wash_shape = 1
 
 [node name="Fragment" parent="." index="1"]
 position = Vector3(0, 0.04, -0.7)
+contrast = 1
 fragment_seed = 1210
 note_title = "Among the marble figures"
 notes = Array[String](["Placeholder: Write your memory of the marble sculptures here."])

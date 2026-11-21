@@ -106,6 +106,16 @@ func run() -> void:
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both arrivals must be supported on the forest approach")
 	check(world._bounded_memory and not world.get_node("DreamSurface").visible,"Tokyo needs finite ground in the memory void")
 	check(zones[0].find_children("ForestTree*","PainterlyTree",true,false).size() == 16 and zones[1].find_children("TempleTree*","PainterlyTree",true,false).size() == 10,"Both shrine and temple must retain their green tree canopies")
+	check(zones[0].find_children("ShrineFlower*","PainterlyFlowerBush",true,false).size() == 12,"Flowering bushes should frame both sides of the shrine")
+	var temple_crowd_count := 0
+	for group: PainterlyCrowd in zones[1].find_children("CourtyardCrowd*","PainterlyCrowd",true,false):
+		temple_crowd_count += group.generated_count
+		check(group.dance_bounce > 0.0 and group.motion_strength > 0.75,"The courtyard crowd should have animated bounce and sway")
+		for pose in group._placements:
+			var at := zones[1].to_local(group.to_global(pose.origin))
+			check(absf(at.x) >= 1.95,"Keep a shared passing lane open from the gate to the hall stairs")
+			check(at.x <= 0.0 or absf(at.z - 6.3) >= 1.3,"Keep the eastern turn open even at the faded start of the connector")
+	check(temple_crowd_count >= 70,"The courtyard should feel busy on both sides of the walkway")
 	check(absf(camera.size - 4.5) < 0.15 and zones[0].ambience.playing,"Arrival should begin close with a quiet forest bed")
 	for route in [forest,asakusa,temple,to_city,crossing]:
 		for index in 61:
@@ -131,12 +141,18 @@ func run() -> void:
 	await read_fragment(world,zones[0].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The second requested hint must leave the veranda and enter the lantern gate")
 	check(await walk_to(player,meiji.get_anchor(&"Approach").global_position),"Shrine steps must also descend cleanly")
-	await walk_trail(player,asakusa,0,1)
+	await walk_trail(player,asakusa,0,0.85)
+	await capture("asakusa-approach")
+	await walk_trail(player,asakusa,0.85,1)
 	check(await walk_to(player,Vector3(10,0,5.0)),"The Senso-ji lantern approach must remain clear")
 	await create_timer(2.0).timeout
 	check(camera.size>10.0,"The two-story lantern gate must have its own landmark framing")
 	await capture("sensoji-gate")
-	await walk_trail(player,temple,0,1)
+	await walk_trail(player,temple,0,0.76)
+	await create_timer(1.5).timeout
+	check(camera.size > 11.8,"The courtyard framing should open as the player emerges from the gate")
+	await capture("sensoji-crowd")
+	await walk_trail(player,temple,0.76,1)
 	await create_timer(2.0).timeout
 	var pagoda: PainterlyPagoda = zones[1].get_node("Scenery/Pagoda")
 	check(pagoda.get_recall_controller().progress>0.99,"The pagoda should recall from the accessible temple courtyard")
@@ -148,7 +164,9 @@ func run() -> void:
 	await read_fragment(world,zones[1].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The final hint must descend and lead across the city")
 	check(await walk_to(player,senso.get_anchor(&"Approach").global_position),"Temple exit must descend without a ledge")
-	await walk_trail(player,to_city,0,1)
+	await walk_trail(player,to_city,0,0.87)
+	await capture("shibuya-approach")
+	await walk_trail(player,to_city,0.87,1)
 	await create_timer(2.0).timeout
 	var crowd: PainterlyCrowd = zones[2].get_node("Scenery/CrossingCrowd")
 	check(crowd.generated_count>=65,"The scramble crossing should feel populated")

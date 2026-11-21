@@ -17,6 +17,7 @@ recall_enabled = true
 
 [node name="Fragment" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -0.0554118)
+contrast = 1
 fragment_seed = 1212
 note_title = "At the museum entrance"
 notes = Array[String](["Placeholder: Write your memory of arriving at the museum together here."])

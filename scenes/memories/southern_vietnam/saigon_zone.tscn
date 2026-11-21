@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/mifflin_street.wav" id="air"]
@@ -14,6 +14,13 @@
 [ext_resource type="PackedScene" path="res://components/groundcover/paths/urban_paver_path.tscn" id="setts"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
 
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/flower_bush/painterly_flower_bush.tscn" id="flower"]
+
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/monuments/painterly_ho_chi_minh_statue.tscn" id="monument"]
+[ext_resource type="PackedScene" path="res://components/scenery/vietnam/monuments/painterly_vietnam_flagpole.tscn" id="flagpole"]
+
 [sub_resource type="Curve3D" id="BoulevardCurve"]
 bake_interval = 0.05
 _data = {"points": PackedVector3Array(0,0,0,0.0,0.0,-0.96,0,0,13,-0.08,-0.0,1.92,0.08,0.0,-1.92,0,0,7,0.08,-0.0,1.92,-0.08,0.0,-1.92,0.5,0,1,0.08,-0.0,2.08,-0.08,0.0,-2.08,-0.5,0,-5,-0.08,-0.0,1.12,0,0,0,0,0,-12), "tilts": PackedFloat32Array(0,0,0,0,0)}
@@ -21,8 +28,8 @@ point_count = 5
 
 [sub_resource type="Curve3D" id="CityRouteCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.32,0.0,-0.64,-3,0,11,-0.736,-0.0,1.44,0.736,0.0,-1.44,-1,0,7,0.08,-0.0,1.6,-0.08,0.0,-1.6,1.6,0,2,0.256,-0.0,1.76,-0.256,0.0,-1.76,-1.5,0,-3,-0.24,-0.0,0.96,0,0,0,0,0,-9), "tilts": PackedFloat32Array(0,0,0,0,0)}
-point_count = 5
+_data = {"points": PackedVector3Array(-0.38, 0, 0.76, 0.38, 0, -0.76, -3, 0, 11, -0.817, 0, 1.292, 0.817, 0, -1.292, -1, 0, 7, -0.6498, 0, 0.988, 0.6498, 0, -0.988, 1.3, 0, 4.2, -0.2185, 0, 0.9405, 0.2185, 0, -0.9405, 2.42, 0, 1.8, 0.0988, 0, 1.064, -0.0988, 0, -1.064, 2.45, 0, -0.75, 0.38, 0, 1.188, -0.38, 0, -1.188, 1.9, 0, -3.8, 0.361, 0, 0.988, -0.361, 0, -0.988, 0.45, 0, -7, 0.0855, 0, 0.38, -0.0855, 0, -0.38, 0, 0, -9), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0)}
+point_count = 8
 
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"saigon"
@@ -36,19 +43,20 @@ ambience_blend_distance = 4.0
 curve = SubResource("BoulevardCurve")
 path_width = 6.0
 paving_color = Color(0.705, 0.679, 0.576, 1)
-end_fade = Vector2(4.45, 3.25)
+end_fade = Vector2(5.4, 4.15)
 slab_length = 2.0
-edge_softness = 0.53
+edge_softness = 0.65
 scale = Vector3(1.40, 1, 1)
 stone_color = Color(0.817, 0.768, 0.639, 1)
 stone_size = 0.9
 joint_width = 0.015
 crown_height = 0.0
 collision_enabled = false
+width_variation = 0.135
 
 [node name="CityRoute" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("CityRouteCurve")
-path_width = 1.8
+path_width = 2.25
 paving_color = Color(0.7529,0.7333,0.6549,1)
 end_fade = Vector2(0, 0)
 slab_length = 2.0
@@ -82,7 +90,7 @@ position = Vector3(-7.1,0,1)
 width = 2.8
 length = 27
 asphalt_color = Color(0.575, 0.604, 0.596, 1)
-end_fade = Vector2(3.95, 3.65)
+end_fade = Vector2(4.65, 4.95)
 edge_softness = 0.56
 
 [node name="WestTower1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
@@ -180,7 +188,7 @@ position = Vector3(7.1,0,1)
 width = 2.8
 length = 27
 asphalt_color = Color(0.585, 0.612, 0.602, 1)
-end_fade = Vector2(3.6, 4.0)
+end_fade = Vector2(5.2, 4.55)
 edge_softness = 0.54
 
 [node name="EastTower1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tower")]
@@ -273,6 +281,21 @@ palette_preset = 0
 palette = ExtResource("green")
 wind_strength = 0.045
 
+[node name="MonumentReveal" parent="Scenery" type="Marker3D"]
+position = Vector3(-0.5, 0, 7.4)
+
+[node name="HoChiMinhMonument" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("monument")]
+position = Vector3(0, 0.025, 0.3)
+rotation_degrees = Vector3(0, 10, 0)
+recall_enabled = true
+recall_anchor = NodePath("../MonumentReveal")
+
+[node name="VietnamFlagpole" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flagpole")]
+position = Vector3(-1.05, 0.025, -10.65)
+rotation_degrees = Vector3(0, 45, 0)
+recall_enabled = true
+recall_anchor = NodePath("../MonumentReveal")
+
 [node name="AvenueCrowd" parent="Scenery" instance=ExtResource("crowd")]
 position = Vector3(0,0,1)
 count = 96
@@ -285,7 +308,7 @@ pose_mix = 2
 facing_variation = 80.0
 motion_strength = 0.64
 recall_enabled = true
-ground_exclusions = Array[NodePath]([NodePath("../CityRoute"),NodePath("../LotusTower"),NodePath("../SpireTower")])
+ground_exclusions = Array[NodePath]([NodePath("../CityRoute"),NodePath("../LotusTower"),NodePath("../SpireTower"), NodePath("../HoChiMinhMonument"), NodePath("../VietnamFlagpole")])
 motion_speed = 1.04
 dance_bounce = 0.021
 
@@ -300,11 +323,11 @@ palette = 0
 pose_mix = 1
 motion_strength = 0.49
 recall_enabled = true
-ground_exclusions = Array[NodePath]([NodePath("../CityRoute"),NodePath("../LotusTower"),NodePath("../SpireTower")])
+ground_exclusions = Array[NodePath]([NodePath("../CityRoute"),NodePath("../LotusTower"),NodePath("../SpireTower"), NodePath("../HoChiMinhMonument"), NodePath("../VietnamFlagpole")])
 motion_speed = 0.87
 dance_bounce = 0.015
 
-[node name="PalmUnderstory1" parent="Scenery" instance=ExtResource("bush")]
+[node name="PalmUnderstory1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
 position = Vector3(-4.57, 0, 12.65)
 footprint = Vector2(1.38, 1.02)
 bush_height = 0.48
@@ -313,8 +336,9 @@ palette_preset = 0
 palette = ExtResource("green")
 recall_enabled = true
 react_to_explorers = true
+recall_anchor = NodePath("../EntryVergeRecall")
 
-[node name="PalmUnderstory2" parent="Scenery" instance=ExtResource("bush")]
+[node name="PalmUnderstory2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
 position = Vector3(-5.6, 0, 8.4)
 footprint = Vector2(1.45, 1.07)
 bush_height = 0.53
@@ -323,8 +347,9 @@ palette_preset = 0
 palette = ExtResource("green")
 recall_enabled = true
 react_to_explorers = true
+recall_anchor = NodePath("../EntryVergeRecall")
 
-[node name="PalmUnderstory3" parent="Scenery" instance=ExtResource("bush")]
+[node name="PalmUnderstory3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
 position = Vector3(5.9, 0, 5.94)
 footprint = Vector2(1.4, 1.04)
 bush_height = 0.49
@@ -333,8 +358,9 @@ palette_preset = 0
 palette = ExtResource("green")
 recall_enabled = true
 react_to_explorers = true
+recall_anchor = NodePath("../MiddleVergeRecall")
 
-[node name="PalmUnderstory4" parent="Scenery" instance=ExtResource("bush")]
+[node name="PalmUnderstory4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
 position = Vector3(-5.55, 0, -2.2)
 footprint = Vector2(1.18, 0.87)
 bush_height = 0.64
@@ -343,8 +369,9 @@ palette_preset = 0
 palette = ExtResource("green")
 recall_enabled = true
 react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
 
-[node name="PalmUnderstory5" parent="Scenery" instance=ExtResource("bush")]
+[node name="PalmUnderstory5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
 position = Vector3(5.71, 0, -7.1)
 footprint = Vector2(1.36, 1.01)
 bush_height = 0.58
@@ -353,6 +380,331 @@ palette_preset = 0
 palette = ExtResource("green")
 recall_enabled = true
 react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="EntryVergeRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(-2.1, 0, 9.2)
+
+[node name="MiddleVergeRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(-0.1, 0, 4.6)
+
+[node name="NorthVergeRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(0.35, 0, 0.55)
+
+[node name="VergeFlowers1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(-4.85, 0, 11.48)
+footprint = Vector2(1.24, 0.92)
+bush_height = 0.57
+bush_seed = 622405
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.78, 0.39, 0.39, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../EntryVergeRecall")
+
+[node name="VergeFlowers2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(4.97, 0, 11.4)
+footprint = Vector2(1.35, 1)
+bush_height = 0.54
+bush_seed = 622438
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.78, 0.39, 0.39, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../EntryVergeRecall")
+
+[node name="VergeFlowers3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(-5.02, 0, 6.85)
+footprint = Vector2(1.44, 1.07)
+bush_height = 0.56
+bush_seed = 622471
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.90, 0.62, 0.35, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../EntryVergeRecall")
+
+[node name="VergeFlowers4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(5.06, 0, 7.62)
+footprint = Vector2(1.37, 1.01)
+bush_height = 0.52
+bush_seed = 622504
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.78, 0.39, 0.39, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../EntryVergeRecall")
+
+[node name="VergeFlowers5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(-5.05, 0, 1.05)
+footprint = Vector2(1.43, 1.06)
+bush_height = 0.62
+bush_seed = 622537
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.78, 0.39, 0.39, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../MiddleVergeRecall")
+
+[node name="VergeFlowers6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(5.4, 0, 1.1)
+footprint = Vector2(1.37, 1.01)
+bush_height = 0.52
+bush_seed = 622570
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.90, 0.62, 0.35, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../MiddleVergeRecall")
+
+[node name="VergeFlowers7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(-5.05, 0, -5.45)
+footprint = Vector2(1.26, 0.93)
+bush_height = 0.58
+bush_seed = 622603
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.78, 0.39, 0.39, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="VergeFlowers8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(4.99, 0, -5.09)
+footprint = Vector2(1.26, 0.93)
+bush_height = 0.56
+bush_seed = 622636
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.78, 0.39, 0.39, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="VergeFlowers9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("flower")]
+position = Vector3(4.92, 0, -9.4)
+footprint = Vector2(1.38, 1.02)
+bush_height = 0.5
+bush_seed = 622669
+flower_count = 38
+flower_style = 2
+flower_size = 0.079
+flower_color = Color(0.90, 0.62, 0.35, 1)
+flower_highlight = Color(0.98, 0.70, 0.61, 1)
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="VergeShrub1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-5.31, 0, 10.05)
+footprint = Vector2(1.25, 0.93)
+bush_height = 0.47
+bush_seed = 622666
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../EntryVergeRecall")
+
+[node name="VergeShrub2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(5.32, 0, 8.29)
+footprint = Vector2(1.15, 0.85)
+bush_height = 0.5
+bush_seed = 622679
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../EntryVergeRecall")
+
+[node name="VergeShrub3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-5.4, 0, 6)
+footprint = Vector2(1.15, 0.85)
+bush_height = 0.47
+bush_seed = 622692
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../MiddleVergeRecall")
+
+[node name="VergeShrub4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(5.21, 0, 4.3)
+footprint = Vector2(1.24, 0.92)
+bush_height = 0.46
+bush_seed = 622705
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../MiddleVergeRecall")
+
+[node name="VergeShrub5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-5.42, 0, 0.13)
+footprint = Vector2(1.28, 0.95)
+bush_height = 0.49
+bush_seed = 622718
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../MiddleVergeRecall")
+
+[node name="VergeShrub6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(5.18, 0, -0.1)
+footprint = Vector2(1.28, 0.95)
+bush_height = 0.49
+bush_seed = 622731
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="VergeShrub7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-5.35, 0, -6.88)
+footprint = Vector2(1.1, 0.81)
+bush_height = 0.52
+bush_seed = 622744
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="VergeShrub8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(5.3, 0, -8)
+footprint = Vector2(1.22, 0.9)
+bush_height = 0.46
+bush_seed = 622757
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="VergeShrub9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-4.74, 0, -9.3)
+footprint = Vector2(1.18, 0.87)
+bush_height = 0.49
+bush_seed = 622770
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="VergeCanopy1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-5.2, 0, 6.2)
+tree_type = 0
+tree_seed = 622904
+tree_height = 2.62
+crown_width = 2.44
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+falling_leaf_count = 0
+trunk_collision = false
+wind_strength = 0.07
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../MiddleVergeRecall")
+
+[node name="VergeCanopy2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(5.42, 0, 5.5)
+tree_type = 0
+tree_seed = 622923
+tree_height = 2.53
+crown_width = 2.24
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+falling_leaf_count = 0
+trunk_collision = false
+wind_strength = 0.07
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../MiddleVergeRecall")
+
+[node name="VergeCanopy3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-5.5, 0, -6.6)
+tree_type = 0
+tree_seed = 622942
+tree_height = 2.9
+crown_width = 2.45
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+falling_leaf_count = 0
+trunk_collision = false
+wind_strength = 0.07
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
+
+[node name="VergeCanopy4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(5.28, 0, -0.9)
+tree_type = 0
+tree_seed = 622961
+tree_height = 2.66
+crown_width = 2.34
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+falling_leaf_count = 0
+trunk_collision = false
+wind_strength = 0.07
+palette_preset = 0
+palette = ExtResource("green")
+recall_enabled = true
+react_to_explorers = true
+recall_anchor = NodePath("../NorthVergeRecall")
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.07,-9)

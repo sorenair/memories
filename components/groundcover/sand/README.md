@@ -14,6 +14,7 @@ Instance [`painterly_sand_patch.tscn`](painterly_sand_patch.tscn) for sculpted, 
 | Dune Height | Relief amplitude in meters. Zero gives a shallow sand groundcover. |
 | Dune Spacing | Distance between broad swells; larger values give fewer, wider dunes. |
 | Dune Direction | Rotation of the generated dunes and fine surface ripples, in degrees. |
+| Dune Crests | Optional hand-placed crests. Each entry stores local X, local Z, rise and half-length in meters. |
 | Edge Feather | Distance over which terrain lowers toward its supporting ground, including pond edges. |
 | Sand Color / Shadow Color | Light and shaded pigment colors. |
 | Ripple Strength | Fine, broken wind ripples; zero removes them. |
@@ -21,6 +22,11 @@ Instance [`painterly_sand_patch.tscn`](painterly_sand_patch.tscn) for sculpted, 
 | Collision Enabled | Matching static triangle collision; disable for decorative scenery. |
 
 The default patch is **16 × 12 m**, with **1.35 m** relief amplitude and **6.5 m** dune spacing. The terrain tapers at the perimeter, so its actual maximum height depends on seed, coverage and feathering. Narrow custom arms and small patches flatten naturally. For bigger hills, enlarge the patch along with Dune Height and Spacing. Very tall dunes with tight spacing can have slopes the explorer cannot climb; the default settings are tested with the real explorer. There is no automatic slope limiter.
+
+With **Dune Crests** set, the authored crests replace the seeded swells. **Dune
+Direction** runs across their slopes and **Dune Spacing** controls slope width.
+Keep crests far enough apart to leave swales and test both directions of any
+route that crosses them.
 
 Keep the root upright; translation and Y rotation are supported. Author dimensions through the controls rather than root scaling. The root Y is the supporting ground level, not the dune crest. This component generates its own relief; it does not drape over a separate terrain mesh. Keep the memory platform beneath it for outer support and safe boundaries.
 

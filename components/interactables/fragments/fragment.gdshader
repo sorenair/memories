@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, fog_disabled;
+uniform bool dark_ink = false;
 uniform vec4 glow_color : source_color = vec4(1.0);
 uniform float speed = 1.0;
 // Guided wisps can share their route's clock; ordinary fragments use live TIME.
@@ -104,10 +105,26 @@ void fragment() {
 	alpha += core * smoothstep(0.02, 0.80, facing) * 0.92 * mix(0.65, 1.0, activity)
 		+ fleck * 0.75 * mix(0.45, 1.0, activity);
 	alpha += (veil * stroke * ends * 0.46 + core * core_stroke * 0.32) * mix(0.65, 1.0, activity);
+	if (dark_ink) {
+		vec3 indigo = vec3(0.028, 0.033, 0.083);
+		vec3 violet = vec3(0.24, 0.17, 0.35);
+		vec3 ink_paint = mix(indigo, violet, pigment * 0.76 + activity * 0.14);
+		paint = mix(ink_paint, indigo, core_stroke * core * 0.5 + veil * stroke * 0.45);
+		paint = mix(paint, vec3(0.55, 0.37, 0.68), veil * thread * 0.30 + tap_feedback * 0.24);
+		// Keep the ink silhouette readable even before the explorer enters range.
+		alpha = veil * feather * ends * (0.52 + stroke * 0.30) * mix(0.82, 1.0, activity)
+			+ core * smoothstep(0.02, 0.64, facing) * 0.93
+			+ fleck * mix(0.60, 0.86, activity);
+	}
 	alpha *= visibility * (1.0 - smoothstep(0.0, 1.0, decay));
 	alpha *= 1.0 + tap_feedback * 0.30;
 	ALBEDO = paint * glow_color.rgb;
 	EMISSION = glow_color.rgb * (core * (0.18 + activity * 0.30) * (0.88 + 0.12 * sin(t * 1.45 + seed)) + thread * veil * 0.08 + fleck * 0.20
 		+ interaction_outline * veil * feather * 0.12) * (1.0 - decay) * (1.0 - ink * 0.95);
+	if (dark_ink) {
+		EMISSION = glow_color.rgb * vec3(0.34, 0.22, 0.49)
+			* (veil * thread * (0.08 + activity * 0.12 + interaction_outline * 0.17)
+				+ core * tap_feedback * 0.23) * (1.0 - decay);
+	}
 	ALPHA = clamp(alpha, 0.0, 0.96);
 }

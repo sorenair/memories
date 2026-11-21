@@ -35,7 +35,7 @@ In the paintings gallery, approach Monet’s **Grainstack, Sun in the Mist** and
 
 Open the individual zone scenes:
 
-- **Fragment → Note Title / Notes**: replace that zone's placeholder heading and pages.
+- **Fragment → Note Title / Notes**: replace that zone's placeholder heading and pages. **Contrast** is set to Dark Ink in the four zones so the fragments read against the pale stone and gallery floors.
 - **Entrance / Scenery / Portico → Stone Color**: portico pigment. Its procedural geometry and stair layout live in `painterly_museum_portico.gd`.
 - **Marble / Scenery / Athlete, DrapedFigure, PortraitBust**: choose **Figure**, marble color, placement, or rotation.
 - **Paintings / Scenery / OliveTrees, Lucretia, Grainstack**: **Artwork**, **Canvas Size**, **Wall Color**, placement, and rotation. These canvases appear only in the painting zone.

@@ -1,33 +1,37 @@
-[gd_scene load_steps=12 format=3]
-[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
-[ext_resource type="PackedScene" path="res://components/groundcover/snow/painterly_snow_patch.tscn" id="ground_snow"]
-[ext_resource type="PackedScene" path="res://components/weather/snow/painterly_snow.tscn" id="snowfall"]
-[ext_resource type="PackedScene" path="res://scenes/memories/christmas_market/market_lane_zone.tscn" id="lane"]
-[ext_resource type="PackedScene" path="res://scenes/memories/christmas_market/music_gathering_zone.tscn" id="plaza"]
-[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-[ext_resource type="AudioStream" path="res://audio/samples/christmas_market_waltz.wav" id="music"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[gd_scene format=3 uid="uid://bhxmwwxs4jto3"]
 
+[ext_resource type="AudioStream" uid="uid://b74tl1hwkwuk1" path="res://audio/ambiance/ambiance_bar.mp3" id="10_377gx"]
+[ext_resource type="AudioStream" uid="uid://jnxptqjypwac" path="res://audio/ambiance/ambiance_quietchatter.mp3" id="12_18jsi"]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://components/groundcover/snow/painterly_snow_patch.tscn" id="ground_snow"]
+[ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="PackedScene" uid="uid://bnppirme7gak6" path="res://scenes/memories/christmas_market/market_lane_zone.tscn" id="lane"]
+[ext_resource type="AudioStream" uid="uid://725c4pe73x0y" path="res://audio/samples/christmas_market_waltz.wav" id="music"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="platform"]
+[ext_resource type="PackedScene" uid="uid://hm1ggw3mu0mw" path="res://scenes/memories/christmas_market/music_gathering_zone.tscn" id="plaza"]
+[ext_resource type="PackedScene" path="res://components/weather/snow/painterly_snow.tscn" id="snowfall"]
 [ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
 
 [sub_resource type="Curve2D" id="MarketOutline"]
-_data = {"points": PackedVector2Array(0, 0, 0, 0, -14, -22.55, 0, 0, 0, 0, -13.55, -23, 0, 0, 0, 0, 2.05, -23, 0, 0, 0, 0, 2.5, -22.55, 0, 0, 0, 0, 2.5, -10.45, 0, 0, 0, 0, 2.05, -10, 0, 0, 0, 0, -2.05, -10, 0, 0, 0, 0, -2.5, -9.7, 0, 0, 0, 0, -2.5, -9.1, 0, 0, 0, 0, -2.05, -8.8, 0, 0, 0, 0, 6.05, -8.8, 0, 0, 0, 0, 6.5, -8.35, 0, 0, 0, 0, 6.5, 7.05, 0, 0, 0, 0, 6.05, 7.5, 0, 0, 0, 0, -6.05, 7.5, 0, 0, 0, 0, -6.5, 7.05, 0, 0, 0, 0, -6.5, -9.55, 0, 0, 0, 0, -6.95, -10, 0, 0, 0, 0, -13.55, -10, 0, 0, 0, 0, -14, -10.45, 0, 0, 0, 0, -14, -22.55)}
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -14, -22.55, 0, 0, 0, 0, -13.55, -23, 0, 0, 0, 0, 2.05, -23, 0, 0, 0, 0, 2.5, -22.55, 0, 0, 0, 0, 2.5, -10.45, 0, 0, 0, 0, 2.05, -10, 0, 0, 0, 0, -2.05, -10, 0, 0, 0, 0, -2.5, -9.7, 0, 0, 0, 0, -2.5, -9.1, 0, 0, 0, 0, -2.05, -8.8, 0, 0, 0, 0, 6.05, -8.8, 0, 0, 0, 0, 6.5, -8.35, 0, 0, 0, 0, 6.5, 7.05, 0, 0, 0, 0, 6.05, 7.5, 0, 0, 0, 0, -6.05, 7.5, 0, 0, 0, 0, -6.5, 7.05, 0, 0, 0, 0, -6.5, -9.55, 0, 0, 0, 0, -6.95, -10, 0, 0, 0, 0, -13.55, -10, 0, 0, 0, 0, -14, -10.45, 0, 0, 0, 0, -14, -22.55)
+}
 point_count = 21
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=2114507947 instance=ExtResource("base")]
 memory_id = &"christmas_market"
 display_name = "Christmas market"
 
-[node name="Entry" parent="."]
-position = Vector3(0, 0.04, 5.4)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 5.4)
 
-[node name="Exit" parent="."]
-position = Vector3(-6, 0.04, -12.5)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.04, -12.5)
 
-[node name="MarketFloor" parent="Environment" instance=ExtResource("platform")]
+[node name="MarketFloor" parent="Environment" index="0" unique_id=1105489959 instance=ExtResource("platform")]
+outline_detail = 96
 custom_outline = SubResource("MarketOutline")
-outline_detail = 112
 pillar_depth = 9.0
 fade_start = 0.0
 fade_depth = 3.0
@@ -36,24 +40,25 @@ side_color = Color(0.94, 0.935, 0.89, 1)
 pigment_strength = 0.003
 edge_inset = 0.18
 
-[node name="ContinuousSnow" parent="Environment" instance=ExtResource("ground_snow")]
+[node name="ContinuousSnow" parent="Environment" index="1" unique_id=1040445084 instance=ExtResource("ground_snow")]
+physics_interpolation_mode = 2
 custom_outline = SubResource("MarketOutline")
 patch_seed = 191225
 snow_depth = 0.035
 puffiness = 0.025
 mesh_detail = 96
-footprint_quality = 2
 ground_exclusions = Array[NodePath]([NodePath("../../Zones/MarketLane/Scenery/BakeryHut"), NodePath("../../Zones/MarketLane/Scenery/OrnamentHut"), NodePath("../../Zones/MarketLane/Scenery/CocoaHut"), NodePath("../../Zones/MarketLane/Scenery/GiftHut"), NodePath("../../Zones/MusicGathering/Scenery/SweetHut"), NodePath("../../Zones/MusicGathering/Scenery/CiderHut"), NodePath("../../Zones/MusicGathering/Scenery/AcousticStage")])
 snow_color = Color(0.96, 0.967, 0.94, 1)
 shade_color = Color(0.78, 0.83, 0.86, 1)
 edge_color = Color(0.94, 0.935, 0.89, 1)
+footprint_quality = 2
 
-[node name="FallingSnow" parent="Environment" instance=ExtResource("snowfall")]
-position = Vector3(-3.5, 0, -7.5)
+[node name="FallingSnow" parent="Environment" index="2" unique_id=1235107389 instance=ExtResource("snowfall")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -7.5)
 footprint = Vector2(23, 32)
 snow_height = 5.5
-flake_count = 950
 snow_seed = 191225
+flake_count = 950
 intensity = 0.65
 fall_speed = 0.4
 wind = Vector2(0.18, 0.09)
@@ -61,54 +66,51 @@ flutter = 0.3
 flake_size = Vector2(0.07, 0.17)
 opacity = 0.9
 
-[node name="LanternSpillAtBend" parent="Environment" instance=ExtResource("wash")]
-position = Vector3(-1.75, 0.059, -6.6)
-rotation_degrees = Vector3(0, 49, 0)
+[node name="LanternSpillAtBend" parent="Environment" index="3" unique_id=967199869 instance=ExtResource("wash")]
+transform = Transform3D(0.656059, 0, 0.75470954, 0, 1, 0, -0.75470954, 0, 0.656059, -1.75, 0.059, -6.6)
+recall_enabled = true
 footprint = Vector2(3.1, 4.6)
 light_color = Color(0.961, 0.806, 0.604, 1)
 intensity = 0.16
 softness = 0.94
 wash_seed = 191244
-recall_enabled = true
 
-[node name="LanternSpillAtClearing" parent="Environment" instance=ExtResource("wash")]
-position = Vector3(-5.17, 0.059, -10.45)
-rotation_degrees = Vector3(0, 29, 0)
+[node name="LanternSpillAtClearing" parent="Environment" index="4" unique_id=1739264270 instance=ExtResource("wash")]
+transform = Transform3D(0.8746197, 0, 0.4848096, 0, 1, 0, -0.4848096, 0, 0.8746197, -5.17, 0.059, -10.45)
+recall_enabled = true
 footprint = Vector2(3.8, 4.8)
 light_color = Color(0.978, 0.842, 0.657, 1)
 intensity = 0.13
 softness = 0.94
 wash_seed = 191245
-recall_enabled = true
 
-[node name="GatheringFocus" type="Marker3D" parent="Environment"]
-position = Vector3(-6.05, 1.65, -16.5)
+[node name="GatheringFocus" type="Marker3D" parent="Environment" index="5" unique_id=485271851]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.05, 1.65, -16.5)
 
-[node name="Guidance" type="Node3D" parent="Environment"]
+[node name="Guidance" type="Node3D" parent="Environment" index="6" unique_id=891168659]
 
-[node name="Audio" parent="."]
-music_stream = ExtResource("music")
-music_volume_db = -18.0
-fragment_sound = ExtResource("chime")
-
-[node name="MarketLane" parent="Zones" instance=ExtResource("lane")]
-
-[node name="MusicGathering" parent="Zones" instance=ExtResource("plaza")]
-position = Vector3(-6, 0, -15)
-
-[node name="Arrival" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="Arrival" parent="Environment/Guidance" index="0" unique_id=903953502 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/MarketLane/Fragment")
 waypoints = PackedVector3Array(0, 0.76, 2, 0, 0.76, -1)
-stroke_width = 0.34
-opacity = 0.92
 
-[node name="ToMusic" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
+[node name="ToMusic" parent="Environment/Guidance" index="1" unique_id=435202453 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/MarketLane/Fragment")
 end_anchor = NodePath("../../../Zones/MusicGathering/Fragment")
 waypoints = PackedVector3Array(0, 0.76, -5.5, -2.8, 0.76, -7.4, -4.5, 0.76, -9.8, -6, 0.76, -11.4, -6, 0.76, -13)
-stroke_width = 0.34
-opacity = 0.92
 
+[node name="Audio" parent="." index="6"]
+music_stream = ExtResource("music")
+music_volume_db = -18.0
+fragment_sound = ExtResource("chime")
+
+[node name="MarketLane" parent="Zones" index="0" unique_id=1581044329 instance=ExtResource("lane")]
+ambience_stream = ExtResource("10_377gx")
+ambience_volume_db = -14.0
+
+[node name="MusicGathering" parent="Zones" index="1" unique_id=1665031159 instance=ExtResource("plaza")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -15)
+ambience_stream = ExtResource("12_18jsi")
+ambience_volume_db = -9.0

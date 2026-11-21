@@ -1,21 +1,23 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://lcvyb2gvd78m"]
 
+[ext_resource type="AudioStream" uid="uid://vh3jiws2lmyq" path="res://audio/ambiance/ambience_sportscrowd.mp3" id="4_3vujn"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="PackedScene" path="res://scenes/memories/snowy_stadium/stadium_zone.tscn" id="zone"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" uid="uid://cb7eo010o37xf" path="res://scenes/memories/snowy_stadium/stadium_zone.tscn" id="zone"]
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=1613268937 instance=ExtResource("base")]
 memory_id = &"snowy_stadium"
 display_name = "Football in the snow"
 
 [node name="Entry" parent="." index="0"]
-position = Vector3(-6, 10.54, 22.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 10.54, 22.1)
 
 [node name="Exit" parent="." index="1"]
-position = Vector3(7.5, 10.54, 11.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 10.54, 11.5)
 
 [node name="Audio" parent="." index="6"]
 fragment_sound = ExtResource("chime")
 
-[node name="Stadium" parent="Zones" instance=ExtResource("zone")]
-position = Vector3(0, 10.5, 12)
+[node name="Stadium" parent="Zones" index="0" unique_id=87467524 instance=ExtResource("zone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.5, 12)
+ambience_stream = ExtResource("4_3vujn")

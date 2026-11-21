@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode unshaded, blend_add, depth_draw_never, cull_disabled, shadows_disabled;
+uniform bool dark_ink = false;
 uniform vec4 glow_color : source_color = vec4(1.0);
 uniform float speed = 1.0;
 uniform float tap_feedback = 0.0;
@@ -20,6 +21,7 @@ void fragment() {
 	float spread = 1.0 + tap_feedback * 0.20 + (1.0 - pow(1.0 - decay, 3.0)) * 0.6;
 	float flash = 1.0 + 2.5 * sin(min(decay * 3.0, 1.0) * 3.14159265);
 	float wash = pow(max(0.0, 1.0 - r / spread), 3.0) * 0.30 * flash * (1.0 + tap_feedback * 1.8);
-	ALBEDO = glow_color.rgb;
+	ALBEDO = glow_color.rgb * (dark_ink ? vec3(0.46, 0.32, 0.64) : vec3(1.0));
+	if (dark_ink) { wash *= 0.35; }
 	ALPHA = wash * mix(0.22, 0.65, activity) * (1.0 - decay) * (0.86 + 0.14 * sin(t * 1.8 + seed));
 }

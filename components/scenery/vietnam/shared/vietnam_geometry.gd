@@ -96,6 +96,13 @@ func temple(c: Dictionary) -> Dictionary:
 	begin(c)
 	var w: float = c.footprint.x
 	var d: float = c.footprint.y
+	if c.landmark >= 2:
+		match int(c.landmark):
+			2: _moon_gate(w, d)
+			3: _island_pavilion(w, d)
+			4: _island_hall(w, d, c.roof_tiles_enabled)
+		anchors["Approach"] = Vector3(0, 0, d * 0.5 + 1.0)
+		return finish()
 	if c.landmark==1:
 		for level in range(3):
 			var shrink := pow(0.77,level)
@@ -128,6 +135,91 @@ func temple(c: Dictionary) -> Dictionary:
 		collider(Vector3(0,1.15,-0.25),Vector3(w*0.9,2.3,d*0.75),"TempleBody")
 	anchors["Approach"] = Vector3(0,0,d*0.5+1.0)
 	return finish()
+
+func _moon_gate(width: float, depth: float) -> void:
+	var opening := width * 0.25
+	var spring := 1.47
+	var cornice := 2.40
+	for side: float in [-1.0, 1.0]:
+		var pier := Vector3(side * (width * 0.25 + opening * 0.5), spring * 0.5, 0)
+		var pier_size := Vector3(width * 0.5 - opening, spring, depth)
+		soft_box(pier, pier_size, body, 0.035)
+		collider(pier, pier_size, "MoonGatePier")
+		box(Vector3(pier.x, (cornice + spring) * 0.5, 0), Vector3(pier_size.x, cornice - spring, depth), body)
+		box(Vector3(pier.x, 0.14, 0), Vector3(pier_size.x + 0.13, 0.28, depth + 0.10), body.darkened(0.13))
+		soft_box(Vector3(pier.x, 1.08, depth * 0.5 + 0.012), Vector3(0.17, 1.33, 0.045), accent, 0.018)
+		# Low glazed relief panels sit beside the portal.
+		var relief := Vector3(side * (width * 0.5 + 0.29), 0.82, 0.02)
+		soft_box(relief, Vector3(0.58, 1.64, depth * 0.68), body.darkened(0.08), 0.05)
+		soft_box(relief + Vector3(0, 0.10, depth * 0.35), Vector3(0.39, 0.73, 0.024), accent.lerp(body, 0.54), 0.04)
+		roof(Vector3(relief.x, 1.68, 0), Vector2(0.78, depth * 0.8), 0.24, roof_paint, 0.10)
+	for step in 12:
+		var a := PI * step / 12.0
+		var b := PI * (step + 1) / 12.0
+		var left := Vector2(cos(a) * opening, spring + sin(a) * opening * 0.67)
+		var right := Vector2(cos(b) * opening, spring + sin(b) * opening * 0.67)
+		profile(PackedVector2Array([left, right, Vector2(right.x, cornice), Vector2(left.x, cornice)]), Vector3.ZERO, depth * 0.5, body)
+	# The upper wall frames a true round opening.
+	var sill := 2.62
+	var oculus := 0.28
+	var window_center := Vector3(0, sill + oculus * 1.35, depth * 0.41)
+	var rim: Array[Vector3] = []
+	for course in 16:
+		var a := TAU * course / 16.0
+		var b := TAU * (course + 1) / 16.0
+		var inside_a := Vector2(cos(a), sin(a)) * oculus
+		var inside_b := Vector2(cos(b), sin(b)) * oculus
+		var outside_a := inside_a / maxf(absf(cos(a)), absf(sin(a))) * 1.35
+		var outside_b := inside_b / maxf(absf(cos(b)), absf(sin(b))) * 1.35
+		profile(PackedVector2Array([inside_a, inside_b, outside_b, outside_a]),
+			window_center, depth * 0.22, body.lightened(0.05))
+		rim.append(window_center + Vector3(inside_a.x, inside_a.y, depth * 0.114))
+	rim.append(rim[0])
+	tube(rim, 0.029, body.darkened(0.23), 6)
+	box(Vector3(0, 2.50, 0), Vector3(width - 0.30, 0.22, depth * 0.82), body)
+	soft_box(Vector3(0, 2.46, depth * 0.48), Vector3(0.89, 0.19, 0.08), accent, 0.027)
+	# Split eaves frame the moon window instead of crossing the opening.
+	for side: float in [-1.0, 1.0]:
+		roof(Vector3(side * width * 0.33, cornice, 0), Vector2(width * 0.39, depth + 0.25), 0.37, roof_paint, 0.14)
+	roof(Vector3(0, 3.36, depth * 0.16), Vector2(width * 0.77, depth * 0.92), 0.48, roof_paint, 0.22)
+	_temple_ridge(3.91, width * 0.22, depth * 0.16)
+
+func _island_pavilion(width: float, depth: float) -> void:
+	flat_deck(Vector3(0, 0.065, 0), width + 0.3, depth + 0.3, 0.13, brass)
+	for x: float in [-width * 0.39, width * 0.39]:
+		for z: float in [-depth * 0.38, depth * 0.38]:
+			tapered_post(Vector3(x, 0.12, z), Vector3(x, 1.97, z), 0.075, accent)
+			box(Vector3(x, 0.15, z), Vector3(0.23, 0.22, 0.23), body)
+			collider(Vector3(x, 1.0, z), Vector3(0.21, 2.0, 0.21), "PavilionPost")
+	roof(Vector3(0, 1.94, 0), Vector2(width + 0.62, depth + 0.63), 0.70, roof_paint, 0.25)
+	_temple_ridge(2.66, width * 0.29, 0.0)
+
+func _island_hall(width: float, depth: float, tiled: bool) -> void:
+	var front := depth * 0.5
+	flat_deck(Vector3(0, 0.115, 0.15), width + 0.68, depth + 0.75, 0.23, brass, 0.095)
+	flat_deck(Vector3(0, 0.052, front + 0.57), width * 0.77, 0.42, 0.10, brass)
+	box(Vector3(0, 1.23, -0.16), Vector3(width, 2.12, depth * 0.85), body)
+	for bay in 3:
+		var x := (bay - 1) * width * 0.29
+		var face := depth * 0.425 - 0.135
+		soft_box(Vector3(x, 1.08, face), Vector3(width * 0.255, 1.63, 0.06), accent.darkened(0.33), 0.035)
+		for slat in 5:
+			box(Vector3(x + (slat - 2) * width * 0.043, 1.23, face + 0.03), Vector3(0.035, 1.18, 0.03), accent)
+		tapered_post(Vector3(x - width * 0.145, 0.23, front + 0.08), Vector3(x - width * 0.145, 2.22, front + 0.08), 0.08, accent)
+	tapered_post(Vector3(width * 0.435, 0.23, front + 0.08), Vector3(width * 0.435, 2.22, front + 0.08), 0.08, accent)
+	box(Vector3(0, 2.09, front + 0.08), Vector3(width * 0.90, 0.18, 0.15), accent)
+	var roof_size := Vector2(width + 0.94, depth + 1.12)
+	roof(Vector3(0, 2.22, 0), roof_size, 0.95, roof_paint, 0.30)
+	if tiled:
+		temple_roof_tiles(Vector3(0, 2.22, 0), roof_size, 0.95, 0.30, roof_paint)
+	_temple_ridge(3.19, width * 0.32, 0.0)
+	collider(Vector3(0, 1.17, -0.10), Vector3(width, 2.34, depth * 0.95), "TempleBody")
+
+func _temple_ridge(height: float, half_width: float, z: float) -> void:
+	rod(Vector3(-half_width, height, z), Vector3(half_width, height, z), 0.055, brass, 8)
+	for side: float in [-1.0, 1.0]:
+		tube([Vector3(side * half_width, height, z), Vector3(side * (half_width + 0.20), height + 0.08, z),
+			Vector3(side * (half_width + 0.28), height + 0.25, z)], 0.048, brass, 8)
 
 func temple_roof_tiles(at: Vector3,size: Vector2,rise: float,lift: float,color: Color) -> void:
 	# A quiet rhythm of broad pigment tiles; shallow relief avoids a glossy roof.

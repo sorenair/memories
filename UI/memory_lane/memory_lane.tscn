@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqm57d8qnirvw"]
+[gd_scene format=3 uid="uid://cqm57d8qnirvw"]
 
 [ext_resource type="Script" uid="uid://bgwjikufnjxo" path="res://UI/memory_lane/memory_lane.gd" id="1"]
 
-[node name="MemoryLane" type="Control"]
+[node name="MemoryLane" type="Control" unique_id=1987706383]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -93,6 +93,7 @@ var _magnify_amount := 0.0
 var _magnify_requested := false
 
 func _ready() -> void:
+	MenuMusic.enter_menu()
 	var returning_veil := get_tree().root.get_node_or_null(MemoryArrival.VEIL_LAYER_NAME)
 	var from_main := get_tree().root.has_meta(&"timeline_from_main_menu")
 	if from_main:
@@ -699,18 +700,23 @@ func recall() -> void:
 	_enter_memory()
 
 func _enter_memory() -> void:
+	const RECALL_FADE_DURATION := 0.45
 	_finish_entrance()
 	_travelling = true
 	_update_navigation()
+	MenuMusic.fade_out(RECALL_FADE_DURATION)
 	var veil := MemoryArrival.get_transition_veil(get_tree())
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(veil, "modulate:a", 1.0, 0.45)
+	tween.tween_property(veil, "modulate:a", 1.0, RECALL_FADE_DURATION)
 	await tween.finished
 	get_tree().root.set_meta(MemoryArrival.REQUEST_META, true)
 	var scene_path: String = MEMORIES[selected_index].scene
 	var error := get_tree().change_scene_to_file(scene_path)
-	if error != OK:
+	if error == OK:
+		MenuMusic.leave_menu()
+	else:
+		MenuMusic.enter_menu()
 		get_tree().root.remove_meta(MemoryArrival.REQUEST_META)
 		push_error("Unable to recall memory: %s" % error_string(error))
 		_travelling = false

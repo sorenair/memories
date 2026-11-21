@@ -17,7 +17,7 @@ func run() -> void:
 	check(bird.state == PainterlyBird.State.IDLE, "Distant player must leave bird idle")
 	check(bird.get_children().is_empty(), "Generated bird must not serialize into the authoring scene")
 	var triangles := 0
-	for mesh_name in ["Bird/Body", "Bird/LeftWing/Feathers", "Bird/RightWing/Feathers"]:
+	for mesh_name in ["Bird/Body", "Bird/Feet", "Bird/LeftWing/Feathers", "Bird/RightWing/Feathers"]:
 		var instance: MeshInstance3D = bird.get_node(mesh_name)
 		check(instance.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF, "Bird geometry must avoid shadow-map passes")
 		var vertices: PackedVector3Array = instance.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
@@ -29,7 +29,9 @@ func run() -> void:
 	player.position = Vector3(0.5, 0, 0)
 	bird._process(0.13)
 	check(bird.state == PainterlyBird.State.TAKING_OFF, "Entering scare radius must trigger takeoff")
-	check(bird._direction.dot(Vector3.LEFT) > 0.9, "Flight must lead away from the explorer")
+	var away := bird._origin - player.global_position
+	away.y = 0.0
+	check(bird._direction.dot(away.normalized()) > 0.9, "Flight must lead away from the explorer")
 	var original_direction := bird._direction
 	player.position = Vector3(-0.5, 0, 0)
 	bird.flee_from(player)
@@ -57,9 +59,44 @@ func run() -> void:
 	bird.flee_from(player)
 	bird._process(0.4)
 	check(bird._visual.global_position.is_finite(), "Coincident explorer and rotated component must produce a valid takeoff")
-	var demo: Node = load("res://scenes/memories/foliage_demo.tscn").instantiate()
-	check(demo.get_node("Environment/SummerSpring").find_children("*", "PainterlyBird", false, false).size() == 3, "Summer zone must contain three demo birds")
-	demo.free()
+	bird.behavior = PainterlyBird.Behavior.GROUND
+	bird.palette_preset = 5
+	bird.rebuild()
+	var start := bird._visual.position
+	var max_lift := 0.0
+	for frame in 180:
+		bird._process(1.0 / 60.0)
+		var at := bird._visual.position
+		max_lift = maxf(max_lift, at.y - bird.ground_offset)
+		check(Vector2(at.x, at.z).length() <= bird.hop_radius + 0.001, "Hops stay near the placed origin")
+	check(max_lift > 0.06 and not start.is_equal_approx(bird._visual.position), "Ground birds make visible hops")
+	check(bird.state == PainterlyBird.State.IDLE, "Ground-only behavior does not flee on proximity")
+	check(bird.take_off(Vector3.RIGHT), "Ground birds support a directed departure")
+	bird.behavior = PainterlyBird.Behavior.CIRCLING
+	bird.rebuild()
+	var orbit_start := bird._visual.position
+	var initial_wing := bird._wings[0].rotation.z
+	var flap_range := 0.0
+	for frame in 150:
+		bird._process(1.0 / 60.0)
+		flap_range = maxf(flap_range, absf(bird._wings[0].rotation.z - initial_wing))
+	var at := bird._visual.position
+	check(bird.state == PainterlyBird.State.CIRCLING and not bird.take_off(), "Circling birds keep their own flight state")
+	check(absf(Vector2(at.x, at.z).length() - bird.circle_radius) < 0.01
+		and absf(at.y - bird.circle_height) < 0.2 and orbit_start.distance_to(at) > 1.0, "Orbit follows its configured radius and height")
+	check(flap_range > 0.3 and not bird._shadow.visible, "Circling alternates visible flaps and glides without a ground shadow")
+	var camera := Camera3D.new()
+	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+	camera.size = 4.0
+	root.add_child(camera)
+	camera.position = Vector3(0, 2, 6)
+	camera.look_at(Vector3(0, 1, 0))
+	camera.make_current()
+	bird._visual.global_position = Vector3(0, 1, 0)
+	check(not bird._clear_of_camera(), "The departure must not remove a visible bird")
+	bird._visual.global_position = Vector3(20, 1, 0)
+	check(bird._clear_of_camera(), "The departure may remove a bird beyond the camera's edge")
+	camera.free()
 	bird.queue_free()
 	player.queue_free()
 	await process_frame

@@ -36,6 +36,13 @@ const SURFACE_PAINT = preload("res://components/groundcover/paths/surface_path.g
 	set(value):
 		twin_tracks = value
 		_update_material()
+## Draw feathered ground before transparent scenery where their bounds overlap.
+@export_range(-20, 20, 1) var surface_render_priority := 0:
+	set(value):
+		surface_render_priority = value
+		if _material:
+			_material.render_priority = surface_render_priority
+
 @export_group("Stone Layout")
 @export_range(0.3,1.4,0.05) var stone_size: float = 0.75:
 	set(value):
@@ -108,6 +115,7 @@ func rebuild() -> void:
 	visual.mesh = data.mesh
 	_material = ShaderMaterial.new()
 	_material.shader = SURFACE_PAINT
+	_material.render_priority = surface_render_priority
 	_update_material()
 	visual.material_override = _material
 	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

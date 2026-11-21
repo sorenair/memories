@@ -1,13 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cy4lram80463n"]
+[gd_scene format=3 uid="uid://cy4lram80463n"]
 
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="2"]
+[ext_resource type="AudioStream" uid="uid://b74tl1hwkwuk1" path="res://audio/ambiance/ambiance_bar.mp3" id="7_lti0r"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="8_base"]
 [ext_resource type="PackedScene" path="res://scenes/memories/first_meeting/arcade_zone.tscn" id="arcade_zone"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="brush_guide"]
 [ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://scenes/memories/first_meeting/house_zone.tscn" id="house_zone"]
 
-[node name="Memory" instance=ExtResource("8_base")]
+[node name="Memory" unique_id=472035247 instance=ExtResource("8_base")]
 memory_id = &"first_meeting"
 display_name = "First Meeting"
 
@@ -17,22 +18,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.04, 6.4)
 [node name="Exit" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.04, 3.8)
 
-[node name="Platform" parent="Environment" index="0" instance=ExtResource("2")]
+[node name="Platform" parent="Environment" index="0" unique_id=1528001960 instance=ExtResource("2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
 footprint = Vector2(34, 19)
 platform_seed = 93
 
-[node name="Guidance" type="Node3D" parent="Environment" index="1"]
+[node name="Guidance" type="Node3D" parent="Environment" index="1" unique_id=915476765]
 
-[node name="ArrivalBrushstroke" parent="Environment/Guidance" index="0" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("brush_guide")]
+[node name="ArrivalBrushstroke" parent="Environment/Guidance" index="0" unique_id=1731656377 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("brush_guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/House/Fragment")
 waypoints = PackedVector3Array()
-stroke_width = 0.34
-opacity = 0.92
 
-[node name="HouseToArcade" parent="Environment/Guidance" index="1" node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("brush_guide")]
+[node name="HouseToArcade" parent="Environment/Guidance" index="1" unique_id=1442929490 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("brush_guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/House/Fragment")
 end_anchor = NodePath("../../../Zones/Arcade/Fragment")
@@ -41,7 +40,10 @@ waypoints = PackedVector3Array(0.6, 0.72, 6.15, 4.6, 0.72, 6.15, 8.5, 0.76, 6.15
 [node name="Audio" parent="." index="6"]
 fragment_sound = ExtResource("chime")
 
-[node name="House" parent="Zones" index="0" instance=ExtResource("house_zone")]
+[node name="House" parent="Zones" index="0" unique_id=2024969460 instance=ExtResource("house_zone")]
+ambience_volume_db = -24.0
 
-[node name="Arcade" parent="Zones" index="1" instance=ExtResource("arcade_zone")]
+[node name="Arcade" parent="Zones" index="1" unique_id=910489181 instance=ExtResource("arcade_zone")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 1)
+ambience_stream = ExtResource("7_lti0r")
+ambience_volume_db = -20.0

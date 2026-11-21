@@ -37,7 +37,7 @@ var _held: View
 
 func _ready() -> void:
 	_views = [
-		View.new(mountain_zone, Rect2(-3.5, 1.7, 7.4, 4.3), Vector3(-1.45, 5.2, -2.7), mountain_size),
+		View.new(mountain_zone, Rect2(-3.5, 1.7, 7.4, 4.3), Vector3(-0.85, 4.35, -1.55), mountain_size),
 		View.new(rice_zone, Rect2(10.75, -3.15, 3.05, 2.95), Vector3(7.0, 1.8, 0.32), fields_size),
 		View.new(hue_zone, Rect2(-3.1, 3.0, 6.2, 8.2), Vector3(0, 2.3, 5.25), gate_size),
 		View.new(hue_zone, Rect2(-3.5, -9.0, 7.0, 3.9), Vector3(0.0, 1.7, -8.7), palace_size),

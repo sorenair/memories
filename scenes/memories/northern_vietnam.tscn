@@ -1,64 +1,76 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene format=3 uid="uid://b6dhapj2812jr"]
 
+[ext_resource type="AudioStream" uid="uid://d1j0x010mugfq" path="res://audio/ambiance/ambiance_tokyo.mp3" id="7_2dpku"]
+[ext_resource type="AudioStream" uid="uid://dff55fo2d0pas" path="res://audio/ambiance/ambiance_forest.mp3" id="9_4v7er"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="Script" path="res://scripts/northern_vietnam_memory.gd" id="script"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
-[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/old_quarter_zone.tscn" id="OldQuarter"]
-[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/hoan_kiem_zone.tscn" id="HoanKiem"]
-[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/ha_long_zone.tscn" id="HaLong"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/ha_long_zone.tscn" id="HaLong"]
+[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/hoan_kiem_zone.tscn" id="HoanKiem"]
+[ext_resource type="PackedScene" path="res://scenes/memories/northern_vietnam/old_quarter_zone.tscn" id="OldQuarter"]
+[ext_resource type="Script" uid="uid://cyh46q56bp70i" path="res://scripts/northern_vietnam_memory.gd" id="script"]
 
 [sub_resource type="Curve2D" id="FloorOutline"]
-_data = {"points": PackedVector2Array(0,0,0,0,-8,29,0,0,0,0,8,29,0,0,0,0,8,8,0,0,0,0,11,7,0,0,0,0,24,7,0,0,0,0,30,3,0,0,0,0,35,-2,0,0,0,0,40,-6,0,0,0,0,47,-11,0,0,0,0,48,-14,0,0,0,0,46.4,-17,0,0,0,0,46.4,-24.8,0,0,0,0,48,-24.8,0,0,0,0,48,-27.7,0,0,0,0,42,-27.7,0,0,0,0,42,-24.8,0,0,0,0,43.6,-24.8,0,0,0,0,43.6,-17,0,0,0,0,41,-14,0,0,0,0,37,-11,0,0,0,0,31,-5,0,0,0,0,27,-1,0,0,0,0,22,1,0,0,0,0,20,0,0,0,0,0,20,-9,0,0,0,0,22,-10,0,0,0,0,22,-16.8,0,0,0,0,14,-16.8,0,0,0,0,14,-10,0,0,0,0,16,-9,0,0,0,0,16,0,0,0,0,0,9,0,0,0,0,0,5,2,0,0,0,0,1,3,0,0,0,0,-8,3)}
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -8, 29, 0, 0, 0, 0, 8, 29, 0, 0, 0, 0, 8, 8, 0, 0, 0, 0, 11, 7, 0, 0, 0, 0, 24, 7, 0, 0, 0, 0, 30, 3, 0, 0, 0, 0, 35, -2, 0, 0, 0, 0, 40, -6, 0, 0, 0, 0, 47, -11, 0, 0, 0, 0, 48, -14, 0, 0, 0, 0, 46.4, -17, 0, 0, 0, 0, 46.4, -24.8, 0, 0, 0, 0, 48, -24.8, 0, 0, 0, 0, 48, -27.7, 0, 0, 0, 0, 42, -27.7, 0, 0, 0, 0, 42, -24.8, 0, 0, 0, 0, 43.6, -24.8, 0, 0, 0, 0, 43.6, -17, 0, 0, 0, 0, 41, -14, 0, 0, 0, 0, 37, -11, 0, 0, 0, 0, 31, -5, 0, 0, 0, 0, 27, -1, 0, 0, 0, 0, 22, 1, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 20, -9, 0, 0, 0, 0, 22, -10, 0, 0, 0, 0, 22, -16.8, 0, 0, 0, 0, 14, -16.8, 0, 0, 0, 0, 14, -10, 0, 0, 0, 0, 16, -9, 0, 0, 0, 0, 16, -0.75, 0, 0, 0, 0, 9, -0.95, 0, 0, 0, 0, 5, -0.5, 0, 0, 0, 0, 1, 1.6, 0, 0, 0, 0, -8, 3)
+}
 point_count = 35
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=804531364 instance=ExtResource("base")]
 script = ExtResource("script")
 memory_id = &"northern_vietnam"
 display_name = "Northern Vietnam"
 
-[node name="Entry" parent="."]
-position = Vector3(0,0.04,26)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 26)
 
-[node name="Exit" parent="."]
-position = Vector3(45,0.6,-26.1)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0.6, -26.1)
 
-[node name="VietnamFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="VietnamFloor" parent="Environment" index="0" unique_id=1498448486 instance=ExtResource("floor")]
 visible = false
-custom_outline = SubResource("FloorOutline")
 outline_detail = 96
+custom_outline = SubResource("FloorOutline")
 edge_inset = 0.08
 
-[node name="Guidance" parent="Environment" type="Node3D"]
+[node name="Guidance" type="Node3D" parent="Environment" index="1" unique_id=183897002]
 
-
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="OldQuarter" parent="Zones" instance=ExtResource("OldQuarter")]
-position = Vector3(0,0,12)
-
-[node name="HoanKiem" parent="Zones" instance=ExtResource("HoanKiem")]
-position = Vector3(18,0,-8)
-
-[node name="HaLong" parent="Zones" instance=ExtResource("HaLong")]
-position = Vector3(45,0,-29)
-
-[node name="StreetMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="StreetMemory" parent="Environment/Guidance" index="0" unique_id=1230678666 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/OldQuarter/Fragment")
+waypoints = PackedVector3Array(0, 0.76, 26, 0.019263132, 0.76, 25.555252, 0.041915923, 0.76, 25.11059, 0.06521315, 0.76, 24.665916, 0.0882021, 0.76, 24.221294, 0.110357955, 0.76, 23.77658, 0.13128157, 0.76, 23.331835, 0.15061373, 0.76, 22.88702, 0.16797644, 0.76, 22.442123, 0.1829314, 0.76, 21.997135, 0.1949321, 0.76, 21.552063, 0.20325406, 0.76, 21.10691, 0.20687515, 0.76, 20.661686, 0.20424536, 0.76, 20.216429, 0.19253153, 0.76, 19.771399, 0.1685876, 0.76, 19.32682, 0.13387173, 0.76, 18.882952, 0.09068818, 0.76, 18.439823, 0.04158039, 0.76, 17.997309, -0.010830075, 0.76, 17.555172, -0.06399478, 0.76, 17.113125, -0.11556439, 0.76, 16.670885, -0.16347359, 0.76, 16.228245, -0.20599985, 0.76, 15.785041, -0.24177292, 0.76, 15.341245, -0.26977137, 0.76, 14.896894, -0.28929114, 0.76, 14.452098, -0.2999054, 0.76, 14.007002)
 stroke_width = 0.32
 
-[node name="LakeMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="LakeMemory" parent="Environment/Guidance" index="1" unique_id=60375363 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/OldQuarter/Fragment")
 end_anchor = NodePath("../../../Zones/HoanKiem/Fragment")
+waypoints = PackedVector3Array(-0.2999054, 0.76, 14.007002, -0.30250317, 0.76, 13.57783, -0.30015367, 0.76, 13.148655, -0.2943344, 0.76, 12.719514, -0.28591296, 0.76, 12.290398, -0.27545235, 0.76, 11.8613405, -0.2633427, 0.76, 11.432333, -0.24986865, 0.76, 11.00336, -0.2352471, 0.76, 10.574422, -0.21964926, 0.76, 10.145516, -0.20321468, 0.76, 9.716646, -0.18606043, 0.76, 9.287803, -0.16828895, 0.76, 8.858988, -0.14999248, 0.76, 8.430187, -0.13126007, 0.76, 8.001414, -0.11218048, 0.76, 7.5726485, -0.09285157, 0.76, 7.143888, -0.07339214, 0.76, 6.7151513, -0.053960267, 0.76, 6.286412, -0.034802925, 0.76, 5.857637, -0.016389253, 0.76, 5.4287286, 0, 0.76, 4.9999995, 0, 0.778, 5, 0.46080223, 0.778, 4.371952, 1.0043361, 0.778, 3.8137684, 1.6120179, 0.778, 3.3259745, 2.267598, 0.778, 2.9045296, 2.9582624, 0.778, 2.5432367, 3.6744044, 0.778, 2.2354183, 4.410908, 0.778, 1.9802752, 5.166396, 0.778, 1.7884951, 5.934149, 0.778, 1.6536064, 6.7088294, 0.778, 1.5665083, 7.4869113, 0.778, 1.5177708, 8.266299, 0.778, 1.4983759, 9.045948, 0.778, 1.500062, 9.825458, 0.778, 1.5153894, 10.602094, 0.778, 1.5759821, 11.367361, 0.778, 1.7239923, 12.121752, 0.778, 1.9205952, 12.867651, 0.778, 2.14746, 13.607033, 0.778, 2.3947926, 14.341472, 0.778, 2.6564493, 15.072334, 0.778, 2.9279642, 15.8009615, 0.778, 3.2054272, 16.529015, 0.778, 3.484394, 17.25932, 0.778, 3.7573948, 18.000002, 0.778, 4, 18, 0.76, 4, 18, 0.76, 3.5200005, 18, 0.76, 3.039999, 18, 0.82, 3, 18, 0.8639371, 2.6750002, 18, 0.9076033, 2.35, 18, 0.9507294, 2.025, 18, 0.9930495, 1.6999998, 18, 1.0343027, 1.375, 18, 1.0742347, 1.0500002, 18, 1.1125993, 0.7249999, 18, 1.1491598, 0.4000001, 18, 1.1836909, 0.07500005, 18, 1.2159798, -0.25, 18, 1.2458273, -0.57500005, 18, 1.2730495, -0.9000001, 18, 1.2974784, -1.2249999, 18, 1.3189636, -1.55, 18, 1.3373725, -1.875, 18, 1.3525916, -2.2, 18, 1.3645271, -2.525, 18, 1.3731055, -2.85, 18, 1.3782737, -3.175, 18, 1.38, -3.5, 18, 1.3782737, -3.825, 18, 1.3731055, -4.15, 18, 1.3645271, -4.475, 18, 1.3525916, -4.8, 18, 1.3373725, -5.125, 18, 1.3189636, -5.45, 18, 1.2974784, -5.775, 18, 1.2730495, -6.1, 18, 1.2458273, -6.425, 18, 1.2159798, -6.75, 18, 1.1836909, -7.075, 18, 1.1491598, -7.4, 18, 1.1125993, -7.725, 18, 1.0742347, -8.05, 18, 1.0343027, -8.375, 18, 0.9930495, -8.7, 18, 0.9507294, -9.025, 18, 0.9076033, -9.35, 18, 0.8639371, -9.675, 18, 0.82, -10, 18, 0.825, -12.82)
 stroke_width = 0.32
 
-[node name="BayMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="BayMemory" parent="Environment/Guidance" index="2" unique_id=658002423 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/HoanKiem/Fragment")
 end_anchor = NodePath("../../../Zones/HaLong/Fragment")
+waypoints = PackedVector3Array(18, 0.825, -12.82, 18, 0.82, -10, 18, 0.8639371, -9.675, 18, 0.9076033, -9.35, 18, 0.9507294, -9.025, 18, 0.9930495, -8.7, 18, 1.0343027, -8.375, 18, 1.0742347, -8.05, 18, 1.1125993, -7.725, 18, 1.1491598, -7.4, 18, 1.1836909, -7.075, 18, 1.2159798, -6.75, 18, 1.2458273, -6.425, 18, 1.2730495, -6.1, 18, 1.2974784, -5.775, 18, 1.3189636, -5.45, 18, 1.3373725, -5.125, 18, 1.3525916, -4.8, 18, 1.3645271, -4.475, 18, 1.3731055, -4.15, 18, 1.3782737, -3.825, 18, 1.38, -3.5, 18, 1.3782737, -3.175, 18, 1.3731055, -2.85, 18, 1.3645271, -2.525, 18, 1.3525916, -2.2, 18, 1.3373725, -1.875, 18, 1.3189636, -1.55, 18, 1.2974784, -1.2249999, 18, 1.2730495, -0.9000001, 18, 1.2458273, -0.57500005, 18, 1.2159798, -0.25, 18, 1.1836909, 0.07500005, 18, 1.1491598, 0.4000001, 18, 1.1125993, 0.7249999, 18, 1.0742347, 1.0500002, 18, 1.0343027, 1.375, 18, 0.9930495, 1.6999998, 18, 0.9507294, 2.025, 18, 0.9076033, 2.35, 18, 0.8639371, 2.6750002, 18, 0.82, 3, 18, 0.76, 3.039999, 18, 0.76, 3.5200005, 18, 0.76, 4, 18, 0.76, 4, 18.787905, 0.76, 3.8851442, 19.574257, 0.76, 3.759591, 20.359238, 0.76, 3.625867, 21.142801, 0.76, 3.48413, 21.924742, 0.76, 3.333665, 22.704647, 0.76, 3.173005, 23.481823, 0.76, 2.9996414, 24.25499, 0.76, 2.8092403, 25.021397, 0.76, 2.5934172, 25.758804, 0.76, 2.2950811, 26.451603, 0.76, 1.9032993, 27.106876, 0.76, 1.4511938, 27.733074, 0.76, 0.9594469, 28.337902, 0.76, 0.4415722, 28.92823, 0.76, -0.092811584, 29.510494, 0.76, -0.63598156, 30.091364, 0.76, -1.1806479, 30.678673, 0.76, -1.7183514, 31.277596, 0.76, -2.2430682, 31.860462, 0.76, -2.7855253, 32.42485, 0.76, -3.3472104, 32.97642, 0.76, -3.9215055, 33.52156, 0.76, -4.5019245, 34.066635, 0.76, -5.082409, 34.617386, 0.76, -5.6574965, 35.178513, 0.76, -6.2224507, 35.75348, 0.76, -6.773316, 36.342545, 0.76, -7.309067, 36.93705, 0.76, -7.838818, 37.53448, 0.76, -8.365288, 38.13407, 0.76, -8.889264, 38.73546, 0.76, -9.411193, 39.33844, 0.76, -9.931279, 39.942947, 0.76, -10.44959, 40.549038, 0.76, -10.966066, 41.15687, 0.76, -11.480459, 41.766907, 0.76, -11.992262, 42.380154, 0.76, -12.500211, 43, 0.76, -13, 43, 0.76, -13, 43.399986, 0.76, -13.499984, 43.799995, 0.76, -13.999993, 44.200005, 0.76, -14.500006, 44.600014, 0.76, -15.000015, 45, 0.76, -15.500001, 45, 0.78999996, -15.5, 45, 1.31, -18.5, 45, 1.36, -26.1)
 stroke_width = 0.32
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="OldQuarter" parent="Zones" index="0" unique_id=1934712538 instance=ExtResource("OldQuarter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12)
+ambience_stream = ExtResource("7_2dpku")
+ambience_volume_db = -10.0
+
+[node name="HoanKiem" parent="Zones" index="1" unique_id=24558463 instance=ExtResource("HoanKiem")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -8)
+ambience_stream = ExtResource("9_4v7er")
+ambience_volume_db = -12.0
+
+[node name="HaLong" parent="Zones" index="2" unique_id=50151209 instance=ExtResource("HaLong")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0, -29)
+ambience_stream = ExtResource("9_4v7er")
+ambience_volume_db = -12.0

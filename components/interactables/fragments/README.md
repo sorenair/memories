@@ -6,6 +6,7 @@ Tap / click the orb while an explorer is within **Interaction Range**. Release m
 
 | Inspector parameter | Purpose |
 | --- | --- |
+| Contrast | Luminous by default. Choose Dark Ink against pale floors, snow, or ivory scenery. |
 | Glow Color | Pearl, fleck, and soft light-wash tint; white by default |
 | Orb Radius | Overall world-space size; retained for compatibility with authored fragments |
 | Float Height / Bob Amount | Floating position and vertical drift |

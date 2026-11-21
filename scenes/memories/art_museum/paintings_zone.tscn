@@ -51,6 +51,7 @@ window_grid = Vector2i(3, 2)
 
 [node name="Fragment" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.04, -0.2)
+contrast = 1
 fragment_seed = 1213
 note_title = "Looking at paintings"
 notes = Array[String](["Placeholder: Write your memory of looking at the paintings together here."])

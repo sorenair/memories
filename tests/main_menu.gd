@@ -25,7 +25,15 @@ func run() -> void:
 	var male = main.get_node("CharacterPicker/Soren")
 	var female = main.get_node("CharacterPicker/Vivian")
 	var proceed = main.get_node("Proceed")
-	check(main.get_node("EvermoreTitle").text == "EVERMORE", "Main menu must show the game title")
+	var title: Label = main.get_node("EvermoreTitle")
+	var lan: Control = main.get_node("LAN")
+	var picker: Control = main.get_node("CharacterPicker")
+	check(title.text == "OUR STORY", "Main menu must show the game title")
+	check(title.modulate.a == 0.0 and proceed.modulate.a == 0.0 and lan.modulate.a == 0.0 and picker.modulate.a == 0.0, "Menu must open on blank paper")
+	await create_timer(0.27).timeout
+	check(title.modulate.a > 0.0 and proceed.modulate.a == 0.0 and lan.modulate.a == 0.0, "Title must appear before the controls")
+	await create_timer(0.25).timeout
+	check(proceed.modulate.a > 0.0 and lan.modulate.a == 0.0 and picker.modulate.a == 0.0, "Infinity must appear before the corner controls")
 	check(proceed.text.is_empty() and proceed.action == proceed.Action.ENTER, "Main menu must use the entry symbol without text")
 	check(male.button_pressed and not female.button_pressed, "Main menu must reflect the preferred avatar")
 	check(male._ink_alpha > 0.99 and female._ink_alpha < 0.2, "Unselected avatar symbol must be transparent")
@@ -97,7 +105,7 @@ func run() -> void:
 	menu.size = Vector2(390, 844)
 	menu._layout()
 	await process_frame
-	var picker: Control = menu.get_node("CharacterPicker")
+	picker = menu.get_node("CharacterPicker")
 	check(picker.position.x >= 0 and picker.get_rect().end.x <= 390, "Avatar picker must fit portrait width")
 	check(menu.get_node("Proceed").position.y > menu.get_node("EvermoreTitle").get_rect().end.y, "Enter must remain below the title in portrait")
 	print("Main menu: ", "PASS" if failures == 0 else "FAIL")

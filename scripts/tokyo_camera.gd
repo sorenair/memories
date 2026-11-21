@@ -47,7 +47,7 @@ func _ready() -> void:
 		View.new(meiji_gate, Rect2(-2.4, -0.9, 4.8, 5.4), Vector3(0, 2.9, 0.25), torii_size),
 		View.new(meiji_hall, Rect2(-2.3, 4.65, 4.6, 2.3), Vector3(0, 2.65, 1.7), shrine_size),
 		View.new(senso_gate, Rect2(-2.6, -0.9, 5.2, 4.6), Vector3(0, 3.1, 0.65), lantern_gate_size, deg_to_rad(19.0)),
-		View.new(senso_hall, Rect2(-2.4, 5.0, 4.8, 3.0), Vector3(1.8, 2.6, 2.45), temple_size),
+		View.new(senso_hall, Rect2(-2.4, 5.0, 4.8, 4.8), Vector3(1.8, 2.1, 3.8), temple_size),
 		View.new(crossing, Rect2(-4.3, -4.0, 9.5, 8.0), Vector3(-0.8, 1.85, -0.7), crossing_size),
 	]
 	framing_offset = WALKING_OFFSET

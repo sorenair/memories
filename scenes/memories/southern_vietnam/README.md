@@ -14,16 +14,26 @@ composition, with quiet coast and open dunes giving way to a crowded city.
 - **Bai Mon:** `bai_mon_zone.tscn` reuses the Da Nang crescent and sand component,
   with a brighter blue cove and jade shallows. Jungle foliage frames the beach
   walk. **HeadlandWalk** climbs flagstones set into the coastal ridge, and
-  **ToDunes** descends on an earthen tread. Both paths feather into the terrain
-  at their ends. The lighthouse and first fragment sit on the shared upper landing.
+  **ToDunes** descends on an earthen tread. Coastal tree canopies and shrub
+  pockets shade both slopes, and meadow grass fills the lighthouse landing
+  along the clear tread. Three white ground birds hop and scatter as explorers
+  approach, and three more circle the tower. The fishing boat bobs in the cove
+  and recalls from the beach. It is framed from both the sand and the overlook.
 - **Dunes:** `dunes_zone.tscn` uses a single 30 × 30 m **PainterlySandPatch**, with
-  an irregular windward outline, sculpted crests, and the existing two-player
-  footprint field. **DuneRoute** is hidden and supplies route hints. Tufts, dry
-  shrubs and low stones guide the walk across the actual sand to a faded exit.
+  a scalloped outline, three authored crests with two swales, and the existing
+  two-player footprint field. **DuneRoute** samples the terrain for hints.
+  Tufts, dry shrubs and low stones guide the walk across the sand and through
+  the dissolve between dunes and city.
+  **BlowingSand** follows the dune relief, outline and recall. Tune wind angle,
+  speed, gust strength, grain size and glitter in its Inspector.
+  [Blowing sand component](../../../components/weather/blowing_sand/painterly_blowing_sand.tscn)
 - **Saigon:** `saigon_zone.tscn` stages shorter warm-toned street fronts against
-  a cooler skyline. Wide, faded setts carry the walk into a moving crowd framed
-  by palms and understory. The hidden **CityRoute** leaves a narrow winding lane
-  for both explorers.
+  a cooler skyline. Wide, faded setts carry the walk into a moving crowd.
+  Clusters of flowering shrubs and shade trees fill the verges between the
+  promenade and streets. A bronze Hồ Chí Minh statue stands on the boulevard
+  centerline, with a Vietnamese flag flying between the landmark towers at the
+  far end. The hidden **CityRoute** bends around the pedestal and keeps room for
+  both explorers. Crowd placement excludes both bases.
 
 The [Vietnam scenery kit](../../../components/scenery/vietnam/README.md) contains
 only the new supporting headland and skyline profiles. Buildings remain closed
@@ -55,8 +65,8 @@ landing before either path crosses the rock edge. The guest's 1.2 m X arrival
 offset remains supported on the crescent.
 
 The standard walking size is **4.7**. Framing opens to **10** midway around the
-cove, **17.2** on the lighthouse landing, **9.7** near the dune fragment, and
-**11.4** in the middle of the Saigon crowd. Each view holds briefly as the
+cove, **17.2** on the lighthouse landing, **12.4** near the dune fragment, and
+**13.9** between the Saigon statue and flag. Each view holds briefly as the
 explorer steps out of it, then eases back to the walking camera. Controls are exported from
 `../../../scripts/southern_vietnam_camera.gd`.
 
@@ -77,7 +87,7 @@ godot --headless --path . --script tests/memory_effects.gd
 ```
 
 The real-explorer check walks both directions, climbs and descends the headland,
-follows sculpted sand, creates footprints, reads/taps each fragment, requests all
+checks the fishing boat framing and bird behavior, crosses the dune swales, creates footprints, reads/taps each fragment, requests all
 hints, and checks paired arrival, finite support, camera reveals, ambience, scenic
 recall and timeline avatar choice. Separate `-- host` / `-- guest` processes use
 UDP **24755** for LAN checks; production IP entry stays on 24680. Native Mobile
@@ -86,5 +96,9 @@ performance is unmeasured. Existing headless material and macOS shader-cache/exi
 resource warnings may appear.
 
 [Before and after](../../../docs/previews/southern-vietnam-polish-comparison.jpg)
+
+[Lighthouse overlook](../../../docs/previews/southern_vietnam-memory-lighthouse-overlook.png)
+· [Dune crests and swales](../../../docs/previews/southern_vietnam-memory-dunes-overview.png)
+· [Saigon promenade](../../../docs/previews/southern_vietnam-memory-saigon-center.png)
 
 ![Southern Vietnam composition](../../../docs/previews/southern_vietnam-memory-overview.png)

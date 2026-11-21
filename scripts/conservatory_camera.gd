@@ -4,7 +4,7 @@ extends "res://scripts/follow_camera.gd"
 @export var bonsai_viewpoint: Node3D
 @export var walking_size := 4.4
 @export var fountain_size := 6.4
-@export var bonsai_size := 5.6
+@export var bonsai_size := 6.6
 
 const WALKING_OFFSET := Vector3(0, 0.87, -0.55)
 var _viewpoint: Node3D
@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 		elif _holds_view(bonsai_viewpoint, at):
 			_viewpoint = bonsai_viewpoint
 			size = bonsai_size
-			offset = bonsai_viewpoint.global_position + Vector3(0, 1.12, -1.52) - at
+			offset = bonsai_viewpoint.global_position + Vector3(0, 1.12, -0.85) - at
 		else:
 			_viewpoint = null
 		var blend := 1.0 - exp(-3.3 * delta)

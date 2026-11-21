@@ -137,8 +137,16 @@ func run() -> void:
 	var screen: PainterlyConcertScreen = scenery.get_node("PaintedScreen")
 	var intensity := rig.intensity
 	var pattern := screen.pattern_mode
-	var tap := camera.unproject_position(encore.to_global(Vector3(0, 0.34, 0)))
-	check(controller.pick_interactable(tap) == encore, "The encore pad must be tappable from the viewing apron")
+	for point in [Vector3(0, 0, -3.5), Vector3(1.55, 0, -3.5), Vector3(1.55, 0, -4.6)]:
+		check(await walk_to(player, point), "The right side of the ramp must lead to the encore console")
+	await create_timer(0.35).timeout
+	var cap: MeshInstance3D = encore.get_node("Button")
+	for offset in [Vector3(0, 0.115, 0), Vector3(0.55, 0.115, 0), Vector3(-0.55, 0.115, 0), Vector3(0, 0.115, 0.55)]:
+		var tap := camera.unproject_position(cap.to_global(offset))
+		check(controller.pick_interactable(tap) == encore, "The encore button must be tappable across its face")
+	if "--capture-encore-console" in args:
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("res://docs/previews/new-years-eve-encore-console.png")
 	check(controller.request_interaction(encore), "Tapping the pad must cue the concert finale")
 	await create_timer(0.8).timeout
 	check(screen.pattern_mode == 6 and rig.intensity > intensity, "The finale must cue the sunburst and stronger beams")
@@ -149,6 +157,8 @@ func run() -> void:
 	await create_timer(2.6).timeout
 	check(screen.pattern_mode == pattern and is_equal_approx(rig.intensity, intensity)
 		and controller.is_available(encore), "The normal show must resume after the finale")
+	for point in [Vector3(1.55, 0, -3.5), Vector3(0, 0, -3.5)]:
+		check(await walk_to(player, point), "The approach to the stage ramp must remain clear beside the console")
 	for point in [Vector3(0,0,-3.7),Vector3(0,0,-7.8),Vector3(-3,0,-7.8),Vector3(-3,0,-9.8)]:
 		check(await walk_to(player,point),"The continuous ramp and stage must be walkable around the console")
 		check(player.is_on_floor(),"Ramp and deck must support the player")

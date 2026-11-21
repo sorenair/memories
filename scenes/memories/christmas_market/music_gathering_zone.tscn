@@ -1,25 +1,21 @@
-[gd_scene load_steps=15 format=3]
-[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[gd_scene format=3 uid="uid://hm1ggw3mu0mw"]
+
+[ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_gallery_display.tscn" id="bench"]
+[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
 [ext_resource type="PackedScene" path="res://components/buildings/market_hut/painterly_market_hut.tscn" id="hut"]
 [ext_resource type="PackedScene" path="res://components/lighting/festive_lights/painterly_festive_lights.tscn" id="lights"]
-[ext_resource type="PackedScene" path="res://components/scenery/christmas_market/decorated_pine.tscn" id="tree"]
-[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
-[ext_resource type="PackedScene" path="res://components/characters/crowd/painterly_crowd.tscn" id="crowd"]
+[ext_resource type="AudioStream" uid="uid://bfwt632ckf6ki" path="res://audio/samples/museum_murmur.wav" id="murmur"]
 [ext_resource type="PackedScene" path="res://components/scenery/christmas_market/painterly_market_stage.tscn" id="stage"]
-[ext_resource type="PackedScene" path="res://components/scenery/museum/painterly_gallery_display.tscn" id="bench"]
-[ext_resource type="AudioStream" path="res://audio/samples/museum_murmur.wav" id="murmur"]
-
-[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="winter_tree"]
-
-[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="winter_bush"]
-
-[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="winter_grass"]
-
-[ext_resource type="Resource" path="res://scenes/memories/christmas_market/winter_evergreen.tres" id="winter_evergreen"]
-
+[ext_resource type="PackedScene" path="res://components/scenery/christmas_market/decorated_pine.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/activities/tree_lighting/tree_lighting.tscn" id="tree_lighting"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="winter_bush"]
+[ext_resource type="Resource" path="res://scenes/memories/christmas_market/winter_evergreen.tres" id="winter_evergreen"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="winter_grass"]
+[ext_resource type="PackedScene" uid="uid://1t6fd5lxbf2u" path="res://components/foliage/painterly_tree.tscn" id="winter_tree"]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 
-[node name="MusicGatheringZone" instance=ExtResource("zone")]
+[node name="MusicGatheringZone" unique_id=399941139 instance=ExtResource("zone")]
 zone_id = &"music_gathering"
 display_name = "Under the lights, listening together"
 ambience_stream = ExtResource("murmur")
@@ -27,145 +23,134 @@ ambience_volume_db = -30.0
 ambience_size = Vector2(19, 17)
 ambience_blend_distance = 4.0
 
-[node name="AcousticStage" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("stage")]
-recall_anchor = NodePath("../GatheringReveal")
+[node name="AcousticStage" parent="Scenery" index="0" unique_id=1318405745 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("stage")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, -4)
 recall_enabled = true
-position = Vector3(1.2, 0, -4.0)
+recall_anchor = NodePath("../GatheringReveal")
 
-[node name="ChristmasTree" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-3, 0, -1)
+[node name="ChristmasTree" parent="Scenery" index="1" unique_id=1738064298 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -1)
 
-[node name="TreeLighting" parent="Scenery" node_paths=PackedStringArray("tree") instance=ExtResource("tree_lighting")]
-position = Vector3(-1.55, 0.04, -0.45)
+[node name="TreeLighting" parent="Scenery" index="2" unique_id=448307857 node_paths=PackedStringArray("tree") instance=ExtResource("tree_lighting")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, 0.04, -0.45)
 tree = NodePath("../ChristmasTree")
 
-[node name="SweetHut" parent="Scenery" instance=ExtResource("hut")]
-recall_enabled = true
-position = Vector3(-5, 0, 3)
-rotation_degrees = Vector3(0, 55, 0)
-goods = 0
+[node name="SweetHut" parent="Scenery" index="3" unique_id=270839237 instance=ExtResource("hut")]
+transform = Transform3D(0.57357645, 0, 0.81915206, 0, 1, 0, -0.81915206, 0, 0.57357645, -5, 0, 3)
 trim_color = Color(0.54, 0.39, 0.32, 1)
 paint_seed = 1291
-
-[node name="SweetHutWarmth" parent="Scenery" instance=ExtResource("wash")]
 recall_enabled = true
-position = Vector3(-3.4436111158509157, 0.07, 3)
-footprint = Vector2(3.2, 3.0)
+
+[node name="SweetHutWarmth" parent="Scenery" index="4" unique_id=1771256143 instance=ExtResource("wash")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4436111, 0.07, 3)
+recall_enabled = true
+footprint = Vector2(3.2, 3)
 light_color = Color(1, 0.79, 0.46, 1)
 intensity = 0.24
 softness = 0.85
 motion = 1
 motion_amount = 0.035
 
-[node name="CiderHut" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("hut")]
-recall_anchor = NodePath("../GatheringReveal")
-recall_enabled = true
-position = Vector3(6, 0, 0)
-rotation_degrees = Vector3(0, -20, 0)
+[node name="CiderHut" parent="Scenery" index="5" unique_id=726291166 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("hut")]
+transform = Transform3D(0.9396926, 0, -0.34202012, 0, 1, 0, 0.34202012, 0, 0.9396926, 6, 0, 0)
 goods = 2
 trim_color = Color(0.41, 0.48, 0.38, 1)
 paint_seed = 1291
-
-[node name="CiderHutWarmth" parent="Scenery" instance=ExtResource("wash")]
 recall_enabled = true
-position = Vector3(5.350161727681229, 0.07, 0)
-footprint = Vector2(3.2, 3.0)
+recall_anchor = NodePath("../GatheringReveal")
+
+[node name="CiderHutWarmth" parent="Scenery" index="6" unique_id=334185366 instance=ExtResource("wash")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3501616, 0.07, 0)
+recall_enabled = true
+footprint = Vector2(3.2, 3)
 light_color = Color(1, 0.79, 0.46, 1)
 intensity = 0.22
 softness = 0.85
 motion = 1
 motion_amount = 0.035
 
-[node name="WestPine" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-6, 0, -5.5)
-scale = Vector3(0.57, 0.57, 0.57)
-rotation_degrees = Vector3(0, 28, 0)
+[node name="WestPine" parent="Scenery" index="7" unique_id=625938972 instance=ExtResource("tree")]
+transform = Transform3D(0.5032801, 0, 0.2675988, 0, 0.57, 0, -0.2675988, 0, 0.5032801, -6, 0, -5.5)
 
-[node name="BackPine" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(6, 0, -6.0)
-scale = Vector3(0.63, 0.63, 0.63)
-rotation_degrees = Vector3(0, 28, 0)
+[node name="BackPine" parent="Scenery" index="8" unique_id=1924861152 instance=ExtResource("tree")]
+transform = Transform3D(0.55625695, 0, 0.2957671, 0, 0.63, 0, -0.2957671, 0, 0.55625695, 6, 0, -6)
 
-[node name="GatheringLights" parent="Scenery" instance=ExtResource("lights")]
-recall_enabled = true
-position = Vector3(0, 0, 2.32)
+[node name="GatheringLights" parent="Scenery" index="9" unique_id=1542122284 instance=ExtResource("lights")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.32)
 span = 6.0
 height = 4.05
 sag = 0.37
-
-[node name="TreeWarmth" parent="Scenery" instance=ExtResource("wash")]
 recall_enabled = true
-position = Vector3(-2.4, 0.075, 0.17)
+
+[node name="TreeWarmth" parent="Scenery" index="10" unique_id=1623748183 instance=ExtResource("wash")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.075, 0.17)
+recall_enabled = true
 footprint = Vector2(4.9, 4.12)
 light_color = Color(1, 0.84, 0.54, 1)
 intensity = 0.31
 softness = 0.9
 
-[node name="StageWarmth" parent="Scenery" instance=ExtResource("wash")]
+[node name="StageWarmth" parent="Scenery" index="11" unique_id=591375141 instance=ExtResource("wash")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.34, 0.079, -1.67)
 recall_enabled = true
-position = Vector3(1.34, 0.079, -1.67)
 footprint = Vector2(5.5, 3.85)
 light_color = Color(1, 0.84, 0.61, 1)
 intensity = 0.34
 softness = 0.9
 
-[node name="Listeners" parent="Scenery" instance=ExtResource("crowd")]
-recall_enabled = true
+[node name="Listeners" parent="Scenery" index="12" unique_id=143095988 instance=ExtResource("crowd")]
 count = 8
-footprint = Vector2(8, 6)
-spacing = 0.72
 crowd_seed = 191225
 person_scale = 1.05
-palette = 3
+footprint = Vector2(8, 6)
+spacing = 0.72
 facing_degrees = 175.0
 facing_variation = 32.0
 empty_areas = Array[Rect2]([Rect2(-1.6, -4.5, 3.2, 9), Rect2(-5, -6, 10, 3.5), Rect2(-4.3, -2.2, 2.8, 3.2), Rect2(-7.5, 0.7, 5.2, 5), Rect2(3.5, -2.5, 5, 5), Rect2(2.5, 2.9, 4.5, 2.5)])
+palette = 3
+clothing_colors = PackedColorArray(0.44705883, 0.5686275, 0.4745098, 1, 0.67058825, 0.50980395, 0.39607844, 1, 0.4392157, 0.5803922, 0.6666667, 1, 0.7058824, 0.627451, 0.44705883, 1)
+skin_colors = PackedColorArray(0.83137256, 0.68235296, 0.54901963, 1, 0.6784314, 0.49019608, 0.36078432, 1, 0.47058824, 0.32941177, 0.27058825, 1, 0.8901961, 0.76862746, 0.6509804, 1)
+hair_colors = PackedColorArray(0.28235295, 0.25882354, 0.23137255, 1, 0.4627451, 0.36078432, 0.27058825, 1, 0.67058825, 0.5921569, 0.43137255, 1, 0.57254905, 0.5647059, 0.52156866, 1)
 pose_mix = 2
 motion_strength = 0.28
 motion_speed = 0.7
-
-[node name="ListeningBench" parent="Scenery" instance=ExtResource("bench")]
 recall_enabled = true
-position = Vector3(-5.6, 0, 0)
-rotation_degrees = Vector3(0, -10, 0)
+
+[node name="ListeningBench" parent="Scenery" index="13" unique_id=206300869 instance=ExtResource("bench")]
+transform = Transform3D(0.9848077, 0, -0.17364818, 0, 1, 0, 0.17364818, 0, 0.9848077, -5.6, 0, 0)
 display_type = 1
-
-[node name="SweetHutVisitors" parent="Scenery" instance=ExtResource("crowd")]
 recall_enabled = true
-position = Vector3(-2.8, 0, 4)
+
+[node name="SweetHutVisitors" parent="Scenery" index="14" unique_id=1012950249 instance=ExtResource("crowd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0, 4)
 count = 2
-footprint = Vector2(0.7, 2.0)
-spacing = 0.65
 crowd_seed = 1225
 person_scale = 1.05
-palette = 3
+footprint = Vector2(0.7, 2)
+spacing = 0.65
 facing_degrees = -125.0
 facing_variation = 20.0
+palette = 3
+clothing_colors = PackedColorArray(0.44705883, 0.5686275, 0.4745098, 1, 0.67058825, 0.50980395, 0.39607844, 1, 0.4392157, 0.5803922, 0.6666667, 1, 0.7058824, 0.627451, 0.44705883, 1)
+skin_colors = PackedColorArray(0.83137256, 0.68235296, 0.54901963, 1, 0.6784314, 0.49019608, 0.36078432, 1, 0.47058824, 0.32941177, 0.27058825, 1, 0.8901961, 0.76862746, 0.6509804, 1)
+hair_colors = PackedColorArray(0.28235295, 0.25882354, 0.23137255, 1, 0.4627451, 0.36078432, 0.27058825, 1, 0.67058825, 0.5921569, 0.43137255, 1, 0.57254905, 0.5647059, 0.52156866, 1)
 pose_mix = 2
 motion_strength = 0.25
-
-[node name="SideBench" parent="Scenery" instance=ExtResource("bench")]
 recall_enabled = true
-position = Vector3(4.0, 0, 3.9)
-rotation_degrees = Vector3(0, -25, 0)
+
+[node name="SideBench" parent="Scenery" index="15" unique_id=2141130115 instance=ExtResource("bench")]
+transform = Transform3D(0.90630776, 0, -0.42261827, 0, 1, 0, 0.42261827, 0, 0.90630776, 4, 0, 3.9)
 display_type = 1
-
-[node name="GatheringReveal" type="Marker3D" parent="Scenery"]
-position = Vector3(0, 0, 2.2)
-
-[node name="Fragment" parent="."]
-position = Vector3(0, 0.04, 0)
-fragment_seed = 1220
-note_title = "Under the lights, listening together"
-notes = Array[String](["Placeholder: Write your memory of the music, Christmas tree, and lights here."])
-
-
-[node name="WinterFoliage" type="Node3D" parent="Scenery"]
-
-[node name="FrostBirchByBench" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
 recall_enabled = true
-react_to_explorers = true
-position = Vector3(-6.8, 0, -2.8)
+
+[node name="GatheringReveal" type="Marker3D" parent="Scenery" index="16" unique_id=965213724]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.2)
+
+[node name="WinterFoliage" type="Node3D" parent="Scenery" index="17" unique_id=1180535497]
+
+[node name="FrostBirchByBench" parent="Scenery/WinterFoliage" index="0" unique_id=1210573892 instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8, 0, -2.8)
+recall_enabled = true
 palette_preset = 5
 tree_type = 2
 tree_seed = 19401
@@ -178,11 +163,9 @@ leaf_sprays_per_cluster = 14
 wind_strength = 0.025
 wind_speed = 0.6
 
-
-[node name="SnowPineBehindStage" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+[node name="SnowPineBehindStage" parent="Scenery/WinterFoliage" index="1" unique_id=632085064 instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0, -6.7)
 recall_enabled = true
-react_to_explorers = true
-position = Vector3(-2.8, 0, -6.7)
 palette_preset = 5
 tree_type = 4
 tree_seed = 19402
@@ -195,11 +178,9 @@ leaf_sprays_per_cluster = 45
 wind_strength = 0.025
 wind_speed = 0.6
 
-
-[node name="SnowPineBehindCider" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+[node name="SnowPineBehindCider" parent="Scenery/WinterFoliage" index="2" unique_id=2057113001 instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -3)
 recall_enabled = true
-react_to_explorers = true
-position = Vector3(7, 0, -3)
 palette_preset = 5
 tree_type = 4
 tree_seed = 19403
@@ -212,11 +193,9 @@ leaf_sprays_per_cluster = 45
 wind_strength = 0.025
 wind_speed = 0.6
 
-
-[node name="SnowPineBySweetHut" parent="Scenery/WinterFoliage" instance=ExtResource("winter_tree")]
+[node name="SnowPineBySweetHut" parent="Scenery/WinterFoliage" index="3" unique_id=2047850569 instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, 1.4)
 recall_enabled = true
-react_to_explorers = true
-position = Vector3(-7, 0, 1.4)
 palette_preset = 5
 tree_type = 4
 tree_seed = 19404
@@ -229,10 +208,9 @@ leaf_sprays_per_cluster = 45
 wind_strength = 0.025
 wind_speed = 0.6
 
-
-[node name="BenchBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+[node name="BenchBush" parent="Scenery/WinterFoliage" index="4" unique_id=497685595 instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, 1)
 recall_enabled = true
-position = Vector3(-6.5, 0, 1)
 palette_preset = 5
 bush_seed = 19501
 footprint = Vector2(1.3, 1.4)
@@ -240,12 +218,10 @@ bush_height = 0.43
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = true
 
-
-[node name="BirchBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+[node name="BirchBush" parent="Scenery/WinterFoliage" index="5" unique_id=646566139 instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.7, 0, -3)
 recall_enabled = true
-position = Vector3(-6.7, 0, -3)
 palette_preset = 5
 bush_seed = 19502
 footprint = Vector2(1.5, 1.5)
@@ -253,12 +229,10 @@ bush_height = 0.55
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = true
 
-
-[node name="StageBackdropBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+[node name="StageBackdropBush" parent="Scenery/WinterFoliage" index="6" unique_id=480729281 instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1, 0, -6.6)
 recall_enabled = true
-position = Vector3(-3.1, 0, -6.6)
 palette_preset = 5
 bush_seed = 19503
 footprint = Vector2(1.7, 1.2)
@@ -266,12 +240,10 @@ bush_height = 0.52
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = true
 
-
-[node name="CiderBackdropBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+[node name="CiderBackdropBush" parent="Scenery/WinterFoliage" index="7" unique_id=1670570636 instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.4, 0, -3.2)
 recall_enabled = true
-position = Vector3(6.4, 0, -3.2)
 palette_preset = 5
 bush_seed = 19504
 footprint = Vector2(1.2, 1.6)
@@ -279,12 +251,10 @@ bush_height = 0.51
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = true
 
-
-[node name="RightBankBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+[node name="RightBankBush" parent="Scenery/WinterFoliage" index="8" unique_id=607411706 instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 3.3)
 recall_enabled = true
-position = Vector3(6.5, 0, 3.3)
 palette_preset = 5
 bush_seed = 19505
 footprint = Vector2(1.3, 1.4)
@@ -292,25 +262,21 @@ bush_height = 0.48
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = true
 
-
-[node name="SweetHutBankBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+[node name="SweetHutBankBush" parent="Scenery/WinterFoliage" index="9" unique_id=1106955860 instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.1, 0, 4.8)
 recall_enabled = true
-position = Vector3(-7.1, 0, 4.8)
 palette_preset = 5
 bush_seed = 19506
-footprint = Vector2(1.2, 1.0)
+footprint = Vector2(1.2, 1)
 bush_height = 0.41
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = true
 
-
-[node name="TreeSkirtBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+[node name="TreeSkirtBush" parent="Scenery/WinterFoliage" index="10" unique_id=527237609 instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -1.7)
 recall_enabled = true
-position = Vector3(-4.5, 0, -1.7)
 palette_preset = 5
 bush_seed = 19507
 footprint = Vector2(1.2, 1.1)
@@ -318,150 +284,114 @@ bush_height = 0.34
 mass_count = 3
 sprays_per_mass = 38
 wind_strength = 0.025
-react_to_explorers = true
 
-
-[node name="BenchGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+[node name="BenchGrass" parent="Scenery/WinterFoliage" index="11" unique_id=1746351501 instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 0, -2.5)
 recall_enabled = true
-position = Vector3(-6.5, 0, -2.5)
 palette_preset = 5
-patch_seed = 19601
 patch_size = Vector2(2.1, 3.7)
+patch_seed = 19601
 tufts_per_square_meter = 13.0
 leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
 
-
-[node name="StageBackdropGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+[node name="StageBackdropGrass" parent="Scenery/WinterFoliage" index="12" unique_id=401806766 instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -6.4)
 recall_enabled = true
-position = Vector3(-3, 0, -6.4)
 palette_preset = 5
+patch_size = Vector2(3, 2)
 patch_seed = 19602
-patch_size = Vector2(3.0, 2.0)
 tufts_per_square_meter = 13.0
 leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
 
-
-[node name="CiderBackdropGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+[node name="CiderBackdropGrass" parent="Scenery/WinterFoliage" index="13" unique_id=151708605 instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6, 0, -4)
 recall_enabled = true
-position = Vector3(6.6, 0, -4)
 palette_preset = 5
-patch_seed = 19603
 patch_size = Vector2(2.3, 3.4)
+patch_seed = 19603
 tufts_per_square_meter = 13.0
 leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
 
-
-[node name="RightBankGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+[node name="RightBankGrass" parent="Scenery/WinterFoliage" index="14" unique_id=1634303210 instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 3.9)
 recall_enabled = true
-position = Vector3(6.5, 0, 3.9)
 palette_preset = 5
+patch_size = Vector2(2, 1.7)
 patch_seed = 19604
-patch_size = Vector2(2.0, 1.7)
 tufts_per_square_meter = 13.0
 leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
 
-
-[node name="TreeSkirtGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+[node name="TreeSkirtGrass" parent="Scenery/WinterFoliage" index="15" unique_id=336735721 instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4, 0, -0.8)
 recall_enabled = true
-position = Vector3(-4.4, 0, -0.8)
 palette_preset = 5
-patch_seed = 19605
 patch_size = Vector2(2.1, 2.4)
+patch_seed = 19605
 tufts_per_square_meter = 13.0
 leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
 
-
-[node name="TreeAndStageBush" parent="Scenery/WinterFoliage" instance=ExtResource("winter_bush")]
+[node name="TreeAndStageBush" parent="Scenery/WinterFoliage" index="16" unique_id=926477168 instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0, -2.5)
 recall_enabled = true
-position = Vector3(-2.8, 0, -2.5)
 palette_preset = 5
 bush_seed = 19705
-footprint = Vector2(0.9, 1.0)
+footprint = Vector2(0.9, 1)
 bush_height = 0.28
 mass_count = 3
 sprays_per_mass = 32
 wind_strength = 0.025
-react_to_explorers = true
 
-[node name="TreeAndStageGrass" parent="Scenery/WinterFoliage" instance=ExtResource("winter_grass")]
+[node name="TreeAndStageGrass" parent="Scenery/WinterFoliage" index="17" unique_id=1399074928 instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9, 0, -2.4)
 recall_enabled = true
-position = Vector3(-2.9, 0, -2.4)
 palette_preset = 5
-patch_seed = 19805
 patch_size = Vector2(1.4, 1.5)
+patch_seed = 19805
 tufts_per_square_meter = 9.0
 leaves_per_square_meter = 0.0
 grass_height = 0.23
 wind_strength = 0.025
 wind_speed = 0.65
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
 
-[node name="Pine" parent="Scenery/ChristmasTree"]
-react_to_explorers = true
-recall_enabled = true
-
-[node name="Trimming" parent="Scenery/ChristmasTree"]
-recall_enabled = true
-
-[node name="Pine" parent="Scenery/WestPine"]
-react_to_explorers = true
-recall_enabled = true
-
-[node name="Trimming" parent="Scenery/WestPine"]
-recall_enabled = true
-
-[node name="Pine" parent="Scenery/BackPine"]
-react_to_explorers = true
-recall_enabled = true
-
-[node name="Trimming" parent="Scenery/BackPine"]
-recall_enabled = true
-
-[node name="PineGrove0" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
-position = Vector3(-6.42, 0, -6.92)
+[node name="PineGrove0" parent="Scenery/WinterFoliage" index="18" unique_id=776410499 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.42, 0, -6.92)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 tree_type = 4
 tree_seed = 19800
 tree_height = 3.55
 crown_width = 2.34
+trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 30
-trunk_radius = 0.12
 wind_strength = 0.052
 wind_speed = 0.44
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="PineGrove1" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
-position = Vector3(-7.21, 0, -5.1)
+[node name="PineGrove1" parent="Scenery/WinterFoliage" index="19" unique_id=916534130 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.21, 0, -5.1)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
@@ -469,32 +399,30 @@ tree_type = 4
 tree_seed = 19801
 tree_height = 2.92
 crown_width = 1.85
+trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 30
-trunk_radius = 0.12
 wind_strength = 0.052
 wind_speed = 0.495
-react_to_explorers = true
 
-[node name="PineGrove2" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
-position = Vector3(-4.77, 0, -6.72)
+[node name="PineGrove2" parent="Scenery/WinterFoliage" index="20" unique_id=1601620707 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.77, 0, -6.72)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 tree_type = 4
 tree_seed = 19802
 tree_height = 3.85
 crown_width = 2.65
+trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 30
-trunk_radius = 0.12
 wind_strength = 0.052
 wind_speed = 0.55
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="PineGrove3" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
-position = Vector3(-1.37, 0, -7.38)
+[node name="PineGrove3" parent="Scenery/WinterFoliage" index="21" unique_id=1314598655 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.37, 0, -7.38)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
@@ -502,32 +430,30 @@ tree_type = 4
 tree_seed = 19803
 tree_height = 3.02
 crown_width = 1.95
+trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 30
-trunk_radius = 0.12
 wind_strength = 0.052
 wind_speed = 0.605
-react_to_explorers = true
 
-[node name="PineGrove4" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
-position = Vector3(3.93, 0, -7.3)
+[node name="PineGrove4" parent="Scenery/WinterFoliage" index="22" unique_id=413355904 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.93, 0, -7.3)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 tree_type = 4
 tree_seed = 19804
 tree_height = 3.9
 crown_width = 2.52
+trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 30
-trunk_radius = 0.12
 wind_strength = 0.052
 wind_speed = 0.44
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="PineGrove5" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
-position = Vector3(5.42, 0, -6.84)
+[node name="PineGrove5" parent="Scenery/WinterFoliage" index="23" unique_id=1780734815 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.42, 0, -6.84)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
@@ -535,300 +461,276 @@ tree_type = 4
 tree_seed = 19805
 tree_height = 3.22
 crown_width = 2.18
+trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 30
-trunk_radius = 0.12
 wind_strength = 0.052
 wind_speed = 0.495
-react_to_explorers = true
 
-[node name="PineGrove6" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
-position = Vector3(7.02, 0, 1.8)
+[node name="PineGrove6" parent="Scenery/WinterFoliage" index="24" unique_id=692384067 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.02, 0, 1.8)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 tree_type = 4
 tree_seed = 19806
 tree_height = 2.25
 crown_width = 1.58
+trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 30
-trunk_radius = 0.12
 wind_strength = 0.052
 wind_speed = 0.55
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="DriftShrub0" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(-6.92, 0, -4.22)
+[node name="DriftShrub0" parent="Scenery/WinterFoliage" index="25" unique_id=1025905067 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.92, 0, -4.22)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 bush_seed = 19820
 footprint = Vector2(2.2, 1.5)
 bush_height = 0.72
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.65
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="DriftShrub1" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(-5.75, 0, -3.95)
+[node name="DriftShrub1" parent="Scenery/WinterFoliage" index="26" unique_id=1222582092 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 0, -3.95)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
 bush_seed = 19821
 footprint = Vector2(1.6, 1.32)
 bush_height = 0.56
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.7050000000000001
-react_to_explorers = true
 
-[node name="DriftShrub2" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(-4.37, 0, -4.35)
+[node name="DriftShrub2" parent="Scenery/WinterFoliage" index="27" unique_id=1387809961 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.37, 0, -4.35)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 bush_seed = 19822
 footprint = Vector2(1.75, 1.43)
 bush_height = 0.52
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.76
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="DriftShrub3" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(-4.17, 0, -2.27)
+[node name="DriftShrub3" parent="Scenery/WinterFoliage" index="28" unique_id=205004076 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.17, 0, -2.27)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
 bush_seed = 19823
 footprint = Vector2(1.5, 1.12)
 bush_height = 0.45
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.8150000000000001
-react_to_explorers = true
 
-[node name="DriftShrub4" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(-5.77, 0, 1.09)
+[node name="DriftShrub4" parent="Scenery/WinterFoliage" index="29" unique_id=1422146119 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.77, 0, 1.09)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 bush_seed = 19824
 footprint = Vector2(1.41, 1.06)
 bush_height = 0.45
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.65
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="DriftShrub5" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(-6.27, 0, 4.8)
+[node name="DriftShrub5" parent="Scenery/WinterFoliage" index="30" unique_id=438506765 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.27, 0, 4.8)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 bush_seed = 19825
 footprint = Vector2(2.17, 1.4)
 bush_height = 0.67
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.7050000000000001
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="DriftShrub6" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(-4.84, 0, 4.6)
+[node name="DriftShrub6" parent="Scenery/WinterFoliage" index="31" unique_id=1015021454 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.84, 0, 4.6)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
 bush_seed = 19826
 footprint = Vector2(1.2, 1.05)
 bush_height = 0.41
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.76
-react_to_explorers = true
 
-[node name="DriftShrub7" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(4.54, 0, -6.17)
+[node name="DriftShrub7" parent="Scenery/WinterFoliage" index="32" unique_id=632076982 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.54, 0, -6.17)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 bush_seed = 19827
 footprint = Vector2(1.9, 1.35)
 bush_height = 0.6
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.8150000000000001
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="DriftShrub8" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(6.53, 0, -4.27)
+[node name="DriftShrub8" parent="Scenery/WinterFoliage" index="33" unique_id=1635192300 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.53, 0, -4.27)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 bush_seed = 19828
 footprint = Vector2(2.1, 1.63)
 bush_height = 0.71
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.65
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="DriftShrub9" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(6.72, 0, 2.45)
+[node name="DriftShrub9" parent="Scenery/WinterFoliage" index="34" unique_id=1061066150 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.72, 0, 2.45)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
 bush_seed = 19829
 footprint = Vector2(1.75, 1.34)
 bush_height = 0.61
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.7050000000000001
-react_to_explorers = true
 
-[node name="DriftShrub10" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
-position = Vector3(3.0, 0, 4.04)
+[node name="DriftShrub10" parent="Scenery/WinterFoliage" index="35" unique_id=1075785540 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4.04)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
+palette = ExtResource("winter_evergreen")
 bush_seed = 19830
 footprint = Vector2(1.2, 0.95)
 bush_height = 0.4
-mass_count = 4
 sprays_per_mass = 28
 wind_strength = 0.045
 wind_speed = 0.76
-react_to_explorers = true
-palette = ExtResource("winter_evergreen")
 
-[node name="WinterSedge0" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
-position = Vector3(-6.15, 0, -4.34)
+[node name="WinterSedge0" parent="Scenery/WinterFoliage" index="36" unique_id=1897876756 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.15, 0, -4.34)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
-patch_seed = 19840
+palette = ExtResource("winter_evergreen")
 patch_size = Vector2(3.3, 2.1)
-grass_height = 0.19
+patch_seed = 19840
 tufts_per_square_meter = 9.0
 leaves_per_square_meter = 0.0
+grass_height = 0.19
 wind_strength = 0.055
 wind_speed = 0.7
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
-palette = ExtResource("winter_evergreen")
 
-[node name="WinterSedge1" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
-position = Vector3(-4.4, 0, -2.9)
+[node name="WinterSedge1" parent="Scenery/WinterFoliage" index="37" unique_id=807794261 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4, 0, -2.9)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
-patch_seed = 19841
+palette = ExtResource("winter_evergreen")
 patch_size = Vector2(2.28, 2.2)
-grass_height = 0.225
+patch_seed = 19841
 tufts_per_square_meter = 9.0
 leaves_per_square_meter = 0.0
+grass_height = 0.225
 wind_strength = 0.055
 wind_speed = 0.7
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
-palette = ExtResource("winter_evergreen")
 
-[node name="WinterSedge2" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
-position = Vector3(-6.2, 0, 4.23)
+[node name="WinterSedge2" parent="Scenery/WinterFoliage" index="38" unique_id=1534121191 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, 4.23)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
+patch_size = Vector2(2.5, 2)
 patch_seed = 19842
-patch_size = Vector2(2.5, 2.0)
+tufts_per_square_meter = 9.0
+leaves_per_square_meter = 0.0
 grass_height = 0.26
-tufts_per_square_meter = 9.0
-leaves_per_square_meter = 0.0
 wind_strength = 0.055
 wind_speed = 0.7
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
 
-[node name="WinterSedge3" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
-position = Vector3(-3.85, 0, 4.86)
+[node name="WinterSedge3" parent="Scenery/WinterFoliage" index="39" unique_id=51666861 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.85, 0, 4.86)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
-patch_seed = 19843
+palette = ExtResource("winter_evergreen")
 patch_size = Vector2(2.04, 1.2)
-grass_height = 0.19
+patch_seed = 19843
 tufts_per_square_meter = 9.0
 leaves_per_square_meter = 0.0
+grass_height = 0.19
 wind_strength = 0.055
 wind_speed = 0.7
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
-palette = ExtResource("winter_evergreen")
 
-[node name="WinterSedge4" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
-position = Vector3(6.3, 0, -4.75)
+[node name="WinterSedge4" parent="Scenery/WinterFoliage" index="40" unique_id=2018705710 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3, 0, -4.75)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
-patch_seed = 19844
+palette = ExtResource("winter_evergreen")
 patch_size = Vector2(3.34, 2.2)
-grass_height = 0.225
+patch_seed = 19844
 tufts_per_square_meter = 9.0
 leaves_per_square_meter = 0.0
+grass_height = 0.225
 wind_strength = 0.055
 wind_speed = 0.7
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
-palette = ExtResource("winter_evergreen")
 
-[node name="WinterSedge5" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
-position = Vector3(6.92, 0, 2.02)
+[node name="WinterSedge5" parent="Scenery/WinterFoliage" index="41" unique_id=1661734458 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.92, 0, 2.02)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 5
+patch_size = Vector2(2.4, 2)
 patch_seed = 19845
-patch_size = Vector2(2.4, 2.0)
-grass_height = 0.26
 tufts_per_square_meter = 9.0
 leaves_per_square_meter = 0.0
+grass_height = 0.26
 wind_strength = 0.055
 wind_speed = 0.7
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
 
-[node name="WinterSedge6" parent="Scenery/WinterFoliage" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
-position = Vector3(3.06, 0, 4.75)
+[node name="WinterSedge6" parent="Scenery/WinterFoliage" index="42" unique_id=1788665537 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("winter_grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.06, 0, 4.75)
 recall_anchor = NodePath("../ClearingGrove")
 recall_enabled = true
 palette_preset = 0
-patch_seed = 19846
+palette = ExtResource("winter_evergreen")
 patch_size = Vector2(2.15, 1.36)
-grass_height = 0.19
+patch_seed = 19846
 tufts_per_square_meter = 9.0
 leaves_per_square_meter = 0.0
+grass_height = 0.19
 wind_strength = 0.055
 wind_speed = 0.7
-react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../../SweetHut"), NodePath("../../CiderHut"), NodePath("../../AcousticStage")])
-palette = ExtResource("winter_evergreen")
 
-[node name="ClearingGrove" type="Marker3D" parent="Scenery/WinterFoliage"]
-position = Vector3(0, 0, 2.2)
+[node name="ClearingGrove" type="Marker3D" parent="Scenery/WinterFoliage" index="43" unique_id=1920294079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.2)
+
+[node name="Fragment" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+contrast = 1
+fragment_seed = 1220
+note_title = "Under the lights, listening together"
+notes = Array[String](["Placeholder: Write your memory of the music, Christmas tree, and lights here."])

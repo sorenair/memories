@@ -75,6 +75,7 @@ foam_width = 0.06
 foam_cell_size = 1.0
 
 [node name="WestLane" parent="Scenery" instance=ExtResource("paving")]
+surface_render_priority = -10
 paving_seed = 140180
 irregularity = 0.5
 curve = SubResource("WestStoneCurve")
@@ -307,6 +308,7 @@ react_to_explorers = true
 sprays_per_mass = 42
 
 [node name="EastLane" parent="Scenery" instance=ExtResource("paving")]
+surface_render_priority = -10
 paving_seed = 140399
 irregularity = 0.5
 curve = SubResource("EastStoneCurve")

@@ -1,19 +1,19 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene format=3 uid="uid://84kn6likjsyq"]
 
-[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
-[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="AudioStream" uid="uid://bkp2h00cuatg4" path="res://audio/samples/autumn_wind.wav" id="bed"]
+[ext_resource type="PackedScene" uid="uid://xih5rwxndq63" path="res://components/scenery/boulders/painterly_boulder.tscn" id="boulder"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
-[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
-[ext_resource type="Resource" path="res://scenes/memories/postcard_cabin/winter_pines.tres" id="pines"]
 [ext_resource type="PackedScene" path="res://components/buildings/postcard_cabin/painterly_postcard_cabin.tscn" id="cabin"]
 [ext_resource type="PackedScene" path="res://components/scenery/camp/adirondack/painterly_adirondack_chair.tscn" id="chair"]
-[ext_resource type="PackedScene" path="res://components/scenery/camp/fire_pit/painterly_sculpted_fire_pit.tscn" id="pit"]
-[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
-[ext_resource type="AudioStream" path="res://audio/samples/autumn_wind.wav" id="bed"]
-[ext_resource type="AudioStream" path="res://audio/samples/cabin_fire_crackle.wav" id="crackle"]
-[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="boulder"]
-[ext_resource type="Script" path="res://components/scenery/boulders/stone_palette.gd" id="stone_palette"]
+[ext_resource type="AudioStream" uid="uid://cu2wgmncplb02" path="res://audio/samples/cabin_fire_crackle.wav" id="crackle"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
 [ext_resource type="PackedScene" path="res://components/lighting/painted_light/painterly_light_pattern.tscn" id="painted_light"]
+[ext_resource type="Resource" path="res://scenes/memories/postcard_cabin/winter_pines.tres" id="pines"]
+[ext_resource type="PackedScene" path="res://components/scenery/camp/fire_pit/painterly_sculpted_fire_pit.tscn" id="pit"]
+[ext_resource type="Script" uid="uid://laosb5g2xxqb" path="res://components/scenery/boulders/stone_palette.gd" id="stone_palette"]
+[ext_resource type="PackedScene" uid="uid://1t6fd5lxbf2u" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+[ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 
 [sub_resource type="Resource" id="FrostSlate"]
 script = ExtResource("stone_palette")
@@ -22,7 +22,7 @@ shadow_color = Color(0.45, 0.53, 0.58, 1)
 mid_color = Color(0.65, 0.73, 0.76, 1)
 highlight_color = Color(0.93, 0.96, 0.95, 1)
 
-[node name="CabinClearing" instance=ExtResource("zone")]
+[node name="CabinClearing" unique_id=571990585 instance=ExtResource("zone")]
 zone_id = &"cabin_clearing"
 display_name = "A warm place in the woods"
 ambience_stream = ExtResource("bed")
@@ -30,600 +30,593 @@ ambience_volume_db = -23.0
 ambience_size = Vector2(21, 20)
 ambience_blend_distance = 5.0
 
-[node name="Cabin" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cabin")]
-recall_anchor = NodePath("../Arrival")
-position = Vector3(0.0000, 0.0000, -2.8000)
-rotation_degrees = Vector3(0.0000, 90.0000, 0.0000)
-roof_color = Color(0.90, 0.93, 0.93, 1)
+[node name="Cabin" parent="Scenery" index="0" unique_id=708178050 node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cabin")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, -2.8)
 siding_color = Color(0.25, 0.29, 0.28, 1)
+roof_color = Color(0.9, 0.93, 0.93, 1)
 window_warmth = 0.88
 window_glow = 0.32
+recall_anchor = NodePath("../Arrival")
 recall_enabled = true
 
-[node name="FirePit" parent="Scenery" node_paths=PackedStringArray("recall_anchor", "fire_lights", "crackle") instance=ExtResource("pit")]
-recall_anchor = NodePath("../Arrival")
-position = Vector3(0.0000, 0.0000, 2.7000)
-paint_seed = 21026
-recall_enabled = true
+[node name="FirePit" parent="Scenery" index="1" unique_id=1061476747 node_paths=PackedStringArray("fire_lights", "crackle", "recall_anchor") instance=ExtResource("pit")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.7)
 tap_to_toggle = true
 starts_lit = false
 fire_lights = [NodePath("../FireWarmth"), NodePath("../FirelightOnFurniture")]
 crackle = NodePath("Crackle")
+paint_seed = 21026
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
 
-[node name="Crackle" type="AudioStreamPlayer3D" parent="Scenery/FirePit"]
-position = Vector3(0, 0.25, 0)
+[node name="Crackle" type="AudioStreamPlayer3D" parent="Scenery/FirePit" index="1" unique_id=268405724]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 stream = ExtResource("crackle")
+volume_db = -5.0
 unit_size = 12.0
 max_distance = 36.0
-volume_db = -24.0
 bus = &"Ambience"
 
-[node name="LeftAdirondack" parent="Scenery" instance=ExtResource("chair")]
-position = Vector3(-1.6000, 0.0000, 4.7000)
-rotation_degrees = Vector3(0.0000, 141.3402, 0.0000)
+[node name="LeftAdirondack" parent="Scenery" index="2" unique_id=284111314 instance=ExtResource("chair")]
+transform = Transform3D(-0.7808688, 0, 0.62469506, 0, 1, 0, -0.62469506, 0, -0.7808688, -1.6, 0, 4.7)
 chair_color = Color(0.47, 0.54, 0.51, 1)
 paint_seed = 21254
 recall_enabled = true
 
-[node name="RightAdirondack" parent="Scenery" instance=ExtResource("chair")]
-position = Vector3(1.6000, 0.0000, 4.7000)
-rotation_degrees = Vector3(0.0000, -141.3402, 0.0000)
+[node name="RightAdirondack" parent="Scenery" index="3" unique_id=1484457065 instance=ExtResource("chair")]
+transform = Transform3D(-0.7808688, 0, -0.62469506, 0, 1, 0, 0.62469506, 0, -0.7808688, 1.6, 0, 4.7)
 chair_color = Color(0.58, 0.62, 0.59, 1)
 paint_seed = 21286
 recall_enabled = true
 
-[node name="FireWarmth" parent="Scenery" instance=ExtResource("wash")]
-position = Vector3(0.0000, 0.0850, 2.7000)
+[node name="FireWarmth" parent="Scenery" index="4" unique_id=1449517491 instance=ExtResource("wash")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.085, 2.7)
+recall_enabled = true
 footprint = Vector2(4.7, 4.25)
-light_color = Color(1.0, 0.77, 0.47, 1)
+light_color = Color(1, 0.77, 0.47, 1)
 intensity = 0.28
 softness = 0.9
-motion = 1
-motion_amount = 0.14
-motion_speed = 0.83
 paint_variation = 0.56
-recall_enabled = true
+motion = 1
+motion_speed = 0.83
+motion_amount = 0.14
 
-[node name="PorchWarmth" parent="Scenery" instance=ExtResource("wash")]
-position = Vector3(0, 0.11, 1.12)
-rotation = Vector3(0, -0.15, 0)
+[node name="PorchWarmth" parent="Scenery" index="5" unique_id=2010942594 instance=ExtResource("wash")]
+transform = Transform3D(0.9887711, 0, -0.14943814, 0, 1, 0, 0.14943814, 0, 0.9887711, 0, 0.11, 1.12)
+recall_enabled = true
 footprint = Vector2(3.25, 2.8)
-light_color = Color(1.0, 0.84, 0.59, 1)
+light_color = Color(1, 0.84, 0.59, 1)
 intensity = 0.18
 softness = 0.9
-recall_enabled = true
 
-[node name="FirelightOnFurniture" parent="Scenery" node_paths=PackedStringArray("receivers") instance=ExtResource("painted_light")]
-position = Vector3(0, 0.70, 3.7)
-rotation = Vector3(-0.42, 2.91, 0)
+[node name="FirelightOnFurniture" parent="Scenery" index="6" unique_id=1653707350 node_paths=PackedStringArray("receivers") instance=ExtResource("painted_light")]
+transform = Transform3D(-0.97330207, -0.09359238, 0.20957935, 0, 0.9130889, 0.40776044, -0.22952786, 0.39687407, -0.88871133, 0, 0.7, 3.7)
 receivers = [NodePath("../LeftAdirondack"), NodePath("../RightAdirondack")]
 pattern = 1
-footprint = Vector3(6.8, 4.6, 6.0)
+footprint = Vector3(6.8, 4.6, 6)
 light_color = Color(1, 0.65, 0.36, 1)
-accent_color = Color(0.90, 0.40, 0.18, 1)
+accent_color = Color(0.9, 0.4, 0.18, 1)
 strength = 0.47
 pattern_scale = 1.23
 motion_speed = 1.2
 
-[node name="CabinEdgeStone" parent="Scenery" instance=ExtResource("boulder")]
-position = Vector3(-2.75, 0, -0.85)
-rotation = Vector3(0, -0.31, 0)
+[node name="CabinEdgeStone" parent="Scenery" index="7" unique_id=951460465 instance=ExtResource("boulder")]
+transform = Transform3D(0.95233357, 0, -0.30505863, 0, 1, 0, 0.30505863, 0, 0.95233357, -2.75, 0, -0.85)
+recall_enabled = true
 palette_preset = 0
 palette = SubResource("FrostSlate")
-dimensions = Vector3(1.25, 0.44, 0.89)
 boulder_seed = 21535
 shape_profile = 2
+dimensions = Vector3(1.25, 0.44, 0.89)
 roundness = 0.42
 burial = 0.18
 solid = false
-recall_enabled = true
 
-[node name="CabinEdgeStoneSmall" parent="Scenery" instance=ExtResource("boulder")]
-position = Vector3(-3.27, 0, -1.1)
-rotation = Vector3(0, 0.73, 0)
+[node name="CabinEdgeStoneSmall" parent="Scenery" index="8" unique_id=1925477623 instance=ExtResource("boulder")]
+transform = Transform3D(0.7451744, 0, 0.66686964, 0, 1, 0, -0.66686964, 0, 0.7451744, -3.27, 0, -1.1)
+recall_enabled = true
 palette_preset = 0
 palette = SubResource("FrostSlate")
-dimensions = Vector3(0.65, 0.25, 0.5)
 boulder_seed = 21536
 shape_profile = 2
+dimensions = Vector3(0.65, 0.3, 0.5)
 roundness = 0.42
 burial = 0.18
 solid = false
+
+[node name="Arrival" type="Marker3D" parent="Scenery" index="9" unique_id=1377005645]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
+
+[node name="ClearingTree1" parent="Scenery" index="10" unique_id=1229372202 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7252, 0, 8.3135)
 recall_enabled = true
-
-[node name="Arrival" type="Marker3D" parent="Scenery"]
-position = Vector3(0.0000, 0.0000, 7.0000)
-
-[node name="Fragment" parent="."]
-position = Vector3(-2.2000, 0.0400, 2.2000)
-fragment_seed = 21027
-note_title = "A warm place in the woods"
-notes = Array[String](["Placeholder: Write your memory of the cabin, snowy clearing, and fire together here."])
-[node name="ClearingTree1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(4.7252, 0.0000, 8.3135)
-tree_seed = 21301
+palette_preset = 0
+palette = ExtResource("pines")
 tree_type = 4
+tree_seed = 21301
 tree_height = 2.37
 crown_width = 2.8
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree2" parent="Scenery" index="11" unique_id=1206477081 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.9063, 0, -7.5337)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree2" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(8.9063, 0.0000, -7.5337)
-tree_seed = 21302
 tree_type = 4
+tree_seed = 21302
 tree_height = 2.26
 crown_width = 2.8
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree3" parent="Scenery" index="12" unique_id=853822577 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.092, 0, -2.3871)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree3" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(8.0920, 0.0000, -2.3871)
-tree_seed = 21303
 tree_type = 4
+tree_seed = 21303
 tree_height = 2.46
 crown_width = 2.8
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree4" parent="Scenery" index="13" unique_id=240087736 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0474, 0, -0.4561)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree4" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-7.0474, 0.0000, -0.4561)
-tree_seed = 21304
 tree_type = 4
+tree_seed = 21304
 tree_height = 4.41
 crown_width = 4.2
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree5" parent="Scenery" index="14" unique_id=1579420747 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1369, 0, -3.7178)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree5" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(5.1369, 0.0000, -3.7178)
-tree_seed = 21305
 tree_type = 2
+tree_seed = 21305
 tree_height = 2.38
 crown_width = 2.8
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 0
+wind_strength = 0.025
+
+[node name="ClearingTree6" parent="Scenery" index="15" unique_id=304769877 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9695, 0, -5.8064)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree6" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(2.9695, 0.0000, -5.8064)
-tree_seed = 21306
 tree_type = 4
-tree_height = 4.70
+tree_seed = 21306
+tree_height = 4.7
 crown_width = 4.2
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree7" parent="Scenery" index="16" unique_id=69969845 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.1119, 0, -0.5104)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree7" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(5.1119, 0.0000, -0.5104)
-tree_seed = 21307
 tree_type = 4
+tree_seed = 21307
 tree_height = 2.61
 crown_width = 2.8
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree8" parent="Scenery" index="17" unique_id=2016045226 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9354, 0, 7.8898)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree8" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-3.9354, 0.0000, 7.8898)
-tree_seed = 21308
 tree_type = 4
+tree_seed = 21308
 tree_height = 2.55
 crown_width = 2.8
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree9" parent="Scenery" index="18" unique_id=276932101 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.1763, 0, 6.7115)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree9" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-7.1763, 0.0000, 6.7115)
-tree_seed = 21309
 tree_type = 4
+tree_seed = 21309
 tree_height = 5.15
 crown_width = 4.2
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree10" parent="Scenery" index="19" unique_id=642333845 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0262, 0, 8.1078)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree10" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-6.0262, 0.0000, 8.1078)
-tree_seed = 21310
 tree_type = 2
+tree_seed = 21310
 tree_height = 2.85
 crown_width = 2.8
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 0
+wind_strength = 0.025
+
+[node name="ClearingTree11" parent="Scenery" index="20" unique_id=1285864143 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0882, 0, -8.3831)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree11" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-3.0882, 0.0000, -8.3831)
-tree_seed = 21311
 tree_type = 4
+tree_seed = 21311
 tree_height = 4.65
 crown_width = 4.2
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree12" parent="Scenery" index="21" unique_id=778202122 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3592, 0, -7.902)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree12" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-0.3592, 0.0000, -7.9020)
-tree_seed = 21312
 tree_type = 4
+tree_seed = 21312
 tree_height = 4.47
 crown_width = 4.2
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree13" parent="Scenery" index="22" unique_id=1640519777 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6028, 0, -4.4955)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree13" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-5.6028, 0.0000, -4.4955)
-tree_seed = 21313
 tree_type = 4
+tree_seed = 21313
 tree_height = 4.32
 crown_width = 4.2
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
+wind_strength = 0.025
+
+[node name="ClearingTree14" parent="Scenery" index="23" unique_id=2090433153 instance=ExtResource("tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7257, 0, -0.326)
+recall_enabled = true
 palette_preset = 0
 palette = ExtResource("pines")
-wind_strength = 0.025
-recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTree14" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-3.7257, 0.0000, -0.3260)
-tree_seed = 21314
 tree_type = 4
+tree_seed = 21314
 tree_height = 4.84
 crown_width = 4.2
 trunk_radius = 0.12
 branch_count = 5
 leaf_sprays_per_cluster = 70
-palette_preset = 0
-palette = ExtResource("pines")
 wind_strength = 0.025
+
+[node name="ClearingSnowBush1" parent="Scenery" index="24" unique_id=1229113545 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1998, 0, -4.6252)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-4.1998, 0.0000, -4.6252)
+palette_preset = 5
 bush_seed = 21401
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.55
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush2" parent="Scenery" index="25" unique_id=385740736 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3829, 0, -5.4794)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush2" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(5.3829, 0.0000, -5.4794)
+palette_preset = 5
 bush_seed = 21402
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.58
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush3" parent="Scenery" index="26" unique_id=1701315927 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.6804, 0, -0.665)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush3" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(7.6804, 0.0000, -0.6650)
+palette_preset = 5
 bush_seed = 21403
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.43
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush4" parent="Scenery" index="27" unique_id=1787304115 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.019, 0, -6.6908)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush4" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-8.0190, 0.0000, -6.6908)
+palette_preset = 5
 bush_seed = 21404
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.67
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush5" parent="Scenery" index="28" unique_id=478734180 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.4076, 0, -1.7766)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush5" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-5.4076, 0.0000, -1.7766)
+palette_preset = 5
 bush_seed = 21405
-footprint = Vector2(2.0, 1.9)
-bush_height = 0.50
+footprint = Vector2(2, 1.9)
+bush_height = 0.5
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush6" parent="Scenery" index="29" unique_id=1041532580 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1524, 0, -0.9851)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush6" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-3.1524, 0.0000, -0.9851)
+palette_preset = 5
 bush_seed = 21406
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.52
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush7" parent="Scenery" index="30" unique_id=1470277594 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7754, 0, 8.341)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush7" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-1.7754, 0.0000, 8.3410)
+palette_preset = 5
 bush_seed = 21407
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.59
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush8" parent="Scenery" index="31" unique_id=1110209886 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3859, 0, 5.9579)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush8" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(5.3859, 0.0000, 5.9579)
+palette_preset = 5
 bush_seed = 21408
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.45
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush9" parent="Scenery" index="32" unique_id=26309102 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2692, 0, 2.3976)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush9" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(2.2692, 0.0000, 2.3976)
+palette_preset = 5
 bush_seed = 21409
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.48
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush10" parent="Scenery" index="33" unique_id=206007888 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6386, 0, -6.9613)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush10" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(0.6386, 0.0000, -6.9613)
+palette_preset = 5
 bush_seed = 21410
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.62
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush11" parent="Scenery" index="34" unique_id=1524889975 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7254, 0, 4.7114)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(6.7254, 0.0000, 4.7114)
+palette_preset = 5
 bush_seed = 21411
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.44
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush12" parent="Scenery" index="35" unique_id=905006780 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.8261, 0, -3.8809)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush12" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(8.8261, 0.0000, -3.8809)
+palette_preset = 5
 bush_seed = 21412
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.43
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush13" parent="Scenery" index="36" unique_id=495310208 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4768, 0, 3.2286)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush13" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-4.4768, 0.0000, 3.2286)
+palette_preset = 5
 bush_seed = 21413
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.46
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush14" parent="Scenery" index="37" unique_id=650428492 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2657, 0, -7.5799)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush14" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-2.2657, 0.0000, -7.5799)
+palette_preset = 5
 bush_seed = 21414
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.63
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush15" parent="Scenery" index="38" unique_id=2080047273 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9461, 0, 2.1132)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush15" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-5.9461, 0.0000, 2.1132)
+palette_preset = 5
 bush_seed = 21415
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.46
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush16" parent="Scenery" index="39" unique_id=1780228806 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6458, 0, 6.3084)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush16" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-5.6458, 0.0000, 6.3084)
+palette_preset = 5
 bush_seed = 21416
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.61
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush17" parent="Scenery" index="40" unique_id=998971548 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7633, 0, 2.8348)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush17" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(5.7633, 0.0000, 2.8348)
+palette_preset = 5
 bush_seed = 21417
-footprint = Vector2(2.0, 1.9)
-bush_height = 0.60
+footprint = Vector2(2, 1.9)
+bush_height = 0.6
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush18" parent="Scenery" index="41" unique_id=1919863863 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7778, 0, -8.6796)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush18" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(7.7778, 0.0000, -8.6796)
+palette_preset = 5
 bush_seed = 21418
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.47
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush19" parent="Scenery" index="42" unique_id=636692509 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.7626, 0, -2.4117)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush19" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(8.7626, 0.0000, -2.4117)
+palette_preset = 5
 bush_seed = 21419
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.63
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush20" parent="Scenery" index="43" unique_id=163173742 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.141, 0, -6.2128)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush20" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(3.1410, 0.0000, -6.2128)
+palette_preset = 5
 bush_seed = 21420
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.55
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush21" parent="Scenery" index="44" unique_id=1029983232 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.7182, 0, -5.2208)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush21" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(8.7182, 0.0000, -5.2208)
+palette_preset = 5
 bush_seed = 21421
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.66
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingSnowBush22" parent="Scenery" index="45" unique_id=2123372358 instance=ExtResource("bush")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9824, 0, -6.9186)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingSnowBush22" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-0.9824, 0.0000, -6.9186)
+palette_preset = 5
 bush_seed = 21422
-footprint = Vector2(2.0, 1.9)
+footprint = Vector2(2, 1.9)
 bush_height = 0.42
 mass_count = 3
 sprays_per_mass = 48
-palette_preset = 5
 wind_strength = 0.02
+
+[node name="ClearingTufts1" parent="Scenery" index="46" unique_id=1873525926 instance=ExtResource("grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1998, 0, -4.6252)
 recall_enabled = true
-react_to_explorers = true
-[node name="ClearingTufts1" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-4.1998, 0.0000, -4.6252)
+palette_preset = 5
 patch_size = Vector2(2.4, 2.7)
 patch_seed = 21500
 tufts_per_square_meter = 12.0
 leaves_per_square_meter = 0.0
 grass_height = 0.22
-palette_preset = 5
+
+[node name="ClearingTufts2" parent="Scenery" index="47" unique_id=2146725185 instance=ExtResource("grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1524, 0, -0.9851)
 recall_enabled = true
-react_to_explorer = true
-[node name="ClearingTufts2" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-3.1524, 0.0000, -0.9851)
+palette_preset = 5
 patch_size = Vector2(2.4, 2.7)
 patch_seed = 21501
 tufts_per_square_meter = 12.0
 leaves_per_square_meter = 0.0
 grass_height = 0.22
-palette_preset = 5
+
+[node name="ClearingTufts3" parent="Scenery" index="48" unique_id=1499568553 instance=ExtResource("grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.7254, 0, 4.7114)
 recall_enabled = true
-react_to_explorer = true
-[node name="ClearingTufts3" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(6.7254, 0.0000, 4.7114)
+palette_preset = 5
 patch_size = Vector2(2.4, 2.7)
 patch_seed = 21502
 tufts_per_square_meter = 12.0
 leaves_per_square_meter = 0.0
 grass_height = 0.22
-palette_preset = 5
+
+[node name="ClearingTufts4" parent="Scenery" index="49" unique_id=1390475475 instance=ExtResource("grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6458, 0, 6.3084)
 recall_enabled = true
-react_to_explorer = true
-[node name="ClearingTufts4" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-5.6458, 0.0000, 6.3084)
+palette_preset = 5
 patch_size = Vector2(2.4, 2.7)
 patch_seed = 21503
 tufts_per_square_meter = 12.0
 leaves_per_square_meter = 0.0
 grass_height = 0.22
-palette_preset = 5
+
+[node name="ClearingTufts5" parent="Scenery" index="50" unique_id=1381189805 instance=ExtResource("grass")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.7182, 0, -5.2208)
 recall_enabled = true
-react_to_explorer = true
-[node name="ClearingTufts5" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(8.7182, 0.0000, -5.2208)
+palette_preset = 5
 patch_size = Vector2(2.4, 2.7)
 patch_seed = 21504
 tufts_per_square_meter = 12.0
 leaves_per_square_meter = 0.0
 grass_height = 0.22
-palette_preset = 5
-recall_enabled = true
-react_to_explorer = true
+
+[node name="Fragment" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.04, 2.2)
+fragment_seed = 21027
+note_title = "A warm place in the woods"
+notes = Array[String](["Placeholder: Write your memory of the cabin, snowy clearing, and fire together here."])

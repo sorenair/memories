@@ -47,7 +47,7 @@ palette = ExtResource("water_palette")
 behavior_preset = 3
 block_water_entry = false
 recall_enabled = true
-foam_amount = 0.22
+foam_amount = 0.12
 
 pond_outline = SubResource("BayOutline")
 
@@ -61,9 +61,13 @@ shore_field_quality = 1
 shore_obstacles = Array[NodePath]([NodePath("../Karst1"), NodePath("../Karst2"), NodePath("../Karst3"), NodePath("../Karst4"), NodePath("../Karst5"), NodePath("../Karst6"), NodePath("../Karst7"), NodePath("../Karst8")])
 
 [node name="ShoreApproach" parent="Scenery" instance=ExtResource("path")]
-visible = false
 curve = SubResource("ShoreApproachCurve")
-path_width = 2.5
+path_width = 2.4
+paving_color = Color(0.724, 0.701, 0.576, 1)
+shoulder_color = Color(0.68, 0.70, 0.53, 1)
+end_fade = Vector2(0.88, 0.94)
+edge_softness = 0.58
+detail_density = 0.2
 collision_enabled = false
 
 [node name="ShoreTurn" type="Marker3D" parent="Scenery"]

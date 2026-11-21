@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bp1aax4avwim5"]
+
+[ext_resource type="Script" uid="uid://5sdorsqdefbq" path="res://audio/menu_music.gd" id="1"]
+[ext_resource type="AudioStream" uid="uid://bh8ult6v1bccx" path="res://audio/music/music_jtldm.mp3" id="2_wmabl"]
+[ext_resource type="AudioStream" uid="uid://c5ybhrol86rpo" path="res://audio/music/music_odetoviv.mp3" id="3_83l8n"]
+[ext_resource type="AudioStream" uid="uid://cae8uyc5r5du" path="res://audio/music/music_rdtf.mp3" id="4_xmg0l"]
+
+[node name="MenuMusic" type="AudioStreamPlayer" unique_id=639076438]
+volume_db = -6.0
+script = ExtResource("1")
+playlist = Array[AudioStream]([ExtResource("2_wmabl"), ExtResource("3_83l8n"), ExtResource("4_xmg0l")])

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/scenery/vietnam/monuments/painterly_vietnam_flagpole.gd" id="pole"]
+
+[node name="VietnamFlagpole" type="Node3D"]
+script = ExtResource("pole")
+body_color = Color(0.65, 0.66, 0.61, 1)
+accent_color = Color(0.35, 0.39, 0.37, 1)
+trim_color = Color(0.78, 0.66, 0.42, 1)

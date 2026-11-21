@@ -1,5 +1,5 @@
 extends SceneTree
-## Walk the shrine and temple verandas, forest paths and crowded city crossing.
+## Walk the Old Quarter, the island bridge and the bay lookout in both directions.
 const WORLD := "res://scenes/world/northern_vietnam_world.tscn"
 var failures := 0
 class WalkingInput extends Node:
@@ -109,6 +109,8 @@ func run() -> void:
 	check(world.get_node("GuidanceController").request_guidance(),"The second requested hint must cross the bridge to the island")
 	check(await walk_to(player,Vector3(0,0,5)),"Old Quarter exit must remain clear")
 	var lake_trail: PainterlyCurvedPath = zones[0].get_node("Scenery/ToLake")
+	check(lake_trail.visible and lake_trail.end_fade.y > 4.0,"The street turn should show a visible path with a soft lake-side end")
+	await capture("old-quarter-exit")
 	await walk_trail(player,lake_trail,0,0.88)
 	await capture("lake-connector")
 	await walk_trail(player,lake_trail,0.88,1)
@@ -119,17 +121,28 @@ func run() -> void:
 	await capture("lake-arrival")
 	await walk_trail(player,zones[1].get_node("Scenery/LakeWalk"),0,1)
 	var bridge: PainterlyRedBridge = zones[1].get_node("Scenery/RedBridge")
-	for z in [4.5,2.5,0.0,-2.5,-4.5]:
+	var lake_water: PainterlyWater = zones[1].get_node("Scenery/Lake")
+	var shore_outline := PackedVector2Array()
+	for point in lake_water.get_ground_outline():
+		shore_outline.append(Vector2(point.x, point.z))
+	var shore: Vector3 = bridge.get_anchor(&"Shore").global_position
+	check(not Geometry2D.is_point_in_polygon(Vector2(shore.x, shore.z), shore_outline),"The bridge deck must start on dry ground")
+	var bench: Node3D = zones[1].get_node("Scenery/PromenadeBench1")
+	var toward_water := (lake_water.global_position - bench.global_position).normalized()
+	check(bench.global_basis.z.dot(toward_water) > 0.8,"The shore bench must face the lake")
+	var span := bridge.bridge_length * 0.5 - 0.12
+	for z in [span,4.5,2.5,0.0,-2.5,-4.5,-span]:
 		check(await walk_to(player,bridge.to_global(Vector3(0,0,z))),"The real explorer must cross the arched deck")
 		check(absf(player.global_position.y-bridge.surface_height(z))<0.12,"The bridge must support its actual curved surface")
 	check(await walk_to(player,zones[1].get_fragment().global_position),"The island note must be accessible beyond the bridge")
 	await create_timer(2.0).timeout
 	check(absf(camera.size - 4.7) < 0.15,"The island note should restore the everyday walking zoom")
 	await capture("island-temple")
+	check(zones[1].get_node("Scenery/MoonGate").get_recall_controller().progress > 0.99,"The arched moon gate should be present on the island approach")
 	await read_fragment(world,zones[1].get_fragment())
 	check(world.get_node("GuidanceController").request_guidance(),"The final hint must return over the bridge and continue to the bay")
-	for z in [-4.5,-2.5,0.0,2.5,4.5]: check(await walk_to(player,bridge.to_global(Vector3(0,0,z))),"Bridge must be walkable in reverse")
-	check(await walk_to(player,Vector3(18,0,3)),"The shoreline join must stay supported")
+	for z in [-span,-4.5,-2.5,0.0,2.5,4.5,span]: check(await walk_to(player,bridge.to_global(Vector3(0,0,z))),"Bridge must be walkable in reverse")
+	await walk_trail(player,zones[1].get_node("Scenery/LakeWalk"),1,0)
 	var bank_trail: PainterlyCurvedPath = zones[1].get_node("Scenery/ToBay")
 	await walk_trail(player,bank_trail,0,0.51)
 	await create_timer(1.7).timeout

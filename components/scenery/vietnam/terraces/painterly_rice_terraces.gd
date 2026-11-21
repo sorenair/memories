@@ -35,6 +35,17 @@ const RICE_PAINT = preload("res://components/scenery/vietnam/terraces/rice_paint
 			if curve and not curve.changed.is_connected(_request_rebuild):
 				curve.changed.connect(_request_rebuild)
 		_request_rebuild()
+## Optional closed, level contours for dry ground between flooded plots.
+@export var dry_clearings: Array[Curve3D] = []:
+	set(value):
+		for curve in dry_clearings:
+			if curve and curve.changed.is_connected(_request_rebuild):
+				curve.changed.disconnect(_request_rebuild)
+		dry_clearings = value
+		for curve in dry_clearings:
+			if curve and not curve.changed.is_connected(_request_rebuild):
+				curve.changed.connect(_request_rebuild)
+		_request_rebuild()
 ## Connected walkable path curves. The earthen bank supports their visible tread.
 @export var bund_paths: Array[PainterlyCurvedPath] = []:
 	set(value):
@@ -67,7 +78,7 @@ func _build_geometry() -> Dictionary:
 			if bund.is_empty() or not bund[-1].is_equal_approx(local_point):
 				bund.append(local_point)
 	var width := bund_paths[0].path_width if not bund_paths.is_empty() and bund_paths[0] else 1.7
-	var result: Dictionary = TERRACES.new().paddies(_config_with_shape(), paddy_contours, bund, width)
+	var result: Dictionary = TERRACES.new().paddies(_config_with_shape(), paddy_contours, bund, width, dry_clearings)
 	_paddy_faces = result.terrain_faces
 	return result
 
@@ -82,6 +93,7 @@ func _build_details() -> void:
 	var body := StaticBody3D.new()
 	body.name = "PaddyBanks"
 	var collider := CollisionShape3D.new()
+	collider.name = "TerraceSoil"
 	collider.shape = shape
 	body.add_child(collider)
 	_generated_root.add_child(body)
