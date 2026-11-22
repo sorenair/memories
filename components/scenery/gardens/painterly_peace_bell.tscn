@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://ig7l30knwlyd"]
+
+[ext_resource type="AudioStream" uid="uid://c5fggsl36smep" path="res://audio/sfx/sfx_gong.mp3" id="2_vn2u3"]
+[ext_resource type="Script" uid="uid://cbb0wnjtjlsaf" path="res://components/scenery/gardens/painterly_peace_bell.gd" id="bell"]
+
+[node name="PainterlyPeaceBell" type="Node3D" unique_id=840483179]
+script = ExtResource("bell")
+strike_sound = ExtResource("2_vn2u3")
+body_color = Color(0.6, 0.26, 0.185, 1)
+accent_color = Color(0.36, 0.36, 0.325, 1)
+trim_color = Color(0.54, 0.53, 0.45, 1)

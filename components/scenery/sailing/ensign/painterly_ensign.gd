@@ -1,21 +1,26 @@
 @tool
 class_name PainterlyEnsign
 extends PainterlyConcertComponent
-## A scenic Pearson Ensign day-sailer. Origin is waterline; bow is local +Z.
+## Shared scenic sailboat controls. Origin is waterline; bow is local +Z.
 const BUILDER = preload("res://components/scenery/sailing/shared/sailing_geometry.gd")
 const BOAT_PAINT = preload("res://components/scenery/sailing/shared/sailing_paint.gdshader")
-@export_group("Ensign Proportions")
-@export_range(5.5, 8.0, 0.05) var hull_length: float = 6.86:
+@export_group("Hull Proportions")
+@export_enum("Pearson Ensign", "Club 420") var hull_style: int = 0:
 	set(value):
-		hull_length = clampf(value, 5.5, 8)
+		hull_style = value
 		_request_rebuild()
-@export_range(1.8, 2.6, 0.05) var beam: float = 2.13:
+		notify_property_list_changed()
+@export_range(3.8, 8.0, 0.05) var hull_length: float = 6.86:
 	set(value):
-		beam = clampf(value, 1.8, 2.6)
+		hull_length = clampf(value, 3.8, 8)
 		_request_rebuild()
-@export_range(6.0, 9.5, 0.1) var mast_height: float = 7.9:
+@export_range(1.45, 2.6, 0.05) var beam: float = 2.13:
 	set(value):
-		mast_height = clampf(value, 6, 9.5)
+		beam = clampf(value, 1.45, 2.6)
+		_request_rebuild()
+@export_range(5.0, 9.5, 0.1) var mast_height: float = 7.9:
+	set(value):
+		mast_height = clampf(value, 5, 9.5)
 		_request_rebuild()
 @export_group("Boat Colors")
 @export var hull_color := Color("e4e2cf"):
@@ -72,15 +77,17 @@ var _visual_time: float = -1.0
 
 func _boat_config() -> Dictionary:
 	var c := _config()
-	c.merge({"hull_length": hull_length, "beam": beam, "mast_height": mast_height, "hull_color": hull_color, "deck_color": deck_color, "keel_color": keel_color, "sail_color": sail_color, "wood_color": wood_color, "sail_angle": sail_angle, "sail_fullness": sail_fullness, "fenders_enabled": fenders_enabled})
+	c.merge({"dinghy": hull_style == 1, "hull_length": hull_length, "beam": beam, "mast_height": mast_height, "hull_color": hull_color, "deck_color": deck_color, "keel_color": keel_color, "sail_color": sail_color, "wood_color": wood_color, "sail_angle": sail_angle, "sail_fullness": sail_fullness, "fenders_enabled": fenders_enabled})
 	return c
 
 func _validate_property(property: Dictionary) -> void:
-	if property.name in ["body_color", "accent_color"]:
+	if property.name == "body_color" or (property.name == "accent_color" and hull_style == 0):
 		property.usage &= ~PROPERTY_USAGE_EDITOR
 
 func _build_geometry() -> Dictionary:
-	return BUILDER.new().hull(_boat_config())
+	var builder := BUILDER.new()
+	var config := _boat_config()
+	return builder.dinghy(config) if hull_style == 1 else builder.hull(config)
 
 func _build_details() -> void:
 	_add_visual("Rigging", BUILDER.new().rig(_boat_config()).mesh)

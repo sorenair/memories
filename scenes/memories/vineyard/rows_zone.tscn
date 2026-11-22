@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/flowers/painterly_flower_patch.tscn" id="flowers"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paths/field_track.tscn" id="path"]
 [ext_resource type="Resource" path="res://scenes/memories/vineyard/vine_leaves.tres" id="leaves"]
+[ext_resource type="Resource" path="res://scenes/memories/vineyard/row_grass.tres" id="row_ground"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="wind"]
 
 [ext_resource type="PackedScene" path="res://components/scenery/vineyard/painterly_grapevine.tscn" id="vine"]
@@ -24,15 +24,8 @@ ambience_volume_db = -25.0
 ambience_size = Vector2(24,27)
 ambience_blend_distance = 4.0
 
-[node name="Trail" parent="Scenery" instance=ExtResource("path")]
+[node name="AisleRoute" type="Path3D" parent="Scenery"]
 curve = SubResource("VineTrail")
-path_width = 2.15
-paving_color = Color(0.80, 0.69, 0.51, 1)
-shoulder_color = Color(0.64, 0.65, 0.47, 1)
-width_variation = 0.17
-irregularity = 0.75
-end_fade = Vector2(1.35, 1.7)
-edge_softness = 0.35
 
 [node name="Trellis1" parent="Scenery" instance=ExtResource("detail")]
 position = Vector3(-9.4000, 0.0000, 2.0000)
@@ -359,134 +352,226 @@ foliage_palette = ExtResource("leaves")
 recall_enabled = true
 
 [node name="RowGrass1" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-7.6000, 0.0030, 8.5000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(-7.7, 0.003, 7.6)
+rotation = Vector3(0, -0.07, 0)
+patch_size = Vector2(4.75, 11.2)
 patch_seed = 801400
-grass_height = 0.19
-tufts_per_square_meter = 6
-leaves_per_square_meter = 18
+grass_height = 0.26
+tufts_per_square_meter = 15
+leaves_per_square_meter = 24
+ground_leaf_scale = 0.53
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass2" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-7.6000, 0.0030, -1.8000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(-7.35, 0.003, -0.6)
+rotation = Vector3(0, 0.03, 0)
+patch_size = Vector2(4.6, 10.6)
 patch_seed = 801401
-grass_height = 0.19
-tufts_per_square_meter = 6
-leaves_per_square_meter = 18
+grass_height = 0.24
+tufts_per_square_meter = 15
+leaves_per_square_meter = 21
+ground_leaf_scale = 0.58
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass3" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-4.0000, 0.0030, 8.5000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(-4.35, 0.003, 7.75)
+rotation = Vector3(0, 0.08, 0)
+patch_size = Vector2(4.65, 11.5)
 patch_seed = 801402
-grass_height = 0.19
-tufts_per_square_meter = 6
-leaves_per_square_meter = 18
+grass_height = 0.32
+tufts_per_square_meter = 16
+leaves_per_square_meter = 24
+ground_leaf_scale = 0.59
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass4" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-4.0000, 0.0030, -1.8000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(-3.8, 0.003, -0.75)
+rotation = Vector3(0, -0.05, 0)
+patch_size = Vector2(4.85, 11.3)
 patch_seed = 801403
-grass_height = 0.19
-tufts_per_square_meter = 6
-leaves_per_square_meter = 18
+grass_height = 0.25
+tufts_per_square_meter = 18
+leaves_per_square_meter = 22
+ground_leaf_scale = 0.51
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass5" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(0.0000, 0.0030, 8.5000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(0.04, 0.003, 12.1)
+rotation = Vector3(0, -0.06, 0)
+patch_size = Vector2(4.8, 8.3)
 patch_seed = 801404
-grass_height = 0.125
-tufts_per_square_meter = 4
-ground_leaf_scale = 0.48
-leaves_per_square_meter = 8
+grass_height = 0.19
+tufts_per_square_meter = 33
+leaves_per_square_meter = 25
+ground_leaf_scale = 0.37
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass6" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(0.0000, 0.0030, -1.8000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(-0.02, 0.003, 5.8)
+rotation = Vector3(0, 0.06, 0)
+patch_size = Vector2(5.05, 9.3)
 patch_seed = 801405
-grass_height = 0.125
-tufts_per_square_meter = 4
-ground_leaf_scale = 0.48
-leaves_per_square_meter = 8
+grass_height = 0.23
+tufts_per_square_meter = 35
+leaves_per_square_meter = 30
+ground_leaf_scale = 0.37
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass7" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(4.0000, 0.0030, 8.5000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(3.86, 0.003, 7.7)
+rotation = Vector3(0, -0.08, 0)
+patch_size = Vector2(4.75, 11.1)
 patch_seed = 801406
-grass_height = 0.19
-tufts_per_square_meter = 6
-leaves_per_square_meter = 18
+grass_height = 0.28
+tufts_per_square_meter = 18
+leaves_per_square_meter = 27
+ground_leaf_scale = 0.56
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass8" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(4.0000, 0.0030, -1.8000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(3.93, 0.003, -0.55)
+rotation = Vector3(0, 0.08, 0)
+patch_size = Vector2(5.05, 11.25)
 patch_seed = 801407
-grass_height = 0.19
-tufts_per_square_meter = 6
-leaves_per_square_meter = 18
+grass_height = 0.29
+tufts_per_square_meter = 17
+leaves_per_square_meter = 24
+ground_leaf_scale = 0.54
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass9" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(7.6000, 0.0030, 8.5000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(7.48, 0.003, 7.5)
+rotation = Vector3(0, 0.09, 0)
+patch_size = Vector2(4.75, 11.7)
 patch_seed = 801408
-grass_height = 0.19
-tufts_per_square_meter = 6
-leaves_per_square_meter = 18
+grass_height = 0.27
+tufts_per_square_meter = 14
+leaves_per_square_meter = 25
+ground_leaf_scale = 0.52
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 
 [node name="RowGrass10" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(7.6000, 0.0030, -1.8000)
-patch_size = Vector2(2.8000, 8.2000)
+position = Vector3(7.84, 0.003, -0.35)
+rotation = Vector3(0, -0.04, 0)
+patch_size = Vector2(5.2, 10.3)
 patch_seed = 801409
-grass_height = 0.19
-tufts_per_square_meter = 6
-leaves_per_square_meter = 18
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.56
 palette_preset = 0
-palette = ExtResource("leaves")
-ground_exclusions = Array[NodePath]([NodePath("../Trail")])
+palette = ExtResource("row_ground")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass11" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-0.02, 0.003, -0.42)
+rotation = Vector3(0, -0.1, 0)
+patch_size = Vector2(5.02, 9.3)
+patch_seed = 801410
+grass_height = 0.21
+tufts_per_square_meter = 33
+leaves_per_square_meter = 27
+ground_leaf_scale = 0.37
+palette_preset = 0
+palette = ExtResource("row_ground")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass12" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-0.04, 0.003, -6.4)
+rotation = Vector3(0, 0.1, 0)
+patch_size = Vector2(4.58, 8.25)
+patch_seed = 801411
+grass_height = 0.18
+tufts_per_square_meter = 34
+leaves_per_square_meter = 24
+ground_leaf_scale = 0.37
+palette_preset = 0
+palette = ExtResource("row_ground")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass13" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-2.64, 0.003, -8.35)
+rotation = Vector3(0, -0.33, 0)
+patch_size = Vector2(3.8, 3.6)
+patch_seed = 801412
+grass_height = 0.27
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.51
+palette_preset = 0
+palette = ExtResource("row_ground")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass14" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(2.55, 0.003, -8.9)
+rotation = Vector3(0, 0.28, 0)
+patch_size = Vector2(3.45, 3.95)
+patch_seed = 801413
+grass_height = 0.3
+tufts_per_square_meter = 19
+leaves_per_square_meter = 22
+ground_leaf_scale = 0.57
+palette_preset = 0
+palette = ExtResource("row_ground")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass15" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.23, 0.003, 12.4)
+rotation = Vector3(0, 0.28, 0)
+patch_size = Vector2(4.3, 4.75)
+patch_seed = 801414
+grass_height = 0.25
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.53
+palette_preset = 0
+palette = ExtResource("row_ground")
+recall_enabled = true
+react_to_explorer = true
+
+[node name="RowGrass16" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.22, 0.003, 12.3)
+rotation = Vector3(0, -0.3, 0)
+patch_size = Vector2(3.55, 4.3)
+patch_seed = 801415
+grass_height = 0.28
+tufts_per_square_meter = 18
+leaves_per_square_meter = 21
+ground_leaf_scale = 0.52
+palette_preset = 0
+palette = ExtResource("row_ground")
 recall_enabled = true
 react_to_explorer = true
 

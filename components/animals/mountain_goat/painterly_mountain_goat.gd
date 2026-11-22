@@ -19,6 +19,11 @@ const GOAT_PAINT = preload("res://components/animals/mountain_goat/mountain_goat
 		horn_length = clampf(value,0.6,1.4)
 		_request_rebuild()
 @export_group("Idle")
+## Cycle through scanning and grazing while keeping the preferred pose as a bias.
+@export var varied_idle := false:
+	set(value):
+		varied_idle = value
+		_apply_material()
 @export_enum("Relaxed", "Alert", "Grazing") var idle_pose: int = 0:
 	set(value):
 		idle_pose = clampi(value,0,2)
@@ -53,6 +58,7 @@ func _apply_material() -> void:
 	if not _material: return
 	_material.shader = GOAT_PAINT
 	super._apply_material()
+	_material.set_shader_parameter("varied_idle",varied_idle)
 	_material.set_shader_parameter("idle_motion",idle_motion)
 	_material.set_shader_parameter("idle_speed",idle_speed)
 	_material.set_shader_parameter("pose_mode",idle_pose)
@@ -61,6 +67,7 @@ func _apply_material() -> void:
 	_material.set_shader_parameter("neck_blend",Vector2(0.84,1.37))
 	_material.set_shader_parameter("ear_pivot",Vector3(0.115,1.485,0.855))
 	_material.set_shader_parameter("tail_pivot",Vector3(0,0.98,-0.79))
+	_material.set_shader_parameter("jaw_pivot",Vector3(0,1.29,1.04))
 	_material.set_shader_parameter("breath_height",Vector2(0.35,1.0))
 	_material.set_shader_parameter("grazing_angle",1.15)
 	_material.set_shader_parameter("alert_angle",-0.075)

@@ -1,5 +1,5 @@
 extends SceneTree
-## Exercise the snowy hike, frozen water and safe fireside/cabin approaches.
+## Walk the planted aisles and check the raised deck and field reveal.
 const WORLD := "res://scenes/world/vineyard_world.tscn"
 var failures := 0
 class WalkingInput extends Node:
@@ -40,9 +40,9 @@ func capture(name: String) -> void:
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png("res://docs/previews/vineyard-"+name+".png")
 
-func walk_trail(player: MemoryExplorer,trail: PainterlyCurvedPath,from: float,to: float) -> void:
-	var length := trail.get_path_length()
-	var end := trail.to_global(trail.point_at(length*to))
+func walk_trail(player: MemoryExplorer,trail: Path3D,from: float,to: float) -> void:
+	var length := trail.curve.get_baked_length()
+	var end := trail.to_global(trail.curve.sample_baked(length*to, true))
 	var direction := signf(to-from)
 	var entry_captured := false
 	for frame in 2400:
@@ -52,10 +52,10 @@ func walk_trail(player: MemoryExplorer,trail: PainterlyCurvedPath,from: float,to
 		if remaining.length()<0.09:
 			driver.axis = Vector2.ZERO
 			for settle in 8: await physics_frame
-			check(player.is_on_floor(),"The curved path must support both directions")
+			check(player.is_on_floor(),"The planted aisle must support both directions")
 			return
 		var lookahead := clampf(distance+direction*0.65,minf(from,to)*length,maxf(from,to)*length)
-		var target := trail.to_global(trail.point_at(lookahead))
+		var target := trail.to_global(trail.curve.sample_baked(lookahead, true))
 		var offset := Vector2(target.x-player.global_position.x,target.z-player.global_position.z)
 		driver.axis = offset.normalized()*minf(1.0,remaining.length()*1.25)
 		if not entry_captured and from==0.0 and distance>length*0.25:
@@ -85,7 +85,7 @@ func run() -> void:
 	var memory: MemoryScene = world.get_node("Memory")
 	var zones := memory.get_zones()
 	var floor: MemoryPlatform = memory.get_node("Environment/VineyardFloor")
-	var trail: PainterlyCurvedPath = memory.get_node("Zones/Rows/Scenery/Trail")
+	var trail: Path3D = memory.get_node("Zones/Rows/Scenery/AisleRoute")
 	var camera: Camera3D = world.get_node("CameraRig/Camera3D")
 	check(memory.memory_id==&"vineyard" and zones.size()==2,"Vineyard must have two standard zones and its own LAN identity")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both avatars must have supported arrivals between the grape rows")
@@ -106,7 +106,7 @@ func run() -> void:
 	var deck: PainterlyStage = zones[1].get_node("Scenery/TimberDeck")
 	check(deck.edge_finish==1 and deck._collision_data.size()>=2,"The reused stage must supply a timber finish and supported ramp/deck")
 	for point in [Vector3(0,0,-12.3),Vector3(0,0,-13.7),Vector3(0,0,-15.35),Vector3(-1.5,0,-15.35)]:
-		check(await walk_to(player,point),"The vine path, ramp, deck and note must join without a blocking seam")
+		check(await walk_to(player,point),"The grassy aisle, ramp, deck and note must join without a blocking seam")
 	check(player.global_position.y>0.5,"The explorer must stand on the raised wooden deck")
 	await create_timer(1.0).timeout
 	check(camera.size>5.0 and camera.size<5.4,"The deck's first pause should remain intimate")

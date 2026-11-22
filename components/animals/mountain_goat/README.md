@@ -18,6 +18,7 @@ soft toon shading as the elk.
 | Prop Seed | Small changes to proportions, stance, coat tone, horn asymmetry and idle phase. |
 | Body / Accent / Trim Color | White coat, cool underside/inner-ear tint, and dark horns/nose/eyes/hooves. |
 | Idle Pose | Relaxed, alert or grazing. |
+| Varied Idle | Cycle through scanning, grazing and chewing with a seed-dependent offset. Idle Pose biases how long each animal grazes. |
 | Idle Motion / Speed | Gentle breathing, slow head turns/nods, independent ear flicks and occasional tail movement. Zero motion holds the selected pose. |
 
 Duplicate the component with a few different seeds/sizes/poses for a small group.
@@ -32,14 +33,13 @@ hair strands. Shape reference: [Colorado Parks and Wildlife mountain goat](https
 
 The goat reuses the elk builder's smooth curves, sweeps, ellipsoids, vertex paint
 and articulated part encoding. Both animals share
-`animals/shared/quadruped_paint.gdshaderinc`, with species-specific neck/ear/tail
-pivots and grazing angles. Elk defaults retain their existing behavior.
+`animals/shared/quadruped_paint.gdshaderinc`, with species-specific neck, ear, jaw and tail pivots and grazing angles.
 
 The feet stay planted. Neck/head, horns, eyes, ears and beard move together in the
 shader, with no per-frame CPU animation or mesh uploads. `seek_time(seconds)`
 supports deterministic previews; a negative value resumes live shader time.
 
-One opaque mesh (about **10.6k triangles** at default fluff), plus an optional soft
+One opaque mesh (about **10.9k triangles** at default fluff), plus an optional soft
 contact shadow. Motion-aware bounds include the grazing pose and maximum horns.
 Collision is one coarse torso box; horns and individual legs have no collision.
 Collision, shadow, visibility distance, pigment and optional assembled recall use

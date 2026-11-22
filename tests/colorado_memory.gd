@@ -165,7 +165,7 @@ func run() -> void:
 	check(absf(camera.size-8.8)<.4 and zones[1].ambience.playing,"The summit should open just enough to show the goats")
 	for name in ["Goat1","Goat2","Goat3"]:
 		var goat: PainterlyMountainGoat=zones[1].get_node("Scenery/"+name)
-		check(goat.get_recall_controller().progress>.99 and goat.idle_motion>0 and not goat.is_processing(),"All three goats must recall and use their existing shader-driven idles")
+		check(goat.get_recall_controller().progress>.99 and goat.idle_motion>0 and goat.varied_idle and not goat.is_processing(),"All three goats must recall and cycle through shader-driven idles")
 		var hooves := goat.global_position
 		var ray := PhysicsRayQueryParameters3D.create(hooves + Vector3.UP * 0.2, hooves - Vector3.UP * 0.2)
 		var support := goat.get_world_3d().direct_space_state.intersect_ray(ray)
@@ -188,7 +188,7 @@ func run() -> void:
 	var herd: PainterlyElkHerd=zones[2].get_node("Scenery/ElkHerd")
 	check(absf(camera.size-16.5)<.4 and zones[2].ambience.playing,"The forest lake should have its own animal/shore view and ambient bed")
 	check(water.get_recall_controller().progress>.99 and herd.get_recall_controller().progress>.99,"The lake and whole herd must recall from the reachable bank")
-	check(herd.generated_count==7 and not herd.is_processing() and herd.idle_motion>0,"The meadow must contain a spaced herd of seven using instanced idle motion")
+	check(herd.generated_count==7 and not herd.is_processing() and herd.idle_motion>0 and herd.varied_idle,"The meadow must contain a spaced herd of seven using varied instanced idles")
 	for placement in herd.placements:
 		var at:=herd.to_global(placement.transform.origin)
 		var p:=water.to_local(at)

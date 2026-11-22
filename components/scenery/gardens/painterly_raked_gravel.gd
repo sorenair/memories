@@ -8,6 +8,10 @@ const RAKE = preload("res://components/scenery/gardens/raked_gravel.gdshader")
 	set(value):
 		footprint = value.clamp(Vector2(3,3),Vector2(24,24))
 		_request_rebuild()
+@export_range(0.0, 0.20, 0.01) var rim_variation := 0.04:
+	set(value):
+		rim_variation = value
+		_request_rebuild()
 @export var rock_centers := PackedVector2Array([Vector2(-2.2,-.9),Vector2(1.6,1.0),Vector2(3.2,-2.1)]):
 	set(value):
 		rock_centers = value
@@ -20,9 +24,14 @@ const RAKE = preload("res://components/scenery/gardens/raked_gravel.gdshader")
 	set(value):
 		rake_strength = value
 		_update_rakes()
+@export var edge_color := Color(0.973, 0.971, 0.950):
+	set(value):
+		edge_color = value
+		_update_rakes()
 func _build_geometry() -> Dictionary:
 	var c := _config()
 	c.footprint = footprint
+	c.rim_variation = rim_variation
 	return GARDEN.new().gravel(c)
 func _apply_material() -> void:
 	if _material: _material.shader = RAKE
@@ -36,12 +45,19 @@ func _update_rakes() -> void:
 	_material.set_shader_parameter("rake_spacing",rake_spacing)
 	_material.set_shader_parameter("rake_strength",rake_strength)
 	_material.set_shader_parameter("footprint",footprint)
+	_material.set_shader_parameter("edge_color",edge_color)
+	_material.set_shader_parameter("rim_variation",rim_variation)
+
+func _rim_scale(angle: float) -> float:
+	return GARDEN.gravel_rim(angle, float(posmod(prop_seed, 997)) * 0.071, rim_variation)
+
 func excludes_ground_point(world_point: Vector3) -> bool:
 	var p := to_local(world_point)
-	return Vector2(p.x/(footprint.x*.5),p.z/(footprint.y*.5)).length()<.97
+	var scaled := Vector2(p.x, p.z) / (footprint * 0.5)
+	return scaled.length() < _rim_scale(scaled.angle()) * 0.97
 func get_ground_outline() -> PackedVector3Array:
 	var points := PackedVector3Array()
 	for i in 64:
 		var a := TAU*i/64.0
-		points.append(to_global(Vector3(cos(a)*footprint.x*.5,0,sin(a)*footprint.y*.5)))
+		points.append(to_global(Vector3(cos(a)*footprint.x*.5,0,sin(a)*footprint.y*.5) * _rim_scale(a)))
 	return points

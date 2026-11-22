@@ -1,63 +1,73 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene format=3 uid="uid://dv08thfb3ty3j"]
 
+[ext_resource type="AudioStream" uid="uid://dff55fo2d0pas" path="res://audio/ambiance/ambiance_forest.mp3" id="8_ntlci"]
+[ext_resource type="AudioStream" uid="uid://ctc1jrqld4aa4" path="res://audio/ambiance/ambiance_ocean.mp3" id="10_hiaxc"]
+[ext_resource type="AudioStream" uid="uid://jnxptqjypwac" path="res://audio/ambiance/ambiance_quietchatter.mp3" id="12_l5685"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="Script" path="res://scripts/duluth_autumn_memory.gd" id="script"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
-[ext_resource type="PackedScene" path="res://scenes/memories/duluth_autumn/trail_zone.tscn" id="Trail"]
-[ext_resource type="PackedScene" path="res://scenes/memories/duluth_autumn/lighthouse_zone.tscn" id="Lighthouse"]
 [ext_resource type="PackedScene" path="res://scenes/memories/duluth_autumn/garden_zone.tscn" id="Garden"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-
+[ext_resource type="PackedScene" path="res://scenes/memories/duluth_autumn/lighthouse_zone.tscn" id="Lighthouse"]
 [ext_resource type="Curve2D" path="res://scenes/memories/duluth_autumn/walk_outline.tres" id="outline"]
+[ext_resource type="Script" uid="uid://382luvr6cdob" path="res://scripts/duluth_autumn_memory.gd" id="script"]
+[ext_resource type="PackedScene" path="res://scenes/memories/duluth_autumn/trail_zone.tscn" id="Trail"]
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=82426513 instance=ExtResource("base")]
 script = ExtResource("script")
 memory_id = &"duluth_autumn"
 display_name = "Duluth in the Fall"
 
-[node name="Entry" parent="."]
-position = Vector3(0,0.075,24)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 24)
 
-[node name="Exit" parent="."]
-position = Vector3(53.8,0.075,-32.8)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.5, 0.075, -33.06)
 
-[node name="AutumnFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="AutumnFloor" parent="Environment" index="0" unique_id=334042376 instance=ExtResource("floor")]
 visible = false
-custom_outline = ExtResource("outline")
 outline_detail = 96
+custom_outline = ExtResource("outline")
 edge_inset = 0.12
 boundary_height = 4.0
 
-[node name="Guidance" parent="Environment" type="Node3D"]
+[node name="Guidance" type="Node3D" parent="Environment" index="1" unique_id=1767165714]
 
-
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="Trail" parent="Zones" instance=ExtResource("Trail")]
-position = Vector3(0,0,15)
-
-[node name="Lighthouse" parent="Zones" instance=ExtResource("Lighthouse")]
-position = Vector3(30,0,-8)
-
-[node name="Garden" parent="Zones" instance=ExtResource("Garden")]
-position = Vector3(54,0,-36)
-
-[node name="LookoutMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="LookoutMemory" parent="Environment/Guidance" index="0" unique_id=1470926260 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Trail/Fragment")
+waypoints = PackedVector3Array(0, 0.76, 24, -0.7419506, 0.76, 23.814342, -1.4786459, 0.76, 23.608257, -2.175649, 0.76, 23.295872, -2.762505, 0.76, 22.8061, -3.2648532, 0.76, 22.231256, -3.7020433, 0.76, 21.603743, -4.0416384, 0.76, 20.919271, -4.13819, 0.76, 20.16883, -3.88257, 0.76, 19.45221, -3.4143174, 0.76, 18.850357, -2.7799752, 0.76, 18.431122, -2.0260394, 0.76, 18.422531, -1.2917888, 0.76, 18.637005, -0.5583876, 0.76, 18.852829, 0.20048514, 0.76, 18.896261, 0.9321058, 0.76, 18.676409, 1.6097599, 0.76, 18.32329, 2.1961217, 0.76, 17.834867, 2.5522773, 0.76, 17.170017, 2.5605416, 0.76, 16.407297, 2.4382749, 0.76, 15.65213, 2.3000002, 0.76, 14.9, 2.3, 0.76, 14.9, 2.967916, 0.76284856, 14.499511, 3.589054, 0.88947093, 14.049706, 4.18358, 1.1323749, 13.608856, 4.735947, 1.4086952, 13.134797, 5.1406345, 1.6743454, 12.531292, 5.276712, 1.8686352, 11.792778, 5.2158456, 2.0336812, 11.035109, 5.0164547, 2.23407, 10.310482, 4.6785116, 2.458998, 9.646346, 4.2524314, 2.683492, 9.034348, 3.7464886, 2.8968055, 8.482791, 3.1049511, 3.0828972, 8.0903845, 2.3541942, 3.1774514, 7.9178724, 1.5759602, 3.180195, 7.933364, 0.79999995, 3.16, 8, 0.8, 3.24, 8)
 stroke_width = 0.32
 
-[node name="LighthouseMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="LighthouseMemory" parent="Environment/Guidance" index="1" unique_id=1673421226 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Trail/Fragment")
 end_anchor = NodePath("../../../Zones/Lighthouse/Fragment")
+waypoints = PackedVector3Array(0.8, 3.16, 8, 1.0650444, 3.1639326, 7.27132, 1.3986355, 3.1648455, 6.5723658, 1.9235477, 3.1582968, 6.007695, 2.5758688, 3.162992, 5.5891104, 3.2738855, 3.159847, 5.2512217, 3.998629, 3.1253874, 4.977495, 4.7432857, 3.0330977, 4.7851725, 5.502106, 2.8871458, 4.7231874, 6.258205, 2.714126, 4.708067, 7.010018, 2.5352736, 4.645479, 7.747317, 2.3673768, 4.473873, 8.468788, 2.2012708, 4.2424994, 9.173835, 2.0301733, 3.9679775, 9.863681, 1.8481752, 3.6633654, 10.536329, 1.6454906, 3.334508, 11.188145, 1.4234936, 2.977234, 11.825805, 1.2020643, 2.5948963, 12.454524, 1.0053506, 2.1854143, 13.020111, 0.863365, 1.679038, 13.516806, 0.7906759, 1.0893316, 14.2011595, 0.7560157, 0.7437439, 14.9738, 0.74366575, 0.7053518, 15.74742, 0.74582684, 0.76312065, 16.522243, 0.7529226, 0.79556274, 17.289465, 0.7592948, 0.6968136, 17.97141, 0.76, 0.33723736, 18.541168, 0.76, -0.18807697, 19.047325, 0.76, -0.7757778, 19.520365, 0.76, -1.390646, 20.000002, 0.76, -2, 20, 0.76, -2, 20.74092, 0.76, -2.2907243, 21.481049, 0.76, -2.5836048, 22.21764, 0.76, -2.885169, 22.936033, 0.76, -3.226171, 23.620564, 0.76, -3.632553, 24.300663, 0.76, -4.046101, 24.988516, 0.76, -4.4465895, 25.721222, 0.76, -4.7496443, 26.49966, 0.76, -4.9153967, 27.283289, 0.76, -5.054987, 28.061234, 0.76, -5.21924, 28.792627, 0.76, -5.532564, 29.50383, 0.75948256, -5.8890963, 30.01625, 0.76220286, -6.4199314, 30.027872, 0.7794849, -7.2154026, 30.011663, 0.79505277, -8.011068, 29.999996, 0.80503803, -8.806706, 30, 0.8068388, -9.602723, 30, 0.80709803, -10.398705, 30, 0.8068746, -11.194671, 30, 0.8064098, -11.990615, 30, 0.80582595, -12.7865925, 30, 0.8052428, -13.58251, 30, 0.8049907, -14.378363, 30, 0.80489796, -15.174348, 30, 0.8047877, -15.970309, 30, 0.8047003, -16.766275, 30, 0.80467725, -17.562244, 30, 0.8048474, -18.358397, 30, 0.8071585, -19.154099, 30, 0.812, -19.949999, 30, 0.875, -19.95)
 stroke_width = 0.32
 
-[node name="GardenMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="GardenMemory" parent="Environment/Guidance" index="2" unique_id=37060407 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Lighthouse/Fragment")
 end_anchor = NodePath("../../../Zones/Garden/Fragment")
+waypoints = PackedVector3Array(30, 0.812, -19.95, 30, 0.8110759, -19.16309, 30, 0.80963, -18.376148, 30, 0.8081477, -17.589191, 30, 0.80678797, -16.802244, 30, 0.8056735, -16.0153, 30, 0.8049598, -15.228408, 30, 0.805043, -14.441423, 30, 0.8056564, -13.654484, 30, 0.8064582, -12.86754, 30, 0.8072386, -12.080597, 30, 0.80781007, -11.293657, 30, 0.8079385, -10.507229, 30, 0.8072228, -9.719728, 29.999775, 0.80464506, -8.932849, 29.96406, 0.7972486, -8.146917, 29.885881, 0.78318185, -7.363988, 29.89537, 0.7649596, -6.580448, 30.27346, 0.7571316, -5.902631, 30.907845, 0.75758785, -5.44242, 31.640001, 0.75967115, -5.1582613, 32.41765, 0.76, -5.0583725, 33.201668, 0.76, -5.121005, 33.977306, 0.76, -5.2532825, 34.744144, 0.76, -5.4299955, 35.465515, 0.76, -5.7353983, 36.1, 0.76, -6.2, 36.1, 0.76, -6.2, 36.76835, 0.76, -6.596972, 37.43316, 0.76, -7.0001693, 38.068546, 0.76, -7.447833, 38.61139, 0.76, -8.000755, 38.998528, 0.76, -8.673641, 39.301777, 0.76, -9.389487, 39.605206, 0.76, -10.105248, 39.92973, 0.76, -10.812052, 40.24043, 0.76, -11.524515, 40.558914, 0.76, -12.233797, 40.903046, 0.76, -12.930929, 41.299347, 0.76, -13.599339, 41.75774, 0.76, -14.22723, 42.227688, 0.76, -14.846643, 42.667774, 0.76, -15.4874, 43.041058, 0.76, -16.168882, 43.323776, 0.76, -16.892715, 43.54766, 0.76, -17.637218, 43.74298, 0.76, -18.389793, 43.927208, 0.76, -19.14518, 44.114254, 0.76, -19.899868, 44.319878, 0.76, -20.649672, 44.56382, 0.76, -21.38779, 44.833717, 0.76, -22.116962, 45.11712, 0.76, -22.841002, 45.408943, 0.76, -23.561684, 45.705547, 0.76, -24.280432, 46, 0.76, -25.000002, 46, 0.76, -25, 46.244946, 0.76, -25.736992, 46.504063, 0.76, -26.469227, 46.82685, 0.76, -27.175167, 47.29552, 0.76, -27.791332, 47.862766, 0.76, -28.321821, 48.397446, 0.76, -28.88374, 48.720222, 0.76, -29.583544, 48.825123, 0.76, -30.352583, 48.97142, 0.76, -31.113241, 49.350536, 0.76, -31.789234, 49.85028, 0.76, -32.38255, 50.459747, 0.76, -32.860794, 51.18902, 0.76, -33.118473, 51.95951, 0.76, -33.213383, 52.73394, 0.76, -33.187817, 53.5, 0.76, -33.059998, 53.5, 0.835, -33.06)
 stroke_width = 0.32
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Trail" parent="Zones" index="0" unique_id=1008465716 instance=ExtResource("Trail")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
+ambience_stream = ExtResource("8_ntlci")
+ambience_volume_db = -10.0
+
+[node name="Lighthouse" parent="Zones" index="1" unique_id=416868132 instance=ExtResource("Lighthouse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, -8)
+ambience_stream = ExtResource("10_hiaxc")
+ambience_volume_db = -10.0
+
+[node name="Garden" parent="Zones" index="2" unique_id=1791695655 instance=ExtResource("Garden")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 0, -36)
+ambience_stream = ExtResource("12_l5685")
+ambience_volume_db = -12.0

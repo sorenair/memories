@@ -335,10 +335,11 @@ ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSu
 recall_anchor = NodePath("../GapReveal")
 
 [node name="MeadowGrass9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
-position = Vector3(12.6, 0, 0.65)
-patch_size = Vector2(4.4, 2.4)
+position = Vector3(12.8, 0, 1.2)
+rotation = Vector3(0, -0.28, 0)
+patch_size = Vector2(4.8, 2.7)
 grass_height = 0.22
-tufts_per_square_meter = 7
+tufts_per_square_meter = 11
 leaves_per_square_meter = 9
 ground_leaf_scale = 0.43
 patch_seed = 906629
@@ -352,10 +353,11 @@ ground_exclusions = Array[NodePath]([NodePath("../FieldWalk"), NodePath("../ToSu
 recall_anchor = NodePath("../GapReveal")
 
 [node name="MeadowGrass10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
-position = Vector3(17.8, 0, -6)
-patch_size = Vector2(3.8, 2.2)
+position = Vector3(17.8, 0, -5.7)
+rotation = Vector3(0, -0.42, 0)
+patch_size = Vector2(4.2, 2.4)
 grass_height = 0.16
-tufts_per_square_meter = 7
+tufts_per_square_meter = 10
 leaves_per_square_meter = 9
 ground_leaf_scale = 0.43
 patch_seed = 906630

@@ -127,7 +127,8 @@ heading_degrees = 24.0
 heading_variation = 67
 grazing_fraction = 0.6
 idle_motion = 0.6
-idle_speed = 0.64
+idle_speed = 0.95
+varied_idle = true
 recall_enabled = true
 recall_anchor = NodePath("../LakeReveal")
 
@@ -141,7 +142,8 @@ idle_motion = 0.55
 prop_seed = 906266
 recall_enabled = true
 recall_anchor = NodePath("../LakeReveal")
-idle_speed = 0.78
+idle_speed = 1.04
+varied_idle = true
 
 [node name="BankGroundcover0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
 position = Vector3(9.0, 0, -1)
@@ -180,10 +182,10 @@ recall_anchor = NodePath("../LakeReveal")
 [node name="BankGroundcover2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
 position = Vector3(10.95, 0, 4.8)
 patch_size = Vector2(8.7, 6.6)
-grass_height = 0.23
+grass_height = 0.17
 tufts_per_square_meter = 9
 leaves_per_square_meter = 11
-ground_leaf_scale = 0.43
+ground_leaf_scale = 0.35
 patch_seed = 906932
 palette_preset = 0
 palette = ExtResource("forest_palette")

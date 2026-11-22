@@ -11,22 +11,24 @@ notes remain placeholders.
 - **Flatirons:** A close approach through tawny grasses, dry blooms and scattered
   sandstone opens onto three sloping formations. Smaller angled shelves tie their
   toes into the pines and field. **FieldWalk** leads to the fragment. **FieldExit**
-  fades into a gap where successive outcrops, low grasses and the first gray
+  fades into a gap where staggered gold grasses, outcrops and the first gray
   rocks of the summit lead the turn. The hidden **ToSummit** curve connects both
   ends for floor authoring and requested guidance.
 - **Quandary:** The ascent cuts through a cluster of angular granite blocks.
   Broad faces, buried outcrops and loose scree mark the turns. The continuous
   bedrock ledge uses the same alpine stone palette and face lighting as the
   surrounding boulders. Three goats stand on the open saddle at **Y = 3.6**.
-  The far ledge rolls down into the shore approach.
+  Pine and brush groves mark both feet of the mountain. Shorter trees give way
+  to small gold grass pockets tucked onto rocky ledges on the ascent and descent.
   **SummitClimb** and **ToLake** give **QuandaryTerrain** its grades and act as
   guidance curves. The same triangulated rock surface supplies the visible
   mountain and walking collision.
 - **Forest lake:** Pines of several heights, pale aspens and smaller understory
   form groups around an irregular cove. A single connected bank wash underpins
   the planting and shore stones. **LakeshoreWalk** ends in an open pocket beside
-  the seven-elk herd and a nearby cow. Both goats and elk use the existing planted
-  idle poses. The water has a slower surface treatment and a low line of foam
+  the seven-elk herd and a nearby cow. Shorter groundcover around the herd keeps
+  the animals readable. Each elk and goat alternates between scanning, lowering
+  its head, and chewing, with its feet planted. The water has a slower surface treatment and a low line of foam
   shaped by the cove and shore stones.
 
 The memory reuses the existing [surface paths](../../../components/groundcover/paths/README.md),
@@ -58,7 +60,8 @@ Edit **Ambience Stream** on each zone root to replace its placeholder recording.
 The zone beds loosely overlap at transitions, with field wind, stronger summit
 wind and a quieter forest bed. The memory uses the shared Audio node for music
 and fragment SFX. Distant scenery recalls from reachable anchors. Foliage reacts
-to both explorers, and animal idles and note reading run locally.
+to both explorers. Animal idles use independent shader phases and keep the same
+instanced herd and collision. Note reading runs locally.
 
 **ColoradoFloor** is the finite, hidden support for level walking, including the
 ivory gap. On the mountain, edit the grades in the two Curve3D resources and the

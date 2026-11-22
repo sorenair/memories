@@ -157,6 +157,7 @@ func elk(config: Dictionary) -> Dictionary:
 	oval(Vector3(0,1.99,1.12),Vector3(0.16,0.18,0.265),mane,2)
 	sweep([Vector4(0,2.01,1.15,0.135),Vector4(0,1.93,1.35,0.112),Vector4(0,1.87,1.51,0.088)],mane.lightened(0.05),2,16,3,1.0)
 	oval(Vector3(0,1.858,1.55),Vector3(0.098,0.072,0.078),Color("3e3a33"),2)
+	oval(Vector3(0,1.797,1.439),Vector3(0.071,0.046,0.129),mane.darkened(0.14),6,Basis.IDENTITY,14)
 	for side: float in [-1.0,1.0]:
 		oval(Vector3(side*0.147,2.015,1.22),Vector3(0.019,0.023,0.029),Color("292e2b"),2,Basis.IDENTITY,12)
 		oval(Vector3(side*0.161,2.022,1.228),Vector3(0.005,0.006,0.007),Color("d0c3a3"),2,Basis.IDENTITY,8)

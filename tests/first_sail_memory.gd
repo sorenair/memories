@@ -1,5 +1,5 @@
 extends SceneTree
-## Walk from the planted bank to the Ensign landing, then back to shore.
+## Walk from the planted bank to the two sailboats, then back to shore.
 const WORLD := "res://scenes/world/first_sail_world.tscn"
 var failures := 0
 class WalkingInput extends Node:
@@ -97,6 +97,9 @@ func run() -> void:
 	var path: PainterlyCurvedPath = zone.get_node("Scenery/ShorePath")
 	var dock: PainterlyWoodenDock = zone.get_node("Scenery/Dock")
 	var boat: PainterlyEnsign = zone.get_node("Scenery/Ensign")
+	var dinghy: PainterlyEnsign = zone.get_node("Scenery/Club420")
+	var dock_birds := zone.find_children("DockBird*", "PainterlyBird", true, false)
+	var lake_birds := zone.find_children("LakeBird*", "PainterlyBird", true, false)
 	var water: PainterlyWater = zone.get_node("Scenery/Lake")
 	check(zones.size()==1 and zone.zone_id==&"first_sail_lake" and memory.memory_id==&"first_sail","First Sail should have one lake-centric zone and a unique LAN memory identity")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,0.5),"Both arrivals must fit on the planted shore approach")
@@ -104,13 +107,20 @@ func run() -> void:
 	for index in 81:
 		check(floor.contains_ground_point(path.to_global(path.point_at(path.get_path_length()*index/80.0)),0.3),"The shore path must stay on finite supported ground")
 	check(not water.block_water_entry,"Water shore barriers must leave the dock ramp open")
+	check(dinghy.hull_style == 1 and dinghy.hull_length < boat.hull_length and dinghy.position.x + dinghy.beam * 0.5 < -dock.head_width * 0.5 - 0.2,"The smaller C420 must clear the opposite landing edge")
+	check(absf(dinghy.global_position.y - water.global_position.y) < 0.01 and dinghy.sails_enabled and dinghy.bob_amount > 0.0,"The rigged dinghy must rock at the same waterline")
+	check(dock_birds.size() == 3 and lake_birds.size() == 3,"The dock and lake should each have three birds")
+	for bird: PainterlyBird in lake_birds:
+		check(bird.palette_preset == 5 and bird.state == PainterlyBird.State.CIRCLING,"The white lake birds must circle")
+	for bird: PainterlyBird in dock_birds:
+		check(bird.palette_preset == 5 and bird.state == PainterlyBird.State.IDLE,"Dock birds must wait for the player to approach")
 	check(boat.position.x-boat.beam*.5>dock.head_width*.5+.2,"The Ensign hull and fenders must clear the dock landing")
 	check(absf(boat.global_position.y-water.global_position.y)<.01,"The Ensign root must match the actual waterline")
 	check(boat.sails_enabled and boat.fenders_enabled and boat.bob_amount>0 and boat.wind_strength>0 and not boat.is_processing(),"The moored Ensign should reuse gentle shader-driven boat and sail motion")
 	check(world.get_node("GuidanceController").request_guidance(),"Requested guidance must cross the real shore ramp and pier")
 	await create_timer(4.0).timeout
 	check(water.get_recall_controller().progress>.99 and dock.get_recall_controller().progress>.99,"The lake and supported dock must recall from the accessible bank")
-	check(boat.get_recall_controller().progress==0,"The Ensign should wait for the pier approach")
+	check(boat.get_recall_controller().progress == 0 and dinghy.get_recall_controller().progress == 0,"Both boats should wait for the pier approach")
 	check(zone.ambience.playing,"The zone needs its quiet water ambient bed")
 	await capture("shore-arrival")
 	await walk_trail(player,path,0,1)
@@ -121,16 +131,20 @@ func run() -> void:
 		check(await walk_to(player,zone.to_global(p)),"The actual explorer must climb the access ramp and reach the main pier")
 	await create_timer(4.0).timeout
 	check(player.global_position.y>.52 and player.global_position.y<.65,"The dock's real deck must support the explorer above the water")
-	check(boat.get_recall_controller().progress>.99,"The entire boat must recall from the reachable pier")
+	check(boat.get_recall_controller().progress > 0.99 and dinghy.get_recall_controller().progress > 0.99,"Both boats must recall from the reachable pier")
+	check(dock_birds[0].state != PainterlyBird.State.IDLE and dock_birds[1].state != PainterlyBird.State.IDLE,"The two pier birds must take off as the explorer passes")
+	check(dock_birds[2].state == PainterlyBird.State.IDLE,"The bird on the landing must wait for a closer approach")
 	check(camera.size>7.0 and camera.size<16.0,"Mid-pier framing should transition smoothly toward the sailboat")
 	check(await walk_to(player,zone.to_global(Vector3(0,.55,-3.2))),"The main pier must connect to the T landing")
 	check(await walk_to(player,zone.get_fragment().global_position),"The landing fragment must be reachable")
 	await create_timer(2.5).timeout
-	check(camera.size>16.6 and camera.size<17.3,"The landing must reveal the full Ensign silhouette")
-	for point: Vector3 in [boat.get_anchor(&"Bow").global_position,boat.get_anchor(&"Stern").global_position,boat.to_global(Vector3(0,boat.mast_height,0))]:
-		var screen := camera.unproject_position(point)
-		var extent := root.get_visible_rect().size
-		check(camera.is_position_in_frustum(point) and screen.x>16 and screen.x<extent.x-16 and screen.y>16 and screen.y<extent.y-16,"Bow, stern and masthead must fit in the landing reveal")
+	check(camera.size>16.6 and camera.size<17.3,"The landing must open to both boats")
+	for vessel: PainterlyEnsign in [boat, dinghy]:
+		for point: Vector3 in [vessel.get_anchor(&"Bow").global_position, vessel.get_anchor(&"Stern").global_position, vessel.to_global(Vector3(0, vessel.mast_height, 0))]:
+			var screen := camera.unproject_position(point)
+			var extent := root.get_visible_rect().size
+			check(camera.is_position_in_frustum(point) and screen.x > 16 and screen.x < extent.x - 16 and screen.y > 16 and screen.y < extent.y - 16,"Bow, stern and masthead must fit at the landing: " + vessel.name)
+	check(dock_birds[2].state != PainterlyBird.State.IDLE,"The landing bird must take off once the explorer reaches the fragment")
 	await capture("first-sail-landing")
 	await read_fragment(world,zone.get_fragment())
 	check(world.get_node("GuidanceController").get_next_fragment()==null,"The one-zone memory must finish its note without automatic hints")

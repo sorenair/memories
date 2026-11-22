@@ -5,6 +5,7 @@ uniform float paint_phase = 0.0;
 uniform float idle_motion = 0.7;
 uniform float idle_speed = 1.0;
 uniform int pose_mode = 0;
+uniform bool varied_idle = false;
 uniform float animation_time = -1.0;
 uniform bool use_instance_custom = false;
 // Species-specific rest anatomy; defaults preserve the elk's existing poses.
@@ -12,6 +13,7 @@ uniform vec3 neck_pivot = vec3(0.0,1.20,0.48);
 uniform vec2 neck_blend = vec2(1.20,1.92);
 uniform vec3 ear_pivot = vec3(0.13,2.075,1.035);
 uniform vec3 tail_pivot = vec3(0.0,1.29,-0.97);
+uniform vec3 jaw_pivot = vec3(0.0,1.91,1.18);
 uniform vec2 breath_height = vec2(0.7,1.4);
 uniform float grazing_angle = 1.57;
 uniform float alert_angle = -0.10;
@@ -25,7 +27,7 @@ void vertex() {
 	vec3 p = VERTEX / morph;
 	vec3 n = normalize(NORMAL * morph);
 	float part = UV2.x;
-	float phase = use_instance_custom ? INSTANCE_CUSTOM.x*6.283185 : paint_phase;
+	float phase = use_instance_custom ? INSTANCE_CUSTOM.x*6.283185 : (varied_idle ? fract(paint_phase*1.73)*6.283185 : paint_phase);
 	float pose = use_instance_custom ? round(INSTANCE_CUSTOM.y*2.0) : float(pose_mode);
 	float motion = idle_motion * (use_instance_custom ? INSTANCE_CUSTOM.w : 1.0);
 	float t = (animation_time >= 0.0 ? animation_time : TIME) * idle_speed;
@@ -34,8 +36,8 @@ void vertex() {
 	if (part < 0.5) {
 		p.x *= 1.0+breath*smoothstep(breath_height.x-0.05,breath_height.y-0.2,p.y);
 		p.y += breath*smoothstep(breath_height.x,breath_height.y,p.y);
-	} else if (part < 4.5) {
-		if (part > 2.5) {
+	} else if (part < 4.5 || part > 5.5) {
+		if (part > 2.5 && part < 4.5) {
 			float side = part < 3.5 ? -1.0 : 1.0;
 			vec3 ear = ear_pivot*vec3(side,1.0,1.0);
 			float twitch = pow(max(0.0,sin(t*0.71+phase+side*1.9)),14.0)*0.18*motion;
@@ -48,6 +50,28 @@ void vertex() {
 		float nod = graze*grazing_angle+alert*alert_angle + sin(t*0.67+phase)*0.025*motion;
 		float yaw = sin(t*0.29+phase)*mix(0.085,0.045,graze)*motion;
 		yaw = yaw*(1.0+alert*0.4)+alert*sin(phase)*0.10;
+		if (varied_idle && motion > 0.0) {
+			// The preferred pose changes how long this animal grazes. Each
+			// instance has its own tempo and offset, including within a herd.
+			float period = mix(16.0,22.0,fract(phase * 0.37));
+			float cycle = fract(t / period + phase * 0.159155);
+			float lower_at = mix(0.44,0.26,graze);
+			float lift_at = mix(0.69,0.81,graze);
+			float feeding = smoothstep(lower_at,lower_at+0.105,cycle)
+				* (1.0-smoothstep(lift_at,lift_at+0.11,cycle));
+			float look = smoothstep(0.07,0.19,cycle)*(1.0-smoothstep(0.72,0.95,cycle));
+			float scan = sin(t*0.72+phase*1.3);
+			float nibble = sin(t*4.9+phase);
+			nod = grazing_angle*feeding + mix(alert_angle*0.45,alert_angle,alert)*(1.0-feeding)
+				+ (0.018*sin(t*1.25+phase) + feeding*(0.027*nibble + 0.038*sin(t*1.65)))*motion;
+			yaw = (mix(0.11,0.32,look)*(1.0-feeding)*scan
+				+ feeding*0.075*sin(t*1.35+phase))*motion;
+			if (part > 5.5) {
+				float chew = feeding*(0.04+0.10*max(0.0,nibble))*motion;
+				p = jaw_pivot+turn_x(p-jaw_pivot,chew);
+				n = turn_x(n,chew);
+			}
+		}
 		vec3 pivot = neck_pivot;
 		p = pivot+turn_y(turn_x(p-pivot,nod*weight),yaw*weight);
 		n = turn_y(turn_x(n,nod*weight),yaw*weight);

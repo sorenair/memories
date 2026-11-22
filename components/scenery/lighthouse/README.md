@@ -58,3 +58,17 @@ The Duluth memory uses the optional red-and-white stripe treatment. Turning it o
 tags the existing shaft mesh without changing its shape or collision. Stripe color
 and count update shader uniforms in place; default unstriped scenes retain their
 previous appearance. The tagged shaft does not receive lantern emission.
+
+
+## Concrete breakwater
+
+Instance `painterly_breakwater.tscn` to place a straight concrete pier and flared
+octagonal landing. Its shore end is local +Z. The root is at the shore level.
+Place the lighthouse at the landing's authored deck height of **0.052 m**.
+`get_walk_outline()` returns the joined pier and landing footprint in world X/Z
+for the memory's finite floor. **Body / Accent / Trim Colors** tint the deck,
+lower concrete and low landing rim.
+
+**Base Band Height** and **Base Band Color** add a solid lower band to the tower's
+shaft and plinth. Set the height to zero for the unbanded base. The optional
+alternating shaft stripes remain independently configurable.

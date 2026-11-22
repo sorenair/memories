@@ -1,13 +1,16 @@
 @tool
 extends "res://components/scenery/concert/shared/concert_geometry.gd"
 const TURNED = preload("res://components/scenery/conservatory/shared/turned_geometry.gd")
+static func gravel_rim(angle: float, phase: float, variation: float) -> float:
+	return 1.0 + variation * (0.625 * sin(angle * 5.0 + phase) + 0.375 * sin(angle * 9.0 - phase))
+
 func gravel(c: Dictionary) -> Dictionary:
 	begin(c)
 	var ring := PackedVector3Array()
 	var phase := float(posmod(c.prop_seed,997))*0.071
 	for index in 80:
 		var a := TAU*index/80.0
-		var r := 1.0+0.025*sin(a*5+phase)+0.015*sin(a*9-phase)
+		var r := gravel_rim(a,phase,c.rim_variation)
 		ring.append(Vector3(cos(a)*c.footprint.x*.5*r,.018,sin(a)*c.footprint.y*.5*r))
 	for index in ring.size():
 		for p: Vector3 in [Vector3(0,.018,0),ring[index],ring[(index+1)%ring.size()]]:

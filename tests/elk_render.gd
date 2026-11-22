@@ -20,6 +20,17 @@ func changes(a: Image, b: Image) -> int:
 		if absi(int(x[i])-int(y[i]))+absi(int(x[i+1])-int(y[i+1]))+absi(int(x[i+2])-int(y[i+2])) > 15:
 			count += 1
 	return count
+
+func idle_cycle_range(animal: Node) -> int:
+	animal.varied_idle = true
+	animal.seek_time(0.0)
+	var first := await shot()
+	var largest := 0
+	for seconds in [4.0, 8.0, 12.0, 16.0, 20.0]:
+		animal.seek_time(seconds)
+		largest = maxi(largest, changes(first, await shot()))
+	return largest
+
 func run() -> void:
 	root.content_scale_size = Vector2i(1600,1000)
 	var stage: Node3D = load("res://tests/scenes/elk_test.tscn").instantiate()
@@ -54,6 +65,7 @@ func run() -> void:
 	bull.idle_pose = 2
 	var grazing := await shot("res://docs/previews/elk-grazing.png")
 	check(changes(first,grazing) > 1000,"Grazing must visibly lower the connected head and neck")
+	check(await idle_cycle_range(bull) > 1000,"The live elk idle must cycle between standing and grazing without changing pose settings")
 	bull.idle_motion = 0.0
 	var still := await shot()
 	bull.seek_time(20.0)
@@ -70,6 +82,7 @@ func run() -> void:
 	herd.seek_time(9.1)
 	var herd_pixels := changes(herd_first,await shot())
 	check(herd_pixels > 100,"Instanced herd must animate without CPU callbacks")
+	check(await idle_cycle_range(herd) > 1000,"Instanced elk must use the varied idle cycle")
 	herd.idle_motion = 0
 	var herd_still := await shot()
 	herd.seek_time(21.0)

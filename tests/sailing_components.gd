@@ -35,10 +35,13 @@ func run() -> void:
 	await process_frame
 	var dock: PainterlyWoodenDock = stage.subject.get_node("Dock")
 	var boat: PainterlyEnsign = stage.subject.get_node("Ensign")
+	var dinghy: PainterlyEnsign = load("res://components/scenery/sailing/c420/painterly_c420.tscn").instantiate()
+	dinghy.position = Vector3(-12, 0, 0)
+	stage.subject.add_child(dinghy)
 	var actor: MemoryExplorer = stage.get_node("Explorer")
 	actor.set_physics_process(false)
 	var budgets := {}
-	for prop in [dock, boat]:
+	for prop in [dock, boat, dinghy]:
 		check(not prop.is_processing(), "Sailing props must have no CPU animation callback")
 		var original: Array = prop._generated_root.get_node("PaintedProp").mesh.surface_get_arrays(0)
 		prop.rebuild()
@@ -93,7 +96,7 @@ func run() -> void:
 	boat.fenders_enabled = false
 	boat.rebuild()
 	check(not boat._generated_root.has_node("Sails"), "Bare-rig option must remove the sail mesh")
-	for prop in [dock, boat]:
+	for prop in [dock, boat, dinghy]:
 		prop.collision_enabled = false
 		prop.rebuild()
 		check(not prop._generated_root.has_node("Collision"), "Decorative instances must support disabling collision")

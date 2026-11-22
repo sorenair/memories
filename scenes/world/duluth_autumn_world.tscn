@@ -11,5 +11,5 @@ trail_zone = NodePath("../Memory/Zones/Trail")
 lighthouse_zone = NodePath("../Memory/Zones/Lighthouse")
 garden_zone = NodePath("../Memory/Zones/Garden")
 [node name="Camera3D" parent="CameraRig" index="0"]
-size = 3.5
+size = 4.35
 far = 180.0

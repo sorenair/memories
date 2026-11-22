@@ -1,13 +1,15 @@
 # Dry-garden pieces
 
-Two small components reuse the established painted-prop, generated collision,
+The garden components reuse the established painted-prop, generated collision,
 ground-exclusion and assembled-recall framework. The [Duluth autumn memory](../../../scenes/memories/duluth_autumn/README.md)
-combines them with existing boulders, moss-colored bushes, bamboo and autumn trees.
+combines them with existing boulders, woodland understory and autumn trees.
 
 | Scene | Authoring controls |
 | --- | --- |
-| `painterly_raked_gravel.tscn` | Footprint, up to three Rock Centers in local X/Z, Rake Spacing, Rake Strength, Body Color, Prop Seed |
+| `painterly_raked_gravel.tscn` | Footprint, up to three Rock Centers in local X/Z, Rake Spacing, Rake Strength, Body Color, Edge Color, Rim Variation, Prop Seed |
 | `painterly_stone_lantern.tscn` | Lantern Height, Body / Accent / Trim Colors, collision and recall |
+| `painterly_peace_bell.tscn` | Body / Accent / Trim Colors for timber, roof, and fittings, plus Strike Sound, collision, and recall |
+| `painterly_enger_tower.tscn` | Body / Accent / Trim Colors for stone and the lookout roof, plus collision and recall |
 
 The gravel is one 80-triangle opaque bed with an irregular, ivory-feathered edge.
 Its shader draws filtered concentric rake grooves around the nearest rock center.
@@ -21,7 +23,11 @@ finial, all in one matte stone batch. A simple exterior collider preserves walki
 clearance. Its small interior accent stays unlit. Height scales geometry, collision
 and the Approach marker together.
 
-Both roots are ground level. **Recall Enabled / Recall Anchor** keep independent
+The Peace Bell pavilion uses an open timber frame, layered roof, and recessed bronze bell with a hanging wooden striker. Its column and bell colliders leave the sides open for viewing. The tap interaction moves the striker and bell only while ringing, with the gong routed through the SFX bus.
+
+The Enger Tower exterior has window openings, an octagonal landing, and a rooftop lookout rail. The Roof anchor can be used to check camera framing.
+
+All roots are ground level. **Recall Enabled / Recall Anchor** keep independent
 proximity discovery and preserve progress through rebuilds. Generated meshes,
 anchors and physics remain internal. Static garden pieces need no CPU animation,
 mesh uploads or extra textures. Physical phone performance is unmeasured.

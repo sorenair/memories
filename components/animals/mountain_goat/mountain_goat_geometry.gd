@@ -90,9 +90,10 @@ func goat(config: Dictionary) -> Dictionary:
 	oval(Vector3(0,1.405,0.915),Vector3(0.135,0.16,0.225),coat,2)
 	sweep([Vector4(0,1.43,0.94,0.119),Vector4(0,1.34,1.105,0.094),Vector4(0,1.25,1.23,0.070)],coat,2,16,3,0.88)
 	oval(Vector3(0,1.244,1.258),Vector3(0.066,0.039,0.042),bone,2,Basis.IDENTITY,16)
+	oval(Vector3(0,1.204,1.181),Vector3(0.058,0.038,0.098),coat.darkened(0.12),6,Basis.IDENTITY,14)
 	# Long chin hair is one curved beard with two supporting painted locks.
 	var beard_length := lerpf(0.17,0.29,fluff)
-	lock(Vector3(0,1.31,1.085),Vector3(0,1.265-beard_length,1.09),0.083,2)
+	lock(Vector3(0,1.31,1.085),Vector3(0,1.265-beard_length,1.09),0.083,6)
 	for side: float in [-1.0,1.0]:
 		oval(Vector3(side*0.125,1.419,1.015),Vector3(0.016,0.015,0.027),bone,2,Basis.IDENTITY,12)
 		oval(Vector3(side*0.137,1.425,1.02),Vector3(0.0035,0.004,0.006),Color("efeee7"),2,Basis.IDENTITY,8)

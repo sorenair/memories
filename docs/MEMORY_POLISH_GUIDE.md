@@ -243,7 +243,7 @@ core elements, including intentional open or densely planted sections.
 | [Northern Vietnam](../scenes/memories/northern_vietnam/README.md) | Refine inhabited street clusters, leafy lakeside depth and temple framing; stage the limestone/water layers with open seascape between them. |
 | [Central Vietnam](../scenes/memories/central_vietnam/README.md) | Frame the Marble Mountains temple with faceted limestone, walk between the flooded rice terraces, and let the imperial gate guide the final approach. |
 | [Southern Vietnam](../scenes/memories/southern_vietnam/README.md) | Contrast lush coastal pockets, open wind-shaped dunes and selected city activity; retain the authored landmarks and meaningful empty areas. |
-| [Bean and Bear Lakes](../scenes/memories/bean_bear/README.md) | Layer the forest trail and camp margins, integrate gear/fire/steam, and keep the two-lake overlook open and readable. |
+| [Bean and Bear Lakes](../scenes/memories/bean_bear/README.md) | Give the forest trail a readable fork, keep the lake reveal separate from camp, and frame a clear route from the camp gear to the shore. |
 | [Vineyard](../scenes/memories/vineyard/README.md) | Refine the ordered rows, irregular planted margins and meadow depth; keep the deck's view and quiet space between meaningful groups. |
 | [First Sail](../scenes/memories/first_sail/README.md) | Enrich the shore, refine dock/hull/water contact and sail motion, and preserve the open lake. Keep the boat's established scenic behavior. |
 | [Colorado](../scenes/memories/colorado/README.md) | Give field, bare summit and forest lake distinct density and material rhythms; frame formations and wildlife without planting over their identity. |

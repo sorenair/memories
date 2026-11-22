@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_rows.wav" id="air"]
@@ -12,10 +12,17 @@
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
 [ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
 
+[ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="soil"]
+
 [sub_resource type="Curve3D" id="ForestTrailCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.224,0.0,-0.64,0.4,0,10.5,0.24,-0.0,1.424,-0.24,0.0,-1.424,1.8,0,6.5,-0.032,-0.0,1.728,0.032,0.0,-1.728,-1.1,0,1.6,-1.184,-0.0,1.456,1.184,0.0,-1.456,2,0,-4.3,-1.44,-0.0,1.072,1.44,0.0,-1.072,6.3,0,-7.5,-1.552,-0.0,1.36,1.552,0.0,-1.36,11,0,-11,-0.8,-0.0,0.8,0,0,0,16,0,-16), "tilts": PackedFloat32Array(0,0,0,0,0,0,0)}
-point_count = 7
+_data = {"points": PackedVector3Array(-0.2945, -0, 0.608, 0.2945, 0, -0.608, 0.4, 0, 10.5, 0.038, -0, 1.026, -0.038, 0, -1.026, 1.95, 0, 7.3, 1.0165, -0, 0.798, -1.0165, 0, -0.798, 0.2, 0, 5.1, 0.7676, -0, 0.95, -0.7676, 0, -0.95, -3.4, 0, 3.1, -0.437, -0, 1.0165, 0.437, 0, -1.0165, -3.84, 0, 0.1, -1.2901, -0, 0.6935, 1.2901, 0, -0.6935, -1.1, 0, -2.25, -0.969, -0, 0.817, 0.969, 0, -0.817, 2.95, 0, -3.55, -0.9652, -0, 0.836, 0.9652, 0, -0.836, 4, 0, -6.55, -1.159, -0, 0.741, 1.159, 0, -0.741, 8.03, 0, -7.95, -0.7733, -0, 0.779, 0.7733, 0, -0.779, 10.1, 0, -10.45, -1.121, -0, 1.0545, 1.121, 0, -1.0545, 12.1, 0, -12.05, -0.741, -0, 0.7505, 0.741, 0, -0.7505, 16, 0, -16), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)}
+point_count = 12
+
+[sub_resource type="Curve3D" id="BoulderForkCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(-0.2448, -0, 0.279, 0.2448, 0, -0.279, 0.2, 0, 5.1, -0.207, -0, 0.6696, 0.207, 0, -0.6696, 1.56, 0, 3.55, 0.1998, -0, 0.72, -0.1998, 0, -0.72, 1.35, 0, 1.38, 0.441, -0, 0.6534, -0.441, 0, -0.6534, 0.45, 0, -0.45, 0.279, -0, 0.324, -0.279, 0, -0.324, -1.1, 0, -2.25), "tilts": PackedFloat32Array(0, 0, 0, 0, 0)}
+point_count = 5
 
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"bean_bear_trailhead"
@@ -46,16 +53,84 @@ edge_softness = 0.4
 
 [node name="ForestTrail" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ForestTrailCurve")
-path_width = 2.4
+path_width = 2.14
 paving_color = Color(0.725490,0.647059,0.529412,1)
-end_fade = Vector2(0.5, 0)
-edge_softness = 0.25
+end_fade = Vector2(1.12, 3.05)
+edge_softness = 0.51
 paving_seed = 72526
 crown_height = 0.012
-detail_density = 0.35
+detail_density = 0.29
+width_variation = 0.19
+
+[node name="BoulderFork" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("BoulderForkCurve")
+path_width = 1.68
+paving_color = Color(0.63, 0.57, 0.43, 1)
+shoulder_color = Color(0.58, 0.63, 0.42, 1)
+crown_height = 0.0
+end_fade = Vector2(1.38, 1.45)
+edge_softness = 0.57
+detail_density = 0.21
+collision_enabled = false
+
+[node name="ForkGroundRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(-0.7, 0, 2.2)
+
+[node name="WoodlandGround1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("soil")]
+position = Vector3(-0.7, -0.061, 2.2)
+patch_size = Vector2(10.4, 9.4)
+patch_seed = 726276
+dune_height = 0.0
+terrain_form = 1
+edge_feather = 2.75
+sand_color = Color(0.56, 0.56, 0.39, 1)
+shadow_color = Color(0.47, 0.5, 0.34, 1)
+edge_color = Color(0.83, 0.83, 0.71, 1)
+ripple_strength = 0.0
+collision_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../ForkGroundRecall")
+
+
+[node name="EastBendGroundRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(3.8, 0, -5)
+
+[node name="WoodlandGround2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("soil")]
+position = Vector3(3.8, -0.067, -5)
+patch_size = Vector2(10.2, 8.2)
+patch_seed = 726307
+dune_height = 0.0
+terrain_form = 1
+edge_feather = 2.75
+sand_color = Color(0.56, 0.56, 0.39, 1)
+shadow_color = Color(0.47, 0.5, 0.34, 1)
+edge_color = Color(0.83, 0.83, 0.71, 1)
+ripple_strength = 0.0
+collision_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../EastBendGroundRecall")
+
+
+[node name="RidgeGroundRecall" parent="Scenery" type="Marker3D"]
+position = Vector3(10.9, 0, -10.1)
+
+[node name="WoodlandGround3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("soil")]
+position = Vector3(10.9, -0.073, -10.1)
+patch_size = Vector2(10, 9.3)
+patch_seed = 726338
+dune_height = 0.0
+terrain_form = 1
+edge_feather = 2.75
+sand_color = Color(0.56, 0.56, 0.39, 1)
+shadow_color = Color(0.47, 0.5, 0.34, 1)
+edge_color = Color(0.83, 0.83, 0.71, 1)
+ripple_strength = 0.0
+collision_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../RidgeGroundRecall")
 
 [node name="TrailTree1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(3.9911,0,11.5416)
+position = Vector3(3.9911,0.0000,11.5416)
 tree_type = 2
 tree_seed = 725261
 tree_height = 4.859364295101208
@@ -74,7 +149,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree2" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(5.8427,0,12.8779)
+position = Vector3(5.8427,0.0000,12.8779)
 tree_type = 0
 tree_seed = 725262
 tree_height = 4.783831157311766
@@ -93,7 +168,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree5" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(5.0333,0,5.8385)
+position = Vector3(5.0333,0.0000,5.8385)
 tree_type = 4
 tree_seed = 725265
 tree_height = 5.196048810245738
@@ -112,7 +187,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree6" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(7.4057,0,6.5137)
+position = Vector3(7.4057,0.0000,6.5137)
 tree_type = 2
 tree_seed = 725266
 tree_height = 4.584157855235115
@@ -144,7 +219,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub1-1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(4.6597,0,6.018)
+position = Vector3(4.6597,0.0000,6.0180)
 bush_seed = 725340
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -164,10 +239,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree7" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-1.9775,0,6.6092)
+position = Vector3(-1.9775,0.0000,6.6092)
 tree_type = 0
 tree_seed = 725267
 tree_height = 5.409217067907347
@@ -186,7 +261,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree8" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-4.4227,0,7.8572)
+position = Vector3(-4.4227,0.0000,7.8572)
 tree_type = 4
 tree_seed = 725268
 tree_height = 4.81576614596858
@@ -218,7 +293,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-1.0597,0,6.982)
+position = Vector3(-1.0597,0.0000,6.9820)
 bush_seed = 725342
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -238,14 +313,14 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree9" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(2.3806,0,0.7125)
+position = Vector3(6.85, 0, 1.65)
 tree_type = 0
 tree_seed = 725269
 tree_height = 4.810227864626031
-crown_width = 2.957857524135269
+crown_width = 2.6
 branch_count = 6
 leaf_sprays_per_cluster = 52
 falling_leaf_count = 0
@@ -260,7 +335,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree10" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(4.9196,0,0.7307)
+position = Vector3(4.9196,0.0000,0.7307)
 tree_type = 4
 tree_seed = 725270
 tree_height = 5.17493073585804
@@ -279,7 +354,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailFern2-1" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(0.9996,0,1.6389)
+position = Vector3(-0.0515814, 0, 1.9728)
 rotation_degrees = Vector3(0,271,0)
 plant_seed = 725311
 plant_height = 0.45
@@ -292,10 +367,10 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub2-1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(1.7995,0,1.6537)
+position = Vector3(2.92476, 0, 1.41819)
 bush_seed = 725341
-bush_height = 0.8999999999999999
-footprint = Vector2(1.5,1.2000000000000002)
+bush_height = 0.39
+footprint = Vector2(1.1, 0.86)
 recall_enabled = true
 react_to_explorers = true
 palette_preset = 0
@@ -312,10 +387,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree11" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-4.6142,0,1.9189)
+position = Vector3(-5.6422,0.0000,2.1071)
 tree_type = 2
 tree_seed = 725271
 tree_height = 4.560745215572064
@@ -334,7 +409,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree12" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-6.8348,0,2.3752)
+position = Vector3(-6.8348,0.0000,2.3752)
 tree_type = 0
 tree_seed = 725272
 tree_height = 4.549814983905045
@@ -353,7 +428,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailFern21" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(-3.1996,0,1.5611)
+position = Vector3(-2.57216, 0, 1.44529)
 rotation_degrees = Vector3(0,273,0)
 plant_seed = 725313
 plant_height = 0.45
@@ -366,7 +441,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub21" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-3.9995,0,1.5463)
+position = Vector3(-2.5329, 0, 1.60952)
 bush_seed = 725343
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -386,10 +461,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree13" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(5.2611,0,-1.498)
+position = Vector3(5.2611,0.0000,-1.4980)
 tree_type = 4
 tree_seed = 725273
 tree_height = 4.626136142731941
@@ -408,7 +483,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree14" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(7.3709,0,-1.2427)
+position = Vector3(7.3709,0.0000,-1.2427)
 tree_type = 0
 tree_seed = 725274
 tree_height = 4.701006044351815
@@ -427,7 +502,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailFern3-1" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(3.6293,0,-2.9751)
+position = Vector3(4.05138, 0, -2.51091)
 rotation_degrees = Vector3(0,272,0)
 plant_seed = 725312
 plant_height = 0.45
@@ -440,7 +515,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub3-1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(4.25,0,-2.4704)
+position = Vector3(4.2500,0.0000,-2.4704)
 bush_seed = 725342
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -460,10 +535,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree15" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-1.0533,0,-6.316)
+position = Vector3(-1.0533,0.0000,-6.3160)
 tree_type = 4
 tree_seed = 725275
 tree_height = 5.115069636197897
@@ -482,7 +557,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree16" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-2.8323,0,-8.3921)
+position = Vector3(-2.8323,0.0000,-8.3921)
 tree_type = 2
 tree_seed = 725276
 tree_height = 4.287739974155316
@@ -514,7 +589,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub31" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-0.25,0,-6.1296)
+position = Vector3(-0.2500,0.0000,-6.1296)
 bush_seed = 725344
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -534,10 +609,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree17" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(7.935,0,-4.8248)
+position = Vector3(7.9350,0.0000,-4.8248)
 tree_type = 0
 tree_seed = 725277
 tree_height = 4.50406040299472
@@ -556,7 +631,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree18" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(10.1394,0,-2.3935)
+position = Vector3(10.1394,0.0000,-2.3935)
 tree_type = 4
 tree_seed = 725278
 tree_height = 5.619103100874921
@@ -588,7 +663,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub4-1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(8.0317,0,-5.1738)
+position = Vector3(8.0317,0.0000,-5.1738)
 bush_seed = 725343
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -608,10 +683,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree19" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(4.2658,0,-9.5376)
+position = Vector3(4.2658,0.0000,-9.5376)
 tree_type = 0
 tree_seed = 725279
 tree_height = 4.7309542393072945
@@ -630,7 +705,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree20" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(2.2443,0,-12.6321)
+position = Vector3(2.2443,0.0000,-12.6321)
 tree_type = 4
 tree_seed = 725280
 tree_height = 4.787662356583264
@@ -662,7 +737,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub41" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(4.5683,0,-9.8262)
+position = Vector3(4.5683,0.0000,-9.8262)
 bush_seed = 725345
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -682,10 +757,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree21" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(13.401,0,-8.6263)
+position = Vector3(13.4010,0.0000,-8.6263)
 tree_type = 2
 tree_seed = 725281
 tree_height = 4.277705756008481
@@ -704,7 +779,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree22" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(14.1556,0,-7.1441)
+position = Vector3(14.1556,0.0000,-7.1441)
 tree_type = 0
 tree_seed = 725282
 tree_height = 5.109900175975651
@@ -736,7 +811,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub5-1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(12.9113,0,-8.8189)
+position = Vector3(12.9113,0.0000,-8.8189)
 bush_seed = 725344
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -756,10 +831,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree23" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(8.9593,0,-13.4651)
+position = Vector3(8.9593,0.0000,-13.4651)
 tree_type = 4
 tree_seed = 725283
 tree_height = 4.594401482371099
@@ -778,7 +853,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree24" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(7.2911,0,-15.9397)
+position = Vector3(7.2911,0.0000,-15.9397)
 tree_type = 0
 tree_seed = 725284
 tree_height = 5.29977754380025
@@ -810,7 +885,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub51" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(9.0887,0,-13.1811)
+position = Vector3(9.0887,0.0000,-13.1811)
 bush_seed = 725346
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -830,10 +905,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree25" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(18.8257,0,-13.976)
+position = Vector3(18.8257,0.0000,-13.9760)
 tree_type = 4
 tree_seed = 725285
 tree_height = 4.521205346984235
@@ -852,7 +927,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree26" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(20.6174,0,-11.1342)
+position = Vector3(20.6174,0.0000,-11.1342)
 tree_type = 2
 tree_seed = 725286
 tree_height = 5.630805198709282
@@ -884,7 +959,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub6-1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(18.0506,0,-13.9494)
+position = Vector3(18.0506,0.0000,-13.9494)
 bush_seed = 725345
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -904,10 +979,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailTree27" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(14.4773,0,-17.9283)
+position = Vector3(14.4773,0.0000,-17.9283)
 tree_type = 0
 tree_seed = 725287
 tree_height = 5.417873023008212
@@ -926,7 +1001,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="TrailTree28" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(11.6793,0,-19.4498)
+position = Vector3(11.6793,0.0000,-19.4498)
 tree_type = 4
 tree_seed = 725288
 tree_height = 5.435849846310235
@@ -958,7 +1033,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="TrailShrub61" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(13.9494,0,-18.0506)
+position = Vector3(13.9494,0.0000,-18.0506)
 bush_seed = 725347
 bush_height = 0.8999999999999999
 footprint = Vector2(1.5,1.2000000000000002)
@@ -978,10 +1053,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree0-1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(4.781,0,9.7884)
+position = Vector3(4.7810,0.0000,9.7884)
 tree_type = 4
 tree_seed = 725999
 tree_height = 5.2
@@ -1013,7 +1088,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub0-10" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(3.5776,0,9.8969)
+position = Vector3(3.5776,0.0000,9.8969)
 bush_seed = 726079
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1036,7 +1111,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub0-11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(4.5687,0,9.1843)
+position = Vector3(4.5687,0.0000,9.1843)
 bush_seed = 726080
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1056,10 +1131,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree01" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-2.581,0,7.2116)
+position = Vector3(-2.5810,0.0000,7.2116)
 tree_type = 4
 tree_seed = 726001
 tree_height = 5.2
@@ -1091,7 +1166,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub010" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-1.708,0,8.0469)
+position = Vector3(-1.7080,0.0000,8.0469)
 bush_seed = 726081
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1114,7 +1189,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub011" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-2.0383,0,6.8718)
+position = Vector3(-2.0383,0.0000,6.8718)
 bush_seed = 726082
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1134,14 +1209,14 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree1-1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(3.7062,0,2.0636)
+position = Vector3(6.1, 0, 3.8)
 tree_type = 0
 tree_seed = 726000
 tree_height = 5.2
-crown_width = 3.5
+crown_width = 2.9
 branch_count = 6
 leaf_sprays_per_cluster = 52
 falling_leaf_count = 0
@@ -1156,7 +1231,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="InfillFern1-10" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(2.4119,0,3.4107)
+position = Vector3(3.11254, 0, 3.51373)
 rotation_degrees = Vector3(0,283,0)
 plant_seed = 726043
 plant_height = 0.45
@@ -1169,7 +1244,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub1-10" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(3.0143,0,3.0542)
+position = Vector3(3.0143,0.0000,3.0542)
 bush_seed = 726083
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1179,7 +1254,7 @@ palette_preset = 0
 palette = ExtResource("green")
 
 [node name="InfillFern1-11" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(2.505,0,2.1936)
+position = Vector3(3.07511, 0, 2.09954)
 rotation_degrees = Vector3(0,284,0)
 plant_seed = 726044
 plant_height = 0.45
@@ -1192,10 +1267,10 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub1-11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(3.1074,0,1.8371)
+position = Vector3(3.1074,0.0000,1.8371)
 bush_seed = 726084
-bush_height = 1.08
-footprint = Vector2(1.8,1.4400000000000002)
+bush_height = 0.39
+footprint = Vector2(1.1, 0.86)
 recall_enabled = true
 react_to_explorers = true
 palette_preset = 0
@@ -1212,10 +1287,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree11" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-3.0062,0,6.0364)
+position = Vector3(-3.0062,0.0000,6.0364)
 tree_type = 0
 tree_seed = 726002
 tree_height = 5.2
@@ -1234,7 +1309,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="InfillFern110" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(-1.2026,0,5.5499)
+position = Vector3(-1.35255, 0, 5.9363)
 rotation_degrees = Vector3(0,285,0)
 plant_seed = 726045
 plant_height = 0.45
@@ -1247,7 +1322,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub110" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-1.805,0,5.9064)
+position = Vector3(-1.8050,0.0000,5.9064)
 bush_seed = 726085
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1257,7 +1332,7 @@ palette_preset = 0
 palette = ExtResource("green")
 
 [node name="InfillFern111" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(-2.3143,0,5.0458)
+position = Vector3(-2.47009, 0, 5.46612)
 rotation_degrees = Vector3(0,286,0)
 plant_seed = 726046
 plant_height = 0.45
@@ -1270,7 +1345,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub111" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-2.9167,0,5.4023)
+position = Vector3(-2.9167,0.0000,5.4023)
 bush_seed = 726086
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1290,14 +1365,14 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree2-1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(3.9024,0,0.464)
+position = Vector3(5.45, 0, 0.18)
 tree_type = 2
 tree_seed = 726001
 tree_height = 5.2
-crown_width = 3.5
+crown_width = 2.65
 branch_count = 6
 leaf_sprays_per_cluster = 52
 falling_leaf_count = 0
@@ -1312,7 +1387,7 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="InfillFern2-10" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(2.0764,0,0.0694)
+position = Vector3(2.41364, 0, -0.0867545)
 rotation_degrees = Vector3(0,287,0)
 plant_seed = 726047
 plant_height = 0.45
@@ -1325,10 +1400,10 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub2-10" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(2.6961,0,0.395)
+position = Vector3(2.6961,0.0000,0.3950)
 bush_seed = 726087
-bush_height = 1.08
-footprint = Vector2(1.8,1.4400000000000002)
+bush_height = 0.39
+footprint = Vector2(1.1, 0.86)
 recall_enabled = true
 react_to_explorers = true
 palette_preset = 0
@@ -1348,7 +1423,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub2-11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(3.7809,0,-0.1647)
+position = Vector3(3.7809,0.0000,-0.1647)
 bush_seed = 726088
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1368,14 +1443,14 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree21" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-3.0024,0,-3.164)
+position = Vector3(-4.65, 0, -3.6)
 tree_type = 2
 tree_seed = 726003
 tree_height = 5.2
-crown_width = 3.5
+crown_width = 2.85
 branch_count = 6
 leaf_sprays_per_cluster = 52
 falling_leaf_count = 0
@@ -1390,10 +1465,10 @@ wind_strength = 0.05
 visibility_distance = 130.0
 
 [node name="InfillFern210" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(-1.6416,0,-1.8841)
+position = Vector3(-2.08, 0, -0.67)
 rotation_degrees = Vector3(0,289,0)
 plant_seed = 726049
-plant_height = 0.45
+plant_height = 0.34
 spread = 1.65
 fullness = 0.5
 recall_enabled = true
@@ -1403,9 +1478,9 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub210" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-2.2612,0,-2.2097)
+position = Vector3(-3.2, 0, -3.6)
 bush_seed = 726089
-bush_height = 1.08
+bush_height = 0.38
 footprint = Vector2(1.8,1.4400000000000002)
 recall_enabled = true
 react_to_explorers = true
@@ -1413,10 +1488,10 @@ palette_preset = 0
 palette = ExtResource("green")
 
 [node name="InfillFern211" parent="Scenery" instance=ExtResource("fern")]
-position = Vector3(-1.7961,0,-3.095)
+position = Vector3(-2.22, 0, -3.95)
 rotation_degrees = Vector3(0,290,0)
 plant_seed = 726050
-plant_height = 0.45
+plant_height = 0.34
 spread = 1.65
 fullness = 0.5
 recall_enabled = true
@@ -1426,9 +1501,9 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub211" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-2.4158,0,-3.4206)
+position = Vector3(-2.9, 0, -4.3)
 bush_seed = 726090
-bush_height = 1.08
+bush_height = 0.38
 footprint = Vector2(1.8,1.4400000000000002)
 recall_enabled = true
 react_to_explorers = true
@@ -1441,15 +1516,15 @@ patch_size = Vector2(4.8, 4.4)
 patch_seed = 726123
 tufts_per_square_meter = 12.0
 leaves_per_square_meter = 25.0
-grass_height = 0.16
+grass_height = 0.25
 recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree3-1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(6.4783,0,-2.7713)
+position = Vector3(6.4783,0.0000,-2.7713)
 tree_type = 4
 tree_seed = 726002
 tree_height = 5.2
@@ -1481,7 +1556,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub3-10" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(5.4205,0,-3.3552)
+position = Vector3(5.4205,0.0000,-3.3552)
 bush_seed = 726091
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1504,7 +1579,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub3-11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(6.6407,0,-3.3907)
+position = Vector3(6.6407,0.0000,-3.3907)
 bush_seed = 726092
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1524,10 +1599,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree31" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(1.8217,0,-9.0287)
+position = Vector3(1.8217,0.0000,-9.0287)
 tree_type = 4
 tree_seed = 726004
 tree_height = 5.2
@@ -1559,7 +1634,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub310" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(2.0773,0,-7.8477)
+position = Vector3(2.0773,0.0000,-7.8477)
 bush_seed = 726093
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1582,7 +1657,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub311" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(2.4616,0,-9.0063)
+position = Vector3(2.4616,0.0000,-9.0063)
 bush_seed = 726094
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1602,10 +1677,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree4-1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(10.9793,0,-6.122)
+position = Vector3(10.9793,0.0000,-6.1220)
 tree_type = 0
 tree_seed = 726003
 tree_height = 5.2
@@ -1637,7 +1712,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub4-10" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(9.9213,0,-6.7056)
+position = Vector3(9.9213,0.0000,-6.7056)
 bush_seed = 726095
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1660,7 +1735,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub4-11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(11.1415,0,-6.7415)
+position = Vector3(11.1415,0.0000,-6.7415)
 bush_seed = 726096
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1680,10 +1755,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree41" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(6.3207,0,-12.378)
+position = Vector3(6.3207,0.0000,-12.3780)
 tree_type = 0
 tree_seed = 726005
 tree_height = 5.2
@@ -1715,7 +1790,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub410" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(6.5766,0,-11.1971)
+position = Vector3(6.5766,0.0000,-11.1971)
 bush_seed = 726097
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1738,7 +1813,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub411" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(6.9606,0,-12.3558)
+position = Vector3(6.9606,0.0000,-12.3558)
 bush_seed = 726098
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1758,10 +1833,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree5-1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(16.2577,0,-10.7423)
+position = Vector3(16.2577,0.0000,-10.7423)
 tree_type = 2
 tree_seed = 726004
 tree_height = 5.2
@@ -1793,7 +1868,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub5-10" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(15.1263,0,-11.1665)
+position = Vector3(15.1263,0.0000,-11.1665)
 bush_seed = 726099
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1816,7 +1891,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub5-11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(16.3284,0,-11.3787)
+position = Vector3(16.3284,0.0000,-11.3787)
 bush_seed = 726100
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1836,10 +1911,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="InfillTree51" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(10.7423,0,-16.2577)
+position = Vector3(10.7423,0.0000,-16.2577)
 tree_type = 2
 tree_seed = 726006
 tree_height = 5.2
@@ -1871,7 +1946,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub510" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(11.1665,0,-15.1263)
+position = Vector3(11.1665,0.0000,-15.1263)
 bush_seed = 726101
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1894,7 +1969,7 @@ palette = ExtResource("green")
 wind_strength = 0.035
 
 [node name="InfillShrub511" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(11.3787,0,-16.3284)
+position = Vector3(11.3787,0.0000,-16.3284)
 bush_seed = 726102
 bush_height = 1.08
 footprint = Vector2(1.8,1.4400000000000002)
@@ -1914,10 +1989,10 @@ recall_enabled = true
 react_to_explorer = true
 palette_preset = 0
 palette = ExtResource("green")
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../FourRunner")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../BoulderFork")])
 
 [node name="TrailRock1" parent="Scenery" instance=ExtResource("rock")]
-position = Vector3(-3.5,0,3.6)
+position = Vector3(-4.1207,0.0000,4.4002)
 dimensions = Vector3(0.9, 0.55, 0.8)
 boulder_seed = 725400
 palette_preset = 1
@@ -1925,7 +2000,7 @@ solid = true
 recall_enabled = true
 
 [node name="TrailRock2" parent="Scenery" instance=ExtResource("rock")]
-position = Vector3(3.9,0,-2.1)
+position = Vector3(3.9000,0.0000,-2.1000)
 dimensions = Vector3(0.9, 0.55, 0.8)
 boulder_seed = 725401
 palette_preset = 1
@@ -1933,7 +2008,7 @@ solid = true
 recall_enabled = true
 
 [node name="TrailRock3" parent="Scenery" instance=ExtResource("rock")]
-position = Vector3(8.6,0,-6.6)
+position = Vector3(8.6000,0.0000,-6.6000)
 dimensions = Vector3(0.9, 0.55, 0.8)
 boulder_seed = 725402
 palette_preset = 1
@@ -1941,14 +2016,86 @@ solid = true
 recall_enabled = true
 
 [node name="TrailRock4" parent="Scenery" instance=ExtResource("rock")]
-position = Vector3(13.7,0,-13)
+position = Vector3(14.4626,0.0000,-12.3814)
 dimensions = Vector3(0.9, 0.55, 0.8)
 boulder_seed = 725403
 palette_preset = 1
 solid = true
 recall_enabled = true
 
+[node name="ForkErratic1" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-1.03, 0, 1.61)
+dimensions = Vector3(1.93, 1.45, 1.3)
+boulder_seed = 725901
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="ForkErratic2" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-1.62, 0, 0.45)
+dimensions = Vector3(1.49, 0.86, 1.15)
+boulder_seed = 725902
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="ForkErratic3" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-0.72, 0, 2.56)
+dimensions = Vector3(1.1, 0.65, 0.81)
+boulder_seed = 725903
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="ForkErratic4" parent="Scenery" instance=ExtResource("rock")]
+position = Vector3(-2.15, 0, 2.2)
+dimensions = Vector3(0.84, 0.44, 0.77)
+boulder_seed = 725904
+palette_preset = 1
+solid = true
+recall_enabled = true
+
+[node name="ErraticMoss1" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-2.12, 0, 1.05)
+bush_seed = 726004
+bush_height = 0.52
+footprint = Vector2(1.22, 0.9882)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ErraticMoss2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.35, 0, 2.15)
+bush_seed = 726005
+bush_height = 0.44
+footprint = Vector2(1.12, 0.9072)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ErraticMoss3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.61, 0, 2.56)
+bush_seed = 726006
+bush_height = 0.39
+footprint = Vector2(0.78, 0.6318)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ErraticMoss4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.67381, 0, -0.148486)
+bush_seed = 726007
+bush_height = 0.46
+footprint = Vector2(1.2, 0.972)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+
 [node name="Fragment" parent="."]
-position = Vector3(-1.1,0.075,1.6)
+position = Vector3(-1.1, 0.075, -2.25)
 note_title = "Into the north woods"
 notes = PackedStringArray("Placeholder: add your own words about leaving the 4Runner and hiking the Bean and Bear Lakes Trail.")

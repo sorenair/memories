@@ -76,20 +76,19 @@ paths, keeping walking routes readable during surrounding scenery recall.
 ## Reviewed memories
 
 The review found the same curved sidewalk slabs recolored for most outdoor
-settings. Seventeen visible instances now use the new family:
+settings. The following memories use the surface family:
 
 | Memory | Applied surfaces |
 | --- | --- |
 | Bean and Bear Lakes | Earth trail on the forest, overlook climb, descent and camp approach. |
 | Duluth / fall-colors hike | Earth on the hike and lookout; gravel along the shore; flagstones around the lighthouse and garden. |
-| Vineyard | Field track between the grape rows. |
 | Tokyo | Gravel on Meiji's forest approach/connections; urban setts on the temple walk and connection to Shibuya. |
 
 The original curves, heights, node paths, fragment placement and guidance sampling
 are preserved. Shibuya's hidden crossing route and the actual road markings remain
 their existing components. These scenes retain their existing memory platforms.
 
-![Vineyard field track in context](../../../docs/previews/path-memory-vineyard-track.png)
+![Earth trail in context](../../../docs/previews/path-memory-bean-bear-trail.png)
 
 ## Preview and checks
 

@@ -1,746 +1,2505 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
-[ext_resource type="AudioStream" path="res://audio/samples/autumn_wind.wav" id="bed"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="path"]
-[ext_resource type="PackedScene" path="res://components/scenery/vietnam/coast/painterly_coastal_headland.tscn" id="cliff"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
 [ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="path"]
+[ext_resource type="AudioStream" path="res://audio/samples/autumn_wind.wav" id="bed"]
+[ext_resource type="Script" path="res://scenes/memories/colorado/quandary_terrain.gd" id="terrain"]
+[ext_resource type="Resource" path="res://scenes/memories/colorado/alpine_stone.tres" id="stone"]
 [ext_resource type="PackedScene" path="res://components/foliage/leaf_litter/painterly_leaf_litter.tscn" id="leaves"]
+[ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
+
+[ext_resource type="Resource" path="res://scenes/memories/duluth_autumn/amber_grass.tres" id="amber"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/autumn_gold.tres" id="copper"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/autumn_red.tres" id="red"]
 
 [sub_resource type="Curve3D" id="ForestTrailCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,-0.288,0.0,-0.544,0,0,9,-0.176,-0.0,1.072,0.176,0.0,-1.072,-1.8,0,5.6,-0.096,-0.0,0.992,0.096,0.0,-0.992,1.1,0,2.3,0.368,-0.0,0.464,0,0,0,-1.2,0,-0.6), "tilts": PackedFloat32Array(0,0,0,0)}
-point_count = 4
+_data = {"points": PackedVector3Array(0.4165, 0, 0.153, -0.4165, 0, -0.153, 0, 0, 9, 0.7055, -0, 0.6035, -0.7055, 0, -0.6035, -2.45, 0, 8.1, 0.051, -0, 0.7956, -0.051, 0, -0.7956, -4.15, 0, 5.45, -0.7361, -0, 0.2635, 0.7361, 0, -0.2635, -2.75, 0, 3.42, -0.884, -0, 0.1598, 0.884, 0, -0.1598, 0.18, 0, 3.9, -0.3604, -0, 0.68, 0.3604, 0, -0.68, 2.45, 0, 2.48, 0.0255, 0, 0.4386, -0.0255, 0, -0.4386, 2.3, 0, -0.1), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)}
+point_count = 7
 
 [sub_resource type="Curve3D" id="LookoutClimbCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.464,0.0,0.008,-1.2,0,-0.6,-0.832,0,-0.08,0.832,0,0.08,1.7,0,-0.55,-0.816,-0.256,0.36,0.816,0.256,-0.36,4.0,0.45,-0.1,-0.4,-0.312,0.944,0.4,0.312,-0.944,6.8,1.6,-2.8,0.336,-0.128,0.8,-0.336,0.128,-0.8,6.5,2.4,-6,0.912,-0.0,0.16,-0.912,0.0,-0.16,4.7,2.4,-7.8,0.624,-0.0,-0.128,0,0,0,0.8,2.4,-7), "tilts": PackedFloat32Array(0,0,0,0,0,0,0)}
+_data = {"points": PackedVector3Array(-0.204, 0, 0.1326, 0.204, 0, -0.1326, 2.3, 0, -0.1, -0.476, -0.1496, 0.3859, 0.476, 0.1496, -0.3859, 3.5, 0.1, -0.88, -0.272, -0.221, 0.6069, 0.272, 0.221, -0.6069, 5.1, 0.88, -2.37, 0.2006, -0.2023, 0.6766, -0.2006, 0.2023, -0.6766, 5.1, 1.4, -4.45, 0.425, -0.17, 0.442, -0.425, 0.17, -0.442, 3.92, 2.07, -6.35, 0.5304, -0.0561, 0.1105, -0.5304, 0.0561, -0.1105, 2.6, 2.4, -7.05, 0.306, 0, -0.0085, -0.306, 0, 0.0085, 0.8, 2.4, -7), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)}
 point_count = 7
 
 [sub_resource type="Curve3D" id="ToLighthouseCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.16,0.0,-0.32,0.8,2.4,-7,-0.672,-0.0,0.64,0.672,0.0,-0.64,1.8,2.4,-9,-1.152,0.16,0.56,1.152,-0.16,-0.56,5,2.4,-11,-1.44,0.384,0.64,1.44,-0.384,-0.64,9,1.4,-12.5,-1.76,0.224,0.72,1.76,-0.224,-0.72,14,0,-15,-0.96,-0.0,0.32,0,0,0,20,0,-17), "tilts": PackedFloat32Array(0,0,0,0,0,0)}
-point_count = 6
+_data = {"points": PackedVector3Array(-0.1615, 0, 0.3145, 0.1615, 0, -0.3145, 0.8, 2.4, -7, -0.6035, 0.0119, 0.5321, 0.6035, -0.0119, -0.5321, 1.75, 2.4, -8.85, -0.935, 0.1156, 0.2635, 0.935, -0.1156, -0.2635, 4.35, 2.33, -10.13, -0.9605, 0.2176, 0.2159, 0.9605, -0.2176, -0.2159, 7.25, 1.72, -10.4, -0.901, 0.255, 0.4216, 0.901, -0.255, -0.4216, 10, 1.05, -11.4, -0.697, 0.1785, 0.4811, 0.697, -0.1785, -0.4811, 12.55, 0.22, -12.88, -0.85, 0.0374, 0.2584, 0.85, -0.0374, -0.2584, 14.1, 0, -14.23, -1.003, -0, 0.4709, 1.003, 0, -0.4709, 17.55, 0, -14.4, -0.4165, 0, 0.442, 0.4165, 0, -0.442, 20, 0, -17), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0)}
+point_count = 9
+
+[sub_resource type="Curve3D" id="ForestReturnCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(-0.204, 0, 0.1666, 0.204, 0, -0.1666, 12.9, 0.14, -13.25, -0.7905, 0.0238, 0.1955, 0.7905, -0.0238, -0.1955, 14.1, 0, -14.23, -1.003, -0, 0.4709, 1.003, 0, -0.4709, 17.55, 0, -14.4, -0.4165, 0, 0.442, 0.4165, 0, -0.442, 20, 0, -17), "tilts": PackedFloat32Array(0, 0, 0, 0)}
+point_count = 4
 
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"duluth_fall_trail"
 display_name = "Duluth · Fall colors"
 ambience_stream = ExtResource("bed")
 ambience_volume_db = -27
-ambience_size = Vector2(28, 38)
-ambience_blend_distance = 4.0
+ambience_size = Vector2(37, 37)
+ambience_blend_distance = 4.8
+
+[node name="LookoutReveal" type="Marker3D" parent="Scenery"]
+position = Vector3(0.8, 2.4, -7)
+
+[node name="RockReveal" type="Marker3D" parent="Scenery"]
+position = Vector3(2.7, 0, -0.35)
 
 [node name="ForestTrail" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ForestTrailCurve")
-path_width = 2.5
-paving_color = Color(0.737255,0.635294,0.486275,1)
+path_width = 2.12
+paving_color = Color(0.67, 0.54, 0.36, 1)
 paving_seed = 101226
-end_fade = Vector2(1, 0)
-edge_softness = 0.32
-crown_height = 0.012
-detail_density = 0.40
+end_fade = Vector2(1.3, 2.1)
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.29
+collision_enabled = false
 
 [node name="LookoutClimb" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("LookoutClimbCurve")
-path_width = 2.5
-paving_color = Color(0.737255,0.635294,0.486275,1)
+path_width = 2.43
+paving_color = Color(0.59, 0.54, 0.42, 1)
 paving_seed = 101226
 end_fade = Vector2(0, 0)
-edge_softness = 0.32
-crown_height = 0.012
-detail_density = 0.40
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.29
+collision_enabled = false
+visible = false
 
 [node name="ToLighthouse" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ToLighthouseCurve")
-path_width = 2.5
-paving_color = Color(0.737255,0.635294,0.486275,1)
+path_width = 2.35
+paving_color = Color(0.59, 0.54, 0.42, 1)
 paving_seed = 101226
-end_fade = Vector2(0, 0.6)
-edge_softness = 0.32
-crown_height = 0.012
-detail_density = 0.40
+end_fade = Vector2(0, 0)
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.29
+collision_enabled = false
+visible = false
 
-[node name="LookoutReveal" parent="Scenery" type="Marker3D"]
-position = Vector3(0.8,2.4,-7)
+[node name="ForestReturn" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ForestReturnCurve")
+path_width = 2.12
+paving_color = Color(0.64, 0.53, 0.39, 1)
+paving_seed = 101226
+end_fade = Vector2(2, 2.3)
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.29
+collision_enabled = false
 
-[node name="RockLookout" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cliff")]
-position = Vector3(0,0,-7)
-footprint = Vector2(8,6)
-cliff_height = 2.4
-body_color = Color(0.5765,0.5882,0.5412,1)
-accent_color = Color(0.6157,0.6118,0.4588,1)
+[node name="RockLookout" parent="Scenery" type="Node3D" node_paths=PackedStringArray("ascent", "descent", "recall_anchor")]
+script = ExtResource("terrain")
+stone_palette = ExtResource("stone")
+ascent = NodePath("../LookoutClimb")
+descent = NodePath("../ToLighthouse")
+crown = Vector3(0.65, 2.4, -7.48)
+crown_extent = Vector2(3.15, 2.4)
+outline = PackedVector2Array(0.65, -0.1, 2.0, 1.0, 3.95, 0.45, 5.8, -0.15, 7.22, -2.12, 7.43, -4.1, 6.9, -6.5, 7.95, -8.5, 10.2, -8.6, 12.9, -10.6, 14.9, -12.0, 15.8, -14.7, 13.4, -16.0, 10.7, -13.7, 7.6, -13.45, 4.53, -12.8, 1.25, -11.44, -1.4, -10.69, -3.1, -8.22, -3.22, -6.26, -1.75, -4.95, 0.22, -4.71, 2.29, -3.16, 2.43, -1.8)
 prop_seed = 101226
 recall_enabled = true
-recall_anchor = NodePath("../LookoutReveal")
+recall_anchor = NodePath("../RockReveal")
+contact_shadow_enabled = false
 
-[node name="TrailTree1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(3.382052466366135,0,7.209501635453223)
-tree_seed = 1012261
+[node name="WoodlandTree0" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.42, 0, 10.2)
+rotation = Vector3(0, 1.2677, 0)
+tree_type = 0
+tree_seed = 1013100
+tree_height = 4.8
+crown_width = 3.34
+trunk_radius = 0.134
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth0" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.2, 0, 10.3)
+rotation = Vector3(0, 0.023905, 0)
+patch_size = Vector2(3.3, 2.4)
+grass_height = 0.22
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013200
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="WoodlandBrush0" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.61, 0, 9.65)
+footprint = Vector2(1.55, 1.2)
+bush_height = 0.43
+bush_seed = 1013300
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="WoodlandTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-4.9, 0, 9.85)
+rotation = Vector3(0, -2.0496, 0)
 tree_type = 2
-tree_height = 4.837351932075737
-crown_width = 3.126716001392008
+tree_seed = 1013101
+tree_height = 4.1
+crown_width = 2.75
+trunk_radius = 0.115
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 43
 palette_preset = 3
-recall_enabled = true
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(1.9885228117808893,0,7.947252629057177)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012301
-palette_preset = 3
 recall_enabled = true
-react_to_explorers = true
 
-[node name="TrailGrass1" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(1.9885228117808893,0,7.947252629057177)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012341
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
-
-[node name="TrailTree2" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-3.3405677342670366,0,10.768535859317844)
-tree_seed = 1012262
+[node name="WoodlandTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6.25, 0, 8.27)
+rotation = Vector3(0, 0.7983, 0)
 tree_type = 0
-tree_height = 4.624327127886075
-crown_width = 3.7571547636262626
+tree_seed = 1013102
+tree_height = 3.85
+crown_width = 2.53
+trunk_radius = 0.108
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 43
 palette_preset = 3
-recall_enabled = true
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush2" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-1.9885228117808893,0,10.052747370942823)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012302
-palette_preset = 3
 recall_enabled = true
-react_to_explorers = true
 
-[node name="TrailGrass2" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-1.9885228117808893,0,10.052747370942823)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012342
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
+[node name="WoodlandFloorGrowth2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-6.03, 0, 8.37)
+rotation = Vector3(0, -0.11243, 0)
+patch_size = Vector2(3.78, 2.88)
+grass_height = 0.33999999999999997
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013202
+palette_preset = 0
+wind_strength = 0.065
 react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
-
-[node name="TrailTree3" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(1.6297736000784953,0,6.163097158221842)
-tree_seed = 1012263
-tree_type = 1
-tree_height = 5.239151500059004
-crown_width = 3.7792279443394925
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 12
-trunk_radius = 0.13
-palette_preset = 4
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
 recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandBrush2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.44, 0, 7.72)
+footprint = Vector2(2.39, 1.2)
+bush_height = 0.54
+bush_seed = 1013302
+palette_preset = 0
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush3" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(0.4202754563234439,0,5.9645228361128035)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012303
-palette_preset = 4
 recall_enabled = true
-react_to_explorers = true
+palette = ExtResource("red")
 
-[node name="TrailGrass3" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(0.4202754563234439,0,5.9645228361128035)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012343
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
-
-[node name="TrailTree4" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-5.379232655774293,0,5.012364787857951)
-tree_seed = 1012264
+[node name="WoodlandTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-6.69, 0, 5.34)
+rotation = Vector3(0, 2.6787, 0)
 tree_type = 0
-tree_height = 4.792487810919321
-crown_width = 3.5048694257085518
+tree_seed = 1013103
+tree_height = 4.6
+crown_width = 2.8
+trunk_radius = 0.129
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 3
-recall_enabled = true
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush4" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-4.020275456323444,0,5.235477163887196)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012304
-palette_preset = 3
 recall_enabled = true
-react_to_explorers = true
 
-[node name="TrailGrass4" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-4.020275456323444,0,5.235477163887196)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012344
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
+[node name="WoodlandFloorGrowth3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-6.47, 0, 5.44)
+rotation = Vector3(0, -0.23926, 0)
+patch_size = Vector2(3.3, 3.12)
+grass_height = 0.22
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013203
+palette_preset = 0
+wind_strength = 0.065
 react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
 
-[node name="TrailTree5" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(5.020243854441253,0,2.6793784375265726)
-tree_seed = 1012265
+[node name="WoodlandBrush3" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-6.88, 0, 4.79)
+footprint = Vector2(1.55, 1.2)
+bush_height = 0.595
+bush_seed = 1013303
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandTree4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.8, 0, 2.9)
+rotation = Vector3(0, 2.6349, 0)
 tree_type = 2
-tree_height = 4.577444766818057
-crown_width = 3.2848298789543326
+tree_seed = 1013104
+tree_height = 3.2
+crown_width = 2.12
+trunk_radius = 0.090
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 43
 palette_preset = 3
-recall_enabled = true
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush5" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(3.3395375304994253,0,2.516729438435428)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012305
-palette_preset = 3
 recall_enabled = true
-react_to_explorers = true
 
-[node name="TrailGrass5" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(3.3395375304994253,0,2.516729438435428)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012345
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
+[node name="WoodlandFloorGrowth4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.58, 0, 3)
+rotation = Vector3(0, 0.30338, 0)
+patch_size = Vector2(3.54, 2.4)
+grass_height = 0.28
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013204
+palette_preset = 0
+wind_strength = 0.065
 react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
 
-[node name="TrailTree6" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-2.562015028948523,0,1.9456114488114329)
-tree_seed = 1012266
+[node name="WoodlandTree5" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-4.7, 0, 1.66)
+rotation = Vector3(0, -0.72849, 0)
 tree_type = 0
-tree_height = 5.211319626283248
-crown_width = 3.0220465665024463
+tree_seed = 1013105
+tree_height = 3.55
+crown_width = 2.16
+trunk_radius = 0.099
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 4
-recall_enabled = true
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush6" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-1.139537530499425,0,2.0832705615645715)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012306
-palette_preset = 4
 recall_enabled = true
+
+[node name="WoodlandBrush5" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.89, 0, 1.11)
+footprint = Vector2(2.39, 1.2)
+bush_height = 0.43
+bush_seed = 1013305
+palette_preset = 0
 react_to_explorers = true
-
-[node name="TrailGrass6" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-1.139537530499425,0,2.0832705615645715)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012346
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
 recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
+palette = ExtResource("copper")
 
-[node name="TrailTree7" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(2.8009,0.0,1.8823)
-tree_seed = 1012267
-tree_type = 1
-tree_height = 4.5898488616398385
-crown_width = 3.0722393990143018
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 3
-recall_enabled = true
-react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush7" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(0.2948186373673196,0,1.0816709670382347)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012307
-palette_preset = 3
-recall_enabled = true
-react_to_explorers = true
-
-[node name="TrailGrass7" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(0.2948186373673196,0,1.0816709670382347)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012347
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
-
-[node name="TrailTree8" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-3.597310531958019,0,-3.296974348452772)
-tree_seed = 1012268
-tree_type = 0
-tree_height = 4.827249209814724
-crown_width = 3.3766677129620617
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 3
-recall_enabled = true
-react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush8" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-2.6948186373673195,0,-2.2816709670382345)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012308
-palette_preset = 3
-recall_enabled = true
-react_to_explorers = true
-
-[node name="TrailGrass8" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-2.6948186373673195,0,-2.2816709670382345)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012348
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
-
-[node name="TrailTree9" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(4.8078879218145785,0.8,3.565046988416651)
-tree_seed = 1012269
+[node name="WoodlandTree6" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-2.95, 0, 0.55)
+rotation = Vector3(0, -0.045073, 0)
 tree_type = 2
-tree_height = 4.911416045047162
-crown_width = 3.5502686226278417
+tree_seed = 1013106
+tree_height = 4.1
+crown_width = 2.5
+trunk_radius = 0.115
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 4
-recall_enabled = true
-react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush9" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(4.396602086797345,0.8,2.0694621338085284)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012309
-palette_preset = 4
-recall_enabled = true
-react_to_explorers = true
-
-[node name="TrailGrass9" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(4.396602086797345,0.8,2.0694621338085284)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012349
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
+leaf_sprays_per_cluster = 43
 palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
 recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
 
-[node name="TrailTree11" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(10.428821771126247,1.6,-1.1393527488066326)
-tree_seed = 1012271
-tree_type = 1
-tree_height = 4.607456005994532
-crown_width = 3.7796931945728454
+[node name="WoodlandFloorGrowth6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-2.73, 0, 0.65)
+rotation = Vector3(0, 0.083896, 0)
+patch_size = Vector2(3.3, 2.88)
+grass_height = 0.22
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013206
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="WoodlandBrush6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-3.14, 0, 0)
+footprint = Vector2(1.55, 1.2)
+bush_height = 0.485
+bush_seed = 1013306
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="WoodlandTree7" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-1.77, 0, 1.64)
+rotation = Vector3(0, 2.3856, 0)
+tree_type = 0
+tree_seed = 1013107
+tree_height = 3.6
+crown_width = 2.1
+trunk_radius = 0.101
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 3
-recall_enabled = true
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush11" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(8.845942772654851,1.6,-1.8637211040393051)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012311
-palette_preset = 3
 recall_enabled = true
-react_to_explorers = true
 
-[node name="TrailGrass11" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(8.845942772654851,1.6,-1.8637211040393051)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012351
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
+[node name="WoodlandFloorGrowth7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-1.55, 0, 1.74)
+rotation = Vector3(0, -0.14244, 0)
+patch_size = Vector2(3.54, 3.12)
+grass_height = 0.28
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013207
+palette_preset = 0
+wind_strength = 0.065
 react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("red")
 
-[node name="TrailTree13" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(10.025257628364757,2.4,-6.330492902659196)
-tree_seed = 1012273
+[node name="WoodlandTree8" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-1.32, 0, 5.68)
+rotation = Vector3(0, -0.86378, 0)
 tree_type = 2
-tree_height = 4.7919303676503535
-crown_width = 3.430632171769421
+tree_seed = 1013108
+tree_height = 4.0
+crown_width = 2.35
+trunk_radius = 0.112
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 43
 palette_preset = 3
-recall_enabled = true
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="TrailBrush13" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(8.740177008633399,2.4,-6.210016594559381)
-footprint = Vector2(1.7,1.36)
-bush_height = 0.935
-bush_seed = 1012313
-palette_preset = 3
 recall_enabled = true
-react_to_explorers = true
 
-[node name="TrailGrass13" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(8.740177008633399,2.4,-6.210016594559381)
-patch_size = Vector2(3.4, 3.0)
-patch_seed = 1012353
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
+[node name="WoodlandFloorGrowth8" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-1.1, 0, 5.78)
+rotation = Vector3(0, -0.022269, 0)
+patch_size = Vector2(3.78, 2.4)
+grass_height = 0.33999999999999997
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013208
+palette_preset = 0
+wind_strength = 0.065
 react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"),NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
-
-[node name="InfillTree0" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-4.4,0,6.1)
-tree_seed = 1012380
-tree_type = 0
-tree_height = 5.0
-crown_width = 3.8
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 3
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
 recall_enabled = true
-react_to_explorers = true
-wind_strength = 0.045
+palette = ExtResource("amber")
 
-[node name="InfillTree1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(3.5,0,3.9)
-tree_seed = 1012381
+[node name="WoodlandBrush8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-1.51, 0, 5.13)
+footprint = Vector2(2.39, 1.2)
+bush_height = 0.595
+bush_seed = 1013308
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="WoodlandTree9" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-0.26, 0, 6.55)
+rotation = Vector3(0, 2.4679, 0)
 tree_type = 0
-tree_height = 5.0
-crown_width = 3.8
+tree_seed = 1013109
+tree_height = 4.96
+crown_width = 2.7
+trunk_radius = 0.139
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 43
 palette_preset = 4
-recall_enabled = true
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 
-[node name="InfillTree2" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-4.5,0,0)
-tree_seed = 1012382
-tree_type = 0
-tree_height = 5.0
-crown_width = 3.8
+[node name="WoodlandBrush9" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.45, 0, 6)
+footprint = Vector2(1.55, 1.2)
+bush_height = 0.65
+bush_seed = 1013309
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandTree10" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(2.1, 0, 8.05)
+rotation = Vector3(0, -2.8347, 0)
+tree_type = 2
+tree_seed = 1013110
+tree_height = 4.15
+crown_width = 2.62
+trunk_radius = 0.116
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 12
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 43
 palette_preset = 3
-recall_enabled = true
+falling_leaf_count = 7
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 
-[node name="InfillTree3" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(5.8,0.6,1.8)
-tree_seed = 1012383
-tree_type = 0
-tree_height = 5.0
-crown_width = 3.8
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+[node name="WoodlandFloorGrowth10" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(2.32, 0, 8.15)
+rotation = Vector3(0, -0.010574, 0)
+patch_size = Vector2(3.54, 2.88)
+grass_height = 0.28
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013210
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandTree11" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.43, 0, 7.4)
+rotation = Vector3(0, -1.2609, 0)
+tree_type = 4
+tree_seed = 1013111
+tree_height = 3.56
+crown_width = 2.15
+trunk_radius = 0.100
+branch_count = 5
+leaf_sprays_per_cluster = 43
 palette_preset = 4
-recall_enabled = true
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
-
-[node name="SummitStone0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(-2.8,2.4,-6.8)
-dimensions = Vector3(1.0, 0.45, 0.85)
-boulder_seed = 1012400
-palette_preset = 1
 recall_enabled = true
-recall_anchor = NodePath("../LookoutReveal")
 
-[node name="SummitStone1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(1.5,2.4,-4.9)
-dimensions = Vector3(1.0, 0.45, 0.85)
-boulder_seed = 1012401
-palette_preset = 1
-recall_enabled = true
-recall_anchor = NodePath("../LookoutReveal")
-
-[node name="SummitStone2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(2.8,2.4,-8.3)
-dimensions = Vector3(1.0, 0.45, 0.85)
-boulder_seed = 1012402
-palette_preset = 1
-recall_enabled = true
-recall_anchor = NodePath("../LookoutReveal")
-
-[node name="SummitGrass0" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-3,2.42,-5.8)
-patch_size = Vector2(2.4, 1.9)
-patch_seed = 1012420
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
+[node name="WoodlandFloorGrowth11" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.65, 0, 7.5)
+rotation = Vector3(0, -0.26221, 0)
+patch_size = Vector2(3.78, 3.12)
+grass_height = 0.33999999999999997
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013211
+palette_preset = 0
+wind_strength = 0.065
 react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
-
-[node name="SummitGrass1" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(2,2.42,-5.1)
-patch_size = Vector2(2.4, 1.9)
-patch_seed = 1012421
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
 recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandBrush11" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.24, 0, 6.85)
+footprint = Vector2(2.39, 1.2)
+bush_height = 0.485
+bush_seed = 1013311
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="WoodlandTree12" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.77, 0, 4.46)
+rotation = Vector3(0, -0.9157, 0)
+tree_type = 0
+tree_seed = 1013112
+tree_height = 3.82
+crown_width = 2.3
+trunk_radius = 0.107
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth12" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(4.99, 0, 4.56)
+rotation = Vector3(0, 0.017439, 0)
+patch_size = Vector2(3.3, 2.4)
+grass_height = 0.22
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013212
+palette_preset = 0
+wind_strength = 0.065
 react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"),NodePath("../ToLighthouse")])
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandBrush12" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(4.58, 0, 3.91)
+footprint = Vector2(1.55, 1.2)
+bush_height = 0.54
+bush_seed = 1013312
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="WoodlandTree13" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(4.52, 0, 2.42)
+rotation = Vector3(0, -0.17499, 0)
+tree_type = 2
+tree_seed = 1013113
+tree_height = 3.15
+crown_width = 1.9
+trunk_radius = 0.088
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandTree14" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(0.18, 0, 0.94)
+rotation = Vector3(0, 1.0111, 0)
+tree_type = 4
+tree_seed = 1013114
+tree_height = 2.88
+crown_width = 1.78
+trunk_radius = 0.081
+branch_count = 5
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth14" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(0.4, 0, 1.04)
+rotation = Vector3(0, 0.071306, 0)
+patch_size = Vector2(3.78, 2.88)
+grass_height = 0.33999999999999997
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013214
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="WoodlandBrush14" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-0.01, 0, 0.39)
+footprint = Vector2(2.39, 1.2)
+bush_height = 0.65
+bush_seed = 1013314
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="WoodlandTree15" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(11, 0, -15.7)
+rotation = Vector3(0, 1.127, 0)
+tree_type = 2
+tree_seed = 1013115
+tree_height = 3.1
+crown_width = 2.02
+trunk_radius = 0.087
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth15" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(11.22, 0, -15.6)
+rotation = Vector3(0, 0.22744, 0)
+patch_size = Vector2(3.3, 3.12)
+grass_height = 0.22
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013215
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandBrush15" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(10.81, 0, -16.25)
+footprint = Vector2(1.55, 1.2)
+bush_height = 0.43
+bush_seed = 1013315
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandTree16" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(12.5, 0, -16.7)
+rotation = Vector3(0, 2.9075, 0)
+tree_type = 0
+tree_seed = 1013116
+tree_height = 3.86
+crown_width = 2.41
+trunk_radius = 0.108
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth16" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(12.72, 0, -16.6)
+rotation = Vector3(0, -0.12323, 0)
+patch_size = Vector2(3.54, 2.4)
+grass_height = 0.28
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013216
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandTree17" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(14.1, 0, -16.72)
+rotation = Vector3(0, 2.8477, 0)
+tree_type = 0
+tree_seed = 1013117
+tree_height = 4.5
+crown_width = 2.75
+trunk_radius = 0.126
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandBrush17" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(13.91, 0, -17.27)
+footprint = Vector2(2.39, 1.2)
+bush_height = 0.54
+bush_seed = 1013317
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="WoodlandTree18" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(15.55, 0, -17.15)
+rotation = Vector3(0, 2.9687, 0)
+tree_type = 2
+tree_seed = 1013118
+tree_height = 4.9
+crown_width = 2.9
+trunk_radius = 0.137
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth18" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(15.77, 0, -17.05)
+rotation = Vector3(0, -0.1699, 0)
+patch_size = Vector2(3.3, 2.88)
+grass_height = 0.22
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013218
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandBrush18" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(15.36, 0, -17.7)
+footprint = Vector2(1.55, 1.2)
+bush_height = 0.595
+bush_seed = 1013318
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="WoodlandTree19" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(17.72, 0, -17.86)
+rotation = Vector3(0, -0.048418, 0)
+tree_type = 4
+tree_seed = 1013119
+tree_height = 4.02
+crown_width = 2.46
+trunk_radius = 0.113
+branch_count = 5
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth19" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(17.94, 0, -17.76)
+rotation = Vector3(0, 0.024506, 0)
+patch_size = Vector2(3.54, 3.12)
+grass_height = 0.28
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013219
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandTree20" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(18.2, 0, -12.12)
+rotation = Vector3(0, -1.9161, 0)
+tree_type = 2
+tree_seed = 1013120
+tree_height = 3.95
+crown_width = 2.13
+trunk_radius = 0.111
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth20" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(18.42, 0, -12.02)
+rotation = Vector3(0, 0.035122, 0)
+patch_size = Vector2(3.78, 2.4)
+grass_height = 0.33999999999999997
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013220
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="WoodlandBrush20" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(18.01, 0, -12.67)
+footprint = Vector2(2.39, 1.2)
+bush_height = 0.43
+bush_seed = 1013320
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="WoodlandTree21" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(19.62, 0, -12.46)
+rotation = Vector3(0, 2.4092, 0)
+tree_type = 0
+tree_seed = 1013121
+tree_height = 4.6
+crown_width = 2.68
+trunk_radius = 0.129
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandBrush21" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(19.43, 0, -13.01)
+footprint = Vector2(1.55, 1.2)
+bush_height = 0.485
+bush_seed = 1013321
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandTree22" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(21, 0, -13.1)
+rotation = Vector3(0, -1.3596, 0)
+tree_type = 2
+tree_seed = 1013122
+tree_height = 3.54
+crown_width = 2.7
+trunk_radius = 0.099
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth22" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(21.22, 0, -13)
+rotation = Vector3(0, -0.11024, 0)
+patch_size = Vector2(3.54, 2.88)
+grass_height = 0.28
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013222
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandTree23" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(15.78, 0, -11.7)
+rotation = Vector3(0, 2.2045, 0)
+tree_type = 4
+tree_seed = 1013123
+tree_height = 3.45
+crown_width = 2.2
+trunk_radius = 0.097
+branch_count = 5
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="WoodlandFloorGrowth23" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(16, 0, -11.6)
+rotation = Vector3(0, -0.064308, 0)
+patch_size = Vector2(3.78, 3.12)
+grass_height = 0.33999999999999997
+tufts_per_square_meter = 16
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013223
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="WoodlandBrush23" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(15.59, 0, -12.25)
+footprint = Vector2(2.39, 1.2)
+bush_height = 0.595
+bush_seed = 1013323
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="TrailFern0" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-3.7, 0, 8.2)
+plant_seed = 1013330
+plant_height = 0.27
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("copper")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
+
+[node name="TrailFern1" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-5.75, 0, 5)
+plant_seed = 1013331
+plant_height = 0.35000000000000003
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("amber")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
+
+[node name="TrailFern2" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-4.65, 0, 2.58)
+plant_seed = 1013332
+plant_height = 0.43000000000000005
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("copper")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
+
+[node name="TrailFern3" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(-0.8, 0, 2.25)
+plant_seed = 1013333
+plant_height = 0.27
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("copper")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
+
+[node name="TrailFern4" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(3.73, 0, 2.46)
+plant_seed = 1013334
+plant_height = 0.35000000000000003
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("amber")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
+
+[node name="TrailFern5" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(12.4, 0, -15.2)
+plant_seed = 1013335
+plant_height = 0.43000000000000005
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("copper")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
+
+[node name="TrailFern6" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(16.1, 0, -16.1)
+plant_seed = 1013336
+plant_height = 0.27
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("copper")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
+
+[node name="TrailFern7" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(17.7, 0, -12.95)
+plant_seed = 1013337
+plant_height = 0.35000000000000003
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("amber")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
+
+[node name="TrailFern8" parent="Scenery" instance=ExtResource("fern")]
+position = Vector3(20.1, 0, -14.9)
+plant_seed = 1013338
+plant_height = 0.43000000000000005
+spread = 0.84
+recall_enabled = true
+palette_preset = 0
+palette = ExtResource("copper")
+use_type_bark = false
+bark_shadow = Color(0.35, 0.23, 0.135, 1)
+bark_light = Color(0.66, 0.43, 0.22, 1)
 
 [node name="AutumnVista0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-6.5,0,-13.5)
-tree_seed = 1012440
-tree_type = 2
-tree_height = 4.5
-crown_width = 3.8
+position = Vector3(-5.7, -0.08, -4.2)
+rotation = Vector3(0, -2.5849, 0)
+tree_type = 0
+tree_seed = 1013500
+tree_height = 3.5
+crown_width = 2.8
+trunk_radius = 0.098
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 34
 palette_preset = 4
-recall_enabled = true
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 recall_anchor = NodePath("../LookoutReveal")
 
 [node name="AutumnVista1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-9.5,0,-16)
-tree_seed = 1012441
-tree_type = 0
-tree_height = 5.0
-crown_width = 3.8
+position = Vector3(-5.62, -0.08, -7.18)
+rotation = Vector3(0, 2.7076, 0)
+tree_type = 2
+tree_seed = 1013501
+tree_height = 3.7
+crown_width = 3.0
+trunk_radius = 0.104
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 34
 palette_preset = 3
-recall_enabled = true
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 recall_anchor = NodePath("../LookoutReveal")
 
-[node name="AutumnVista2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-2.5,0,-16.5)
-tree_seed = 1012442
-tree_type = 0
-tree_height = 5.5
-crown_width = 3.8
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 3
+[node name="VistaUnderstory1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-5.62, -0.1, -7.18)
+rotation = Vector3(0, 0.14183, 0)
+patch_size = Vector2(3.95, 3.5)
+grass_height = 0.21
+tufts_per_square_meter = 11
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013531
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
 recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="AutumnVista2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-4.32, -0.08, -9.9)
+rotation = Vector3(0, 2.9608, 0)
+tree_type = 0
+tree_seed = 1013502
+tree_height = 4.35
+crown_width = 3.1
+trunk_radius = 0.122
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 recall_anchor = NodePath("../LookoutReveal")
 
 [node name="AutumnVista3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(0.8,0,-19)
-tree_seed = 1012443
-tree_type = 0
-tree_height = 4.5
-crown_width = 3.8
+position = Vector3(-5.02, -0.08, -11.6)
+rotation = Vector3(0, 2.7937, 0)
+tree_type = 2
+tree_seed = 1013503
+tree_height = 4.0
+crown_width = 2.8
+trunk_radius = 0.112
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 34
 palette_preset = 4
-recall_enabled = true
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 recall_anchor = NodePath("../LookoutReveal")
 
-[node name="AutumnVista4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-7.2,0,-19)
-tree_seed = 1012444
-tree_type = 2
-tree_height = 5.0
-crown_width = 3.8
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 3
+[node name="VistaUnderstory3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-5.02, -0.1, -11.6)
+rotation = Vector3(0, -0.10158, 0)
+patch_size = Vector2(3.95, 3.5)
+grass_height = 0.21
+tufts_per_square_meter = 11
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013533
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
 recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="AutumnVista4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-2.89, -0.08, -12.26)
+rotation = Vector3(0, -2.9561, 0)
+tree_type = 0
+tree_seed = 1013504
+tree_height = 3.95
+crown_width = 2.5
+trunk_radius = 0.111
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 recall_anchor = NodePath("../LookoutReveal")
 
 [node name="AutumnVista5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-12,0,-13)
-tree_seed = 1012445
-tree_type = 0
-tree_height = 5.5
-crown_width = 3.8
+position = Vector3(-3.3, -0.08, -3.05)
+rotation = Vector3(0, -0.93967, 0)
+tree_type = 2
+tree_seed = 1013505
+tree_height = 3.7
+crown_width = 2.75
+trunk_radius = 0.104
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 12
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 34
 palette_preset = 3
-recall_enabled = true
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 recall_anchor = NodePath("../LookoutReveal")
+
+[node name="VistaUnderstory5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-3.3, -0.1, -3.05)
+rotation = Vector3(0, 0.16033, 0)
+patch_size = Vector2(3.95, 3.5)
+grass_height = 0.21
+tufts_per_square_meter = 11
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013535
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("copper")
 
 [node name="AutumnVista6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-4.5,0,-21.5)
-tree_seed = 1012446
+position = Vector3(2.47, -0.08, -13.5)
+rotation = Vector3(0, -0.4407, 0)
 tree_type = 0
-tree_height = 4.5
-crown_width = 3.8
+tree_seed = 1013506
+tree_height = 3.65
+crown_width = 2.74
+trunk_radius = 0.102
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 34
 palette_preset = 4
-recall_enabled = true
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 recall_anchor = NodePath("../LookoutReveal")
+
+[node name="VistaUnderstory6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(2.47, -0.1, -13.5)
+rotation = Vector3(0, -0.046163, 0)
+patch_size = Vector2(3.95, 3.5)
+grass_height = 0.21
+tufts_per_square_meter = 11
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013536
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("red")
 
 [node name="AutumnVista7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(2.8,0,-19.3)
-tree_seed = 1012447
-tree_type = 0
-tree_height = 5.0
-crown_width = 3.8
+position = Vector3(-6.9, -0.08, -9.1)
+rotation = Vector3(0, -0.306, 0)
+tree_type = 2
+tree_seed = 1013507
+tree_height = 3.0
+crown_width = 2.4
+trunk_radius = 0.084
 branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
+leaf_sprays_per_cluster = 34
 palette_preset = 3
-recall_enabled = true
+falling_leaf_count = 0
+trunk_collision = false
 react_to_explorers = true
-wind_strength = 0.045
+recall_enabled = true
 recall_anchor = NodePath("../LookoutReveal")
 
-[node name="FallenLeaves0" parent="Scenery" instance=ExtResource("leaves")]
-position = Vector3(-1.2,0.027,7.8)
-footprint = Vector2(3, 2.1)
-leaf_count = 95
-leaf_seed = 1012470
+[node name="AutumnVista8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.72, -0.08, -7.6)
+rotation = Vector3(0, 1.4213, 0)
+tree_type = 0
+tree_seed = 1013508
+tree_height = 3.3
+crown_width = 2.7
+trunk_radius = 0.092
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="VistaUnderstory8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-7.72, -0.1, -7.6)
+rotation = Vector3(0, 0.29549, 0)
+patch_size = Vector2(3.95, 3.5)
+grass_height = 0.21
+tufts_per_square_meter = 11
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013538
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LedgeRock0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(1.03, 0.35, -1.9)
+rotation = Vector3(0, -2.9053, 0)
+dimensions = Vector3(2.8, 0.65, 1.9)
+boulder_seed = 1013450
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(3.05, 0.8, -2.42)
+rotation = Vector3(0, 0.98108, 0)
+dimensions = Vector3(1.75, 0.8, 1.18)
+boulder_seed = 1013451
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(6.65, 1, -2.1)
+rotation = Vector3(0, -1.0162, 0)
+dimensions = Vector3(1.73, 0.83, 1.3)
+boulder_seed = 1013452
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(6.81, 1.44, -4.74)
+rotation = Vector3(0, 2.1521, 0)
+dimensions = Vector3(2.3, 1.09, 1.85)
+boulder_seed = 1013453
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(4.86, 2.33, -7.7)
+rotation = Vector3(0, 0.4652, 0)
+dimensions = Vector3(2, 1.08, 1.68)
+boulder_seed = 1013454
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-1.67, 2.25, -6.8)
+rotation = Vector3(0, 0.74824, 0)
+dimensions = Vector3(1.6, 0.63, 1.1)
+boulder_seed = 1013455
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-0.84, 2.25, -8.35)
+rotation = Vector3(0, 2.6771, 0)
+dimensions = Vector3(1.85, 0.62, 1.04)
+boulder_seed = 1013456
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.65, 2.34, -9.42)
+rotation = Vector3(0, 1.7225, 0)
+dimensions = Vector3(1.33, 0.55, 1.07)
+boulder_seed = 1013457
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(6.46, 1.49, -11.82)
+rotation = Vector3(0, -2.4026, 0)
+dimensions = Vector3(1.78, 0.61, 1.46)
+boulder_seed = 1013458
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(9.15, 0.77, -12.65)
+rotation = Vector3(0, -1.3782, 0)
+dimensions = Vector3(1.44, 0.65, 1.31)
+boulder_seed = 1013459
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(11.65, 0.48, -10.93)
+rotation = Vector3(0, -1.744, 0)
+dimensions = Vector3(1.4, 0.72, 1.14)
+boulder_seed = 1013460
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="LedgeRock11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(13.2, 0.18, -14.75)
+rotation = Vector3(0, 1.8511, 0)
+dimensions = Vector3(1.2, 0.56, 0.93)
+boulder_seed = 1013461
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+
+[node name="RockTufts0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(1.1, 0.232, -0.74)
+rotation = Vector3(0, -0.020775, 0)
+patch_size = Vector2(1.7, 1.1)
+grass_height = 0.17
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013475
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="LedgeBrush0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(1.1, 0.25, -0.54)
+footprint = Vector2(1.05, 0.78)
+bush_height = 0.28
+bush_seed = 1013490
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("copper")
+
+[node name="RockTufts1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(3.2, 0.492, -2.6)
+rotation = Vector3(0, 0.29487, 0)
+patch_size = Vector2(1.95, 1.1)
+grass_height = 0.21000000000000002
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013476
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="RockTufts2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(6.64, 0.702, -2.91)
+rotation = Vector3(0, 0.024018, 0)
+patch_size = Vector2(2.2, 1.1)
+grass_height = 0.25
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013477
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="RockTufts3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(3.83, 1.872, -4.62)
+rotation = Vector3(0, -0.23275, 0)
+patch_size = Vector2(1.7, 1.1)
+grass_height = 0.17
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013478
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="LedgeBrush3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(3.83, 1.89, -4.42)
+footprint = Vector2(1.05, 0.78)
+bush_height = 0.28
+bush_seed = 1013493
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("copper")
+
+[node name="RockTufts4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(6, 1.832, -5.55)
+rotation = Vector3(0, 0.1953, 0)
+patch_size = Vector2(1.95, 1.1)
+grass_height = 0.21000000000000002
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013479
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("copper")
+
+[node name="RockTufts5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(2.35, 2.382, -5.82)
+rotation = Vector3(0, -0.25747, 0)
+patch_size = Vector2(2.2, 1.1)
+grass_height = 0.25
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013480
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("red")
+
+[node name="RockTufts6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-0.35, 2.362, -6.01)
+rotation = Vector3(0, 0.14136, 0)
+patch_size = Vector2(1.7, 1.1)
+grass_height = 0.17
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013481
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="RockTufts7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-0.91, 2.332, -7.65)
+rotation = Vector3(0, -0.26173, 0)
+patch_size = Vector2(1.95, 1.1)
+grass_height = 0.21000000000000002
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013482
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="RockTufts8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(2.25, 2.202, -10.15)
+rotation = Vector3(0, 0.1835, 0)
+patch_size = Vector2(2.2, 1.1)
+grass_height = 0.25
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013483
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="LedgeBrush8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(2.25, 2.22, -9.95)
+footprint = Vector2(1.05, 0.78)
+bush_height = 0.28
+bush_seed = 1013498
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("copper")
+
+[node name="RockTufts9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(5.62, 1.702, -11.65)
+rotation = Vector3(0, -0.12767, 0)
+patch_size = Vector2(1.7, 1.1)
+grass_height = 0.17
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013484
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="RockTufts10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(7.54, 1.902, -9.23)
+rotation = Vector3(0, 0.12813, 0)
+patch_size = Vector2(1.95, 1.1)
+grass_height = 0.21000000000000002
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013485
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="LedgeBrush10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(7.54, 1.92, -9.03)
+footprint = Vector2(1.05, 0.78)
+bush_height = 0.28
+bush_seed = 1013500
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("red")
+
+[node name="RockTufts11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(9.22, 1.322, -10.01)
+rotation = Vector3(0, -0.2438, 0)
+patch_size = Vector2(2.2, 1.1)
+grass_height = 0.25
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013486
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("copper")
+
+[node name="RockTufts12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(10.51, 0.842, -12.78)
+rotation = Vector3(0, 0.13314, 0)
+patch_size = Vector2(1.7, 1.1)
+grass_height = 0.17
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013487
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("red")
+
+[node name="LedgeBrush12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(10.51, 0.86, -12.58)
+footprint = Vector2(1.05, 0.78)
+bush_height = 0.28
+bush_seed = 1013502
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("copper")
+
+[node name="RockTufts13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(12.75, 0.182, -12.18)
+rotation = Vector3(0, 0.16481, 0)
+patch_size = Vector2(1.95, 1.1)
+grass_height = 0.21000000000000002
+tufts_per_square_meter = 22
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013488
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutClimb"), NodePath("../ToLighthouse")])
+recall_enabled = true
+recall_anchor = NodePath("../RockReveal")
+palette = ExtResource("amber")
+
+[node name="TrailLitter0" parent="Scenery" instance=ExtResource("leaves")]
+position = Vector3(-1.4, 0.012, 8.1)
+footprint = Vector2(3.5, 2.25)
+leaf_count = 32
+leaf_seed = 1013660
 flutter_strength = 0.012
 recall_enabled = true
 
-[node name="FallenLeaves1" parent="Scenery" instance=ExtResource("leaves")]
-position = Vector3(0.6,0.027,3.6)
-footprint = Vector2(3, 2.1)
-leaf_count = 95
-leaf_seed = 1012471
+[node name="TrailLitter1" parent="Scenery" instance=ExtResource("leaves")]
+position = Vector3(-3.6, 0.012, 6)
+footprint = Vector2(3.5, 2.25)
+leaf_count = 32
+leaf_seed = 1013661
 flutter_strength = 0.012
 recall_enabled = true
 
-[node name="FallenLeaves2" parent="Scenery" instance=ExtResource("leaves")]
-position = Vector3(-0.7,0.027,-0.3)
-footprint = Vector2(3, 2.1)
-leaf_count = 95
-leaf_seed = 1012472
+[node name="TrailLitter2" parent="Scenery" instance=ExtResource("leaves")]
+position = Vector3(-2.1, 0.012, 3.8)
+footprint = Vector2(3.5, 2.25)
+leaf_count = 32
+leaf_seed = 1013662
 flutter_strength = 0.012
 recall_enabled = true
 
-[node name="FallenLeaves3" parent="Scenery" instance=ExtResource("leaves")]
-position = Vector3(0.5,2.426,-6)
-footprint = Vector2(3, 2.1)
-leaf_count = 95
-leaf_seed = 1012473
+[node name="TrailLitter3" parent="Scenery" instance=ExtResource("leaves")]
+position = Vector3(1.8, 0.012, 2.5)
+footprint = Vector2(3.5, 2.25)
+leaf_count = 32
+leaf_seed = 1013663
 flutter_strength = 0.012
+recall_enabled = true
+
+[node name="TrailLitter4" parent="Scenery" instance=ExtResource("leaves")]
+position = Vector3(15.82, 0.012, -14.7)
+footprint = Vector2(3.5, 2.25)
+leaf_count = 32
+leaf_seed = 1013664
+flutter_strength = 0.012
+recall_enabled = true
+
+[node name="TrailLitter5" parent="Scenery" instance=ExtResource("leaves")]
+position = Vector3(18, 0.012, -15.45)
+footprint = Vector2(3.5, 2.25)
+leaf_count = 32
+leaf_seed = 1013665
+flutter_strength = 0.012
+recall_enabled = true
+
+[node name="LookoutGrove0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-4.62, -0.095, -4.42)
+rotation = Vector3(0, 1.2677, 0)
+tree_type = 2
+tree_seed = 1015200
+tree_height = 2.9
+crown_width = 2.22
+trunk_radius = 0.081
+branch_count = 6
+leaf_sprays_per_cluster = 40
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-4.81, -0.107, -4.31)
+rotation = Vector3(0, 0.023905, 0)
+patch_size = Vector2(3.3, 2.85)
+grass_height = 0.19
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015230
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("red")
+
+[node name="LookoutBrush0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-4.33, -0.1, -3.94)
+footprint = Vector2(1.23, 1.06)
+bush_height = 0.35
+bush_seed = 1015260
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("copper")
+
+[node name="LookoutGrove1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-6.66, -0.095, -4.73)
+rotation = Vector3(0, -2.0496, 0)
+tree_type = 0
+tree_seed = 1015201
+tree_height = 3.55
+crown_width = 2.75
+trunk_radius = 0.099
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutBrush1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-6.37, -0.1, -4.25)
+footprint = Vector2(1.44, 1.19)
+bush_height = 0.39499999999999996
+bush_seed = 1015261
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("copper")
+
+[node name="LookoutGrove2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-8.35, -0.095, -4.52)
+rotation = Vector3(0, 0.7983, 0)
+tree_type = 2
+tree_seed = 1015202
+tree_height = 3.55
+crown_width = 2.55
+trunk_radius = 0.099
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-8.54, -0.107, -4.41)
+rotation = Vector3(0, -0.11243, 0)
+patch_size = Vector2(3.76, 3.23)
+grass_height = 0.262
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015232
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LookoutGrove3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.14, -0.095, -5.73)
+rotation = Vector3(0, 2.6787, 0)
+tree_type = 2
+tree_seed = 1015203
+tree_height = 3.2
+crown_width = 2.44
+trunk_radius = 0.090
+branch_count = 6
+leaf_sprays_per_cluster = 40
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-7.33, -0.107, -5.62)
+rotation = Vector3(0, -0.23926, 0)
+patch_size = Vector2(3.3, 3.42)
+grass_height = 0.298
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015233
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LookoutGrove4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-9.33, -0.095, -6.81)
+rotation = Vector3(0, 2.6349, 0)
+tree_type = 0
+tree_seed = 1015204
+tree_height = 4.05
+crown_width = 2.87
+trunk_radius = 0.113
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutBrush4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-9.04, -0.1, -6.33)
+footprint = Vector2(1.23, 1.19)
+bush_height = 0.35
+bush_seed = 1015264
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("red")
+
+[node name="LookoutGrove5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-4.42, -0.095, -6.35)
+rotation = Vector3(0, 2.8442, 0)
+tree_type = 0
+tree_seed = 1015205
+tree_height = 3.55
+crown_width = 2.57
+trunk_radius = 0.099
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-4.61, -0.107, -6.24)
+rotation = Vector3(0, -0.077706, 0)
+patch_size = Vector2(3.76, 3.04)
+grass_height = 0.226
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015235
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LookoutGrove6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-4.12, -0.095, -8.05)
+rotation = Vector3(0, -0.045073, 0)
+tree_type = 2
+tree_seed = 1015206
+tree_height = 3.06
+crown_width = 2.36
+trunk_radius = 0.086
+branch_count = 6
+leaf_sprays_per_cluster = 40
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutBrush6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-3.83, -0.1, -7.57)
+footprint = Vector2(1.65, 1.06)
+bush_height = 0.43999999999999995
+bush_seed = 1015266
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("copper")
+
+[node name="LookoutGrove7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-6.14, -0.095, -8.78)
+rotation = Vector3(0, 0.78652, 0)
+tree_type = 0
+tree_seed = 1015207
+tree_height = 3.66
+crown_width = 2.91
+trunk_radius = 0.102
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-6.33, -0.107, -8.67)
+rotation = Vector3(0, 0.25446, 0)
+patch_size = Vector2(3.53, 3.42)
+grass_height = 0.298
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015237
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("red")
+
+[node name="LookoutBrush7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-5.85, -0.1, -8.3)
+footprint = Vector2(1.86, 1.19)
+bush_height = 0.485
+bush_seed = 1015267
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("copper")
+
+[node name="LookoutGrove8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-8.35, -0.095, -9.91)
+rotation = Vector3(0, -1.3353, 0)
+tree_type = 2
+tree_seed = 1015208
+tree_height = 3.42
+crown_width = 2.58
+trunk_radius = 0.096
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-8.54, -0.107, -9.8)
+rotation = Vector3(0, -0.092136, 0)
+patch_size = Vector2(3.76, 2.85)
+grass_height = 0.19
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015238
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LookoutGrove9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-6.77, -0.095, -11.39)
+rotation = Vector3(0, -0.20877, 0)
+tree_type = 0
+tree_seed = 1015209
+tree_height = 4.1
+crown_width = 3.08
+trunk_radius = 0.115
+branch_count = 6
+leaf_sprays_per_cluster = 40
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-6.96, -0.107, -11.28)
+rotation = Vector3(0, 0.26324, 0)
+patch_size = Vector2(3.3, 3.04)
+grass_height = 0.226
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015239
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LookoutGrove10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-5.04, -0.095, -13.35)
+rotation = Vector3(0, -2.8347, 0)
+tree_type = 2
+tree_seed = 1015210
+tree_height = 3.39
+crown_width = 2.43
+trunk_radius = 0.095
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutBrush10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-4.75, -0.1, -12.87)
+footprint = Vector2(1.65, 1.19)
+bush_height = 0.43999999999999995
+bush_seed = 1015270
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("red")
+
+[node name="LookoutGrove11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-3.66, -0.095, -13.6)
+rotation = Vector3(0, -0.099132, 0)
+tree_type = 2
+tree_seed = 1015211
+tree_height = 3.52
+crown_width = 2.69
+trunk_radius = 0.099
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-3.85, -0.107, -13.49)
+rotation = Vector3(0, -0.1345, 0)
+patch_size = Vector2(3.76, 3.42)
+grass_height = 0.298
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015241
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LookoutGrove12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-1.22, -0.095, -13.75)
+rotation = Vector3(0, -2.4582, 0)
+tree_type = 0
+tree_seed = 1015212
+tree_height = 3.98
+crown_width = 2.63
+trunk_radius = 0.111
+branch_count = 6
+leaf_sprays_per_cluster = 40
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-1.41, -0.107, -13.64)
+rotation = Vector3(0, -0.097674, 0)
+patch_size = Vector2(3.3, 2.85)
+grass_height = 0.19
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015242
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LookoutBrush12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-0.93, -0.1, -13.27)
+footprint = Vector2(1.23, 1.06)
+bush_height = 0.35
+bush_seed = 1015272
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("copper")
+
+[node name="LookoutGrove13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(0.63, -0.095, -12.73)
+rotation = Vector3(0, 0.1635, 0)
+tree_type = 2
+tree_seed = 1015213
+tree_height = 3.15
+crown_width = 2.36
+trunk_radius = 0.088
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutGrove14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-3.62, -0.095, -10.87)
+rotation = Vector3(0, -0.17499, 0)
+tree_type = 0
+tree_seed = 1015214
+tree_height = 3.63
+crown_width = 2.78
+trunk_radius = 0.102
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutBrush14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-3.33, -0.1, -10.39)
+footprint = Vector2(1.65, 1.32)
+bush_height = 0.43999999999999995
+bush_seed = 1015274
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("copper")
+
+[node name="LookoutGrove15" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-9, -0.095, -8.2)
+rotation = Vector3(0, 1.0111, 0)
+tree_type = 0
+tree_seed = 1015215
+tree_height = 3.8
+crown_width = 2.64
+trunk_radius = 0.106
+branch_count = 6
+leaf_sprays_per_cluster = 40
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutUnderstory15" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-9.19, -0.107, -8.09)
+rotation = Vector3(0, 0.071306, 0)
+patch_size = Vector2(3.3, 3.42)
+grass_height = 0.298
+tufts_per_square_meter = 18
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015245
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("amber")
+
+[node name="LookoutGrove16" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-7.02, -0.095, -13.19)
+rotation = Vector3(0, 1.127, 0)
+tree_type = 2
+tree_seed = 1015216
+tree_height = 3.1
+crown_width = 2.32
+trunk_radius = 0.087
+branch_count = 6
+leaf_sprays_per_cluster = 34
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+
+[node name="LookoutBrush16" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-6.73, -0.1, -12.71)
+footprint = Vector2(1.23, 1.19)
+bush_height = 0.35
+bush_seed = 1015276
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../LookoutReveal")
+palette = ExtResource("red")
+
+[node name="TrailingTufts0" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-0.2, -0.005, 10.25)
+rotation = Vector3(0, 0.13522, 0)
+patch_size = Vector2(3.5, 2.45)
+grass_height = 0.22
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015750
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+
+[node name="TrailingTufts1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-1.48, -0.005, 8.67)
+rotation = Vector3(0, 0.023905, 0)
+patch_size = Vector2(2.75, 1.9)
+grass_height = 0.18
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015751
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+
+[node name="TrailingTufts2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(1.25, -0.005, 6.44)
+rotation = Vector3(0, -0.21863, 0)
+patch_size = Vector2(3.12, 2.65)
+grass_height = 0.23
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015752
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+
+[node name="TrailingTufts3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-4.85, -0.005, 6.77)
+rotation = Vector3(0, 0.085152, 0)
+patch_size = Vector2(3.28, 2.64)
+grass_height = 0.26
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015753
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+
+[node name="TrailingTufts4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.72, -0.005, 2.11)
+rotation = Vector3(0, -0.11243, 0)
+patch_size = Vector2(3.14, 2.23)
+grass_height = 0.22
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015754
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+
+[node name="TrailingTufts5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(1.14, -0.005, 1.11)
+rotation = Vector3(0, 0.28572, 0)
+patch_size = Vector2(2.6, 2.18)
+grass_height = 0.19
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015755
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+
+[node name="TrailingTufts6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(14.8, -0.005, -12.92)
+rotation = Vector3(0, -0.23926, 0)
+patch_size = Vector2(3.59, 2.4)
+grass_height = 0.24
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015756
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+
+[node name="TrailingTufts7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(17.42, -0.005, -16.62)
+rotation = Vector3(0, 0.28106, 0)
+patch_size = Vector2(3.26, 2.26)
+grass_height = 0.23
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015757
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
+recall_enabled = true
+
+[node name="TrailingTufts8" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(20.21, -0.005, -15.42)
+rotation = Vector3(0, 0.30338, 0)
+patch_size = Vector2(2.82, 2.15)
+grass_height = 0.23
+tufts_per_square_meter = 21
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1015758
+palette_preset = 0
+palette = ExtResource("amber")
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ForestTrail"), NodePath("../LookoutClimb"), NodePath("../ToLighthouse"), NodePath("../ForestReturn")])
 recall_enabled = true
 
 [node name="Fragment" parent="."]
-position = Vector3(0.8,2.48,-7)
+position = Vector3(0.8, 2.48, -7)
 note_title = "Above the autumn trees"
 notes = PackedStringArray("Placeholder: add your own words about the fall hike and rock lookout in Duluth.")

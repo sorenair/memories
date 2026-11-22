@@ -1,11 +1,11 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/cabin_clearing.wav" id="air"]
 [ext_resource type="PackedScene" path="res://components/groundcover/paths/earth_trail.tscn" id="path"]
 [ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="soil"]
 [ext_resource type="PackedScene" path="res://components/scenery/camp/tent/painterly_stormbreak_tent.tscn" id="tent"]
-[ext_resource type="PackedScene" path="res://components/scenery/camp/fire_pit/painterly_fire_pit.tscn" id="pit"]
+[ext_resource type="PackedScene" path="res://components/scenery/camp/fire_pit/painterly_sculpted_fire_pit.tscn" id="pit"]
 [ext_resource type="PackedScene" path="res://components/scenery/camp/stove/painterly_backpacking_stove.tscn" id="stove"]
 [ext_resource type="Resource" path="res://scenes/memories/bean_bear/forest_green.tres" id="green"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
@@ -14,10 +14,19 @@
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
 [ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
 
+[ext_resource type="PackedScene" path="res://components/lighting/light_wash/painterly_light_wash.tscn" id="wash"]
+
+[ext_resource type="AudioStream" path="res://audio/samples/cabin_fire_crackle.wav" id="crackle"]
+
 [sub_resource type="Curve3D" id="CampWalkCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,-0.32,0.0,0.112,4,0,-6,0.64,-0.0,-0.224,-0.64,0.0,0.224,2,0,-5.3,0.704,-0.0,-0.416,-0.704,0.0,0.416,0,0,-4.6,0.512,-0.0,-0.896,-0.512,0.0,0.896,-2.4,0,-2.7,0.128,-0.0,-0.96,-0.128,0.0,0.96,-3.2,0,1,-0.0,-0.0,-0.368,0,0,0,-3.2,0,3.3), "tilts": PackedFloat32Array(0,0,0,0,0,0)}
-point_count = 6
+_data = {"points": PackedVector3Array(0.37, -0, -0.116, -0.37, 0, 0.116, 4, 0, -6, 0.82, -0, -0.308, -0.82, 0, 0.308, 2.15, 0, -5.42, 0.92, -0, -0.564, -0.92, 0, 0.564, -0.1, 0, -4.46, 0.61, -0, -0.836, -0.61, 0, 0.836, -2.45, 0, -2.6, 0.034, -0, -0.966, -0.034, 0, 0.966, -3.15, 0, -0.28, -0.1, -0, -0.566, 0.1, 0, 0.566, -2.62, 0, 2.23, 0.006, -0, -0.064, -0.006, 0, 0.064, -2.65, 0, 2.55), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)}
+point_count = 7
+
+[sub_resource type="Curve3D" id="ShoreSpurCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0.03, 0, -0.12, -0.03, 0, 0.12, -2.65, 0, 2.55, 0.015, 0, -0.08, -0.015, 0, 0.08, -2.75, 0, 3.05, 0, 0, -0.07, 0, 0, 0.07, -2.77, 0, 3.38), "tilts": PackedFloat32Array(0, 0, 0)}
+point_count = 3
 
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"bean_bear_campsite"
@@ -31,14 +40,24 @@ ambience_blend_distance = 4.0
 curve = SubResource("CampWalkCurve")
 path_width = 2.4
 paving_color = Color(0.725490,0.647059,0.529412,1)
-end_fade = Vector2(0, 0)
-edge_softness = 0.25
+end_fade = Vector2(3.15, 2.45)
+edge_softness = 0.56
 paving_seed = 72526
 crown_height = 0.012
-detail_density = 0.35
+detail_density = 0.25
+
+[node name="ShoreSpur" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ShoreSpurCurve")
+path_width = 1.78
+paving_color = Color(0.669, 0.613, 0.493, 1)
+end_fade = Vector2(0.58, 0.94)
+edge_softness = 0.59
+crown_height = 0.0
+detail_density = 0.18
+collision_enabled = false
 
 [node name="CampRecall" parent="Scenery" type="Marker3D"]
-position = Vector3(0.4,3.2,15)
+position = Vector3(3.4, 0, -6.6)
 
 [node name="CampGround" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("soil")]
 position = Vector3(0.5,-0.04,-0.8)
@@ -46,7 +65,7 @@ patch_size = Vector2(11,12)
 patch_seed = 725266
 dune_height = 0.0
 terrain_form = 1
-edge_feather = 1.5
+edge_feather = 2.1
 sand_color = Color(0.7255,0.7059,0.6118,1)
 shadow_color = Color(0.5882,0.5882,0.4902,1)
 ripple_strength = 0.0
@@ -55,23 +74,55 @@ recall_enabled = true
 recall_anchor = NodePath("../CampRecall")
 
 [node name="Tent" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tent")]
-position = Vector3(2.9,0.005,-2.8)
-rotation_degrees = Vector3(0,-35,0)
+position = Vector3(2.63, 0.013, -2.2)
+rotation_degrees = Vector3(0, 28, 0)
 recall_enabled = true
 guy_lines_enabled = true
 recall_anchor = NodePath("../CampRecall")
+front_vestibule_open = true
+body_color = Color(0.81, 0.55, 0.23, 1)
+accent_color = Color(0.92, 0.70, 0.34, 1)
+trim_color = Color(0.29, 0.34, 0.31, 1)
+tent_height = 1.24
+footprint = Vector2(2.38, 2.49)
 
-[node name="FirePit" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("pit")]
-position = Vector3(-0.9,0.015,0.4)
+[node name="FirePit" parent="Scenery" node_paths=PackedStringArray("recall_anchor", "fire_lights", "crackle") instance=ExtResource("pit")]
+position = Vector3(0.26, 0.015, -0.12)
 radius = 0.65
 grill_enabled = false
 recall_enabled = true
 recall_anchor = NodePath("../CampRecall")
+tap_to_toggle = true
+starts_lit = false
+fire_lights = [NodePath("../FireWarmth")]
+crackle = NodePath("Crackle")
+paint_seed = 21026
+
+[node name="Crackle" type="AudioStreamPlayer3D" parent="Scenery/FirePit"]
+position = Vector3(0, 0.25, 0)
+stream = ExtResource("crackle")
+volume_db = -5.0
+unit_size = 12.0
+max_distance = 36.0
+bus = &"Ambience"
+
+[node name="FireWarmth" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("wash")]
+position = Vector3(0.26, 0.06, -0.12)
+footprint = Vector2(4.7, 4.25)
+light_color = Color(1, 0.77, 0.47, 1)
+intensity = 0.28
+softness = 0.90
+paint_variation = 0.56
+motion = 1
+motion_speed = 0.83
+motion_amount = 0.14
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
 
 [node name="Stove" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("stove")]
-position = Vector3(1.7,0.03,2.2)
+position = Vector3(0.26, 0.03, 1.96)
 rotation_degrees = Vector3(0,25,0)
-gear_scale = 1.45
+gear_scale = 1.58
 pot_enabled = true
 burner_on = true
 steam_enabled = true
@@ -543,7 +594,7 @@ palette = ExtResource("green")
 ground_exclusions = Array[NodePath]([NodePath("../CampWalk"),NodePath("../Tent"),NodePath("../Stove"),NodePath("../FirePit")])
 
 [node name="CampTree9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(6.5,0,2.7)
+position = Vector3(8, 0, 1.3)
 tree_type = 4
 tree_seed = 725718
 tree_height = 5.737115501360803
@@ -601,11 +652,11 @@ palette = ExtResource("green")
 ground_exclusions = Array[NodePath]([NodePath("../CampWalk"),NodePath("../Tent"),NodePath("../Stove"),NodePath("../FirePit")])
 
 [node name="CampTree10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(4.2,0,5.5)
+position = Vector3(6, 0, 7.8)
 tree_type = 0
 tree_seed = 725719
-tree_height = 4.474706943985743
-crown_width = 3.7572661975367643
+tree_height = 2.3
+crown_width = 1.6
 branch_count = 6
 leaf_sprays_per_cluster = 52
 falling_leaf_count = 0
@@ -659,11 +710,11 @@ palette = ExtResource("green")
 ground_exclusions = Array[NodePath]([NodePath("../CampWalk"),NodePath("../Tent"),NodePath("../Stove"),NodePath("../FirePit")])
 
 [node name="CampTree11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(1.1,0,6.7)
+position = Vector3(2.9, 0, 8.2)
 tree_type = 4
 tree_seed = 725720
-tree_height = 5.7516699321522715
-crown_width = 3.5466314803256767
+tree_height = 2.3
+crown_width = 1.6
 branch_count = 6
 leaf_sprays_per_cluster = 52
 falling_leaf_count = 0
@@ -717,11 +768,11 @@ palette = ExtResource("green")
 ground_exclusions = Array[NodePath]([NodePath("../CampWalk"),NodePath("../Tent"),NodePath("../Stove"),NodePath("../FirePit")])
 
 [node name="CampTree12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-1.9,0,7)
+position = Vector3(-0.75, 0, 7.6)
 tree_type = 2
 tree_seed = 725721
-tree_height = 5.753414178304688
-crown_width = 3.564687389533299
+tree_height = 2.3
+crown_width = 1.6
 branch_count = 6
 leaf_sprays_per_cluster = 52
 falling_leaf_count = 0
@@ -737,9 +788,9 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampShrub12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
-position = Vector3(-1.634,0,6.02)
+position = Vector3(-0.61, 0, 6.18)
 bush_seed = 725761
-bush_height = 0.96
+bush_height = 0.47
 footprint = Vector2(1.6,1.2800000000000002)
 recall_enabled = true
 react_to_explorers = true
@@ -748,7 +799,7 @@ palette = ExtResource("green")
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampFern12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("fern")]
-position = Vector3(-1.034,0,5.77)
+position = Vector3(-0.29, 0, 5.97)
 rotation_degrees = Vector3(0,31,0)
 plant_seed = 725791
 plant_height = 0.45
@@ -762,7 +813,7 @@ wind_strength = 0.035
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampGrass12" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-1.634,0,6.02)
+position = Vector3(-0.61, 0, 6.18)
 patch_size = Vector2(3.0, 2.4)
 patch_seed = 725821
 tufts_per_square_meter = 12.0
@@ -775,7 +826,7 @@ palette = ExtResource("green")
 ground_exclusions = Array[NodePath]([NodePath("../CampWalk"),NodePath("../Tent"),NodePath("../Stove"),NodePath("../FirePit")])
 
 [node name="CampTree13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-4.4,0,6.2)
+position = Vector3(0.7, 0, 7.45)
 tree_type = 0
 tree_seed = 725722
 tree_height = 4.564343658450271
@@ -795,9 +846,9 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampShrub13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
-position = Vector3(-3.784,0,5.332)
+position = Vector3(-1.45, 0, 5.36)
 bush_seed = 725762
-bush_height = 0.96
+bush_height = 0.39
 footprint = Vector2(1.6,1.2800000000000002)
 recall_enabled = true
 react_to_explorers = true
@@ -806,7 +857,7 @@ palette = ExtResource("green")
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampFern13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("fern")]
-position = Vector3(-3.184,0,5.082)
+position = Vector3(-1.02, 0, 5.6)
 rotation_degrees = Vector3(0,32,0)
 plant_seed = 725792
 plant_height = 0.45
@@ -820,7 +871,7 @@ wind_strength = 0.035
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampGrass13" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-3.784,0,5.332)
+position = Vector3(-1.44, 0, 5.5)
 patch_size = Vector2(3.0, 2.4)
 patch_seed = 725822
 tufts_per_square_meter = 12.0
@@ -833,7 +884,7 @@ palette = ExtResource("green")
 ground_exclusions = Array[NodePath]([NodePath("../CampWalk"),NodePath("../Tent"),NodePath("../Stove"),NodePath("../FirePit")])
 
 [node name="CampTree14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-6.5,0,4.9)
+position = Vector3(-6.3, 0, -2.25)
 tree_type = 4
 tree_seed = 725723
 tree_height = 4.8645951383650345
@@ -853,7 +904,7 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampShrub14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
-position = Vector3(-5.59,0,4.214)
+position = Vector3(-5.2, 0, -0.13)
 bush_seed = 725763
 bush_height = 0.96
 footprint = Vector2(1.6,1.2800000000000002)
@@ -864,7 +915,7 @@ palette = ExtResource("green")
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampFern14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("fern")]
-position = Vector3(-4.99,0,3.964)
+position = Vector3(-4.77, 0, -0.26)
 rotation_degrees = Vector3(0,33,0)
 plant_seed = 725793
 plant_height = 0.45
@@ -878,7 +929,7 @@ wind_strength = 0.035
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampGrass14" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-5.59,0,4.214)
+position = Vector3(-5.05, 0, -0.22)
 patch_size = Vector2(3.0, 2.4)
 patch_seed = 725823
 tufts_per_square_meter = 12.0
@@ -911,7 +962,7 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampTree16" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(10,0,-2)
+position = Vector3(-6.8, 0, -1.75)
 tree_type = 4
 tree_seed = 725725
 tree_height = 5.483358820241039
@@ -971,7 +1022,7 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampTree19" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(2.2,0,9.6)
+position = Vector3(7, 0, 5.2)
 tree_type = 4
 tree_seed = 725728
 tree_height = 5.094339100524153
@@ -991,7 +1042,7 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampTree20" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-2.1,0,9.4)
+position = Vector3(-5.55, 0, -1.85)
 tree_type = 0
 tree_seed = 725729
 tree_height = 5.405388542979695
@@ -1011,7 +1062,7 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../CampRecall")
 
 [node name="CampTree21" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-6.7,0,8.6)
+position = Vector3(1.9, 0, 8.95)
 tree_type = 4
 tree_seed = 725730
 tree_height = 5.248260841427425
@@ -1274,10 +1325,10 @@ palette = ExtResource("green")
 ground_exclusions = Array[NodePath]([NodePath("../CampWalk"),NodePath("../Tent"),NodePath("../Stove"),NodePath("../FirePit")])
 
 [node name="InnerFern9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("fern")]
-position = Vector3(-4.8,0,4.8)
+position = Vector3(-1.5, 0, 3.56)
 rotation_degrees = Vector3(0,89,0)
 plant_seed = 726209
-plant_height = 0.45
+plant_height = 0.27
 spread = 1.7
 fullness = 0.5
 recall_enabled = true
@@ -1288,7 +1339,7 @@ wind_strength = 0.035
 recall_anchor = NodePath("../CampRecall")
 
 [node name="InnerGrass9" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-4.8,0,4.8)
+position = Vector3(-1.5, 0, 3.6)
 patch_size = Vector2(3.4, 3.4)
 patch_seed = 726239
 tufts_per_square_meter = 12.0
@@ -1324,7 +1375,235 @@ palette_preset = 1
 solid = true
 recall_enabled = true
 
+[node name="CampPocketBrush1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-4.48, 0, 1.05)
+bush_seed = 726694
+bush_height = 0.52
+footprint = Vector2(1.25, 1.0125)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketGrass1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-4.06, 0, 1.15)
+patch_seed = 726792
+grass_height = 0.34
+patch_size = Vector2(1.5125, 1.1495)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketBrush2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-4.39, 0, 0.9)
+bush_seed = 726695
+bush_height = 0.62
+footprint = Vector2(1.38, 1.1178)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketGrass2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-3.98, 0, 1.04)
+patch_seed = 726793
+grass_height = 0.34
+patch_size = Vector2(1.6698, 1.26905)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketBrush3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-4.75, 0, -3.27)
+bush_seed = 726696
+bush_height = 0.68
+footprint = Vector2(1.4, 1.134)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketBrush4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-1.7, 0, -3.72)
+bush_seed = 726697
+bush_height = 0.46
+footprint = Vector2(0.98, 0.7938)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketGrass4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-1.28, 0, -3.62)
+patch_seed = 726795
+grass_height = 0.34
+patch_size = Vector2(1.1858, 0.901208)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketBrush5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(3.75, 0, 0.52)
+bush_seed = 726698
+bush_height = 0.54
+footprint = Vector2(1.2, 0.972)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketBrush6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(3.85, 0, 1.73)
+bush_seed = 726699
+bush_height = 0.7
+footprint = Vector2(1.45, 1.1745)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketGrass6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(4.27, 0, 1.83)
+patch_seed = 726797
+grass_height = 0.34
+patch_size = Vector2(1.7545, 1.33342)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketBrush7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(2.26, 0, 4.45)
+bush_seed = 726700
+bush_height = 0.52
+footprint = Vector2(1.2, 0.972)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketBrush8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-0.66, 0, 4.29)
+bush_seed = 726701
+bush_height = 0.29
+footprint = Vector2(1.24, 1.0044)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketGrass8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-0.24, 0, 4.39)
+patch_seed = 726799
+grass_height = 0.34
+patch_size = Vector2(1.5004, 1.1403)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketBrush9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(5.5, 0, -1.52)
+bush_seed = 726702
+bush_height = 0.65
+footprint = Vector2(1.34, 1.0854)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketGrass9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(5.92, 0, -1.42)
+patch_seed = 726800
+grass_height = 0.34
+patch_size = Vector2(1.6214, 1.23226)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-4.85, 0, -3.55)
+tree_type = 4
+tree_seed = 726829
+tree_height = 3.8
+crown_width = 2.6
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+trunk_collision = false
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(0.95, 0, -5.48)
+tree_type = 2
+tree_seed = 726830
+tree_height = 4.45
+crown_width = 2.3
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+trunk_collision = false
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
+[node name="CampPocketTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(6.18, 0, 1.48)
+tree_type = 2
+tree_seed = 726831
+tree_height = 3.5
+crown_width = 1.76
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+trunk_collision = false
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../CampRecall")
+
 [node name="Fragment" parent="."]
-position = Vector3(-3.2,0.075,3.3)
+position = Vector3(-2.65, 0.075, 2.55)
 note_title = "Camp beside the lake"
 notes = PackedStringArray("Placeholder: add your own words about the tent, camp stove and fire beside the lake.")

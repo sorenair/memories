@@ -4,12 +4,19 @@ extends PainterlyConcertComponent
 ## The route curves describe the tread elevation. Their surrounding rock and
 ## the collision are generated together so the climbing surface stays flush.
 const ROCK_PAINT = preload("res://scenes/memories/colorado/quandary_rock.gdshader")
-const CROWN := Vector3(0.0, 3.6, -1.0)
 const TREAD_HALF_WIDTH := 1.25
 
 @export var stone_palette: StonePalette
 @export var ascent: Path3D
 @export var descent: Path3D
+@export var crown := Vector3(0.0, 3.6, -1.0):
+	set(value):
+		crown = value
+		_request_rebuild()
+@export var crown_extent := Vector2(6.1, 5.25):
+	set(value):
+		crown_extent = value.max(Vector2.ONE)
+		_request_rebuild()
 ## Irregular outer edge in local X/Z meters. Ends taper into the memory floor.
 @export var outline: PackedVector2Array:
 	set(value):
@@ -176,7 +183,7 @@ func _tread_at(point: Vector2) -> Vector2:
 
 func _elevation(point: Vector2, tread: Vector2) -> float:
 	var distance := absf(tread.y)
-	var crown_distance := ((point - Vector2(CROWN.x, CROWN.z)) / Vector2(6.1, 5.25)).length()
+	var crown_distance := ((point - Vector2(crown.x, crown.z)) / crown_extent).length()
 	var rise := smoothstep(0.12, 1.7, tread.x)
 	# The narrow cut has a rising inner face and a lower outer lip.
 	# A few strong planes replace the previous rolling surface profile.
@@ -188,7 +195,7 @@ func _elevation(point: Vector2, tread: Vector2) -> float:
 	else:
 		ledge -= flank * rise * (0.71 + rib * 0.38)
 	# The saddle is an exposed sheet of bedrock, open around the goats.
-	return lerpf(ledge, CROWN.y, 1.0 - smoothstep(0.82, 1.09, crown_distance))
+	return lerpf(ledge, crown.y, 1.0 - smoothstep(0.82, 1.09, crown_distance))
 
 func _inside_edge(a: Vector2, b: Vector2) -> bool:
 	return Geometry2D.is_point_in_polygon((a + b) * 0.5, outline)

@@ -1,10 +1,10 @@
 extends "res://scripts/follow_camera.gd"
-## An intimate planted shore opens along the pier to the Ensign and the lake.
+## An intimate planted shore opens along the pier to both boats and the lake.
 @export var lake_zone: Node3D
 @export var shore_size := 3.5
 @export var pier_size := 6.0
 @export var sailing_size := 17.0
-@export var sailing_focus := Vector3(1.6,2.8,-3.4)
+@export var sailing_focus := Vector3(0.2,2.45,-3.7)
 func _ready() -> void:
 	framing_offset = Vector3(0,0.8,-0.65)
 	$Camera3D.size = shore_size

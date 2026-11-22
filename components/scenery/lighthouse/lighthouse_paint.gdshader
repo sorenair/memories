@@ -10,6 +10,8 @@ uniform float animation_time = -1.0;
 uniform vec4 stripe_color : source_color = vec4(0.68,0.31,0.27,1.0);
 uniform int stripe_count = 6;
 uniform float tower_height = 9.0;
+uniform float base_band_height = 0.0;
+uniform vec4 base_band_color : source_color = vec4(0.24,0.22,0.21,1.0);
 varying float paint_shade;
 varying vec3 pigment;
 varying vec3 point;
@@ -34,6 +36,9 @@ void fragment() {
 		if (mod(band,2.0)>0.5) {
 			color = stripe_color.rgb*paint_shade*mix(0.97,1.025,smoothstep(-0.2,0.5,wash));
 		}
+	}
+	if (base_band_height > 0.0 && kind != 1.0 && point.y < base_band_height) {
+		color = base_band_color.rgb * paint_shade * mix(0.94, 1.04, wash * 0.5 + 0.5);
 	}
 	float lamp = step(1.5, kind)*(1.0-step(2.5,kind));
 	float t = animation_time >= 0.0 ? animation_time : TIME;

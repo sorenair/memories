@@ -31,12 +31,20 @@ const BEACON = preload("res://components/scenery/lighthouse/beacon.gdshader")
 @export var stripe_color := Color("ad4f45"):
 	set(value):
 		stripe_color = value
-		_update_stripes()
+		_update_tower_paint()
 ## Alternating light/red bands on the shaft; windows, plinth and gallery keep their paint.
 @export_range(2, 10, 1) var stripe_count := 6:
 	set(value):
 		stripe_count = clampi(value, 2, 10)
-		_update_stripes()
+		_update_tower_paint()
+@export_range(0.0, 4.0, 0.05) var base_band_height := 0.0:
+	set(value):
+		base_band_height = value
+		_update_tower_paint()
+@export var base_band_color := Color("3d3935"):
+	set(value):
+		base_band_color = value
+		_update_tower_paint()
 @export_group("Beacon")
 @export var beacon_enabled: bool = true:
 	set(value):
@@ -78,14 +86,16 @@ func _apply_material() -> void:
 	if _material:
 		_material.shader = LIGHTHOUSE_PAINT
 		super._apply_material()
-	_update_stripes()
+	_update_tower_paint()
 	_update_beacon()
 
-func _update_stripes() -> void:
+func _update_tower_paint() -> void:
 	if _material:
 		_material.set_shader_parameter("stripe_color", stripe_color)
 		_material.set_shader_parameter("stripe_count", stripe_count)
 		_material.set_shader_parameter("tower_height", tower_height)
+		_material.set_shader_parameter("base_band_height", base_band_height)
+		_material.set_shader_parameter("base_band_color", base_band_color)
 
 func _build_details() -> void:
 	_beacon_materials.clear()

@@ -7,7 +7,9 @@ func run() -> void:
 	await process_frame
 	var shapes: Array[PackedVector2Array] = []
 	shapes.append(PackedVector2Array([Vector2(-6.8,24),Vector2(4.8,24),Vector2(4.8,32.3),Vector2(-6.8,32.3)]))
-	for name in ["Trailhead/Scenery/ForestTrail","Overlook/Scenery/OverlookClimb","Overlook/Scenery/ToCamp","Campsite/Scenery/CampWalk"]:
+	for name in ["Trailhead/Scenery/ForestTrail","Trailhead/Scenery/BoulderFork",
+		"Overlook/Scenery/OverlookClimb","Overlook/Scenery/LookoutSpur","Overlook/Scenery/ToCamp",
+		"Campsite/Scenery/CampWalk","Campsite/Scenery/ShoreSpur"]:
 		var trail: PainterlyCurvedPath = memory.get_node("Zones/"+name)
 		var line := PackedVector2Array()
 		for point in trail.get_route_points(0,1,0.4): line.append(Vector2(point.x,point.z))

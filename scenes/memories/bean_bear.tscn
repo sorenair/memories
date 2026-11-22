@@ -1,63 +1,71 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene format=3 uid="uid://45uyhu6s45h2"]
 
+[ext_resource type="AudioStream" uid="uid://dff55fo2d0pas" path="res://audio/ambiance/ambiance_forest.mp3" id="8_xb1u7"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="Script" path="res://scripts/bean_bear_memory.gd" id="script"]
-[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
-[ext_resource type="PackedScene" path="res://scenes/memories/bean_bear/trailhead_zone.tscn" id="Trailhead"]
-[ext_resource type="PackedScene" path="res://scenes/memories/bean_bear/overlook_zone.tscn" id="Overlook"]
 [ext_resource type="PackedScene" path="res://scenes/memories/bean_bear/campsite_zone.tscn" id="Campsite"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
+[ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
-
 [ext_resource type="Curve2D" path="res://scenes/memories/bean_bear/walk_outline.tres" id="outline"]
+[ext_resource type="PackedScene" path="res://scenes/memories/bean_bear/overlook_zone.tscn" id="Overlook"]
+[ext_resource type="Script" uid="uid://bqjjpewj82qy3" path="res://scripts/bean_bear_memory.gd" id="script"]
+[ext_resource type="PackedScene" path="res://scenes/memories/bean_bear/trailhead_zone.tscn" id="Trailhead"]
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=1030302901 instance=ExtResource("base")]
 script = ExtResource("script")
 memory_id = &"bean_bear"
 display_name = "Bean and Bear Lakes"
 
-[node name="Entry" parent="."]
-position = Vector3(0.4,0.07,28.5)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.07, 28.5)
 
-[node name="Exit" parent="."]
-position = Vector3(21.8,0.07,-20.7)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.8, 0.07, -20.7)
 
-[node name="ForestFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="ForestFloor" parent="Environment" index="0" unique_id=919155506 instance=ExtResource("floor")]
 visible = false
-custom_outline = ExtResource("outline")
 outline_detail = 96
+custom_outline = ExtResource("outline")
 edge_inset = 0.12
 boundary_height = 4.0
 
-[node name="Guidance" parent="Environment" type="Node3D"]
+[node name="Guidance" type="Node3D" parent="Environment" index="1" unique_id=1766284034]
 
-
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="Trailhead" parent="Zones" instance=ExtResource("Trailhead")]
-position = Vector3(0,0,18)
-
-[node name="Overlook" parent="Zones" instance=ExtResource("Overlook")]
-position = Vector3(24,0,-8)
-
-[node name="Campsite" parent="Zones" instance=ExtResource("Campsite")]
-position = Vector3(25,0,-24)
-
-[node name="ForestMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="ForestMemory" parent="Environment/Guidance" index="0" unique_id=11355320 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Trailhead/Fragment")
+waypoints = PackedVector3Array(0.4, 0.76, 28.5, 0.816281, 0.76, 27.819647, 1.2454077, 0.76, 27.14683, 1.6313839, 0.76, 26.448654, 1.907605, 0.76, 25.701748, 1.8979775, 0.76, 24.91114, 1.5296677, 0.76, 24.21178, 0.94313794, 0.76, 23.672497, 0.3104392, 0.76, 23.18608, -0.35437357, 0.76, 22.747066, -1.0779506, 0.76, 22.411074, -1.8153366, 0.76, 22.10587, -2.537714, 0.76, 21.767363, -3.1943343, 0.76, 21.317305, -3.686392, 0.76, 20.692385, -4.002735, 0.76, 19.962425, -4.093391, 0.76, 19.172709, -3.9497197, 0.76, 18.390276, -3.608708, 0.76, 17.671429, -3.092447, 0.76, 17.06526, -2.4705734, 0.76, 16.566233, -1.7969306, 0.76, 16.138723, -1.0999997, 0.76, 15.75, -1.1, 0.835, 15.75)
 stroke_width = 0.32
 
-[node name="LakesMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="LakesMemory" parent="Environment/Guidance" index="1" unique_id=1681885648 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Trailhead/Fragment")
 end_anchor = NodePath("../../../Zones/Overlook/Fragment")
+waypoints = PackedVector3Array(-1.0999997, 0.76, 15.75, -0.38255388, 0.76, 15.458242, 0.3705803, 0.76, 15.27352, 1.1329209, 0.76, 15.129862, 1.8897568, 0.76, 14.9605665, 2.6111698, 0.76, 14.679974, 3.195374, 0.76, 14.180516, 3.4439986, 0.76, 13.4518585, 3.4892893, 0.76, 12.679453, 3.6461105, 0.76, 11.923997, 4.1410775, 0.76, 11.3394, 4.834053, 0.76, 10.996468, 5.5817323, 0.76, 10.79126, 6.3410172, 0.76, 10.632221, 7.0949087, 0.76, 10.450102, 7.8177414, 0.76, 10.171793, 8.454493, 0.76, 9.731904, 8.97448, 0.76, 9.160395, 9.398022, 0.76, 8.508928, 9.826961, 0.76, 7.863081, 10.360882, 0.76, 7.3018217, 10.985266, 0.76, 6.843148, 11.612146, 0.76, 6.3840446, 12.187831, 0.76, 5.8669395, 12.744077, 0.76, 5.326174, 13.29268, 0.76, 4.7776785, 13.837032, 0.76, 4.22495, 14.378738, 0.76, 3.6696234, 14.918867, 0.76, 3.1127625, 15.458477, 0.76, 2.5554447, 16.000002, 0.76, 2.000001, 16, 0.76, 2, 16.792723, 0.80714315, 1.909133, 17.585142, 0.850916, 1.8136492, 18.377935, 0.8985766, 1.723486, 19.171286, 0.9527715, 1.6422911, 19.965092, 1.0150046, 1.5721693, 20.759167, 1.0863916, 1.5147085, 21.553879, 1.1656765, 1.4881573, 22.348124, 1.2469529, 1.5243988, 23.1399, 1.330407, 1.5953608, 23.930437, 1.4169681, 1.6760015, 24.721655, 1.5077477, 1.7440758, 25.514395, 1.6039605, 1.7766609, 26.306234, 1.7067614, 1.7473059, 27.087755, 1.8167675, 1.6247158, 27.837425, 1.9330218, 1.3765087, 28.53033, 2.0512404, 0.9974556, 29.164936, 2.1672082, 0.52640533, 29.737402, 2.2808661, -0.019136429, 30.248428, 2.3929224, -0.6230631, 30.701862, 2.5045748, -1.2715244, 31.102913, 2.6173615, -1.9535093, 31.457016, 2.7330985, -2.6605883, 31.76923, 2.8539138, -3.3863444, 32.0435, 2.982281, -4.126009, 32.262238, 3.1152642, -4.8830013, 32.41916, 3.2493865, -5.6550226, 32.517, 3.3835871, -6.4367313, 32.554707, 3.5168624, -7.2237782, 32.526566, 3.6479855, -8.011549, 32.419662, 3.7749994, -8.793044, 32.2075, 3.8939664, -9.553547, 31.823683, 3.9930353, -10.242289, 31.1635, 4.03813, -10.677902, 30.39022, 4.0384297, -10.873022, 29.59429, 4.016197, -10.938608, 28.795662, 3.9844797, -10.947962, 28, 3.9600003, -11, 28, 3.96, -11, 27.652866, 3.96, -10.283248, 27.265932, 3.96, -9.587624, 26.838137, 3.96, -8.916697, 26.140247, 3.9600003, -8.7075815, 25.4, 3.9600003, -9, 25.4, 4.04, -9)
 stroke_width = 0.32
 
-[node name="CampMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="CampMemory" parent="Environment/Guidance" index="2" unique_id=922947787 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Zones/Overlook/Fragment")
 end_anchor = NodePath("../../../Zones/Campsite/Fragment")
+waypoints = PackedVector3Array(25.4, 3.9600003, -9, 26.140247, 3.9600003, -8.7075815, 26.838137, 3.96, -8.916697, 27.265932, 3.96, -9.587624, 27.652866, 3.96, -10.283248, 28, 3.96, -11, 28, 3.96, -11, 28.747215, 3.975329, -11.234772, 29.505302, 3.9969792, -11.434235, 30.253967, 4.0127935, -11.666566, 30.980566, 4.0173407, -11.960627, 31.668169, 4.006301, -12.336324, 32.294113, 3.9760818, -12.806389, 32.848328, 3.92823, -13.358778, 33.37201, 3.8749087, -13.9399605, 33.868164, 3.8166149, -14.544344, 34.333782, 3.7526076, -15.171988, 34.764133, 3.6820002, -15.823601, 35.152435, 3.6037211, -16.500229, 35.48917, 3.5164819, -17.202808, 35.761208, 3.4187891, -17.931446, 35.950855, 3.3090894, -18.683907, 36.039745, 3.186765, -19.45281, 36.027733, 3.0545702, -20.225132, 35.915176, 2.9148195, -20.98798, 35.711475, 2.7701647, -21.73088, 35.43331, 2.6229835, -22.448887, 35.09941, 2.4748847, -23.142649, 34.7268, 2.326696, -23.816492, 34.329506, 2.1787238, -24.476183, 33.917427, 2.0310154, -25.126781, 33.46196, 1.8844492, -25.747805, 32.962654, 1.7397273, -26.334774, 32.433083, 1.5968063, -26.895124, 31.88185, 1.455476, -27.43465, 31.314959, 1.315475, -27.958065, 30.737133, 1.1764954, -28.469685, 30.152933, 1.038148, -28.974213, 29.56858, 0.8998047, -29.47863, 29, 0.76, -29.999996, 29, 0.76, -30, 28.27199, 0.76, -29.79026, 27.549335, 0.76, -29.562967, 26.836296, 0.76, -29.306698, 26.120756, 0.76, -29.057869, 25.426397, 0.76, -28.755938, 24.769428, 0.76, -28.380184, 24.12426, 0.76, -27.981777, 23.50095, 0.76, -27.551485, 22.932201, 0.76, -27.052002, 22.454466, 0.76, -26.465076, 22.08904, 0.76, -25.803154, 21.903654, 0.76, -25.070824, 21.851254, 0.76, -24.315292, 21.90423, 0.76, -23.56091, 22.079367, 0.76, -22.824184, 22.299667, 0.76, -22.099293, 22.35, 0.76, -21.45, 22.35, 0.835, -21.45)
 stroke_width = 0.32
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Trailhead" parent="Zones" index="0" unique_id=861803363 instance=ExtResource("Trailhead")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18)
+ambience_stream = ExtResource("8_xb1u7")
+ambience_volume_db = -10.0
+
+[node name="Overlook" parent="Zones" index="1" unique_id=1627022688 instance=ExtResource("Overlook")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -8)
+ambience_stream = ExtResource("8_xb1u7")
+ambience_volume_db = -10.0
+
+[node name="Campsite" parent="Zones" index="2" unique_id=1838070522 instance=ExtResource("Campsite")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -24)
+ambience_stream = ExtResource("8_xb1u7")
+ambience_volume_db = -10.0

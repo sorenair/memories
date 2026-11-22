@@ -1,106 +1,28 @@
 # Bean and Bear Lakes · July 25, 2026
 
-A summer backpacking memory in northern Minnesota: **parked 4Runner → forest
-trail → two-lake cliff overlook → lakeside camp**. Recall it between Southern
-Vietnam and Vineyard, or run `res://scenes/world/bean_bear_world.tscn` with F6.
-
-The date, trail, vehicle, overlook relationship and camping equipment are confirmed
-by the brief. Time of day and personal wording are unspecified. The scene uses the
-shared soft daylight and explicitly marked placeholder notes. Layout distances are compressed for exploration.
+A summer backpacking memory in northern Minnesota. Start beside the parked 4Runner, take a winding forest trail to the cliff lookout, then descend to the lakeside camp. Recall it between Southern Vietnam and Vineyard, or run `res://scenes/world/bean_bear_world.tscn` with F6.
 
 ## Three zones
 
-- **Trailhead:** `trailhead_zone.tscn` starts beside the existing gray 4Runner.
-  **ForestTrail** winds between native-looking pine, birch and broadleaf trees,
-  layered shrubs, reused ferns, grass and granite boulders. Staggered planting
-  leaves a clear route for two explorers. The first fragment sits within the forest.
-- **Overlook:** `overlook_zone.tscn` reuses the coastal headland with gray rock and
-  a summer-green cap. **OverlookClimb** curves around its flank onto a supported
-  landing. Two existing water bodies lie on the same camera sightline: the nearer
-  lake, then the farther lake, separated by wooded shore. Softer, simpler distant
-  crowns suggest depth. The second fragment occupies the open ledge.
-- **Campsite:** `campsite_zone.tscn` is reached along **ToCamp**, descending around
-  the other side of the rock. It reuses the orange Stormbreak-style tent, active
-  WhisperLite-style stove with pot/steam, and steel fire ring with its existing
-  animated fire VFX. Forest encloses a small irregular earth-colored sand clearing,
-  leaving the lake-facing bank open. **CampWalk** leads around the gear to the
-  third fragment. The tent stays a closed scenic exterior.
-
-The routes use the [earth-trail preset](../../../components/groundcover/paths/README.md),
-with unequal soft shoulders and sparse embedded stones rather than sidewalk joints.
-Their original curves/heights and guidance links are preserved. The
-[backpacking kit](../../../components/scenery/camp/BACKPACKING.md),
-[water](../../../components/scenery/water/README.md), headland and sand reuse the
-existing component library.
+- **Trailhead.** The main earth trail and a shorter side trail split around a cluster of granite boulders and meet at the first fragment. Pines, birches, ferns, and loose patches of forest floor frame the trails.
+- **Overlook.** A climb follows the flank of the coastal headland. A short spur leads to the second fragment and opens the camera onto one lake, with patches of meadow and mixed-height forest along the shore. Three crows take flight when an explorer approaches. The trail continues from the spur junction around the opposite flank.
+- **Campsite.** The tent, stove, and sculpted fire sit in a clearing framed by brush and tree clusters. A short path past the third fragment reaches the bank of the same lake. Tap the fire ring to light or extinguish the flame, warm light, and crackle. The tent uses the open-fly option to show the inner mesh door. [The North Face’s Stormbreak 2](https://www.thenorthface.com/en-us/p/bags-and-gear/camp-shop-829877/stormbreak-2-tent-NF0A8BDM)
 
 ## Editing
 
-Edit **Fragment → Note Title / Notes** inside each zone:
+Edit **Fragment → Note Title / Notes** in each zone. The placeholders are **Into the north woods**, **Above the lake**, and **Camp beside the lake**. The three zone instances in `../bean_bear.tscn` set the forest ambience. Fire crackle plays on **Ambience** through a spatial player. Fragment cues use **SFX**, and **Memory/Audio** can carry music.
 
-| Zone | Placeholder title |
-| --- | --- |
-| Trailhead | Into the north woods |
-| Overlook | One lake, then another |
-| Campsite | Camp beside the lake |
+The camera starts at **3.5**, follows the trail at **4.6**, opens to **20** at the elevated lookout spur, and settles to **9.4** at camp. The framing shifts toward the lake as the player approaches the bank. The lookout temporarily hides camp scenery and the camp fragment’s orb from the local camera. Its route remains available to guidance. **Overlook Focus** and **Overlook Size** tune the reveal.
 
-Each zone owns an ambient bed: quiet woodland, exposed wind, then sheltered camp.
-These reuse placeholder recordings (`vineyard_rows`, `vineyard_field`, and
-`cabin_clearing`). Replace the zone root's **Ambience Stream** with your recordings.
-Music remains available on **Memory/Audio**; fragment cues use the shared SFX bus.
+The hidden **Environment/ForestFloor** provides finite ground and boundary collision. **OverlookClimb** and **ToCamp** also provide continuous sloping collision, and the reused headland follows their profiles. Keep the spur junction near the headland’s **3.2 m** top height. Foreground routes use the shared earth-trail component’s end fades and soft shoulders. Keep foliage low along the lookout lip, the tent frontage, and the shoreline spur.
 
-`../../../scripts/bean_bear_camera.gd` starts at **3.5**, follows the woods at **4.6**,
-opens to **29** at the elevated overlook, then settles around the camp at **8**.
-The reveal depends on actual height and distance; walking underneath the cliff
-cannot trigger it. Movement reverses all transitions without changing camera yaw.
-**Overlook Focus** and **Overlook Size** tune the view. Preserve the lakes' center
-delta of `(-11, 0, -11)` to keep them aligned with the inherited camera.
-
-All recallable scenery, including the nested fire, has recall enabled. **ArrivalRecall**
-reveals the parked car, **OverlookRecall** reveals the cliff/lakes/distant forest,
-and **CampRecall** reveals the camp trees, clearing and gear from the same accessible
-overlook, so its distant path never appears as an empty loop. Water
-now supports an optional **Recall Anchor**, so distant lakes can appear from the
-cliff instead of requiring the player to stand at water level. Empty anchors retain
-ordinary shoreline discovery. Foliage responds to both explorers. Distant trees use
-28 leaf sprays per cluster; nearby trees use 52, with shader wind and no falling leaves.
-
-One hidden **Environment/ForestFloor** supplies finite support and outer safety
-boundaries. Curved paths supply their own continuous elevated collision. Their
-clockwise collision faces also support downward guidance rays. Keep summit paths
-at the cliff's **3.2** top height; their visible surface is already lifted slightly.
-The camera, hints and real explorer should all be checked after changing heights.
-
-`../../../scripts/bean_bear_memory.gd` derives hints directly from the same curves.
-If extending the routes, regenerate the finite outline:
+`../../../scripts/bean_bear_memory.gd` derives guidance from the authored trails. If their footprints change, regenerate the finite floor and check both directions:
 
 ```sh
 godot --headless --path . --script tools/rebuild_bean_bear_floor.gd
-```
-
-Keep the **Entry** and its guest fallback **+1.2 m X** clear of vehicle, trunks and
-shore barriers. LAN shares avatar choice and player movement; notes, recall,
-foliage disturbance rendering, audio and scenic fire remain local to each device.
-
-## Verification
-
-```sh
 godot --headless --path . --fixed-fps 60 --script tests/bean_bear_memory.gd
-godot --path . --fixed-fps 60 --script tests/bean_bear_memory.gd -- --capture
-godot --headless --path . --script tests/water_recall.gd
-godot --headless --path . --script tests/curved_path.gd
-godot --headless --path . --script tests/memory_effects.gd
 ```
 
-The memory check uses the real explorer in both directions, visits/taps all three
-fragments, requests each hint, climbs and descends the rock, verifies both lake
-centers' screen alignment and framing, checks recall/ambience, finite support,
-paired arrival space and timeline avatar choice. Separate `-- host` / `-- guest`
-processes use isolated UDP **24765**; production IP-entry LAN stays on 24680.
-Rendered Mobile previews live in `docs/previews/bean_bear-memory-*.png`.
-The rendered walkthrough, headless route/fragment/camera check, two-process LAN,
-water/path component checks, full timeline recall audit and existing First Meeting,
-Southern Vietnam and Vineyard regressions pass.
-Physical phone/Wi-Fi performance remains unmeasured. Existing macOS shader-cache
-and Godot shutdown-resource warnings may appear.
+**ArrivalRecall**, **OverlookRecall**, and **CampRecall** place the major reveals on reachable ground. The lake uses the overlook anchor. The camp anchor sits near the bottom of the descent so the clearing is revealed on approach. Each player sees their own camera framing and fire state.
 
-![Bean and Bear Lakes composition](../../../docs/previews/bean_bear-memory-overview.png)
+The route check walks the fork, lookout, descent, and shoreline spur, reads all three fragments, checks guidance and camera framing, triggers a crow, toggles the fire, and confirms the timeline keeps the chosen avatar.

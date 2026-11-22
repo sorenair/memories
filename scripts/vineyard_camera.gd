@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 		var reveal := 1.0-smoothstep(-17.8,-16.0,at.z)
 		var size := lerpf(lerpf(rows_size,deck_size,deck),overlook_size,reveal)
 		var offset := Vector3(0,0.8,-0.65).lerp(Vector3(0,1.0,-1.1),deck)
-		offset = offset.lerp(Vector3(-0.85,2.35,-5.35),reveal)
+		offset = offset.lerp(Vector3(-0.85,1.75,-4.45),reveal)
 		var blend := 1.0-exp(-2.8*delta)
 		framing_offset = framing_offset.lerp(offset,blend)
 		$Camera3D.size = lerpf($Camera3D.size,size,blend)

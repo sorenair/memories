@@ -1,7 +1,8 @@
 # Memory recall and foliage audit
 
 Verified against every world in `UI/memory_lane/memory_lane.gd` on November 17,
-2026. Counts include generated child components, such as arcade light washes.
+2026. Bean and Bear Lakes, Vineyard, First Sail, and Colorado were rechecked on November 21, 2026.
+Duluth was rechecked on November 22, 2026. Counts include generated child components, such as arcade light washes.
 
 | Timeline memory | Recall components | Foliage responding to players |
 | --- | ---: | ---: |
@@ -18,13 +19,13 @@ Verified against every world in `UI/memory_lane/memory_lane.gd` on November 17,
 | Northern Vietnam | 197 | 144 |
 | Central Vietnam | 178 | 155 |
 | Southern Vietnam | 178 | 157 |
-| Bean and Bear Lakes | 304 | 285 |
-| Vineyard | 86 | 72 |
-| First Sail | 28 | 23 |
-| Labor Day in Colorado | 170 | 87 |
-| Duluth in the Fall | 104 | 81 |
+| Bean and Bear Lakes | 374 | 347 |
+| Vineyard | 139 | 89 |
+| First Sail | 33 | 27 |
+| Labor Day in Colorado | 241 | 158 |
+| Duluth in the Fall | 392 | 293 |
 | Seasonal Demo | 62 | 46 |
-| **Total** | **2096** | **1668** |
+| **Total** | **2583** | **2034** |
 
 The stadium, museum and New Year's Eve currently contain no reactive foliage.
 Their scenery, displays, crowds and lighting still recall. Library studies and
@@ -70,13 +71,12 @@ components. Central Vietnam's limestone grove, terraced shrine and imperial
 court have 178 recallable pieces and 155 reactive foliage components.
 Southern Vietnam's cove, lighthouse ridge, dunes and crowded skyline have 178
 recallable pieces and 157 reactive foliage components. Bean and Bear Lakes adds
-the forest trail, two-lake overlook and camp, with 304 recallable pieces and
-285 reactive foliage components. Its distant lakes and wooded camp use reachable
-viewpoint anchors. First Sail adds its planted shore, dock, lake and Ensign,
-with 28 recallable pieces and 23 reactive foliage components. Duluth adds its
-autumn trail, striped lighthouse shore and dry garden, with 104 recallable pieces
-and 81 reactive foliage components. Colorado's polish pass verified 170
-recallable pieces and 87 foliage components that respond to both explorers.
+the forked forest trail, single-lake overlook, and camp, with 374 recallable
+pieces and 347 reactive foliage components. The distant shore and camp reveal
+from separate reachable anchors. First Sail has both sailboats, dock, lake and
+planted banks, with 33 recallable pieces and 27 reactive foliage components. Duluth has a wooded bedrock hike, a concrete lighthouse pier, and Enger Park,
+with 374 recallable pieces and 279 reactive foliage components. Colorado's polish pass verified 241
+recallable pieces and 158 foliage components that respond to both explorers.
 Existing grass, bush, shared-distance, fire and smoke checks pass.
 Two separate LAN host/guest processes also pass, including remote foliage-group
 membership while remaining outside the local input/interaction group.

@@ -34,6 +34,7 @@ func run() -> void:
 	goat.idle_pose = 2
 	var grazing := await shot("res://docs/previews/mountain-goat-grazing.png")
 	check(changes(first,grazing)>1000,"Grazing must lower the head, horns and beard as one connected form")
+	check(await idle_cycle_range(goat) > 1000,"A goat in the varied idle should stand, scan and graze without changing pose settings")
 	goat.idle_motion = 0
 	var still := await shot()
 	goat.seek_time(20.5)

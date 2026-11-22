@@ -2,7 +2,7 @@
 extends MemoryScene
 ## Guidance follows the very same curves as the supported hiking route.
 func _ready() -> void:
-	for trail: PainterlyCurvedPath in [$Zones/Trailhead/Scenery/ForestTrail,$Zones/Overlook/Scenery/OverlookClimb,$Zones/Overlook/Scenery/ToCamp,$Zones/Campsite/Scenery/CampWalk]:
+	for trail: PainterlyCurvedPath in [$Zones/Trailhead/Scenery/ForestTrail,$Zones/Overlook/Scenery/OverlookClimb,$Zones/Overlook/Scenery/LookoutSpur,$Zones/Overlook/Scenery/ToCamp,$Zones/Campsite/Scenery/CampWalk]:
 		if not trail.curve.changed.is_connected(_update_routes): trail.curve.changed.connect(_update_routes)
 	_update_routes()
 func _update_routes() -> void:
@@ -15,9 +15,12 @@ func _update_routes() -> void:
 	_assign($Environment/Guidance/ForestMemory,first)
 	var second := forest.get_route_points(ratio,1)
 	second.append_array($Zones/Overlook/Scenery/OverlookClimb.get_route_points())
+	var spur: PainterlyCurvedPath = $Zones/Overlook/Scenery/LookoutSpur
+	second.append_array(spur.get_route_points())
 	second.append($Zones/Overlook/Fragment.global_position+Vector3.UP*0.76)
 	_assign($Environment/Guidance/LakesMemory,second)
-	var third := $Zones/Overlook/Scenery/ToCamp.get_route_points() as PackedVector3Array
+	var third := spur.get_route_points(1.0, 0.0)
+	third.append_array($Zones/Overlook/Scenery/ToCamp.get_route_points())
 	third.append_array($Zones/Campsite/Scenery/CampWalk.get_route_points())
 	third.append($Zones/Campsite/Fragment.global_position+Vector3.UP*0.76)
 	_assign($Environment/Guidance/CampMemory,third)

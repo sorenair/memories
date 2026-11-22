@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="PackedScene" path="res://components/scenery/concert/stage/painterly_stage.tscn" id="deck"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://components/foliage/flowers/painterly_flower_patch.tscn" id="flowers"]
 [ext_resource type="Resource" path="res://scenes/memories/vineyard/august_field.tres" id="field"]
 [ext_resource type="Resource" path="res://scenes/memories/vineyard/vine_leaves.tres" id="leaves"]
+[ext_resource type="Resource" path="res://scenes/memories/vineyard/row_grass.tres" id="row_ground"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="wind"]
 
 [ext_resource type="PackedScene" path="res://components/lighting/painted_light/painterly_light_pattern.tscn" id="painted_light"]
@@ -118,8 +119,8 @@ position = Vector3(0.3, -0.58, -8.7)
 rotation = Vector3(0, -0.2, 0)
 patch_size = Vector2(14, 13)
 patch_seed = 801501
-grass_height = 0.4
-tufts_per_square_meter = 8.0
+grass_height = 0.29
+tufts_per_square_meter = 5.0
 leaves_per_square_meter = 3.0
 palette_preset = 0
 palette = ExtResource("field")
@@ -136,8 +137,8 @@ position = Vector3(9.9, -0.54, -8.8)
 rotation = Vector3(0, 0.27, 0)
 patch_size = Vector2(14, 11)
 patch_seed = 801502
-grass_height = 0.36
-tufts_per_square_meter = 8.0
+grass_height = 0.41
+tufts_per_square_meter = 9.0
 leaves_per_square_meter = 3.0
 palette_preset = 0
 palette = ExtResource("field")
@@ -154,8 +155,8 @@ position = Vector3(-13.5, -0.65, -17.0)
 rotation = Vector3(0, -0.22, 0)
 patch_size = Vector2(12, 14)
 patch_seed = 801503
-grass_height = 0.38
-tufts_per_square_meter = 8.0
+grass_height = 0.33
+tufts_per_square_meter = 6.0
 leaves_per_square_meter = 3.0
 palette_preset = 0
 palette = ExtResource("field")
@@ -172,8 +173,8 @@ position = Vector3(-4.8, -0.6, -18.1)
 rotation = Vector3(0, 0.18, 0)
 patch_size = Vector2(14, 14)
 patch_seed = 801504
-grass_height = 0.48
-tufts_per_square_meter = 8.0
+grass_height = 0.44
+tufts_per_square_meter = 9.0
 leaves_per_square_meter = 3.0
 palette_preset = 0
 palette = ExtResource("field")
@@ -190,8 +191,8 @@ position = Vector3(6.5, -0.62, -19.5)
 rotation = Vector3(0, -0.26, 0)
 patch_size = Vector2(15, 14)
 patch_seed = 801505
-grass_height = 0.34
-tufts_per_square_meter = 8.0
+grass_height = 0.29
+tufts_per_square_meter = 5.0
 leaves_per_square_meter = 3.0
 palette_preset = 0
 palette = ExtResource("field")
@@ -209,7 +210,7 @@ rotation = Vector3(0, 0.17, 0)
 patch_size = Vector2(10, 12)
 patch_seed = 801506
 grass_height = 0.36
-tufts_per_square_meter = 8.0
+tufts_per_square_meter = 7.0
 leaves_per_square_meter = 3.0
 palette_preset = 0
 palette = ExtResource("field_distance")
@@ -226,8 +227,8 @@ position = Vector3(-8.0, -0.7, -27.1)
 rotation = Vector3(0, -0.24, 0)
 patch_size = Vector2(14, 11)
 patch_seed = 801507
-grass_height = 0.36
-tufts_per_square_meter = 8.0
+grass_height = 0.31
+tufts_per_square_meter = 6.0
 leaves_per_square_meter = 3.0
 palette_preset = 0
 palette = ExtResource("field_distance")
@@ -244,7 +245,7 @@ position = Vector3(5, -0.65, -28.5)
 rotation = Vector3(0, 0.24, 0)
 patch_size = Vector2(15, 12)
 patch_seed = 801508
-grass_height = 0.48
+grass_height = 0.39
 tufts_per_square_meter = 8.0
 leaves_per_square_meter = 3.0
 palette_preset = 0
@@ -499,6 +500,36 @@ crown_height = 0.22
 bloom_radius = 0.056
 bloom_palette = 0
 wind_strength = 0.037
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="RampWestGrass" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-2.98, 0.004, 5.0)
+rotation = Vector3(0, -0.22, 0)
+patch_size = Vector2(2.8, 3.75)
+patch_seed = 801574
+grass_height = 0.22
+tufts_per_square_meter = 20.0
+leaves_per_square_meter = 17.0
+ground_leaf_scale = 0.42
+palette_preset = 0
+palette = ExtResource("row_ground")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../Arrival")
+
+[node name="RampEastGrass" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(2.83, 0.004, 4.94)
+rotation = Vector3(0, 0.19, 0)
+patch_size = Vector2(2.78, 3.45)
+patch_seed = 801575
+grass_height = 0.19
+tufts_per_square_meter = 20.0
+leaves_per_square_meter = 17.0
+ground_leaf_scale = 0.42
+palette_preset = 0
+palette = ExtResource("row_ground")
+react_to_explorer = true
 recall_enabled = true
 recall_anchor = NodePath("../Arrival")
 

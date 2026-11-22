@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://components/scenery/gardens/painterly_enger_tower.gd" id="tower"]
+
+[node name="PainterlyEngerTower" type="Node3D"]
+script = ExtResource("tower")
+body_color = Color(0.64, 0.52, 0.40, 1)
+accent_color = Color(0.42, 0.365, 0.31, 1)
+trim_color = Color(0.34, 0.33, 0.30, 1)

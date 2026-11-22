@@ -187,6 +187,8 @@ var _exclusion_regions: Array[Node] = []
 
 const RECALL = preload("res://components/effects/recall/component_recall.gd")
 @export_group("Recall")
+## Optional reachable point for scenic visitors set back from the path.
+@export var recall_anchor: Node3D
 @export var recall_enabled: bool = false:
 	set(value):
 		recall_enabled = value
@@ -194,6 +196,8 @@ const RECALL = preload("res://components/effects/recall/component_recall.gd")
 var _recall: Node
 func get_recall_controller() -> Node:
 	return _recall
+func get_recall_anchor() -> Node3D:
+	return recall_anchor
 func _sync_recall() -> void:
 	_recall = RECALL.configure(self, "res://components/effects/recall/assembled_recall.gd", _recall)
 	if not recall_enabled and not Engine.is_editor_hint():

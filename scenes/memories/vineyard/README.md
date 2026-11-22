@@ -3,8 +3,7 @@
 Two zones recall a late-summer walk between grape rows and a quiet wooden deck
 looking across a meadow. Six rows of tall rooted grapevines carry olive canopies and plum-colored bunches
 on timber and wire trellises.
-Two softly worn field-track lanes lead onto the deck; pale chairs, simple wooden rails and a wide
-field of grass, flowers and distant trees carry the second place. The location,
+A dense, low grassy aisle leads between the vines and opens onto the deck. Pale chairs and simple wooden rails frame a wide field of grass, flowers, and distant trees. The location,
 winery name and personal story were not supplied, so neither signage nor exact
 geography is invented. Both notes are explicitly marked placeholders.
 
@@ -18,16 +17,19 @@ LAN, interaction, requested guidance, audio mixing and timeline return.
   ordered zones, shared fragment cue and requested routes. The platform covers
   all vine aisles, row-end crossings, the approach ramp and deck. The meadow
   extends beyond supported ground as scenery, behind solid deck rails.
-- `rows_zone.tscn` contains the editable **Scenery/Trail** Curve3D, 36 reusable
+- `rows_zone.tscn` contains the editable **Scenery/AisleRoute** Curve3D, 36 reusable
   grapevine instances in six rows, groundcover and a few perimeter trees. Keep the
   main aisle and row ends clear when widening plants or moving trellis posts.
   `vine_leaves.tres` is the shared summer-green palette. Varied vine heights
-  and small flower groups mark the arrival, aisle and ramp.
+  and small flower groups mark the arrival, aisle and ramp. Overlapping **RowGrass** patches
+  use the softer `row_grass.tres` palette under the grape canopy. The central patches
+  are shorter and denser, with higher tufts around the sides and row ends.
 - `scripts/vineyard_memory.gd` places the first fragment and samples both requested
   guidance legs from that same trail. **Rows Fragment Ratio** moves the note
-  along the aisle. Deck waypoints follow the ramp and stop before the chairs.
+  along the aisle. The curve positions the fragment and feeds the guidance stroke.
+  The shared platform supports the grass. Deck waypoints follow the ramp and stop before the chairs.
 - `overlook_zone.tscn` reuses the existing stage as **TimberDeck**: Timber Skirt,
-  warm wood colors, 0.55 m height, 2.4 m ramp and a 9 × 5.4 m deck. Simple timber
+  warm wood colors, 0.55 m height, 2.4 m wide ramp and a 9 × 5.4 m deck. Simple timber
   rails guard its field/side edges; two entry spans leave the ramp open. Two
   existing Adirondack chairs frame the clear viewing approach.
   The tree beside the ramp frames the deck. `DeckDapple` uses the Canopy Shade
@@ -47,8 +49,7 @@ LAN, interaction, requested guidance, audio mixing and timeline return.
   fixed throughout.
 
 [Vineyard Detail](../../../components/scenery/vineyard/README.md) supplies the
-trellis and railing layouts. The [field-track path](../../../components/groundcover/paths/README.md)
-adds two worn soil lanes with a grassy median along the original aisle curve.
+trellis and railing layouts.
 Foliage, walkable deck/ramp, chairs, platform, fragments and audio framework are
 reused. Scenic foliage supports optional reachable recall
 anchors; ordinary instances keep their existing behavior. Guidance supports raised

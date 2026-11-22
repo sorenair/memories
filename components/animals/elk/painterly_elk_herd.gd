@@ -44,6 +44,11 @@ const ELK_PAINT = preload("res://components/animals/elk/elk.gdshader")
 		antler_color = value
 		_request_rebuild()
 @export_group("Idle")
+## Cycle through scanning and grazing while keeping the preferred pose as a bias.
+@export var varied_idle := false:
+	set(value):
+		varied_idle = value
+		_apply_material()
 @export_range(0.0,1.0,0.05) var grazing_fraction: float = 0.45:
 	set(value):
 		grazing_fraction = clampf(value,0,1)
@@ -70,6 +75,7 @@ func _apply_material() -> void:
 	if not _material: return
 	super._apply_material()
 	_material.set_shader_parameter("use_instance_custom",true)
+	_material.set_shader_parameter("varied_idle",varied_idle)
 	_material.set_shader_parameter("idle_motion",idle_motion)
 	_material.set_shader_parameter("idle_speed",idle_speed)
 	_material.set_shader_parameter("animation_time",_visual_time)

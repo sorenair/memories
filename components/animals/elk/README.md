@@ -21,6 +21,7 @@ broad pigment washes match the existing painted scenery. Coat/antler reference:
 | Antler Size / Spread | Adjusts the mature or young bull's rack. |
 | Body / Accent / Trim Color | Tan coat, darker mane/legs and pale rump. Antler Color is separate. |
 | Idle Pose | Relaxed, slightly raised/turned alert head, or lowered grazing head. |
+| Varied Idle | Cycle through scanning, grazing and chewing with a seed-dependent offset. Idle Pose biases how long each animal grazes. |
 | Idle Motion / Speed | Breathing, slow head movement, independent ear flicks and occasional tail flicks. Zero motion holds the chosen pose. |
 | Collision / Contact Shadow / Visibility Distance | The same rendering and authoring controls as other scenic props. |
 | Recall Enabled / Anchor | Optional shared component recall; collision remains solid throughout. |
@@ -42,6 +43,8 @@ Count, Footprint and Minimum Spacing control seeded placement within an ellipse.
 Bull Fraction and Calf Fraction set the population mix; remaining animals are cows.
 Male groups include different mature racks and, from the third male, young bulls.
 Heading/Heading Variation and Grazing Fraction vary orientation and posture.
+Enable **Varied Idle** on the herd to let each animal cycle independently. In
+this mode, **Grazing Fraction** sets how many favor longer feeding spells.
 Coat colors, size, animation, collision and recall remain editable on the herd root.
 
 Spacing scales with Elk Size. If the requested population cannot fit, the herd
@@ -59,7 +62,7 @@ there is no walking, fleeing, navigation or terrain/hoof IK. Place on reasonably
 level ground; individually authored elk are convenient on uneven terrain. Grass
 can surround the legs without adding the elk as a ground exclusion.
 
-One elk uses one opaque mesh (about **8.2–9.6k triangles**, depending on type) and
+One elk uses one opaque mesh (about **8.5–10k triangles**, depending on type) and
 one optional contact-shadow draw. Motion-aware bounds include grazing and the
 largest supported antlers. Generated meshes, shapes and markers remain internal
 and do not serialize into authored scenes. The herd resolves as one component

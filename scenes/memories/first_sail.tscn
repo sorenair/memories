@@ -1,45 +1,49 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://ls6p87cp1xax"]
 
+[ext_resource type="AudioStream" uid="uid://ctc1jrqld4aa4" path="res://audio/ambiance/ambiance_ocean.mp3" id="7_23wdd"]
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_base.tscn" id="base"]
-[ext_resource type="Script" path="res://scripts/first_sail_memory.gd" id="script"]
+[ext_resource type="AudioStream" uid="uid://cc087ui3mvir8" path="res://audio/samples/fragment_chime.wav" id="chime"]
 [ext_resource type="PackedScene" path="res://components/scenery/platforms/memory_platform.tscn" id="floor"]
-[ext_resource type="AudioStream" path="res://audio/samples/fragment_chime.wav" id="chime"]
-[ext_resource type="PackedScene" path="res://scenes/memories/first_sail/lake_zone.tscn" id="lake"]
 [ext_resource type="PackedScene" path="res://components/guidance/brushstroke/fragment_brushstroke_guide.tscn" id="guide"]
+[ext_resource type="PackedScene" path="res://scenes/memories/first_sail/lake_zone.tscn" id="lake"]
+[ext_resource type="Script" uid="uid://03nbbltpsbrk" path="res://scripts/first_sail_memory.gd" id="script"]
 
 [sub_resource type="Curve2D" id="WalkOutline"]
-_data = {"points": PackedVector2Array(0,0,0,0,-9.0,15.6,0,0,0,0,7.3,15.6,0,0,0,0,9.4,12,0,0,0,0,8.3,8.6,0,0,0,0,5.0,7,0,0,0,0,1.48,6.0,0,0,0,0,1.48,-1.67,0,0,0,0,3.18,-1.67,0,0,0,0,3.18,-4.68,0,0,0,0,-3.18,-4.68,0,0,0,0,-3.18,-1.67,0,0,0,0,-1.48,-1.67,0,0,0,0,-1.48,6.0,0,0,0,0,-4.7,7,0,0,0,0,-8.3,8.2,0,0,0,0,-9.6,11.4)}
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -9, 15.6, 0, 0, 0, 0, 7.3, 15.6, 0, 0, 0, 0, 9.4, 12, 0, 0, 0, 0, 8.3, 8.6, 0, 0, 0, 0, 5, 7, 0, 0, 0, 0, 1.48, 6, 0, 0, 0, 0, 1.48, -1.67, 0, 0, 0, 0, 3.18, -1.67, 0, 0, 0, 0, 3.18, -4.68, 0, 0, 0, 0, -3.18, -4.68, 0, 0, 0, 0, -3.18, -1.67, 0, 0, 0, 0, -1.48, -1.67, 0, 0, 0, 0, -1.48, 6, 0, 0, 0, 0, -4.7, 7, 0, 0, 0, 0, -8.3, 8.2, 0, 0, 0, 0, -9.6, 11.4)
+}
 point_count = 16
 
-[node name="Memory" instance=ExtResource("base")]
+[node name="Memory" unique_id=1886750612 instance=ExtResource("base")]
 script = ExtResource("script")
 memory_id = &"first_sail"
 display_name = "First Sail"
 
-[node name="Entry" parent="."]
-position = Vector3(-1,0.07,12)
+[node name="Entry" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.07, 12)
 
-[node name="Exit" parent="."]
-position = Vector3(-0.6,0.62,-3.2)
+[node name="Exit" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.62, -3.2)
 
-[node name="ShoreAndDockFloor" parent="Environment" instance=ExtResource("floor")]
+[node name="ShoreAndDockFloor" parent="Environment" index="0" unique_id=1336539303 instance=ExtResource("floor")]
 visible = false
-custom_outline = SubResource("WalkOutline")
 outline_detail = 96
+custom_outline = SubResource("WalkOutline")
 edge_inset = 0.08
 boundary_height = 2.2
 
-[node name="Guidance" parent="Environment" type="Node3D"]
+[node name="Guidance" type="Node3D" parent="Environment" index="1" unique_id=1453822799]
 
-
-[node name="Audio" parent="."]
-fragment_sound = ExtResource("chime")
-
-[node name="Lakeside" parent="Zones" instance=ExtResource("lake")]
-
-
-[node name="DockMemory" parent="Environment/Guidance" node_paths=PackedStringArray("start_anchor","end_anchor") instance=ExtResource("guide")]
+[node name="DockMemory" parent="Environment/Guidance" index="0" unique_id=435896190 node_paths=PackedStringArray("start_anchor", "end_anchor") instance=ExtResource("guide")]
 visible = false
 start_anchor = NodePath("../../../Entry")
 end_anchor = NodePath("../../../Zones/Lakeside/Fragment")
+waypoints = PackedVector3Array(-1, 0.76, 12, -0.854924, 0.76, 11.29293, -0.70007116, 0.76, 10.5879, -0.49975255, 0.76, 9.894959, -0.23497218, 0.76, 9.22347, -0.007995165, 0.76, 8.539036, 0.040569887, 0.76, 7.8206334, 1.1641532e-10, 0.76, 7.0999994, 0, 0.78999996, 7, 0, 1.31, 4.5, 0, 1.31, 0, 0, 1.3299999, -3.2, -0.6, 1.38, -3.2)
 stroke_width = 0.32
+
+[node name="Audio" parent="." index="6"]
+fragment_sound = ExtResource("chime")
+
+[node name="Lakeside" parent="Zones" index="0" unique_id=728152051 instance=ExtResource("lake")]
+ambience_stream = ExtResource("7_23wdd")
+ambience_volume_db = -10.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
 [ext_resource type="AudioStream" path="res://audio/samples/vineyard_field.wav" id="air"]
@@ -13,19 +13,30 @@
 [ext_resource type="PackedScene" path="res://components/foliage/jungle/painterly_fern.tscn" id="fern"]
 [ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
 
+[ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="soil"]
+
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+
+[ext_resource type="PackedScene" path="res://components/animals/bird/painterly_bird.tscn" id="bird"]
+
 [sub_resource type="Curve3D" id="OverlookClimbCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.8,0.056,-0.08,-8,0,10,-1.92,-0.192,0.112,1.92,0.192,-0.112,-3,0.35,9.5,-1.76,-0.296,0.88,1.76,0.296,-0.88,4,1.2,9.3,-0.64,-0.32,1.808,0.64,0.32,-1.808,8,2.2,4,0.64,-0.16,1.12,-0.64,0.16,-1.12,8,3.2,-2,1.056,-0.0,-0.16,-1.056,0.0,0.16,4,3.2,-3,0.416,-0.0,-0.32,0,0,0,1.4,3.2,-1), "tilts": PackedFloat32Array(0,0,0,0,0,0,0)}
-point_count = 7
+_data = {"points": PackedVector3Array(-0.925, -0.06475, 0.0925, 0.925, 0.06475, -0.0925, -8, 0, 10, -2.22, -0.222, 0.1295, 2.22, 0.222, -0.1295, -3, 0.35, 9.5, -2.035, -0.34225, 1.0175, 2.035, 0.34225, -1.0175, 4, 1.2, 9.3, -0.74, -0.37, 2.0905, 0.74, 0.37, -2.0905, 8, 2.2, 4, 0.74, -0.185, 1.295, -0.74, 0.185, -1.295, 8, 3.2, -2, 0.74, -0, 0.185, -0.74, 0, -0.185, 4, 3.2, -3), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)}
+point_count = 6
 
 [sub_resource type="Curve3D" id="ToCampCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.256,0.0,-0.32,1.4,3.2,-1,-1.056,-0.0,0.64,1.056,0.0,-0.64,3,3.2,-3,-1.44,0.112,1.28,1.44,-0.112,-1.28,8,3.2,-5,-0.32,0.304,1.92,0.32,-0.304,-1.92,12,2.5,-11,1.12,0.4,1.76,-1.12,-0.4,-1.76,10,1.3,-17,0.8,0.208,0.8,0,0,0,5,0,-22), "tilts": PackedFloat32Array(0,0,0,0,0,0)}
-point_count = 6
+_data = {"points": PackedVector3Array(-0.8325, -0, 0.37, 0.8325, 0, -0.37, 4, 3.2, -3, -1.48, 0.1295, 1.48, 1.48, -0.1295, -1.48, 8.5, 3.2, -5, -0.2775, 0.3515, 2.22, 0.2775, -0.3515, -2.22, 12, 2.5, -11, 1.295, 0.4625, 2.035, -1.295, -0.4625, -2.035, 10, 1.3, -17, 0.925, 0.2405, 0.925, -0.925, -0.2405, -0.925, 5, 0, -22), "tilts": PackedFloat32Array(0, 0, 0, 0, 0)}
+point_count = 5
+
+[sub_resource type="Curve3D" id="LookoutSpurCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(0.093, -0, -0.183, -0.093, 0, 0.183, 4, 3.2, -3, 0.216, -0, -0.348, -0.216, 0, 0.348, 3.38, 3.2, -1.78, 0.297, -0, -0.117, -0.297, 0, 0.117, 2.56, 3.2, -0.68, 0.174, -0, 0.048, -0.174, 0, -0.048, 1.4, 3.2, -1), "tilts": PackedFloat32Array(0, 0, 0, 0)}
+point_count = 4
 
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"bean_bear_overlook"
-display_name = "Bean and Bear · Two lakes"
+display_name = "Bean and Bear · Lake overlook"
 ambience_stream = ExtResource("air")
 ambience_volume_db = -28
 ambience_size = Vector2(34, 37)
@@ -34,7 +45,7 @@ ambience_blend_distance = 4.0
 [node name="OverlookRecall" parent="Scenery" type="Marker3D"]
 position = Vector3(1.4,3.2,-1)
 
-[node name="Cliff" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("cliff")]
+[node name="Cliff" parent="Scenery" node_paths=PackedStringArray("recall_anchor", "ridge_routes") instance=ExtResource("cliff")]
 footprint = Vector2(12,10)
 cliff_height = 3.2
 prop_seed = 725261
@@ -43,13 +54,14 @@ accent_color = Color(0.5216,0.5686,0.4157,1)
 trim_color = Color(0.4314,0.4706,0.3804,1)
 recall_enabled = true
 recall_anchor = NodePath("../OverlookRecall")
+ridge_routes = [NodePath("../OverlookClimb"), NodePath("../ToCamp")]
 
 [node name="OverlookClimb" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("OverlookClimbCurve")
 path_width = 2.4
 paving_color = Color(0.725490,0.647059,0.529412,1)
-end_fade = Vector2(0, 0)
-edge_softness = 0.25
+end_fade = Vector2(2.45, 1.45)
+edge_softness = 0.6
 paving_seed = 72526
 crown_height = 0.012
 detail_density = 0.35
@@ -58,16 +70,26 @@ detail_density = 0.35
 curve = SubResource("ToCampCurve")
 path_width = 2.4
 paving_color = Color(0.725490,0.647059,0.529412,1)
-end_fade = Vector2(0, 0)
-edge_softness = 0.25
+end_fade = Vector2(1.35, 5.4)
+edge_softness = 0.63
 paving_seed = 72526
 crown_height = 0.012
 detail_density = 0.35
 
+[node name="LookoutSpur" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("LookoutSpurCurve")
+path_width = 1.85
+paving_color = Color(0.665, 0.61, 0.475, 1)
+crown_height = 0.0
+end_fade = Vector2(0.65, 1.45)
+edge_softness = 0.63
+detail_density = 0.27
+collision_enabled = false
+
 [node name="NearLake" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("water")]
 position = Vector3(-8,-0.055,-9)
 rotation_degrees = Vector3(0,45,0)
-footprint = Vector2(11, 14)
+footprint = Vector2(13.1, 15.3)
 water_seed = 725262
 irregularity = 0.1
 palette_preset = 0
@@ -75,24 +97,7 @@ palette = ExtResource("water_palette")
 behavior_preset = 3
 wave_height = 0.025
 wave_activity = 0.18
-foam_amount = 0.16
-foam_width = 0.2
-block_water_entry = true
-recall_enabled = true
-recall_anchor = NodePath("../OverlookRecall")
-
-[node name="FarLake" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("water")]
-position = Vector3(-19,-0.055,-20)
-rotation_degrees = Vector3(0,45,0)
-footprint = Vector2(10, 11)
-water_seed = 725263
-irregularity = 0.1
-palette_preset = 0
-palette = ExtResource("water_palette")
-behavior_preset = 3
-wave_height = 0.025
-wave_activity = 0.18
-foam_amount = 0.16
+foam_amount = 0.1
 foam_width = 0.2
 block_water_entry = true
 recall_enabled = true
@@ -119,7 +124,7 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="NearShoreTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-0.3023,0,-8.6731)
+position = Vector3(-1.05, 0, -14.9)
 tree_type = 2
 tree_seed = 725452
 tree_height = 5.325976262952829
@@ -139,7 +144,7 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="NearShoreTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-0.2722,0,-6.5836)
+position = Vector3(-1.45, 0, -17.05)
 tree_type = 4
 tree_seed = 725453
 tree_height = 5.161619079899527
@@ -159,7 +164,7 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="NearShoreTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-7.1951,0,-1.2449)
+position = Vector3(-10.4, 0, -18.58)
 tree_type = 2
 tree_seed = 725457
 tree_height = 4.80804563590909
@@ -399,10 +404,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-14.5315,0,-24.8587)
-tree_type = 4
+position = Vector3(-14.3, 0, -14.4)
+tree_type = 2
 tree_seed = 725550
-tree_height = 4.82907335858982
+tree_height = 4.59
 crown_width = 3.670694615990924
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -419,10 +424,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-12.8733,0,-22.6675)
-tree_type = 0
+position = Vector3(-13, 0, -16.8)
+tree_type = 4
 tree_seed = 725551
-tree_height = 4.6905416052169695
+tree_height = 3.75
 crown_width = 3.0879078226100214
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -439,10 +444,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-12.3055,0,-21.2175)
-tree_type = 2
+position = Vector3(-15.9, 0, -15.9)
+tree_type = 4
 tree_seed = 725552
-tree_height = 4.351529610159555
+tree_height = 2.92
 crown_width = 3.056661382928885
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -459,10 +464,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-12.0737,0,-18.6362)
-tree_type = 4
+position = Vector3(-17.6, 0, -13.8)
+tree_type = 1
 tree_seed = 725553
-tree_height = 4.410436809139912
+tree_height = 4.91
 crown_width = 3.4144159229852598
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -479,10 +484,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-12.407,0,-17.1225)
+position = Vector3(-16.7, 0, -11.9)
 tree_type = 0
 tree_seed = 725554
-tree_height = 5.047830395810058
+tree_height = 4.07
 crown_width = 3.6752618923659366
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -499,10 +504,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-13.5113,0,-15.1925)
-tree_type = 4
+position = Vector3(-17.8, 0, -9.7)
+tree_type = 2
 tree_seed = 725555
-tree_height = 5.301047828651187
+tree_height = 3.23
 crown_width = 3.591831841893744
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -519,10 +524,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-15.0643,0,-13.8947)
-tree_type = 0
+position = Vector3(-16.6, 0, -8)
+tree_type = 4
 tree_seed = 725556
-tree_height = 3.903611092716569
+tree_height = 5.22
 crown_width = 3.253483500767147
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -539,10 +544,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-16.1586,0,-13.3944)
-tree_type = 2
+position = Vector3(-16.16, 0, -9.98)
+tree_type = 4
 tree_seed = 725557
-tree_height = 4.843492151283069
+tree_height = 4.38
 crown_width = 3.63086618972826
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -559,10 +564,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-17.8176,0,-13.0583)
-tree_type = 4
+position = Vector3(-12.65, 0, -16.95)
+tree_type = 1
 tree_seed = 725558
-tree_height = 4.68597687670485
+tree_height = 3.54
 crown_width = 3.6898936828866202
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -579,10 +584,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-19.8912,0,-13.2229)
+position = Vector3(-10.36, 0, -17.95)
 tree_type = 0
 tree_seed = 725559
-tree_height = 5.444066816165384
+tree_height = 2.71
 crown_width = 3.4246439663883885
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -599,10 +604,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-21.6915,0,-13.8856)
-tree_type = 4
+position = Vector3(-9.02, 0, -16.8)
+tree_type = 2
 tree_seed = 725560
-tree_height = 4.287214042292895
+tree_height = 4.7
 crown_width = 3.573046156094499
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -619,10 +624,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-23.9678,0,-15.6507)
-tree_type = 0
+position = Vector3(-10.6, 0, -19.8)
+tree_type = 4
 tree_seed = 725561
-tree_height = 4.259119374478361
+tree_height = 3.86
 crown_width = 3.100660410507677
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -639,10 +644,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-24.6195,0,-16.481)
-tree_type = 2
+position = Vector3(-8.45, 0, -20.4)
+tree_type = 4
 tree_seed = 725562
-tree_height = 3.7468455541674732
+tree_height = 3.02
 crown_width = 3.497218682348026
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -659,10 +664,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-25.8202,0,-19.3101)
-tree_type = 4
+position = Vector3(-6.82, 0, -18.37)
+tree_type = 1
 tree_seed = 725563
-tree_height = 4.882446948201975
+tree_height = 5.02
 crown_width = 3.548673774451056
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -679,10 +684,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree15" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-25.9377,0,-20.1587)
+position = Vector3(-6.2, 0, -21.1)
 tree_type = 0
 tree_seed = 725564
-tree_height = 4.608331312465518
+tree_height = 4.17
 crown_width = 2.8582267472631626
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -699,10 +704,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree16" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-25.5988,0,-22.8611)
-tree_type = 4
+position = Vector3(-4.75, 0, -19.4)
+tree_type = 2
 tree_seed = 725565
-tree_height = 4.145600585413404
+tree_height = 3.33
 crown_width = 2.845821418971937
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -719,10 +724,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree17" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-24.7682,0,-24.4525)
-tree_type = 0
+position = Vector3(-2.82, 0, -18.1)
+tree_type = 4
 tree_seed = 725566
-tree_height = 5.050659131738346
+tree_height = 5.33
 crown_width = 3.330208484295639
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -739,10 +744,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree18" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-23.4972,0,-25.7353)
-tree_type = 2
+position = Vector3(-1.5, 0, -16.5)
+tree_type = 4
 tree_seed = 725567
-tree_height = 4.736437238277707
+tree_height = 4.49
 crown_width = 3.4534730892276837
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -759,10 +764,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree19" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-22.3433,0,-26.4081)
-tree_type = 4
+position = Vector3(-0.65, 0, -12.7)
+tree_type = 1
 tree_seed = 725568
-tree_height = 4.160145789274219
+tree_height = 3.65
 crown_width = 3.162978830818247
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -779,10 +784,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree20" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-20.1807,0,-26.9418)
+position = Vector3(-16.9, 0, -17.8)
 tree_type = 0
 tree_seed = 725569
-tree_height = 5.340379295608375
+tree_height = 2.81
 crown_width = 2.8798895445556196
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -799,10 +804,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree21" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-17.4501,0,-26.594)
-tree_type = 4
+position = Vector3(-19.1, 0, -14.35)
+tree_type = 2
 tree_seed = 725570
-tree_height = 4.317647389531493
+tree_height = 4.8
 crown_width = 3.3354066979848422
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -819,10 +824,10 @@ visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
 [node name="FarShoreTree22" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
-position = Vector3(-15.4594,0,-25.6048)
-tree_type = 0
+position = Vector3(-14.75, 0, -18.7)
+tree_type = 4
 tree_seed = 725571
-tree_height = 5.19461342734587
+tree_height = 3.96
 crown_width = 3.446079544663607
 branch_count = 5
 leaf_sprays_per_cluster = 28
@@ -1398,7 +1403,578 @@ wind_strength = 0.05
 visibility_distance = 130.0
 recall_anchor = NodePath("../OverlookRecall")
 
+[node name="BasinGround" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("soil")]
+position = Vector3(-9, -0.049, -11.4)
+patch_size = Vector2(23, 24)
+patch_seed = 726047
+dune_height = 0.0
+terrain_form = 1
+edge_feather = 4.8
+sand_color = Color(0.58, 0.61, 0.41, 1)
+shadow_color = Color(0.38, 0.45, 0.29, 1)
+edge_color = Color(0.88, 0.881, 0.777, 1)
+ripple_strength = 0.0
+collision_enabled = false
+ground_exclusions = Array[NodePath]([NodePath("../NearLake")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinGrass1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-14.7, 0, -14.1)
+patch_seed = 726103
+grass_height = 0.42
+patch_size = Vector2(3.7, 2.812)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinBush1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-15.34, 0, -13.5)
+bush_seed = 726104
+bush_height = 0.62
+footprint = Vector2(1.369, 1.10889)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinGrass2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-9.7, 0, -17.45)
+patch_seed = 726126
+grass_height = 0.47
+patch_size = Vector2(4.1, 3.116)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinBush2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-10.34, 0, -16.85)
+bush_seed = 726127
+bush_height = 0.67
+footprint = Vector2(1.517, 1.22877)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinGrass3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-3.9, 0, -17.2)
+patch_seed = 726149
+grass_height = 0.39
+patch_size = Vector2(3.22, 2.4472)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinBush3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-4.54, 0, -16.6)
+bush_seed = 726150
+bush_height = 0.59
+footprint = Vector2(1.1914, 0.965034)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinGrass4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-15.9, 0, -9.8)
+patch_seed = 726172
+grass_height = 0.4
+patch_size = Vector2(4.25, 3.23)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinBush4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-16.54, 0, -9.2)
+bush_seed = 726173
+bush_height = 0.6
+footprint = Vector2(1.5725, 1.27372)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinGrass5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-1.03, 0, -6.27)
+patch_seed = 726195
+grass_height = 0.34
+patch_size = Vector2(2.79, 2.1204)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinBush5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-1.18, 0, -5.9)
+bush_seed = 726196
+bush_height = 0.54
+footprint = Vector2(1.0323, 0.836163)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinGrass6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-7.04, 0, -1.13)
+patch_seed = 726218
+grass_height = 0.31
+patch_size = Vector2(2.54, 1.9304)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinBush6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-7.85, 0, -1.14)
+bush_seed = 726219
+bush_height = 0.51
+footprint = Vector2(0.9398, 0.761238)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinGrass7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-16.9, 0, -15.8)
+patch_seed = 726241
+grass_height = 0.31
+patch_size = Vector2(3.3, 2.508)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinBush7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-17.54, 0, -15.2)
+bush_seed = 726242
+bush_height = 0.51
+footprint = Vector2(1.221, 0.98901)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinGrass8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-13.6, 0, -19.1)
+patch_seed = 726264
+grass_height = 0.38
+patch_size = Vector2(3.7, 2.812)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="BasinBush8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-14.24, 0, -18.5)
+bush_seed = 726265
+bush_height = 0.58
+footprint = Vector2(1.369, 1.10889)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutMeadow1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-2.95, 3.2, -1.22)
+patch_seed = 726298
+grass_height = 0.39
+patch_size = Vector2(2.1, 1.596)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutSpur"), NodePath("../ToCamp")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutBrush1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-3.3, 3.19, -1.03)
+bush_seed = 726378
+bush_height = 0.54
+footprint = Vector2(1.05, 0.8505)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutMeadow2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-1.5, 3.2, -2.68)
+patch_seed = 726299
+grass_height = 0.36
+patch_size = Vector2(2.37, 1.8012)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutSpur"), NodePath("../ToCamp")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutMeadow3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(0.5, 3.2, -3.85)
+patch_seed = 726300
+grass_height = 0.41
+patch_size = Vector2(2.08, 1.5808)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutSpur"), NodePath("../ToCamp")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutBrush3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(0.15, 3.19, -3.66)
+bush_seed = 726380
+bush_height = 0.54
+footprint = Vector2(1.04, 0.8424)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutMeadow4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(2.31, 3.2, -3.93)
+patch_seed = 726301
+grass_height = 0.34
+patch_size = Vector2(2.43, 1.8468)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutSpur"), NodePath("../ToCamp")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutBrush4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(1.96, 3.19, -3.74)
+bush_seed = 726381
+bush_height = 0.54
+footprint = Vector2(1.215, 0.98415)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutMeadow5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-0.62, 3.2, 1.2)
+patch_seed = 726302
+grass_height = 0.38
+patch_size = Vector2(2.18, 1.6568)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutSpur"), NodePath("../ToCamp")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutBrush5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-0.97, 3.19, 1.39)
+bush_seed = 726382
+bush_height = 0.54
+footprint = Vector2(1.09, 0.8829)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutMeadow6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(1.52, 3.2, 1.08)
+patch_seed = 726303
+grass_height = 0.42
+patch_size = Vector2(1.95, 1.482)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutSpur"), NodePath("../ToCamp")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutMeadow7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(3.69, 3.2, 1.3)
+patch_seed = 726304
+grass_height = 0.38
+patch_size = Vector2(2.55, 1.938)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutSpur"), NodePath("../ToCamp")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutBrush7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(3.34, 3.19, 1.49)
+bush_seed = 726384
+bush_height = 0.54
+footprint = Vector2(1.275, 1.03275)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutMeadow8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-3.85, 3.2, 1.3)
+patch_seed = 726305
+grass_height = 0.38
+patch_size = Vector2(2.24, 1.7024)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../LookoutSpur"), NodePath("../ToCamp")])
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutBrush8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bush")]
+position = Vector3(-4.2, 3.19, 1.49)
+bush_seed = 726385
+bush_height = 0.54
+footprint = Vector2(1.12, 0.9072)
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutGrove1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(3.64, 3.17, 2.35)
+tree_type = 2
+tree_seed = 726430
+tree_height = 2.72
+crown_width = 2.43
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+trunk_collision = false
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutGrove2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-3.88, 3.17, 1.92)
+tree_type = 4
+tree_seed = 726431
+tree_height = 2.9
+crown_width = 2.48
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+trunk_collision = false
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutGrove3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(-4.5, 3.17, -0.5)
+tree_type = 2
+tree_seed = 726432
+tree_height = 2.49
+crown_width = 2.15
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+trunk_collision = false
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutGrove4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("tree")]
+position = Vector3(3.08, 3.17, -4.01)
+tree_type = 4
+tree_seed = 726433
+tree_height = 3.12
+crown_width = 2.66
+branch_count = 5
+leaf_sprays_per_cluster = 48
+trunk_radius = 0.11
+trunk_collision = false
+falling_leaf_count = 0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorers = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+
+[node name="LookoutCrow1" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(1.1, 3.23, -1.54)
+behavior = 1
+palette_preset = 6
+bird_seed = 726561
+bird_size = 0.98
+hop_radius = 0.30
+scare_radius = 2.3
+flight_speed = 4.7
+ascent_speed = 1.75
+
+[node name="LookoutCrow2" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(0.48, 3.23, -1.07)
+behavior = 1
+palette_preset = 6
+bird_seed = 726572
+bird_size = 0.98
+hop_radius = 0.30
+scare_radius = 2.3
+flight_speed = 4.7
+ascent_speed = 1.75
+
+[node name="LookoutCrow3" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(1.5, 3.23, -0.08)
+behavior = 1
+palette_preset = 6
+bird_seed = 726583
+bird_size = 0.98
+hop_radius = 0.30
+scare_radius = 2.3
+flight_speed = 4.7
+ascent_speed = 1.75
+
+[node name="BasinGrass9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-18.6, 0, -10.4)
+patch_seed = 726287
+grass_height = 0.31
+patch_size = Vector2(3.45, 2.622)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+ground_exclusions = Array[NodePath]([NodePath("../NearLake")])
+
+[node name="BasinGrass10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-16.7, 0, -6.9)
+patch_seed = 726310
+grass_height = 0.28
+patch_size = Vector2(3.4, 2.584)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+ground_exclusions = Array[NodePath]([NodePath("../NearLake")])
+
+[node name="BasinGrass11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-0.32, 0, -15.8)
+patch_seed = 726333
+grass_height = 0.34
+patch_size = Vector2(3.15, 2.394)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+ground_exclusions = Array[NodePath]([NodePath("../NearLake")])
+
+[node name="BasinGrass12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-2.06, 0, -20)
+patch_seed = 726356
+grass_height = 0.31
+patch_size = Vector2(3.4, 2.584)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+ground_exclusions = Array[NodePath]([NodePath("../NearLake")])
+
+[node name="BasinGrass13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-16.6, 0, -19.3)
+patch_seed = 726379
+grass_height = 0.32
+patch_size = Vector2(3.1, 2.356)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+ground_exclusions = Array[NodePath]([NodePath("../NearLake")])
+
+[node name="BasinGrass14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("grass")]
+position = Vector3(-5.05, 0, -21.1)
+patch_seed = 726402
+grass_height = 0.3
+patch_size = Vector2(3.4, 2.584)
+tufts_per_square_meter = 10.0
+leaves_per_square_meter = 14.0
+palette_preset = 0
+palette = ExtResource("green")
+react_to_explorer = true
+recall_enabled = true
+recall_anchor = NodePath("../OverlookRecall")
+ground_exclusions = Array[NodePath]([NodePath("../NearLake")])
+
 [node name="Fragment" parent="."]
 position = Vector3(1.4,3.28,-1)
-note_title = "One lake, then another"
-notes = PackedStringArray("Placeholder: add your own words about the cliff overlook and the two lakes nestled in the forest.")
+note_title = "Above the lake"
+notes = PackedStringArray("Placeholder: add your own words about the cliff overlook and the lake nestled in the forest.")

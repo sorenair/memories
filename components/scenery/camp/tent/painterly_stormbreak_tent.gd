@@ -20,6 +20,11 @@ const BUILDER = preload("res://components/scenery/camp/shared/backpacking_geomet
 	set(value):
 		brand_mark_enabled = value
 		_request_rebuild()
+## Roll back one fly panel to expose the inner mesh door.
+@export var front_vestibule_open := false:
+	set(value):
+		front_vestibule_open = value
+		_request_rebuild()
 @export_group("Fabric Motion")
 @export_range(0.0, 0.04, 0.002) var wind_strength: float = 0.012:
 	set(value):
@@ -28,7 +33,8 @@ const BUILDER = preload("res://components/scenery/camp/shared/backpacking_geomet
 
 func _build_geometry() -> Dictionary:
 	var c := _config()
-	c.merge({"footprint": footprint, "tent_height": tent_height, "guy_lines_enabled": guy_lines_enabled, "brand_mark_enabled": brand_mark_enabled})
+	c.merge({"footprint": footprint, "tent_height": tent_height, "guy_lines_enabled": guy_lines_enabled,
+		"brand_mark_enabled": brand_mark_enabled, "front_vestibule_open": front_vestibule_open})
 	return BUILDER.new().tent(c)
 
 func _update_motion() -> void:

@@ -1,275 +1,1398 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=28 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/memories/memory_zone.tscn" id="zone"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
+[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
+[ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="bank"]
+[ext_resource type="PackedScene" path="res://components/groundcover/paths/gravel_walk.tscn" id="path"]
 [ext_resource type="AudioStream" path="res://audio/samples/central_vietnam_surf.wav" id="bed"]
 [ext_resource type="PackedScene" path="res://components/scenery/water/painterly_water.tscn" id="water"]
 [ext_resource type="Resource" path="res://scenes/memories/duluth_autumn/superior_water.tres" id="lake_palette"]
-[ext_resource type="PackedScene" path="res://components/groundcover/sand/painterly_sand_patch.tscn" id="bank"]
-[ext_resource type="PackedScene" path="res://components/groundcover/paths/gravel_walk.tscn" id="path"]
 [ext_resource type="PackedScene" path="res://components/scenery/lighthouse/painterly_lighthouse.tscn" id="lighthouse"]
-[ext_resource type="PackedScene" path="res://components/foliage/painterly_bush.tscn" id="bush"]
-[ext_resource type="PackedScene" path="res://components/foliage/painterly_grass_patch.tscn" id="grass"]
-[ext_resource type="PackedScene" path="res://components/foliage/painterly_tree.tscn" id="tree"]
-[ext_resource type="PackedScene" path="res://components/scenery/boulders/painterly_boulder.tscn" id="rock"]
+[ext_resource type="PackedScene" path="res://components/scenery/lighthouse/painterly_breakwater.tscn" id="pier"]
+[ext_resource type="Resource" path="res://scenes/memories/colorado/alpine_stone.tres" id="stone"]
+
+[ext_resource type="PackedScene" path="res://components/animals/bird/painterly_bird.tscn" id="bird"]
+[ext_resource type="PackedScene" path="res://components/scenery/sailing/ensign/painterly_ensign.tscn" id="ensign"]
+[ext_resource type="Script" path="res://scenes/memories/duluth_autumn/offshore_sailing.gd" id="sailing"]
+
+[ext_resource type="Resource" path="res://scenes/memories/duluth_autumn/amber_grass.tres" id="amber"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/autumn_gold.tres" id="copper"]
+[ext_resource type="Resource" path="res://components/foliage/palettes/autumn_red.tres" id="red"]
 
 [sub_resource type="Curve2D" id="BankOutline"]
-_data = {"points": PackedVector2Array(0,0,0,0,-12,7.5,0,0,0,0,-11,3,0,0,0,0,-7,0.2,0,0,0,0,-5,-3.5,0,0,0,0,-2.1,-6.1,0,0,0,0,2,-6.4,0,0,0,0,5.8,-4.3,0,0,0,0,7,-0.5,0,0,0,0,6,4.3,0,0,0,0,2,7.1,0,0,0,0,-5,9.1)}
-point_count = 11
+_data = {"points": PackedVector2Array(0, 0, 0, 0, -12.2, 6.95, 0, 0, 0, 0, -10.5, 3.5, 0, 0, 0, 0, -7.6, 1.3, 0, 0, 0, 0, -4.6, 0.68, 0, 0, 0, 0, -2.3, 0.9, 0, 0, 0, 0, -0.8, 1.28, 0, 0, 0, 0, 0.9, 1.25, 0, 0, 0, 0, 2.7, 1.32, 0, 0, 0, 0, 4.7, 0.25, 0, 0, 0, 0, 7.2, -0.3, 0, 0, 0, 0, 8.2, 1.0, 0, 0, 0, 0, 7.45, 3.65, 0, 0, 0, 0, 5.35, 5, 0, 0, 0, 0, 2.4, 5.4, 0, 0, 0, 0, -1.7, 5.9, 0, 0, 0, 0, -6, 8, 0, 0, 0, 0, -9.5, 8.5)}
+point_count = 17
+
+[sub_resource type="Curve2D" id="SuperiorOutline"]
+_data = {"points": PackedVector2Array(-1.0148, -1.4734, 1.0148, 1.4734, -23.5, -3.9, -0.936, -0.441, 0.936, 0.441, -19.2, 1.33, -0.8865, 0.0603, 0.8865, -0.0603, -13.1, 1, -0.702, 0.0594, 0.702, -0.0594, -9.35, 0.66, -0.6705, -0.009, 0.6705, 0.009, -5.3, 0.34, -0.5616, -0.0558, 0.5616, 0.0558, -1.9, 0.76, -0.4968, 0.0162, 0.4968, -0.0162, 0.94, 0.96, -0.4644, 0.1944, 0.4644, -0.1944, 3.62, 0.58, -0.2889, 0.4482, 0.2889, -0.4482, 6.1, -1.2, -0.264, 1.0725, 0.264, -1.0725, 6.83, -4.4, -0.32505, 1.3695, 0.32505, -1.3695, 7.7, -7.7, -0.0165, 2.0295, 0.0165, -2.0295, 8.8, -12.7, 0.9405, 1.9553, -0.9405, -1.9553, 7.8, -20, 2.145, 1.122, -2.145, -1.122, 3.1, -24.55, 2.9205, 0.1485, -2.9205, -0.1485, -5.2, -26.8, 2.6565, -0.94875, -2.6565, 0.94875, -14.6, -25.45, 1.7325, -1.8068, -1.7325, 1.8068, -21.3, -21.05, 0.66825, -2.2193, -0.66825, 2.2193, -25.1, -14.5, -0.264, -1.749, 0.264, 1.749, -25.35, -7.6, -1.0148, -1.4734, 1.0148, 1.4734, -23.5, -3.9)}
+point_count = 20
+
+[sub_resource type="Curve3D" id="ShoreApproachCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(-0.432, 0, 0.176, 0.432, 0, -0.176, -10, 0, 6, -0.864, -0, 0.424, 0.864, 0, -0.424, -7.3, 0, 4.9, -0.848, -0, 0.336, 0.848, 0, -0.336, -4.6, 0, 3.35, -0.632, -0, 0.1872, 0.632, 0, -0.1872, -2, 0, 2.8, -0.32, -0, 0.176, 0.32, 0, -0.176, -0.65, 0, 2.18, -0.104, 0, 0.0768, 0.104, 0, -0.0768, 0, 0, 1.7), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)}
+point_count = 6
 
 [sub_resource type="Curve3D" id="ShoreWalkCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.56,0.0,-0.32,-10,0,6,-1.12,-0.0,0.72,1.12,0.0,-0.72,-6.5,0,4,-0.656,-0.0,1.168,0.656,0.0,-1.168,-3,0,1.5,-0.096,-0.0,0.768,0,0,0,-2.4,0,-3.3), "tilts": PackedFloat32Array(0,0,0,0)}
-point_count = 4
+_data = {"points": PackedVector3Array(-0.2835, 0, 0.1155, 0.2835, 0, -0.1155, -10, 0, 6, -0.567, -0, 0.27825, 0.567, 0, -0.27825, -7.3, 0, 4.9, -0.5565, -0, 0.2205, 0.5565, 0, -0.2205, -4.6, 0, 3.35, -0.41475, -0, 0.12285, 0.41475, 0, -0.12285, -2, 0, 2.8, -0.21, -0, 0.1155, 0.21, 0, -0.1155, -0.65, 0, 2.18, -0.06825, -0.004725, 0.3129, 0.06825, 0.004725, -0.3129, 0, 0, 1.7, -0, -0.004725, 0.82425, 0, 0.004725, -0.82425, 0, 0.045, -0.8, -0, -0, 1.0237, 0, 0, -1.0237, 0, 0.045, -6.15, -0, -0.000735, 0.609, 0, 0.000735, -0.609, 0, 0.045, -10.55, -0, 0, 0.147, 0, 0, -0.147, 0, 0.052, -11.95), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)}
+point_count = 10
 
 [sub_resource type="Curve3D" id="AroundLighthouseCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.128,0.0,-0.352,-2.4,0,-3.3,-0.848,-0.0,0.368,0.848,0.0,-0.368,-1.6,0,-5.5,-1.056,-0.0,-0.64,1.056,0.0,0.64,2.9,0,-5.6,-0.336,-0.0,-0.656,0,0,0,5,0,-1.5), "tilts": PackedFloat32Array(0,0,0,0)}
-point_count = 4
+_data = {"points": PackedVector3Array(-0, 0, -0.744, 0, 0, 0.744, 0, 0.052, -11.95, -0, 0.00112, -1.752, 0, -0.00112, 1.752, 0, 0.045, -7.3, -0, 0.0072, -1.4432, 0, -0.0072, 1.4432, 0, 0.045, -1, -0.312, 0.0072, -0.6256, 0.312, -0.0072, 0.6256, 0, 0, 1.72, -0.7712, -0, -0.1328, 0.7712, 0, 0.1328, 1.95, 0, 2.91, -0.664, -0, 0.1776, 0.664, 0, -0.1776, 4.82, 0, 2.55, -0.2048, 0, 0.12, 0.2048, 0, -0.12, 6.1, 0, 1.8), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)}
+point_count = 7
 
 [sub_resource type="Curve3D" id="ToGardenCurve"]
 bake_interval = 0.05
-_data = {"points": PackedVector3Array(0,0,0,0.64,0.0,-0.24,5,0,-1.5,-1.2,-0.0,0.88,1.2,0.0,-0.88,9,0,-3,-0.8,-0.0,1.6,0.8,0.0,-1.6,12.5,0,-7,-0.56,-0.0,1.6,0.56,0.0,-1.6,14,0,-13,-0.32,-0.0,0.64,0,0,0,16,0,-17), "tilts": PackedFloat32Array(0,0,0,0,0)}
-point_count = 5
+_data = {"points": PackedVector3Array(-0.376, 0, 0.256, 0.376, 0, -0.256, 6.1, 0, 1.8, -0.568, -0, 0.64, 0.568, 0, -0.64, 8.45, 0, 0.2, -0.416, -0, 0.864, 0.416, 0, -0.864, 9.65, 0, -2.2, -0.552, -0, 0.976, 0.552, 0, -0.976, 11.05, 0, -5.2, -0.5408, -0, 1.248, 0.5408, 0, -1.248, 13.1, 0, -8.3, -0.464, -0, 1.392, 0.464, 0, -1.392, 14.43, 0, -13, -0.2512, 0, 0.64, 0.2512, 0, -0.64, 16, 0, -17), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)}
+point_count = 7
+
+[sub_resource type="Curve3D" id="GardenTraceCurve"]
+bake_interval = 0.05
+_data = {"points": PackedVector3Array(-0.376, 0, 0.256, 0.376, 0, -0.256, 6.1, 0, 1.8, -0.568, -0, 0.64, 0.568, 0, -0.64, 8.45, 0, 0.2, -0.416, -0, 0.864, 0.416, 0, -0.864, 9.65, 0, -2.2, -0.224, 0, 0.48, 0.224, 0, -0.48, 11.05, 0, -5.2), "tilts": PackedFloat32Array(0, 0, 0, 0)}
+point_count = 4
+
+[sub_resource type="Curve3D" id="OffshoreTackCurve"]
+bake_interval = 0.06
+_data = {"points": PackedVector3Array(1.0393, -0, 0.4826, -1.0393, 0, -0.4826, -17.3, -0.51, -9.9, -0.152, -0, 0.8265, 0.152, 0, -0.8265, -18.85, -0.51, -11.9, -1.1685, -0, 0.5054, 1.1685, 0, -0.5054, -16.5, -0.51, -14.25, -1.5485, -0, -0.2128, 1.5485, 0, 0.2128, -12.7, -0.51, -14.56, -1.0868, -0, -0.6859, 1.0868, 0, 0.6859, -8.35, -0.51, -13.13, 0.1425, -0, -0.6707, -0.1425, 0, 0.6707, -6.98, -0.51, -10.95, 1.216, -0, -0.3021, -1.216, 0, 0.3021, -9.1, -0.51, -9.6, 1.558, -0, 0.057, -1.558, 0, -0.057, -13.38, -0.51, -9.36, 1.0393, -0, 0.4826, -1.0393, 0, -0.4826, -17.3, -0.51, -9.9), "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0)}
+point_count = 9
 
 [node name="MemoryZone" instance=ExtResource("zone")]
 zone_id = &"duluth_lighthouse"
-display_name = "Lake Superior · Lighthouse"
+display_name = "Lake Superior · Breakwater"
 ambience_stream = ExtResource("bed")
 ambience_volume_db = -26
-ambience_size = Vector2(30, 32)
-ambience_blend_distance = 4.0
+ambience_size = Vector2(38, 37)
+ambience_blend_distance = 4.8
 
-[node name="ShoreReveal" parent="Scenery" type="Marker3D"]
-position = Vector3(-3,0,1.5)
+[node name="ShoreReveal" type="Marker3D" parent="Scenery"]
+position = Vector3(-6.7, 0, 4.8)
 
 [node name="LakeSuperior" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("water")]
-position = Vector3(0,-0.08,-9)
-footprint = Vector2(32,27)
+position = Vector3(0, -0.51, 0)
+footprint = Vector2(33, 30)
+pond_outline = SubResource("SuperiorOutline")
+outline_detail = 90
+irregularity = 0.03
 water_seed = 1012261
 palette_preset = 0
 palette = ExtResource("lake_palette")
 behavior_preset = 3
-foam_amount = 0.32
-foam_width = 0.28
+foam_amount = 0.21
+foam_width = 0.31
 block_water_entry = false
 recall_enabled = true
 recall_anchor = NodePath("../ShoreReveal")
 
 [node name="RockyBank" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("bank")]
-position = Vector3(0,-0.035,0)
-custom_outline = SubResource("BankOutline")
-patch_seed = 1012262
+position = Vector3(0, -0.035, 0)
+patch_size = Vector2(23, 12)
+patch_seed = 1012391
 dune_height = 0.0
 terrain_form = 1
-edge_feather = 1.4
-sand_color = Color(0.7255,0.7294,0.6745,1)
-shadow_color = Color(0.5725,0.6,0.5569,1)
+edge_feather = 1.65
+sand_color = Color(0.69, 0.68, 0.61, 1)
+shadow_color = Color(0.54, 0.55, 0.47, 1)
 ripple_strength = 0.0
-mesh_detail = 64
+mesh_detail = 44
+collision_enabled = false
+track_footprints = false
+custom_outline = SubResource("BankOutline")
 recall_enabled = true
 recall_anchor = NodePath("../ShoreReveal")
+
+[node name="Breakwater" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("pier")]
+prop_seed = 1012266
+body_color = Color(0.69, 0.65, 0.58, 1)
+accent_color = Color(0.57, 0.49, 0.397, 1)
+trim_color = Color(0.53, 0.51, 0.46, 1)
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreApproach" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("ShoreApproachCurve")
+path_width = 2.3
+paving_color = Color(0.73, 0.69, 0.58, 1)
+paving_seed = 101226
+end_fade = Vector2(2.25, 1.65)
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.23
+collision_enabled = false
 
 [node name="ShoreWalk" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ShoreWalkCurve")
-path_width = 2.5
-paving_color = Color(0.721569,0.717647,0.643137,1)
+path_width = 2.1
+paving_color = Color(0.59, 0.54, 0.42, 1)
 paving_seed = 101226
 end_fade = Vector2(0, 0)
-edge_softness = 0.32
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.29
+collision_enabled = false
+visible = false
 
 [node name="AroundLighthouse" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("AroundLighthouseCurve")
-path_width = 2.3
-paving_color = Color(0.721569,0.717647,0.643137,1)
+path_width = 2.05
+paving_color = Color(0.59, 0.54, 0.42, 1)
 paving_seed = 101226
 end_fade = Vector2(0, 0)
-edge_softness = 0.32
-surface_style = 2
-stone_color = Color(0.745098,0.741176,0.682353,1)
-stone_size = 0.68
-joint_width = 0.024
-width_variation = 0.045
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.29
+collision_enabled = false
+visible = false
 
 [node name="ToGarden" parent="Scenery" instance=ExtResource("path")]
 curve = SubResource("ToGardenCurve")
-path_width = 2.5
-paving_color = Color(0.721569,0.717647,0.643137,1)
+path_width = 2.3
+paving_color = Color(0.59, 0.54, 0.42, 1)
 paving_seed = 101226
-end_fade = Vector2(0, 1)
-edge_softness = 0.32
+end_fade = Vector2(0, 0)
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.29
+collision_enabled = false
+visible = false
+
+[node name="GardenTrace" parent="Scenery" instance=ExtResource("path")]
+curve = SubResource("GardenTraceCurve")
+path_width = 1.9
+paving_color = Color(0.63, 0.63, 0.53, 1)
+paving_seed = 101226
+end_fade = Vector2(1.4, 2.2)
+edge_softness = 0.58
+crown_height = 0.0
+width_variation = 0.20
+detail_density = 0.29
+collision_enabled = false
 
 [node name="Lighthouse" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("lighthouse")]
-position = Vector3(1,0,-3.7)
-tower_height = 6.5
-base_radius = 0.9
-body_color = Color(0.9333,0.9059,0.8353,1)
-accent_color = Color(0.6627,0.3059,0.2667,1)
-trim_color = Color(0.3608,0.3843,0.3529,1)
-stripes_enabled = true
-stripe_color = Color(0.6863,0.3176,0.2745,1)
-stripe_count = 6
-window_count = 3
-beacon_strength = 0.25
-beam_length = 6.0
+position = Vector3(0, 0.052, -14.55)
+tower_height = 6.15
+base_radius = 1.03
+window_count = 2
+body_color = Color(0.91, 0.89, 0.83, 1)
+base_band_height = 1.23
+base_band_color = Color(0.22, 0.22, 0.21, 1)
+accent_color = Color(0.39, 0.24, 0.21, 1)
+trim_color = Color(0.23, 0.23, 0.22, 1)
+beacon_color = Color(1, 0.46, 0.22, 1)
+beacon_strength = 0.55
+beam_length = 4.5
+rotation_speed = 0.013
 prop_seed = 1012263
+contact_shadow_enabled = false
 recall_enabled = true
 recall_anchor = NodePath("../ShoreReveal")
 
-[node name="ShoreBrush0" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-8.5,0,6.8)
-footprint = Vector2(1.4,1.1199999999999999)
-bush_height = 0.77
-bush_seed = 1012500
-palette_preset = 4
-recall_enabled = true
-react_to_explorers = true
-
-[node name="ShoreGrass0" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-8.5,0,6.8)
-patch_size = Vector2(3.0, 2.2)
-patch_seed = 1012520
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../LakeSuperior"),NodePath("../Lighthouse"),NodePath("../ShoreWalk"),NodePath("../AroundLighthouse"),NodePath("../ToGarden")])
-
-[node name="ShoreBrush1" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(-5.8,0,6.4)
-footprint = Vector2(1.4,1.1199999999999999)
-bush_height = 0.77
-bush_seed = 1012501
-palette_preset = 3
-recall_enabled = true
-react_to_explorers = true
-
-[node name="ShoreGrass1" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(-5.8,0,6.4)
-patch_size = Vector2(3.0, 2.2)
-patch_seed = 1012521
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../LakeSuperior"),NodePath("../Lighthouse"),NodePath("../ShoreWalk"),NodePath("../AroundLighthouse"),NodePath("../ToGarden")])
-
-[node name="ShoreBrush2" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(4.7,0,4.2)
-footprint = Vector2(1.4,1.1199999999999999)
-bush_height = 0.77
-bush_seed = 1012502
-palette_preset = 4
-recall_enabled = true
-react_to_explorers = true
-
-[node name="ShoreGrass2" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(4.7,0,4.2)
-patch_size = Vector2(3.0, 2.2)
-patch_seed = 1012522
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../LakeSuperior"),NodePath("../Lighthouse"),NodePath("../ShoreWalk"),NodePath("../AroundLighthouse"),NodePath("../ToGarden")])
-
-[node name="ShoreBrush3" parent="Scenery" instance=ExtResource("bush")]
-position = Vector3(6.5,0,2.7)
-footprint = Vector2(1.4,1.1199999999999999)
-bush_height = 0.77
-bush_seed = 1012503
-palette_preset = 3
-recall_enabled = true
-react_to_explorers = true
-
-[node name="ShoreGrass3" parent="Scenery" instance=ExtResource("grass")]
-position = Vector3(6.5,0,2.7)
-patch_size = Vector2(3.0, 2.2)
-patch_seed = 1012523
-grass_height = 0.16
-tufts_per_square_meter = 12.0
-leaves_per_square_meter = 36.0
-palette_preset = 3
-recall_enabled = true
-react_to_explorer = true
-ground_exclusions = Array[NodePath]([NodePath("../LakeSuperior"),NodePath("../Lighthouse"),NodePath("../ShoreWalk"),NodePath("../AroundLighthouse"),NodePath("../ToGarden")])
-
-[node name="ShoreTree0" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(-7.6,0,8.8)
-tree_seed = 1012540
-tree_type = 0
-tree_height = 3.8
-crown_width = 3.0
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 3
-recall_enabled = true
-react_to_explorers = true
-wind_strength = 0.045
-
-[node name="ShoreTree1" parent="Scenery" instance=ExtResource("tree")]
-position = Vector3(5.5,0,5.6)
-tree_seed = 1012541
-tree_type = 0
-tree_height = 3.8
-crown_width = 3.0
-branch_count = 6
-leaf_sprays_per_cluster = 52
-falling_leaf_count = 0
-trunk_radius = 0.13
-palette_preset = 4
-recall_enabled = true
-react_to_explorers = true
-wind_strength = 0.045
-
 [node name="ShoreBoulder0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(-5,0,-3.2)
-dimensions = Vector3(1.25, 0.65, 1.0)
-boulder_seed = 1012560
-palette_preset = 1
+position = Vector3(-2.6, -0.12, 0.42)
+rotation = Vector3(0, 2.218, 0)
+dimensions = Vector3(2.35, 1.38, 1.79)
+boulder_seed = 1013800
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
 recall_enabled = true
 recall_anchor = NodePath("../ShoreReveal")
 
 [node name="ShoreBoulder1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(-1.5,0,-6.6)
-dimensions = Vector3(1.25, 0.65, 1.0)
-boulder_seed = 1012561
-palette_preset = 1
+position = Vector3(-4.36, -0.18, -0.4)
+rotation = Vector3(0, -0.67866, 0)
+dimensions = Vector3(2.21, 1.3, 1.85)
+boulder_seed = 1013801
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
 recall_enabled = true
 recall_anchor = NodePath("../ShoreReveal")
 
 [node name="ShoreBoulder2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(3.4,0,-6.1)
-dimensions = Vector3(1.25, 0.65, 1.0)
-boulder_seed = 1012562
-palette_preset = 1
+position = Vector3(-6.35, -0.17, -0.24)
+rotation = Vector3(0, -1.5824, 0)
+dimensions = Vector3(2.6, 1.31, 1.3)
+boulder_seed = 1013802
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
 recall_enabled = true
 recall_anchor = NodePath("../ShoreReveal")
 
 [node name="ShoreBoulder3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(6.8,0,-2.6)
-dimensions = Vector3(1.25, 0.65, 1.0)
-boulder_seed = 1012563
-palette_preset = 1
+position = Vector3(-8.36, -0.18, 0.54)
+rotation = Vector3(0, 1.9275, 0)
+dimensions = Vector3(1.7, 0.92, 1.6)
+boulder_seed = 1013803
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
 recall_enabled = true
 recall_anchor = NodePath("../ShoreReveal")
 
 [node name="ShoreBoulder4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
-position = Vector3(5.9,0,4.3)
-dimensions = Vector3(1.25, 0.65, 1.0)
-boulder_seed = 1012564
-palette_preset = 1
+position = Vector3(2.55, -0.1, 0.45)
+rotation = Vector3(0, 0.98243, 0)
+dimensions = Vector3(2, 1.46, 1.65)
+boulder_seed = 1013804
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
 recall_enabled = true
 recall_anchor = NodePath("../ShoreReveal")
 
+[node name="ShoreBoulder5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(3.97, -0.14, -0.36)
+rotation = Vector3(0, 2.5234, 0)
+dimensions = Vector3(2.24, 1.18, 1.85)
+boulder_seed = 1013805
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreBoulder6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(5.2, -0.15, -1)
+rotation = Vector3(0, 0.52217, 0)
+dimensions = Vector3(2.05, 1.32, 1.7)
+boulder_seed = 1013806
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreBoulder7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(6.78, -0.21, -1.28)
+rotation = Vector3(0, 1.6145, 0)
+dimensions = Vector3(1.46, 0.95, 1.31)
+boulder_seed = 1013807
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreBoulder8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-3.37, -0.12, 1.27)
+rotation = Vector3(0, -2.0412, 0)
+dimensions = Vector3(1.52, 0.73, 1.52)
+boulder_seed = 1013808
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreBoulder9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-7.5, -0.03, 2.02)
+rotation = Vector3(0, -0.44332, 0)
+dimensions = Vector3(1.79, 0.79, 1.3)
+boulder_seed = 1013809
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreBoulder10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(4.13, -0.07, 1.07)
+rotation = Vector3(0, 0.69391, 0)
+dimensions = Vector3(1.85, 0.7, 1.46)
+boulder_seed = 1013810
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreBoulder11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(7.85, -0.06, 0.1)
+rotation = Vector3(0, -1.9534, 0)
+dimensions = Vector3(1.56, 0.74, 1.18)
+boulder_seed = 1013811
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreBoulder12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(8.14, 0, -3.7)
+rotation = Vector3(0, 0.6112, 0)
+dimensions = Vector3(1.85, 0.78, 1.54)
+boulder_seed = 1013812
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreBoulder13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(12.62, 0, -5.8)
+rotation = Vector3(0, -2.5002, 0)
+dimensions = Vector3(1.52, 0.92, 1.3)
+boulder_seed = 1013813
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="ShoreTree0" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-9.45, 0, 7.3)
+rotation = Vector3(0, 1.1349, 0)
+tree_type = 2
+tree_seed = 1013900
+tree_height = 4.7
+crown_width = 2.6
+trunk_radius = 0.132
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth0" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-9.45, 0, 7.11)
+rotation = Vector3(0, 0.13219, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013940
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="ShoreShrubs0" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-9.04, 0, 7.41)
+footprint = Vector2(1.55, 1.33)
+bush_height = 0.48
+bush_seed = 1013960
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="ShoreTree1" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-7.67, 0, 7.9)
+rotation = Vector3(0, -1.1139, 0)
+tree_type = 0
+tree_seed = 1013901
+tree_height = 3.76
+crown_width = 2.1
+trunk_radius = 0.105
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-7.67, 0, 7.71)
+rotation = Vector3(0, -0.13725, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013941
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="ShoreTree2" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-5.3, 0, 5.75)
+rotation = Vector3(0, 0.39647, 0)
+tree_type = 0
+tree_seed = 1013902
+tree_height = 4.0
+crown_width = 2.82
+trunk_radius = 0.112
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.3, 0, 5.56)
+rotation = Vector3(0, -0.15437, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013942
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="ShoreShrubs2" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(-4.89, 0, 5.86)
+footprint = Vector2(1.55, 1.33)
+bush_height = 0.48
+bush_seed = 1013962
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="ShoreTree3" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(-3.33, 0, 5.62)
+rotation = Vector3(0, 2.3688, 0)
+tree_type = 4
+tree_seed = 1013903
+tree_height = 3.2
+crown_width = 1.7
+trunk_radius = 0.090
+branch_count = 5
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.33, 0, 5.43)
+rotation = Vector3(0, 0.10255, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013943
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="ShoreTree4" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(3.41, 0, 4.84)
+rotation = Vector3(0, -0.5587, 0)
+tree_type = 2
+tree_seed = 1013904
+tree_height = 4.03
+crown_width = 2.12
+trunk_radius = 0.113
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(3.41, 0, 4.65)
+rotation = Vector3(0, -0.17565, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013944
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="ShoreShrubs4" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(3.82, 0, 4.95)
+footprint = Vector2(1.55, 1.33)
+bush_height = 0.48
+bush_seed = 1013964
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="ShoreTree5" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(6.37, 0, 4.7)
+rotation = Vector3(0, -2.4713, 0)
+tree_type = 0
+tree_seed = 1013905
+tree_height = 4.7
+crown_width = 2.78
+trunk_radius = 0.132
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(6.37, 0, 4.51)
+rotation = Vector3(0, -0.12498, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013945
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="ShoreTree6" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(7.9, 0, 3.92)
+rotation = Vector3(0, -0.8621, 0)
+tree_type = 4
+tree_seed = 1013906
+tree_height = 3.45
+crown_width = 2.02
+trunk_radius = 0.097
+branch_count = 5
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(7.9, 0, 3.73)
+rotation = Vector3(0, 0.1848, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013946
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="ShoreShrubs6" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(8.31, 0, 4.03)
+footprint = Vector2(1.55, 1.33)
+bush_height = 0.48
+bush_seed = 1013966
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="ShoreTree7" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(10.3, 0, 1.22)
+rotation = Vector3(0, -0.57854, 0)
+tree_type = 2
+tree_seed = 1013907
+tree_height = 3.55
+crown_width = 2.22
+trunk_radius = 0.099
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(10.3, 0, 1.03)
+rotation = Vector3(0, 0.15415, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013947
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="ShoreTree8" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(9.2, 0, -4.48)
+rotation = Vector3(0, 2.8733, 0)
+tree_type = 4
+tree_seed = 1013908
+tree_height = 3.8
+crown_width = 2.15
+trunk_radius = 0.106
+branch_count = 5
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 0
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth8" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(9.2, 0, -4.67)
+rotation = Vector3(0, -0.032695, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013948
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="ShoreShrubs8" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(9.61, 0, -4.37)
+footprint = Vector2(1.55, 1.33)
+bush_height = 0.48
+bush_seed = 1013968
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="ShoreTree9" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(12.9, 0, -4.24)
+rotation = Vector3(0, 2.6065, 0)
+tree_type = 2
+tree_seed = 1013909
+tree_height = 3.7
+crown_width = 2.62
+trunk_radius = 0.104
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth9" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(12.9, 0, -4.43)
+rotation = Vector3(0, 0.27188, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013949
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="ShoreTree10" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(11.74, 0, -10.1)
+rotation = Vector3(0, -2.9182, 0)
+tree_type = 0
+tree_seed = 1013910
+tree_height = 3.5
+crown_width = 2.08
+trunk_radius = 0.098
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 4
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth10" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(11.74, 0, -10.29)
+rotation = Vector3(0, -0.00080921, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013950
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="ShoreShrubs10" parent="Scenery" instance=ExtResource("bush")]
+position = Vector3(12.15, 0, -9.99)
+footprint = Vector2(1.55, 1.33)
+bush_height = 0.48
+bush_seed = 1013970
+palette_preset = 0
+react_to_explorers = true
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="ShoreTree11" parent="Scenery" instance=ExtResource("tree")]
+position = Vector3(14.7, 0, -9.42)
+rotation = Vector3(0, -2.6606, 0)
+tree_type = 2
+tree_seed = 1013911
+tree_height = 3.78
+crown_width = 2.16
+trunk_radius = 0.106
+branch_count = 6
+leaf_sprays_per_cluster = 43
+palette_preset = 3
+falling_leaf_count = 7
+trunk_collision = false
+react_to_explorers = true
+recall_enabled = true
+
+[node name="ShoreGrowth11" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(14.7, 0, -9.61)
+rotation = Vector3(0, -0.23127, 0)
+patch_size = Vector2(3.9, 3.05)
+grass_height = 0.23
+tufts_per_square_meter = 17
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013951
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="BankSedges0" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-5.1, -0.012, 1.32)
+rotation = Vector3(0, -0.059972, 0)
+patch_size = Vector2(2.55, 1.83)
+grass_height = 0.26
+tufts_per_square_meter = 24
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013983
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="BankSedges1" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-7.42, -0.012, 2.75)
+rotation = Vector3(0, 0.11271, 0)
+patch_size = Vector2(2.55, 1.83)
+grass_height = 0.26
+tufts_per_square_meter = 24
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013984
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("red")
+
+[node name="BankSedges2" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(-3.2, -0.012, 1.3)
+rotation = Vector3(0, -0.10579, 0)
+patch_size = Vector2(2.55, 1.83)
+grass_height = 0.26
+tufts_per_square_meter = 24
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013985
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="BankSedges3" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(4.4, -0.012, 1.27)
+rotation = Vector3(0, 0.025845, 0)
+patch_size = Vector2(2.55, 1.83)
+grass_height = 0.26
+tufts_per_square_meter = 24
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013986
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="BankSedges4" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(6.47, -0.012, 1.08)
+rotation = Vector3(0, 0.26404, 0)
+patch_size = Vector2(2.55, 1.83)
+grass_height = 0.26
+tufts_per_square_meter = 24
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013987
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="BankSedges5" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(8.6, -0.012, -1.24)
+rotation = Vector3(0, -0.11457, 0)
+patch_size = Vector2(2.55, 1.83)
+grass_height = 0.26
+tufts_per_square_meter = 24
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013988
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="BankSedges6" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(10.03, -0.012, -6.7)
+rotation = Vector3(0, 0.13955, 0)
+patch_size = Vector2(2.55, 1.83)
+grass_height = 0.19
+tufts_per_square_meter = 24
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013989
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("amber")
+
+[node name="BankSedges7" parent="Scenery" instance=ExtResource("grass")]
+position = Vector3(14.2, -0.012, -11.35)
+rotation = Vector3(0, 0.19747, 0)
+patch_size = Vector2(2.55, 1.83)
+grass_height = 0.19
+tufts_per_square_meter = 24
+leaves_per_square_meter = 23
+ground_leaf_scale = 0.48
+patch_seed = 1013990
+palette_preset = 0
+wind_strength = 0.065
+react_to_explorer = true
+ground_exclusions = Array[NodePath]([NodePath("../ShoreWalk"), NodePath("../LakeSuperior"), NodePath("../Breakwater"), NodePath("../ToGarden")])
+recall_enabled = true
+palette = ExtResource("copper")
+
+[node name="PierRiprap0" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.28, -0.53, -1.22)
+rotation = Vector3(0, 2.1322, 0)
+dimensions = Vector3(1.43, 0.93, 1.27)
+boulder_seed = 1015350
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap1" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.02, -0.58, -2.4)
+rotation = Vector3(0, 2.9075, 0)
+dimensions = Vector3(1.13, 0.65, 1.08)
+boulder_seed = 1015351
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap2" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.43, -0.52, -3.31)
+rotation = Vector3(0, -1.1553, 0)
+dimensions = Vector3(1.66, 1.04, 1.31)
+boulder_seed = 1015352
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap3" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-1.96, -0.56, -4.45)
+rotation = Vector3(0, 2.8477, 0)
+dimensions = Vector3(0.93, 0.68, 1.22)
+boulder_seed = 1015353
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap4" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.3, -0.58, -5.61)
+rotation = Vector3(0, 2.9687, 0)
+dimensions = Vector3(1.45, 0.87, 1.47)
+boulder_seed = 1015354
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap5" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.69, -0.61, -6.85)
+rotation = Vector3(0, -1.5928, 0)
+dimensions = Vector3(1.29, 0.63, 1.38)
+boulder_seed = 1015355
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap6" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.04, -0.54, -7.91)
+rotation = Vector3(0, -0.048418, 0)
+dimensions = Vector3(1.12, 0.96, 1.13)
+boulder_seed = 1015356
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap7" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.27, -0.6, -9.06)
+rotation = Vector3(0, 0.22974, 0)
+dimensions = Vector3(1.48, 0.77, 1.22)
+boulder_seed = 1015357
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap8" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.13, -0.59, -10.07)
+rotation = Vector3(0, -1.9161, 0)
+dimensions = Vector3(1.05, 0.68, 0.92)
+boulder_seed = 1015358
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap9" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.23, -0.51, -1.36)
+rotation = Vector3(0, 0.32927, 0)
+dimensions = Vector3(1.52, 1.11, 1.46)
+boulder_seed = 1015359
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap10" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.36, -0.6, -2.52)
+rotation = Vector3(0, 2.4092, 0)
+dimensions = Vector3(1.21, 0.69, 1.26)
+boulder_seed = 1015360
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap11" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.07, -0.54, -3.66)
+rotation = Vector3(0, -1.3596, 0)
+dimensions = Vector3(1.23, 0.86, 1.16)
+boulder_seed = 1015361
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap12" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.41, -0.55, -4.67)
+rotation = Vector3(0, -1.0335, 0)
+dimensions = Vector3(1.75, 1.04, 1.29)
+boulder_seed = 1015362
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap13" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2, -0.65, -5.91)
+rotation = Vector3(0, 2.2045, 0)
+dimensions = Vector3(1.05, 0.65, 1.26)
+boulder_seed = 1015363
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap14" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.27, -0.48, -6.94)
+rotation = Vector3(0, -0.60289, 0)
+dimensions = Vector3(1.58, 0.93, 1.41)
+boulder_seed = 1015364
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap15" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.49, -0.57, -8.1)
+rotation = Vector3(0, -2.5849, 0)
+dimensions = Vector3(1.42, 0.78, 1.21)
+boulder_seed = 1015365
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap16" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.14, -0.57, -9.33)
+rotation = Vector3(0, 2.7076, 0)
+dimensions = Vector3(1.39, 0.87, 1.31)
+boulder_seed = 1015366
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap17" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.34, -0.63, -10.33)
+rotation = Vector3(0, 1.3296, 0)
+dimensions = Vector3(1.05, 0.72, 1.22)
+boulder_seed = 1015367
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap18" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-3.01, -0.6, -3.81)
+rotation = Vector3(0, 2.9608, 0)
+dimensions = Vector3(0.75, 0.49, 0.89)
+boulder_seed = 1015368
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap19" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(-2.82, -0.62, -8.62)
+rotation = Vector3(0, 2.7937, 0)
+dimensions = Vector3(0.84, 0.52, 0.77)
+boulder_seed = 1015369
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap20" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(2.97, -0.54, -5.13)
+rotation = Vector3(0, -0.9523, 0)
+dimensions = Vector3(0.97, 0.57, 0.83)
+boulder_seed = 1015370
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierRiprap21" parent="Scenery" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("rock")]
+position = Vector3(3.07, -0.59, -8.81)
+rotation = Vector3(0, -2.9561, 0)
+dimensions = Vector3(0.89, 0.6, 0.85)
+boulder_seed = 1015371
+shape_profile = 2
+burial = 0.12
+roundness = 0.25
+roughness = 0.28
+solid = false
+palette_preset = 0
+palette = ExtResource("stone")
+recall_enabled = true
+recall_anchor = NodePath("../ShoreReveal")
+
+[node name="PierBird0" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(-0.79, 0.045, -0.72)
+bird_seed = 1015405
+bird_size = 0.66
+palette_preset = 5
+behavior = 1
+hop_radius = 0.18
+scare_radius = 1.67
+flight_speed = 3.65
+ascent_speed = 2.1
+
+[node name="PierBird1" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(0.76, 0.045, -5.37)
+bird_seed = 1015416
+bird_size = 0.62
+palette_preset = 5
+behavior = 1
+hop_radius = 0.18
+scare_radius = 1.79
+flight_speed = 3.81
+ascent_speed = 2.1
+
+[node name="PierBird2" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(-0.72, 0.045, -9.35)
+bird_seed = 1015427
+bird_size = 0.68
+palette_preset = 5
+behavior = 1
+hop_radius = 0.18
+scare_radius = 1.83
+flight_speed = 3.9699999999999998
+ascent_speed = 2.1
+
+[node name="LighthouseBird0" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(0.1, 0.052, -14.85)
+bird_seed = 1015451
+bird_size = 0.71
+palette_preset = 5
+behavior = 2
+circle_radius = 3.24
+circle_height = 4.0
+flight_speed = 1.95
+
+[node name="LighthouseBird1" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(-1.05, 0.052, -14.32)
+bird_seed = 1015464
+bird_size = 0.68
+palette_preset = 5
+behavior = 2
+circle_radius = 4.72
+circle_height = 5.3
+flight_speed = 2.11
+
+[node name="LighthouseBird2" parent="Scenery" instance=ExtResource("bird")]
+position = Vector3(0.65, 0.052, -15.72)
+bird_seed = 1015477
+bird_size = 0.64
+palette_preset = 5
+behavior = 2
+circle_radius = 3.95
+circle_height = 6.8
+flight_speed = 2.27
+
+[node name="OffshoreSailing" type="Path3D" parent="Scenery"]
+curve = SubResource("OffshoreTackCurve")
+
+[node name="SailingBoat" type="PathFollow3D" parent="Scenery/OffshoreSailing"]
+progress = 2.8
+rotation_mode = 2
+use_model_front = true
+script = ExtResource("sailing")
+sailing_speed = 0.86
+
+[node name="Ensign" parent="Scenery/OffshoreSailing/SailingBoat" node_paths=PackedStringArray("recall_anchor") instance=ExtResource("ensign")]
+scale = Vector3(0.47, 0.47, 0.47)
+prop_seed = 1015497
+deck_color = Color(0.83, 0.81, 0.68, 1)
+sail_angle = -16.0
+wind_strength = 0.042
+bob_amount = 0.031
+fenders_enabled = false
+collision_enabled = false
+recall_enabled = true
+recall_anchor = NodePath("../../../ShoreReveal")
+
 [node name="Fragment" parent="."]
-position = Vector3(-2.4,0.075,-3.3)
-note_title = "Beside the striped lighthouse"
-notes = PackedStringArray("Placeholder: add your own words about the red-and-white lighthouse beside Lake Superior.")
+position = Vector3(0, 0.115, -11.95)
+float_height = 1.83
+note_title = "At the end of the breakwater"
+notes = PackedStringArray("Placeholder: add your own words about walking out to the lighthouse on Lake Superior.")

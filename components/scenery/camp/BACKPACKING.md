@@ -8,7 +8,7 @@ Three reusable components form a small camping study: the requested gray **2018 
 | Orange tent | [`tent/painterly_stormbreak_tent.tscn`](tent/painterly_stormbreak_tent.tscn) |
 | Stove, pot and bottle | [`stove/painterly_backpacking_stove.tscn`](stove/painterly_backpacking_stove.tscn) |
 
-These are scenic props, with material and shape controls for memory authoring. The vehicle is parked, the tent fly is closed, and the stove's cooking state is configured in the Inspector. Driving, door/tent entry and tap interactions are not implemented.
+These are scenic props, with material and shape controls for memory authoring. The vehicle is parked, the tent fly defaults to closed, and the stove's cooking state is configured in the Inspector. Driving, door/tent entry and tap interactions are not implemented.
 
 ## 2018 4Runner
 
@@ -26,6 +26,7 @@ Approximate overall dimensions are 4.9 m long and 1.9 m high, with a 1.9 m body 
 | --- | --- |
 | Footprint | Main canopy width X / length Z; default 2.5 × 2.65 m. |
 | Tent Height | Relief above the 0.07 m hem; default 1.2 m, giving a 1.27 m peak. |
+| Front Vestibule Open | Roll back half of the front fly to reveal the inner mesh door. |
 | Guy Lines Enabled | Toggle the four tie lines and stakes. Lines are decorative and have no trip collision. |
 | Brand Mark Enabled | Toggle the small cloth wordmark and quarter-dome motif. |
 | Wind Strength | Slight movement of the fly panels, with edges and pole seams pinned. Zero freezes the cloth. |

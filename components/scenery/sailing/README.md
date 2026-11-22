@@ -1,6 +1,6 @@
 # Sailing day components
 
-A walkable wooden dock and scenic Pearson Ensign sailboat, built with the existing vertex-painted prop, collision and assembled-recall framework. The separate components preview in the editor and expose dimensions, colors and optional details. Their generated children remain internal, so scenes save only authoring parameters.
+A walkable wooden dock and two scenic sailboats, built with the existing vertex-painted prop, collision and assembled-recall framework. The separate components preview in the editor and expose dimensions, colors and optional details. Their generated children remain internal, so scenes save only authoring parameters.
 
 ## Wooden dock
 
@@ -46,7 +46,16 @@ Hull, rigging and sails share one opaque painterly shader in three mesh batches.
 
 The hull's convex exterior collision is static and intentionally does not move with the few centimeters of visual rocking. This is a scenic moored/sailing prop, not a controllable boat, buoyancy system or boardable vehicle. Set Bob Amount to zero for exact still placement. The Cockpit marker is a future attachment point, not a walkable cabin. Other markers are `Bow`, `Stern`, `PortMooring` and `StarboardMooring`; they remain at authored positions during visual motion.
 
-Both components expose optional **Recall Enabled / Recall Anchor**, visibility distance, collision and contact-shadow toggles. Recall includes the hull, rig and cloth and preserves progress across rebuilds. Contact shadows default off because these props sit over water. Keep ordinary shoreline blocking off where the dock crosses a water edge; the water component does not automatically carve a dock corridor in its shore barriers. No water, grass or shared recall code was changed for this kit.
+The sailing components expose optional **Recall Enabled / Recall Anchor**, visibility distance, collision and contact-shadow toggles. Recall includes the hull, rig and cloth and preserves progress across rebuilds. Contact shadows default off because these props sit over water. Keep ordinary shoreline blocking off where the dock crosses a water edge; the water component does not automatically carve a dock corridor in its shore barriers. No water, grass or shared recall code was changed for this kit.
+
+## Club 420
+
+Instance [`c420/painterly_c420.tscn`](c420/painterly_c420.tscn). This preset uses
+the **Club 420** hull style with a 4.2 m hull and 1.68 m beam. Its low foredeck,
+broad transom, recessed cockpit, centerboard case, outboard rudder and tiller use
+the same paint and recall framework as the Ensign. **Accent Color** sets the
+hull stripe. The shorter rig uses a mainsail and jib; the default preset shows a
+bare stern with the fenders off. [Zim Sailing's Club 420 specifications](https://zimsailing.com/c420---club/)
 
 ## Study and validation
 

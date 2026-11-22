@@ -59,6 +59,7 @@ func vestibule_uv(u: float, v: float, c: Dictionary) -> Vector3:
 
 func tent(c: Dictionary) -> Dictionary:
 	begin(c)
+	var open_front: bool = c.get("front_vestibule_open", false)
 	for row in range(20):
 		for col in range(64):
 			var points: Array[Vector3] = []
@@ -69,8 +70,8 @@ func tent(c: Dictionary) -> Dictionary:
 				points.append(dome(a, v, c))
 				normals.append(dome_normal(a, minf(v, 0.999), c))
 			var panel := int(floor((col + 8) / 16.0)) % 2
-			var tone: Color = body.lerp(accent, 0.50 if panel == 1 else 0.03)
-			if row == 0:
+			var tone: Color = body.lerp(accent, (0.24 if open_front else 0.50) if panel == 1 else 0.03)
+			if row < (3 if open_front else 1):
 				tone = brass
 			for ids in [[0, 1, 2], [0, 2, 3]]:
 				if (points[ids[1]] - points[ids[0]]).cross(points[ids[2]] - points[ids[0]]).length_squared() < 0.000000001:
@@ -101,6 +102,8 @@ func tent(c: Dictionary) -> Dictionary:
 		upper_r.z *= side
 		for row in range(16):
 			for col in range(24):
+				if side > 0.0 and open_front and col < 12:
+					continue
 				for uv: Vector2i in [Vector2i(0,0),Vector2i(1,0),Vector2i(1,1),Vector2i(0,0),Vector2i(1,1),Vector2i(0,1)]:
 					var u := (col + uv.x) / 24.0
 					var v := (row + uv.y) / 16.0
@@ -113,7 +116,8 @@ func tent(c: Dictionary) -> Dictionary:
 					vertex(point,n,body.lerp(accent,0.12 if col < 12 else 0.55),2)
 		var inside_l := front_point(-top_w, top_y, c, 0.003) * Vector3(1,1,side)
 		var inside_r := front_point(top_w, top_y, c, 0.003) * Vector3(1,1,side)
-		quad(bottom_l, upper_l, inside_l, dome(PI * 0.5 + 0.45, 0.0, c) * Vector3(1,1,side), body, 2)
+		if side <= 0.0 or not open_front:
+			quad(bottom_l, upper_l, inside_l, dome(PI * 0.5 + 0.45, 0.0, c) * Vector3(1,1,side), body, 2)
 		quad(bottom_r, dome(PI * 0.5 - 0.45, 0.0, c) * Vector3(1,1,side), inside_r, upper_r, body, 2)
 		for i in range(32):
 			var p := vestibule_uv(0.5,i/32.0,c) + Vector3.BACK * 0.006
@@ -126,6 +130,8 @@ func tent(c: Dictionary) -> Dictionary:
 		cloth_rod(upper_l, upper_r, 0.006, body.darkened(0.08))
 		var pull := vestibule_uv(0.5,0.12,c) * Vector3(1,1,side) + Vector3(0.015,0,side*0.015)
 		cloth_rod(pull, pull + Vector3(0.015, 0.065, 0), 0.012, brass)
+	if open_front:
+		_mesh_door(c)
 	# Small quarter-dome brand mark, projected onto the same cloth surface.
 	if c.brand_mark_enabled:
 		var center := Vector2(c.footprint.x * 0.23, c.tent_height * 0.36)
@@ -168,6 +174,31 @@ func tent(c: Dictionary) -> Dictionary:
 			rod(end - Vector3.UP * 0.015, end + Vector3(0.035, 0.08, 0.015), 0.010, brass, 8)
 	anchors = {"Approach": Vector3(0, 0, c.footprint.y * 0.5 + 1.0), "Peak": Vector3(0, c.tent_height + 0.07, 0), "Door": Vector3(0, 0.15, c.footprint.y * 0.5 + 0.38)}
 	return finish()
+
+func _mesh_door(c: Dictionary) -> void:
+	# The closed inner door is visible behind the rolled-back section of the fly.
+	var mesh_color := brass.lerp(Color("434943"), 0.59)
+	var rim := body.darkened(0.23)
+	for row in 12:
+		var v0 := row / 12.0
+		var v1 := (row + 1) / 12.0
+		for column in 10:
+			var u0 := column / 10.0
+			var u1 := (column + 1) / 10.0
+			quad(_door_point(u0, v0, c), _door_point(u1, v0, c), _door_point(u1, v1, c),
+				_door_point(u0, v1, c), mesh_color.lightened(0.055 * sin(column * 1.5) + v0 * 0.13), 2)
+		for side: float in [0.0, 1.0]:
+			cloth_rod(_door_point(side, v0, c), _door_point(side, v1, c), 0.015, rim)
+	for index in 8:
+		var a := vestibule_uv(0.015, index / 8.0, c)
+		var b := vestibule_uv(0.015, (index + 1) / 8.0, c)
+		cloth_rod(a, b, 0.039, accent)
+	cloth_rod(vestibule_uv(0.0, 0.30, c), vestibule_uv(0.034, 0.33, c), 0.043, brass)
+
+func _door_point(u: float, v: float, c: Dictionary) -> Vector3:
+	var half_width: float = lerpf(0.325, 0.115, pow(v, 2.45)) * c.footprint.x
+	var y: float = lerpf(0.16, c.tent_height * 0.80, v)
+	return front_point(lerpf(-half_width, half_width, u), y, c, 0.019)
 
 func stove(c: Dictionary) -> Dictionary:
 	begin(c)

@@ -1,5 +1,5 @@
 extends SceneTree
-## Walk the autumn trail, rock lookout, striped lighthouse shore and quiet garden.
+## Walk the autumn trail, bedrock lookout, lighthouse pier and Enger Park.
 const WORLD := "res://scenes/world/duluth_autumn_world.tscn"
 var failures := 0
 class WalkingInput extends Node:
@@ -106,18 +106,26 @@ func run() -> void:
 	var to_garden: PainterlyCurvedPath = zones[1].get_node("Scenery/ToGarden")
 	var garden: PainterlyCurvedPath = zones[2].get_node("Scenery/GardenWalk")
 	var circuit: PainterlyCurvedPath = zones[2].get_node("Scenery/GardenCircuit")
+	var tower_spur: PainterlyCurvedPath = zones[2].get_node("Scenery/TowerSpur")
 	check(zones.size()==3 and memory.memory_id==&"duluth_autumn","Duluth needs three ordered zones and its own shared memory identity")
 	check(zones[0].zone_id==&"duluth_fall_trail" and zones[1].zone_id==&"duluth_lighthouse" and zones[2].zone_id==&"duluth_zen_garden","Preserve fall hike, lighthouse and zen garden order")
 	check(player.is_on_floor() and floor.contains_ground_point(player.global_position+Vector3.RIGHT*1.2,.5),"Both explorers need supported, clear arrival space")
-	check(camera.size<4.0,"The autumn forest arrival should start close")
-	for path in [forest,climb,to_lake,shore,around,to_garden,garden,circuit]:
+	for plant in memory.find_children("*", "Node3D", true, false):
+		if plant is PainterlyTree or plant is PainterlyBush or plant is PainterlyGrassPatch:
+			var palette: GrassPalette = plant.palette
+			check(palette.leaf_color.r >= palette.leaf_color.g and palette.shade_color.r >= palette.shade_color.g,
+				"Duluth foliage must use fall pigments: " + str(plant.name))
+	check(camera.size<4.6,"The autumn forest arrival should start close")
+	check(not zones[0].has_node("Scenery/WoodlandFloor") and not zones[0].has_node("Scenery/ReturnFloor"),
+		"The hike uses autumn understory and a narrow tread without broad ground washes")
+	for path in [forest,climb,to_lake,shore,around,to_garden,garden,circuit,tower_spur]:
 		for i in 81:
 			check(floor.contains_ground_point(path.to_global(path.point_at(path.get_path_length()*i/80.0)),.3),"Every authored path must fit the finite floor: "+path.name)
 	check(world.get_node("GuidanceController").request_guidance(),"The first requested hint must wind through the fall trail and climb onto the rock")
 	await capture("forest-arrival")
 	await walk_trail(player,forest,0,1)
 	await create_timer(1.5).timeout
-	check(zones[0].ambience.playing and camera.size<4.0,"The short autumn hike should keep a close view and its wind bed")
+	check(zones[0].ambience.playing and camera.size<4.6,"The short autumn hike should keep a close view and its wind bed")
 	await capture("fall-trail")
 	await walk_trail(player,climb,0,1)
 	await create_timer(3.0).timeout
@@ -126,31 +134,100 @@ func run() -> void:
 	check(zones[0].get_node("Scenery/AutumnVista0").get_recall_controller().progress>.99,"The distant fall crowns must recall from the reachable lookout")
 	await capture("rock-lookout")
 	await read_fragment(world,zones[0].get_fragment())
-	check(world.get_node("GuidanceController").request_guidance(),"The second hint must descend from the rock to the lighthouse shore")
+	check(world.get_node("GuidanceController").request_guidance(),"The second hint must descend from the rock and cross the lighthouse pier")
 	await walk_trail(player,to_lake,0,1)
 	await walk_trail(player,shore,0,1)
 	await create_timer(4.0).timeout
 	var tower: PainterlyLighthouse = zones[1].get_node("Scenery/Lighthouse")
 	var water: PainterlyWater = zones[1].get_node("Scenery/LakeSuperior")
-	check(tower.stripes_enabled and tower.stripe_count==6,"The lakeshore lighthouse must carry alternating red-and-white bands")
+	var pier: Node3D = zones[1].get_node("Scenery/Breakwater")
+	check(tower.base_band_height > 1.0 and tower.accent_color.r > tower.accent_color.g,"The lighthouse needs an ivory shaft, dark base and dark red lantern")
+	check(pier.get_recall_controller().progress > 0.99 and player.global_position.y > 0.03,"The recalled concrete landing must support the player")
+	check(not floor.contains_ground_point(pier.to_global(Vector3(2.5, 0, -6.0))),"The floor boundary must trace the narrow pier and leave the surrounding lake out of bounds")
+	var pier_birds := zones[1].find_children("PierBird*", "PainterlyBird", true, false)
+	var lighthouse_birds := zones[1].find_children("LighthouseBird*", "PainterlyBird", true, false)
+	check(pier_birds.size() == 3 and lighthouse_birds.size() == 3,"The breakwater has three landing birds and three circling birds")
+	for bird: PainterlyBird in pier_birds:
+		check(bird.state != PainterlyBird.State.IDLE and bird.palette_preset == 5,"White pier birds must fly off as the explorer passes")
+	for bird: PainterlyBird in lighthouse_birds:
+		check(bird.state == PainterlyBird.State.CIRCLING and bird.palette_preset == 5,"White lighthouse birds must circle")
+	var sailing: Path3D = zones[1].get_node("Scenery/OffshoreSailing")
+	var boat: PathFollow3D = sailing.get_node("SailingBoat")
+	var ensign: PainterlyEnsign = boat.get_node("Ensign")
+	var previous_position := boat.global_position
+	check(ensign.get_recall_controller().progress > 0.99 and ensign.scale.x < 0.6 and not ensign.collision_enabled,"The distant Ensign must recall as scenic traffic")
+	for sample in 33:
+		var point := water.to_local(sailing.to_global(sailing.curve.sample_baked(sailing.curve.get_baked_length() * sample / 32.0)))
+		check(absf(point.y) < 0.01 and Geometry2D.is_point_in_polygon(Vector2(point.x, point.z), water._shape_data.outline),"The complete sailing tack must stay in the open lake")
+	await create_timer(0.6).timeout
+	var travel := boat.global_position - previous_position
+	check(travel.length() > 0.3 and travel.normalized().dot(boat.global_basis.z.normalized()) > 0.75,
+		"The Ensign must sail bow first along its tack during play")
+	check(not climb.visible and not to_lake.visible,"The exposed rock must be the actual walking surface on the climb and descent")
 	check(tower.get_recall_controller().progress>.99 and water.get_recall_controller().progress>.99,"The tower and open lake must recall from the reachable shore")
 	check(camera.size>17.5 and camera.size<18.3 and zones[1].ambience.playing,"The lighthouse shore needs a wider tower view and quiet waves")
 	for point: Vector3 in [tower.global_position,tower.get_anchor(&"Roof").global_position]:
 		var screen := camera.unproject_position(point)
 		check(camera.is_position_in_frustum(point) and screen.y>16 and screen.y<root.get_visible_rect().size.y-16,"The full lighthouse should fit the actual shore framing")
-	await capture("striped-lighthouse")
+	await capture("lighthouse-pier")
 	await read_fragment(world,zones[1].get_fragment())
-	check(world.get_node("GuidanceController").request_guidance(),"The final hint must pass around the tower and enter the quiet garden")
+	check(world.get_node("GuidanceController").request_guidance(),"The final hint must return along the pier and lead into Enger Park")
 	await walk_trail(player,around,0,1)
 	await walk_trail(player,to_garden,0,1)
 	await walk_trail(player,garden,0,1)
 	await create_timer(3.0).timeout
-	check(camera.size>9.6 and camera.size<10.3 and zones[2].ambience.playing,"The garden should have intimate fixed framing and its own ambient bed")
-	for name in ["RakedGravel","StoneLantern","GardenStone0","GardenStone1","GardenStone2"]:
+	check(camera.size>11.6 and camera.size<12.3 and zones[2].ambience.playing,"The garden should have intimate fixed framing and its own ambient bed")
+	for name in ["PeaceBell","RakedGravel","StoneLantern","StreamPebbles4","GardenStone0","GardenStone1","GardenStone2"]:
 		check(zones[2].get_node("Scenery/"+name).get_recall_controller().progress>.99,"The whole garden arrangement must recall from the entrance: "+name)
-	await capture("zen-garden")
+	var visitors := 0
+	for group: PainterlyCrowd in zones[2].find_children("GardenVisitors*", "PainterlyCrowd", true, false):
+		visitors += group.generated_count
+		check(not group.collision_enabled and group.motion_strength > 0.0,"Garden visitors animate without blocking the loop")
+		check(group.get_recall_controller().progress > 0.99,"Garden visitors must reveal from the garden approach")
+	check(visitors == 5 and not zones[2].has_node("Scenery/GardenGround"),"Enger Park has five visitors and its planting replaces the brown layer")
+	await capture("enger-park")
 	await read_fragment(world,zones[2].get_fragment())
 	check(world.get_node("GuidanceController").get_next_fragment()==null,"All three notes should finish without automatic hints")
+	var bell: Node3D = zones[2].get_node("Scenery/PeaceBell")
+	check(bell.strike_sound == preload("res://audio/sfx/sfx_gong.mp3"),
+		"The garden bell must use the strike sound from the component")
+	check(not bell.try_activate(player),"The bell can only be rung from nearby")
+	await walk_trail(player,circuit,0,.28)
+	check(await walk_to(player,zones[2].to_global(Vector3(2.82,0,-3.0))),"The bell striker must have a clear walking approach")
+	await create_timer(1.0).timeout
+	var striker_tap: Vector3 = bell.get_interaction_tap_position()
+	check(camera.is_position_in_frustum(bell.to_global(Vector3(0.0, 3.9, 0.0)))
+		and camera.is_position_in_frustum(striker_tap), "The bell approach must frame the pavilion roof and striker")
+	check(world.get_node("InteractionController").pick_interactable(camera.unproject_position(striker_tap)) == bell,
+		"The corrected striker must be tappable in the walking camera")
+	var strikes := [0]
+	bell.struck.connect(func(): strikes[0] += 1)
+	check(bell.try_activate(player),"The player must be able to ring the Peace Bell")
+	check(not bell.try_activate(player),"A second tap must not restart the current strike")
+	await create_timer(.56).timeout
+	check(bell._striker.rotation.z > .24 and strikes[0] == 0 and not bell._gong.playing,
+		"The striker must pull back and pause before the gong")
+	await create_timer(.74).timeout
+	check(strikes[0] == 1 and bell._gong.playing and absf(bell._bell.rotation.z) > .02,
+		"Impact must play one gong and visibly ring the bell")
+	check(bell._gong is AudioStreamPlayer and bell._gong.bus == &"SFX" and bell._gong.stream == bell.strike_sound,
+		"The selected gong must reach the SFX mixer independently of camera distance")
+	await capture("peace-bell")
+	await create_timer(1.25).timeout
+	check(absf(bell._striker.rotation.z) < .01 and absf(bell._bell.rotation.z) < .01,
+		"The bell and striker must return to rest")
+	await walk_to(player,circuit.to_global(circuit.point_at(circuit.get_path_length() * .28)))
+	var tower_join := circuit.curve.get_closest_offset(circuit.to_local(tower_spur.global_position + tower_spur.point_at(0.0))) / circuit.get_path_length()
+	await walk_trail(player,circuit,.28,tower_join)
+	await walk_trail(player,tower_spur,0,1)
+	await create_timer(2.0).timeout
+	var enger: Node3D = zones[2].get_node("Scenery/EngerTower")
+	var roof: Marker3D = enger.get_anchor(&"Roof")
+	check(enger.get_recall_controller().progress > .99 and camera.is_position_in_frustum(roof.global_position)
+		and camera.is_position_in_frustum(enger.global_position),"The uphill camera must frame Enger Tower from base to roof")
+	await capture("enger-tower")
+	await walk_trail(player,tower_spur,1,0)
+	await walk_trail(player,circuit,tower_join,1)
 	# Split the closed curve at its midpoint so both halves actually get walked.
 	await walk_trail(player,circuit,0,.5)
 	await walk_trail(player,circuit,.5,1)
@@ -164,7 +241,7 @@ func run() -> void:
 	await walk_trail(player,climb,1,0)
 	await walk_trail(player,forest,1,0)
 	await create_timer(2.0).timeout
-	check(camera.size<4.0 and player.is_on_floor(),"Returning to the trail arrival must restore close, grounded exploration")
+	check(camera.size<4.6 and player.is_on_floor(),"Returning to the trail arrival must restore close, grounded exploration")
 	if "--capture" in args: await capture_views(world,memory,camera)
 	world.free()
 	await process_frame
@@ -194,7 +271,7 @@ func capture_views(world: Node3D,memory: MemoryScene,camera: Camera3D) -> void:
 	for child in world.get_node("Controls").get_children():
 		if child is CanvasItem: child.hide()
 	var names := ["trail-overview","lighthouse-overview","garden-overview","overview"]
-	var views := [Vector4(1,2,9,31),Vector4(30,2,-12,32),Vector4(54,1,-36,24),Vector4(25,3,-10,78)]
+	var views := [Vector4(1,2,9,31),Vector4(26,2,-17,32),Vector4(54,1,-36,24),Vector4(25,3,-10,78)]
 	for i in views.size():
 		var view: Vector4 = views[i]
 		rig.position = Vector3(view.x,view.y,view.z)

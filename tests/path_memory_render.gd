@@ -5,7 +5,6 @@ func run() -> void:
 	var groups := [
 		["tokyo",[["Zones/Meiji/Scenery/ForestWalk",0.22,7.5,"tokyo-gravel"],["Zones/Sensoji/Scenery/TempleWalk",0.63,7.0,"tokyo-pavers"]]],
 		["bean_bear",[["Zones/Trailhead/Scenery/ForestTrail",0.25,5.5,"bean-bear-trail"]]],
-		["vineyard",[["Zones/Rows/Scenery/Trail",0.35,6.2,"vineyard-track"]]],
 		["duluth_autumn",[["Zones/Trail/Scenery/ForestTrail",0.28,6.5,"fall-trail"],["Zones/Garden/Scenery/GardenCircuit",0.28,7.0,"garden-stones"]]]]
 	for group: Array in groups:
 		var world: Node3D = load("res://scenes/world/"+group[0]+"_world.tscn").instantiate()

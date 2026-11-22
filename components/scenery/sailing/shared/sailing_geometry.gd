@@ -7,7 +7,11 @@ func begin(c: Dictionary) -> void:
 	if c.has("wood_color"):
 		wood = c.wood_color
 
-func quad(a: Vector3, b: Vector3, c: Vector3, d: Vector3, color: Color, kind: float = 0.0) -> void:
+func quad(a: Vector3, b: Vector3, c: Vector3, d: Vector3, color: Color, kind: float = 0.0, reverse := false) -> void:
+	if reverse:
+		var next := b
+		b = d
+		d = next
 	for triangle in [[a, b, c], [a, c, d]]:
 		var normal: Vector3 = (triangle[1] - triangle[0]).cross(triangle[2] - triangle[0])
 		if normal.length_squared() > 0.0000000001:
@@ -199,6 +203,73 @@ func hull(c: Dictionary) -> Dictionary:
 	anchors = {"Bow": Vector3(0, 0.62, length * 0.44), "Stern": Vector3(0, 0.56, -length * 0.45), "Cockpit": Vector3(0, 0.21, cockpit_z), "PortMooring": Vector3(-beam * 0.5 - 0.04, 0.47, -length * 0.10), "StarboardMooring": Vector3(beam * 0.5 + 0.04, 0.47, -length * 0.10)}
 	return finish()
 
+func dinghy(c: Dictionary) -> Dictionary:
+	begin(c)
+	var length: float = c.hull_length
+	var half_beam: float = c.beam * 0.5
+	# Stations store longitudinal position, half-beam fraction, and gunwale height.
+	var stations := [
+		Vector3(-0.50, 0.80, 0.31), Vector3(-0.36, 0.92, 0.32),
+		Vector3(-0.16, 1.00, 0.34), Vector3(0.08, 0.97, 0.37),
+		Vector3(0.25, 0.81, 0.41), Vector3(0.38, 0.53, 0.49),
+		Vector3(0.50, 0.00, 0.55)]
+	var points := PackedVector3Array()
+	for side: float in [-1.0, 1.0]:
+		var tops: Array[Vector3] = []
+		for station: Vector3 in stations:
+			tops.append(Vector3(station.y * half_beam * side, station.z, station.x * length))
+		for i in range(tops.size() - 1):
+			var a := tops[i]
+			var b := tops[i + 1]
+			var port := side < 0.0
+			var chine_a := Vector3(a.x * 0.80, maxf(-0.07, a.y - 0.44), a.z)
+			var chine_b := Vector3(b.x * 0.80, maxf(-0.07, b.y - 0.44), b.z)
+			var stripe_a := a.lerp(chine_a, 0.28)
+			var stripe_b := b.lerp(chine_b, 0.28)
+			quad(a, b, stripe_b, stripe_a, c.hull_color, 0, port)
+			quad(stripe_a, stripe_b, stripe_b.lerp(chine_b, 0.14), stripe_a.lerp(chine_a, 0.14), c.accent_color, 0, port)
+			quad(stripe_a.lerp(chine_a, 0.14), stripe_b.lerp(chine_b, 0.14), chine_b, chine_a, c.hull_color, 0, port)
+			quad(chine_a, chine_b, Vector3(0, -0.16, b.z), Vector3(0, -0.16, a.z), c.keel_color, 0, port)
+			if i in [1, 2]:
+				var edge_a := Vector3(a.x * 0.70, a.y - 0.025, a.z)
+				var edge_b := Vector3(b.x * 0.70, b.y - 0.025, b.z)
+				var sole_a := Vector3(edge_a.x * 0.80, 0.035, a.z)
+				var sole_b := Vector3(edge_b.x * 0.80, 0.035, b.z)
+				quad(a, b, edge_b, edge_a, c.deck_color, 0, not port)
+				quad(edge_a, edge_b, sole_b, sole_a, c.deck_color.darkened(0.16), 0, not port)
+				quad(sole_a, sole_b, Vector3(0, 0.035, b.z), Vector3(0, 0.035, a.z), c.deck_color.darkened(0.27), 0, not port)
+			else:
+				quad(a, b, Vector3(0, b.y + 0.025, b.z), Vector3(0, a.y + 0.025, a.z), c.deck_color, 0, not port)
+			points.append(a)
+			points.append(chine_a)
+		points.append(tops[-1])
+		tube(tops, 0.021, c.deck_color, 8)
+	var stern_z := -length * 0.5
+	var stern_width := half_beam * 0.80
+	var left_chine := Vector3(-stern_width * 0.80, -0.07, stern_z)
+	var right_chine := Vector3(stern_width * 0.80, -0.07, stern_z)
+	quad(left_chine, Vector3(-stern_width, 0.31, stern_z),
+		Vector3(stern_width, 0.31, stern_z), right_chine, c.hull_color)
+	quad(left_chine, right_chine, Vector3(0, -0.16, stern_z), Vector3(0, -0.16, stern_z), c.keel_color)
+	for i in [1, 3]:
+		var station: Vector3 = stations[i]
+		var z := station.x * length
+		var width := station.y * half_beam * 0.70
+		quad(Vector3(-width, 0.035, z), Vector3(width, 0.035, z),
+			Vector3(width, station.z, z), Vector3(-width, station.z, z), c.deck_color.darkened(0.09), 0, i == 3)
+	soft_box(Vector3(0, 0.17, -0.14), Vector3(0.17, 0.27, 1.19), c.deck_color, 0.035)
+	for side: float in [-1.0, 1.0]:
+		rod(Vector3(side * 0.25, 0.067, -length * 0.33), Vector3(side * 0.25, 0.083, length * 0.04),
+			0.023, c.trim_color, 6)
+	soft_box(Vector3(0, 0.015, -length * 0.52), Vector3(0.075, 0.64, 0.26), c.keel_color, 0.025)
+	rod(Vector3(0, 0.36, -length * 0.54), Vector3(0.06, 0.42, -length * 0.30), 0.023, c.trim_color, 8)
+	colliders.append({"name": "HullExterior", "points": points})
+	anchors = {"Bow": Vector3(0, 0.55, length * 0.50), "Stern": Vector3(0, 0.31, -length * 0.50),
+		"Cockpit": Vector3(0, 0.035, -length * 0.16),
+		"PortMooring": Vector3(-half_beam, 0.34, -length * 0.16),
+		"StarboardMooring": Vector3(half_beam, 0.34, -length * 0.16)}
+	return finish()
+
 func sail_point(a: Vector3, b: Vector3, e: Vector3, u: float, v: float, fullness: float) -> Vector3:
 	var belly := maxf(0, 27.0 * u * v * (1.0 - u - v))
 	return a * (1.0 - u - v) + b * u + e * v + Vector3.RIGHT * fullness * belly
@@ -241,20 +312,25 @@ func sail(a: Vector3, b: Vector3, e: Vector3, fullness: float, color: Color) -> 
 func rig(c: Dictionary) -> Dictionary:
 	begin(c)
 	var length: float = c.hull_length
+	var dinghy: bool = c.get("dinghy", false)
 	var mast_z := length * 0.08
-	var mast_base := Vector3(0, 0.85, mast_z)
+	var mast_base := Vector3(0, 0.39 if dinghy else 0.85, mast_z)
 	var mast_top := Vector3(0, c.mast_height, mast_z - 0.05)
 	rod(mast_base, mast_top, 0.036, Color("a2aaa6"), 20)
 	var spreader := mast_base.lerp(mast_top, 0.52)
 	rod(spreader + Vector3.LEFT * c.beam * 0.36, spreader + Vector3.RIGHT * c.beam * 0.36, 0.020, brass, 12)
-	var boom_end := Vector3(sin(deg_to_rad(c.sail_angle)) * length * 0.46, 1.55, mast_z - cos(deg_to_rad(c.sail_angle)) * length * 0.46)
-	rod(Vector3(0, 1.55, mast_z), boom_end, 0.032, Color("a2aaa6"), 16)
+	var boom_height := 1.04 if dinghy else 1.55
+	var boom_end := Vector3(sin(deg_to_rad(c.sail_angle)) * length * 0.46, boom_height, mast_z - cos(deg_to_rad(c.sail_angle)) * length * 0.46)
+	rod(Vector3(0, boom_height, mast_z), boom_end, 0.032, Color("a2aaa6"), 16)
 	var stay := mast_base.lerp(mast_top, 0.87)
 	rod(stay, Vector3(0, 0.64, length * 0.46), 0.009, Color("989b8c"), 6)
-	rod(mast_top, Vector3(0, 0.59, -length * 0.44), 0.008, Color("989b8c"), 6)
+	if not dinghy:
+		rod(mast_top, Vector3(0, 0.59, -length * 0.44), 0.008, Color("989b8c"), 6)
+	var shroud_height := 0.33 if dinghy else 0.51
 	for side: float in [-1.0, 1.0]:
-		rod(stay, Vector3(side * c.beam * 0.40, 0.51, length * 0.035), 0.008, Color("989b8c"), 6)
-		rod(spreader + Vector3(side * c.beam * 0.36, 0, 0), Vector3(side * c.beam * 0.4, 0.51, length * 0.035), 0.007, Color("989b8c"), 6)
+		var shroud_base := Vector3(side * c.beam * 0.40, shroud_height, length * 0.035)
+		rod(stay, shroud_base, 0.008, Color("989b8c"), 6)
+		rod(spreader + Vector3(side * c.beam * 0.36, 0, 0), shroud_base, 0.007, Color("989b8c"), 6)
 	rod(boom_end, Vector3(0, 0.38, -length * 0.34), 0.010, wood.lightened(0.3), 8)
 	if c.fenders_enabled:
 		for z: float in [-0.22, 0.21]:
@@ -270,14 +346,17 @@ func rig(c: Dictionary) -> Dictionary:
 
 func sails(c: Dictionary) -> Dictionary:
 	begin(c)
+	var dinghy: bool = c.get("dinghy", false)
 	var mast_z: float = c.hull_length * 0.08
 	var angle := deg_to_rad(c.sail_angle)
-	var clew := Vector3(sin(angle) * c.hull_length * 0.445, 1.59, mast_z - cos(angle) * c.hull_length * 0.445)
-	var tack := Vector3(0.035, 1.61, mast_z)
+	var foot_height := 1.08 if dinghy else 1.59
+	var clew := Vector3(sin(angle) * c.hull_length * 0.445, foot_height, mast_z - cos(angle) * c.hull_length * 0.445)
+	var tack := Vector3(0.035, foot_height + 0.02, mast_z)
 	var head := Vector3(0.035, c.mast_height - 0.26, mast_z - 0.04)
 	sail(tack, head, clew, c.sail_fullness, c.sail_color)
-	sail_mark(tack, head, clew, c.sail_fullness)
-	var stay_top := Vector3(0.025, lerpf(0.85, c.mast_height, 0.87) - 0.10, mast_z)
-	var jib_clew := Vector3(sin(angle) * c.hull_length * 0.13, 1.19, mast_z - 0.25)
-	sail(Vector3(0.025, 0.72, c.hull_length * 0.445), stay_top, jib_clew, c.sail_fullness * 0.7, c.sail_color.darkened(0.025))
+	if not dinghy:
+		sail_mark(tack, head, clew, c.sail_fullness)
+	var stay_top := Vector3(0.025, lerpf(0.39 if dinghy else 0.85, c.mast_height, 0.87) - 0.10, mast_z)
+	var jib_clew := Vector3(sin(angle) * c.hull_length * 0.13, 0.84 if dinghy else 1.19, mast_z - 0.25)
+	sail(Vector3(0.025, 0.60 if dinghy else 0.72, c.hull_length * 0.445), stay_top, jib_clew, c.sail_fullness * 0.7, c.sail_color.darkened(0.025))
 	return finish()

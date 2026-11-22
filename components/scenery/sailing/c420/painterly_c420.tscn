@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://components/scenery/sailing/ensign/painterly_ensign.tscn" id="1"]
+
+[node name="PainterlyC420" instance=ExtResource("1")]
+hull_style = 1
+hull_length = 4.2
+beam = 1.68
+mast_height = 5.65
+hull_color = Color(0.88, 0.9, 0.86, 1)
+deck_color = Color(0.76, 0.80, 0.77, 1)
+keel_color = Color(0.39, 0.48, 0.51, 1)
+accent_color = Color(0.28, 0.53, 0.59, 1)
+trim_color = Color(0.29, 0.36, 0.37, 1)
+sail_color = Color(0.94, 0.93, 0.88, 1)
+sail_angle = 16.0
+sail_fullness = 0.19
+fenders_enabled = false
+wind_strength = 0.033
+bob_amount = 0.036
+motion_speed = 0.82
