@@ -16,6 +16,7 @@ var _remote_id := 0
 var _send_timer := 0.0
 var _visit_id := 0
 var _remote_visit := 0
+var _edited_interaction_states: Dictionary[NodePath, bool] = {}
 
 @onready var player: MemoryExplorer = $Explorer
 @onready var memory: MemoryScene = $Memory
@@ -32,7 +33,7 @@ func _ready() -> void:
 		if not _bounded_memory or _landing_supported(landing):
 			player.global_position = landing
 	_visit_id = LanSession.enter_memory(memory.memory_id)
-	if LanSession.state == LanSession.State.GUEST and LanSession.shares_memory():
+	if LanSession.state in [LanSession.State.GUEST, LanSession.State.JOINING]:
 		var guest_spawn := player.global_position + Vector3.RIGHT * 1.2
 		if not _bounded_memory or _landing_supported(guest_spawn):
 			player.global_position = guest_spawn
@@ -74,6 +75,9 @@ func _setup_lan() -> void:
 	process_physics_priority = 1
 	LanSession.presence_changed.connect(_update_lan)
 	LanSession.snapshot_received.connect(_receive_snapshot)
+	LanSession.interaction_requested.connect(_commit_interaction)
+	LanSession.interaction_started.connect(_apply_committed_interaction)
+	LanSession.interaction_state_received.connect(_receive_interaction_state)
 	_update_lan()
 
 func _update_lan() -> void:
@@ -94,6 +98,67 @@ func _update_lan() -> void:
 	_remote_id = desired_id
 	_remote_visit = LanSession.partner_visit
 	_send_timer = 0.0
+	if _remote_id != 0:
+		_exchange_interaction_state()
+
+func dispatch_interaction(target: Node3D) -> bool:
+	var path := memory.get_path_to(target)
+	if _interaction_at(path) != target:
+		return false
+	if LanSession.shares_memory() and LanSession.state == LanSession.State.GUEST:
+		LanSession.request_interaction(path)
+		return true
+	return _commit_interaction(path)
+
+func _interaction_at(path: NodePath) -> Node3D:
+	if path.is_absolute() or path.get_subname_count() != 0:
+		return null
+	var target := memory.get_node_or_null(path) as Node3D
+	if target != null and memory.is_ancestor_of(target) and target.is_in_group(&"memory_interactables") \
+		and target.has_method("play_shared_interaction"):
+		return target
+	return null
+
+func _commit_interaction(path: NodePath) -> bool:
+	var target := _interaction_at(path)
+	var seed_value := randi()
+	# Only the initiating device checks proximity and local recall progress.
+	if target == null or not target.play_shared_interaction(seed_value):
+		return false
+	if target.has_method("shared_interaction_state"):
+		_edited_interaction_states[path] = true
+		seed_value = int(target.shared_interaction_state())
+	LanSession.send_interaction(path, seed_value)
+	return true
+
+func _apply_committed_interaction(path: NodePath, seed_value: int) -> void:
+	var target := _interaction_at(path)
+	if target == null:
+		return
+	if target.has_method("restore_shared_interaction_state"):
+		target.restore_shared_interaction_state(seed_value != 0)
+		_edited_interaction_states[path] = true
+	else:
+		target.play_shared_interaction(seed_value)
+
+func _exchange_interaction_state() -> void:
+	for path in _edited_interaction_states:
+		var target := _interaction_at(path)
+		if target != null:
+			LanSession.send_interaction_state(path, target.shared_interaction_state())
+
+func _receive_interaction_state(path: NodePath, value: bool) -> void:
+	var target := _interaction_at(path)
+	if target == null or not target.has_method("restore_shared_interaction_state"):
+		return
+	if LanSession.state == LanSession.State.HOSTING:
+		# Preserve a guest's earlier edit if the host hasn't touched this prop.
+		if not _edited_interaction_states.has(path):
+			target.restore_shared_interaction_state(value)
+			_edited_interaction_states[path] = true
+		LanSession.send_interaction_state(path, target.shared_interaction_state())
+	else:
+		target.restore_shared_interaction_state(value)
 
 func _exit_tree() -> void:
 	if is_instance_valid(memory):

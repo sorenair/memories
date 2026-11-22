@@ -294,7 +294,7 @@ motion_speed = 0.53
 position = Vector3(0, 0, 7.75)
 
 [node name="Fragment" parent="."]
-position = Vector3(0,0.49,0.9)
+position = Vector3(0.42, 0.49, 1.75)
 note_title = "A new beginning"
 notes = PackedStringArray("Placeholder: add your memory of the graduation ceremony — the gowns, the applause, and being there together.")
 

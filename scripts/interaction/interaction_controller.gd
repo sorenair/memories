@@ -59,7 +59,12 @@ func request_interaction(expected_target: Node3D = null) -> bool:
 	if not is_available(selected):
 		refresh_target()
 		return false
-	var accepted: bool = selected.try_activate(actor)
+	var world := get_parent()
+	var accepted: bool
+	if selected.has_method("play_shared_interaction") and world.has_method("dispatch_interaction"):
+		accepted = world.dispatch_interaction(selected)
+	else:
+		accepted = selected.try_activate(actor)
 	if accepted:
 		interaction_performed.emit(selected, actor)
 	refresh_target()

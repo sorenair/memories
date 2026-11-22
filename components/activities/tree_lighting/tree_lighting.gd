@@ -60,6 +60,11 @@ func can_interact(actor: Node3D) -> bool:
 func try_activate(actor: Node3D) -> bool:
 	if not can_interact(actor):
 		return false
+	return play_shared_interaction(0)
+
+func play_shared_interaction(_seed_value: int) -> bool:
+	if not is_instance_valid(tree) or _clock >= 0.0:
+		return false
 	_clock = 0.0
 	$Chime.play()
 	set_process(true)

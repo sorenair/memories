@@ -8,7 +8,7 @@
 zone_id = &"entrance"
 display_name = "At the museum entrance"
 ambience_stream = ExtResource("wind")
-ambience_volume_db = -25.0
+ambience_volume_db = -16.0
 ambience_size = Vector2(18, 14)
 ambience_blend_distance = 4.0
 

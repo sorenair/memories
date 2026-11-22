@@ -141,12 +141,17 @@ func try_activate(actor: Node3D) -> bool:
 	if not can_interact(actor): return false
 	return start_interaction()
 
-func start_interaction() -> bool:
+func play_shared_interaction(seed_value: int) -> bool:
+	return start_interaction(seed_value)
+
+func start_interaction(seed_value: int = -1) -> bool:
 	if _playing or not is_inside_tree() or not is_instance_valid(_pivot): return false
-	_pending_score = _random.randi_range(score_range.x,score_range.y)
+	var random := RandomNumberGenerator.new()
+	random.seed = _random.randi() if seed_value < 0 else seed_value
+	_pending_score = random.randi_range(score_range.x,score_range.y)
 	var strength := 0.5 if score_range.x==score_range.y else float(_pending_score-score_range.x)/(score_range.y-score_range.x)
 	_amplitude = deg_to_rad(swing_angle)*lerpf(0.75,1.0,strength)
-	_direction = -1.0 if _random.randf()<0.5 else 1.0
+	_direction = -1.0 if random.randf()<0.5 else 1.0
 	_run_duration = swing_duration
 	_elapsed = 0.0
 	_playing = true

@@ -535,5 +535,6 @@ ground_exclusions = Array[NodePath]([NodePath("../Bay"),NodePath("../ShoreApproa
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.6,2.9)
+orb_radius = 0.29
 note_title = "Between the limestone islands"
 notes = PackedStringArray("Placeholder: add your own words about Ha Long Bay.")

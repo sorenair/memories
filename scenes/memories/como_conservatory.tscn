@@ -85,14 +85,14 @@ fragment_sound = ExtResource("chime")
 
 [node name="FlowerGarden" parent="Zones" index="0" unique_id=587040509 instance=ExtResource("garden")]
 ambience_stream = ExtResource("10_gqs4e")
-ambience_volume_db = -12.0
+ambience_volume_db = -17.0
 
 [node name="Jungle" parent="Zones" index="1" unique_id=382592995 instance=ExtResource("jungle")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -20)
 ambience_stream = ExtResource("10_gqs4e")
-ambience_volume_db = -10.0
+ambience_volume_db = -15.0
 
 [node name="Bonsai" parent="Zones" index="2" unique_id=1666296610 instance=ExtResource("bonsai")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -24.5)
 ambience_stream = ExtResource("8_g854r")
-ambience_volume_db = -9.0
+ambience_volume_db = 1.5

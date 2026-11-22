@@ -74,6 +74,11 @@ func can_interact(actor: Node3D) -> bool:
 func try_activate(actor: Node3D) -> bool:
 	if not can_interact(actor):
 		return false
+	return play_shared_interaction(0)
+
+func play_shared_interaction(_seed_value: int) -> bool:
+	if not is_instance_valid(screen) or not is_instance_valid(rig) or (_cue != null and _cue.is_running()):
+		return false
 	_resting_intensity = rig.intensity
 	_resting_pattern = screen.pattern_mode
 	screen.pattern_mode = 6

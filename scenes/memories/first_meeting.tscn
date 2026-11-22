@@ -41,9 +41,9 @@ waypoints = PackedVector3Array(0.6, 0.72, 6.15, 4.6, 0.72, 6.15, 8.5, 0.76, 6.15
 fragment_sound = ExtResource("chime")
 
 [node name="House" parent="Zones" index="0" unique_id=2024969460 instance=ExtResource("house_zone")]
-ambience_volume_db = -24.0
+ambience_volume_db = -16.0
 
 [node name="Arcade" parent="Zones" index="1" unique_id=910489181 instance=ExtResource("arcade_zone")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 1)
 ambience_stream = ExtResource("7_lti0r")
-ambience_volume_db = -20.0
+ambience_volume_db = -10.0

@@ -9,7 +9,7 @@
 zone_id = &"marble"
 display_name = "Among the marble figures"
 ambience_stream = ExtResource("room")
-ambience_volume_db = -24.0
+ambience_volume_db = -6.0
 ambience_size = Vector2(14, 13)
 ambience_blend_distance = 4.0
 

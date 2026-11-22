@@ -33,6 +33,14 @@ The player shuffles the remaining songs when either menu opens and keeps the cur
 
 Zone ambience blends by position and stops outside its bounds after fading out. Overlapping zone weights are normalized, so approaching the arcade doesn't simply double the ambient gain. **Ambience Response Seconds** smooths changes. The world connects the local explorer to this mixer automatically; the partner's position doesn't affect what your device hears.
 
+Match replacement zone loops by integrated loudness across the full loop. Aim
+for roughly −34 LUFS at full zone weight before bus faders, with quiet rooms near
+−35 and busy crowds near −31. Measure integrated loudness and true peak with
+`ffmpeg -i loop.wav -af loudnorm=print_format=json -f null -`. Set **Ambience
+Volume dB** to the target minus the measured `input_i`, then check `input_tp`
+plus that gain for headroom. A memory scene can override both the source and its
+gain on an instantiated zone, so check the value in the playable memory.
+
 First Meeting's House zone assigns an original synthesized 20-second autumn wind loop, and Arcade assigns a quiet cabinet/room hum. A fragment chime is shared by the memory. Music remains empty for your chosen soundtrack. Regenerate these replaceable placeholder assets with `python3 tools/generate_memory_audio.py`. The four mechanical-band instrument clips use **SFX**.
 
 Pinball adds launch/bumper/result cues, and the punching bag adds a timed impact and result cue. Each machine's **Sound → Sound Volume dB** balances it within SFX. Their small component-owned cue banks also work in standalone previews and are freed on regeneration. Regenerate these original clips with `python3 tools/generate_arcade_audio.py`.
@@ -67,7 +75,7 @@ These category settings persist across scene changes within the running app. The
 
 ## Lifetime and LAN
 
-Audio players belong to their memory. Return-to-timeline fades Music, Ambience, and SFX together over the existing 0.45-second visual transition, then freeing the scene stops all of its playback, including looping beds and band notes. Re-entering starts fresh; the global mixer cancels any stale transition tween. The UI bus does not participate in that fade, though UI cues owned by a memory are still freed with it.
+Audio players belong to their memory. Return-to-timeline fades Music, Ambience, and SFX together through the explorer's departure and screen fade. Freeing the scene stops its playback, including looping beds and band notes. Re-entering starts fresh and cancels any stale transition tween. The UI bus stays independent of that fade.
 
 Playback is local on each device. Each LAN player gets the shared music and blends zone beds around their own explorer, and hears locally triggered interactions; the movement protocol does not broadcast band presses or audio events. The framework neither streams audio over the network nor doubles events on the other device.
 
@@ -90,7 +98,7 @@ Bean and Bear Lakes reuses `vineyard_rows` for its woodland walk, `vineyard_fiel
 for the overlook, and `cabin_clearing` for the lakeside camp. These are placeholder
 beds, editable on each zone root; the camp retains the existing fire VFX.
 
-First Sail uses `central_vietnam_surf` at −29 dB as a placeholder lake-water bed
+First Sail uses `ambiance_ocean.mp3` as a placeholder lake-water bed
 in its single Lakeside zone. Replace the zone's Ambience Stream to use a lake
 recording; music and fragment SFX retain the shared mixer routing.
 

@@ -224,7 +224,8 @@ screen = NodePath("../PaintedScreen")
 rig = NodePath("../StageLights")
 
 [node name="Fragment" parent="." index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -2.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.65, 0.04, -3.45)
+orb_radius = 0.26
 fragment_seed = 311225
 note_title = "In the crowd, together"
 notes = Array[String](["Placeholder: Write your memory of the music, the crowd, and spending New Year's Eve together here."])

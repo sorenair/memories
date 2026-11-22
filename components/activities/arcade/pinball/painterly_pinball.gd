@@ -119,11 +119,16 @@ func try_activate(actor: Node3D) -> bool:
 ## Direct authoring/scripted launch; direct component taps use try_activate(actor).
 
 ## Returns false when a run is already active or the component is not ready.
-func start_interaction() -> bool:
+func play_shared_interaction(seed_value: int) -> bool:
+	return start_interaction(seed_value)
+
+func start_interaction(seed_value: int = -1) -> bool:
 	if _playing or not is_inside_tree() or not is_instance_valid(_ball): return false
-	_pending_score = _random.randi_range(score_range.x,score_range.y)
+	var random := RandomNumberGenerator.new()
+	random.seed = _random.randi() if seed_value < 0 else seed_value
+	_pending_score = random.randi_range(score_range.x,score_range.y)
 	_shown_hits = 0
-	_simulation.launch(_random.randi(),play_duration,launch_speed)
+	_simulation.launch(random.randi(),play_duration,launch_speed)
 	_playing = true
 	_ball.rotation = Vector3.ZERO
 	_place_ball(LAYOUT.HOME)

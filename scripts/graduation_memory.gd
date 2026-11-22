@@ -9,8 +9,11 @@ func _ready() -> void:
 func _update_routes() -> void:
 	if not is_inside_tree(): return
 	var walk: PainterlyCurvedPath = $Zones/Arches/Scenery/CampusWalk
-	var ratio := walk.curve.get_closest_offset(walk.curve.get_point_position(2))/walk.get_path_length()
-	$Zones/Arches/Fragment.global_position = walk.to_global(walk.point_at(walk.get_path_length()*ratio))+Vector3.UP*0.04
+	var length := walk.get_path_length()
+	var arch_exit := walk.curve.get_closest_offset(walk.curve.get_point_position(2))
+	var fragment_distance := minf(length, arch_exit + 0.8)
+	var ratio := fragment_distance / length
+	$Zones/Arches/Fragment.global_position = walk.to_global(walk.point_at(fragment_distance)) + Vector3.UP * 0.04
 	_assign($Environment/Guidance/ThroughTheArches,walk.get_route_points(0,ratio))
 	var portico: PainterlyClassicalPortico = $Zones/Portico/Scenery/Portico
 	$Zones/Portico/Fragment.position.y = portico.landing_height()+0.04

@@ -12,7 +12,7 @@
 zone_id = &"paintings"
 display_name = "Looking at paintings"
 ambience_stream = ExtResource("room")
-ambience_volume_db = -24.0
+ambience_volume_db = -6.0
 ambience_size = Vector2(15, 12)
 ambience_blend_distance = 4.0
 

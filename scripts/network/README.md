@@ -6,7 +6,9 @@ Each world calls `enter_memory(memory.memory_id)` and retains the returned visit
 
 Reliable presence messages announce memory ID, visit revision, and avatar. Empty memory means a menu. `shares_memory()` is true only with an accepted partner and a nonempty matching memory ID. Worlds listen even when entered offline or while a join is pending. They create a replica only after a valid pose in the same memory arrives, and immediately disable its collision and detach it from active presence when the partner leaves that memory or disconnects. Its visual finishes dissolving at the last received pose before being freed. No LAN labels are added over gameplay in separate memories or solo play.
 
-Pose updates remain 20 Hz with buffered 100 ms playback in `remote_motion.gd`. Unreliable ordered packets carry memory ID, sender visit, and recipient visit. The receiver validates all three plus peer identity and finite pose values. Old packets cannot resurrect a departed partner or seed a later visit with stale positions. Each new partner visit starts a fresh playback buffer. Shared presence synchronizes characters and their motion/contact only; local scenery, interactions, notes, and recollection keep their existing behavior.
+Pose updates remain 20 Hz with buffered 100 ms playback in `remote_motion.gd`. Packets carry memory ID, sender visit, and recipient visit. The receiver validates all three plus peer identity and finite pose values. Old packets cannot resurrect a departed partner or seed a later visit with stale positions. Each new partner visit starts a fresh playback buffer.
+
+Either player can start activities while sharing a memory. The initiating device checks range and availability. The connection host orders accepted activations and sends each one reliably with a common seed so both devices play the same cue and derive the same game results. This includes arcade machines, individual band instruments, pool, tree lighting, fireworks, concert encore, gallery light studies, the peace bell, fountain surges, and campfire switches. Campfire states are reconciled when players meet. If both changed the same fire independently, the host's state wins. One-shot effects started while apart are local to that visit. Fragment notes and collection stay private, and proximity-driven scenery recall retains its own behavior.
 
 ## Remote arrival and departure
 
@@ -22,7 +24,7 @@ The same effect wraps remote and local explorers. Skinned surfaces on both chara
 
 Animation times live at the top of `remote_presence.gd`; they do not use proximity, since remote presence itself triggers the effect.
 
-Protocol version 4 is incompatible with the earlier host-selected-memory flow. Both devices must use this build. Tested locally with two game processes; physical-device networking and performance still need device verification.
+Protocol version 5 requires both devices to use this build. The connection host can enter any memory, and so can the guest. The host only orders interactions once both are in the same memory. Tested locally with two game processes. Physical-device networking and performance still need device verification.
 
 The connection row uses one field in both modes with identical metrics and fixed left/right icon slots. Host shows a plain read-only address with no underline or arrow; Join makes that same field editable and fades in a connect arrow. Its hidden slot stays reserved in Host, keeping the row dimensions fixed. Mode labels have no hover effects or underline; active/pressed text is dark and inactive text is muted. A pair of rings gently gathers into an interlocking symbol when a partner is connected. Routine waiting/connected strings are kept out of the menu; connection failures remain visible.
 

@@ -277,7 +277,8 @@ flutter_strength = 0.015
 recall_enabled = true
 
 [node name="Fragment" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.04, 3.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.04, 4.1)
+float_height = 0.95
 fragment_seed = 12
 note_title = "Outside the house"
 notes = Array[String](["Placeholder: Write about meeting outside the house here."])

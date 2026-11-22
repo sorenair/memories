@@ -50,6 +50,11 @@ func can_interact(actor: Node3D) -> bool:
 func try_activate(actor: Node3D) -> bool:
 	if not can_interact(actor):
 		return false
+	return play_shared_interaction(0)
+
+func play_shared_interaction(_seed_value: int) -> bool:
+	if not is_instance_valid(_brushstrokes) or not is_instance_valid(_canvas) or (_light_study != null and _light_study.is_running()):
+		return false
 	_light_study = create_tween()
 	_light_study.tween_method(_set_light_study, 0.0, 1.0, 4.4)
 	return true

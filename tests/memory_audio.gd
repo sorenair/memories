@@ -1,5 +1,6 @@
 extends SceneTree
 ## Real memory/band/cue integration, simultaneous playback, mixing, and scene cleanup.
+const PRESENCE := preload("res://scripts/network/remote_presence.gd")
 var failures := 0
 
 func _initialize() -> void:
@@ -140,7 +141,7 @@ func run() -> void:
 	world.get_node("Controls/FragmentInteraction").advance_note()
 	actor.set_physics_process(true)
 	world.get_node("Controls/ReturnToTimeline").return_to_timeline()
-	await create_timer(0.65).timeout
+	await create_timer(PRESENCE.DEPARTURE_DURATION + 0.65).timeout
 	check(current_scene.scene_file_path == "res://UI/memory_lane/memory_lane.tscn"
 		and old_audio.get_ref() == null, "Timeline return must free memory-owned audio")
 	check(AudioServer.get_bus_volume_db(AudioServer.get_bus_index(&"Memory")) <= -79.0,

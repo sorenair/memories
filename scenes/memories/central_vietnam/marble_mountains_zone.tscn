@@ -1133,5 +1133,7 @@ recall_anchor = NodePath("../MountainView")
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.065,4)
+contrast = 1
+orb_radius = 0.27
 note_title = "A temple among the limestone"
 notes = PackedStringArray("Placeholder: add your own words about visiting the Marble Mountains together.")

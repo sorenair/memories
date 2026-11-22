@@ -65,9 +65,9 @@ fragment_sound = ExtResource("chime")
 [node name="Portico" parent="Zones" index="1" unique_id=1765496416 instance=ExtResource("portico")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -9)
 ambience_stream = ExtResource("8_1nhwj")
-ambience_volume_db = -12.0
+ambience_volume_db = 2.5
 
 [node name="Ceremony" parent="Zones" index="2" unique_id=1707166057 instance=ExtResource("ceremony")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -30)
 ambience_stream = ExtResource("10_4e58a")
-ambience_volume_db = -12.0
+ambience_volume_db = -6.0

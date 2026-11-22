@@ -571,6 +571,7 @@ recall_enabled = true
 
 [node name="Fragment" parent="."]
 position = Vector3(2.7, 0.04, -5.8)
+contrast = 1
 fragment_seed = 140126
 note_title = "Between the flowers and water"
 notes = Array[String](["Placeholder: Write your memory of walking beside the flowers and fountain together here."])

@@ -14,11 +14,14 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="EVERMORE"
+config/name="OUR STORY"
 run/main_scene="res://UI/main_menu/main_menu.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 run/max_fps=144
-config/icon="res://icon.svg"
+boot_splash/show_image=false
+boot_splash/fullsize=false
+boot_splash/bg_color=Color(0.980392, 0.976471, 0.964706, 1)
+config/icon="res://UI/main_menu/icons/our_story.svg"
 
 [audio]
 
@@ -86,4 +89,4 @@ common/physics_interpolation=true
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 anti_aliasing/quality/msaa_3d=1
-environment/defaults/default_clear_color=Color(0.94, 0.935, 0.89, 1)
+environment/defaults/default_clear_color=Color(0.980392, 0.976471, 0.964706, 1)

@@ -58,6 +58,9 @@ func run() -> void:
 	first_meeting.free()
 	check(player.global_position.z > 20.0 and zone.get_fragment().global_position.z >= 19.0,
 		"Spawn and fragment must share the separate arrival landing")
+	var note_screen := camera.unproject_position(zone.get_fragment().get_orb_position())
+	check(root.get_visible_rect().grow(-20.0).has_point(note_screen),
+		"The story fragment must be visible inside the close arrival frame")
 	check(deck.contains_ground_point(Vector3(-6, 10.5, 17), 0.4)
 		and not deck.contains_ground_point(Vector3(0, 10.5, 18)),
 		"A narrow aisle, rather than one broad rectangle, must join the two sections")

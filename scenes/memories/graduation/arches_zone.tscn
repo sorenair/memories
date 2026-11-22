@@ -24,7 +24,7 @@ point_count = 3
 zone_id = &"st_thomas_arches"
 display_name = "St. Thomas arches"
 ambience_stream = ExtResource("air")
-ambience_volume_db = -28.0
+ambience_volume_db = -11.5
 ambience_size = Vector2(19,24)
 ambience_blend_distance = 4.0
 
@@ -246,7 +246,7 @@ flutter_strength = 0.013
 recall_enabled = true
 
 [node name="Fragment" parent="."]
-position = Vector3(-7.71,0.04,5)
+position = Vector3(-7.542, 0.04, 4.223)
 note_title = "Under the arches"
 notes = PackedStringArray("Placeholder: add your memory of graduation day at the St. Thomas stone arches, beneath the cherry blossoms.")
 

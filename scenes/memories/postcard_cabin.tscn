@@ -83,9 +83,9 @@ fragment_sound = ExtResource("chime")
 
 [node name="Hike" parent="Zones" index="0" unique_id=115043849 instance=ExtResource("hike")]
 ambience_stream = ExtResource("9_sph0w")
-ambience_volume_db = -5.0
+ambience_volume_db = -2.5
 
 [node name="Clearing" parent="Zones" index="1" unique_id=1373639667 instance=ExtResource("clearing")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -30)
 ambience_stream = ExtResource("9_sph0w")
-ambience_volume_db = -10.0
+ambience_volume_db = -3.5

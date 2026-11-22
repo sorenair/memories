@@ -1391,6 +1391,7 @@ recall_enabled = true
 react_to_explorers = true
 
 [node name="Fragment" parent="."]
-position = Vector3(0, 0.065, -4.82)
+position = Vector3(0.8, 0.065, -5.1)
+float_height = 1.08
 note_title = "On the lake"
 notes = PackedStringArray("Placeholder: add your own words about Hoan Kiem Lake and the island temple.")

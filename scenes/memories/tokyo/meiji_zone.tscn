@@ -724,7 +724,8 @@ react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../ForestWalk"),NodePath("../ToAsakusa"),NodePath("../Torii"),NodePath("../WorshipHall")])
 
 [node name="Fragment" parent="."]
-position = Vector3(0,0.49,-1.1375)
+position = Vector3(0, 0.49, -0.5775)
+float_height = 0.89
 note_title = "Beneath the trees"
 notes = PackedStringArray("Placeholder: add your memory of Meiji Shrine together on May 28, 2026.")
 

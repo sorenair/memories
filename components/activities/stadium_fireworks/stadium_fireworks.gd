@@ -123,6 +123,11 @@ func can_interact(actor: Node3D) -> bool:
 func try_activate(actor: Node3D) -> bool:
 	if not can_interact(actor):
 		return false
+	return play_shared_interaction(randi())
+
+func play_shared_interaction(seed_value: int) -> bool:
+	if _elapsed >= 0.0 or burst_centers.is_empty():
+		return false
 	# Read the current Inspector assignments for every replay.
 	for voice in _launch_voices:
 		voice.stream = launch_sound
@@ -130,7 +135,7 @@ func try_activate(actor: Node3D) -> bool:
 		voice.stream = burst_sound
 	_velocities.clear()
 	var random := RandomNumberGenerator.new()
-	random.randomize()
+	random.seed = seed_value
 	for index in _batch.instance_count:
 		var y := random.randf_range(-1.0, 1.0)
 		var angle := random.randf_range(0.0, TAU)

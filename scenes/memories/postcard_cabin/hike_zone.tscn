@@ -1417,6 +1417,7 @@ ground_exclusions = Array[NodePath]([NodePath("../FrozenPond"), NodePath("../Fro
 
 [node name="Fragment" parent="."]
 position = Vector3(-2.7000, 0.0400, -4.0000)
+contrast = 1
 fragment_seed = 21026
 note_title = "Through the quiet pines"
 notes = Array[String](["Placeholder: Write your memory of the snowy hike and frozen water together here."])

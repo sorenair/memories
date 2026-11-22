@@ -11,8 +11,10 @@ func _update_routes() -> void:
 	var meiji: PainterlyJapaneseHall = $Zones/Meiji/Scenery/WorshipHall
 	var senso: PainterlyJapaneseHall = $Zones/Sensoji/Scenery/MainHall
 	if not meiji.get_anchor(&"PrayerFront") or not senso.get_anchor(&"PrayerFront"): return
-	$Zones/Meiji/Fragment.global_position = meiji.get_anchor(&"PrayerFront").global_position+Vector3.UP*0.04
-	$Zones/Sensoji/Fragment.global_position = senso.get_anchor(&"PrayerFront").global_position+Vector3.UP*0.04
+	# The outer veranda keeps both orbs clear of the columns from the walking camera.
+	var veranda_offset := Vector3(0, 0.04, 0.56)
+	$Zones/Meiji/Fragment.global_position = meiji.get_anchor(&"PrayerFront").to_global(veranda_offset)
+	$Zones/Sensoji/Fragment.global_position = senso.get_anchor(&"PrayerFront").to_global(veranda_offset)
 	var forest: PainterlyCurvedPath = $Zones/Meiji/Scenery/ForestWalk
 	var first := forest.get_route_points()
 	first.append($Zones/Meiji/Fragment.global_position+Vector3.UP*0.76)

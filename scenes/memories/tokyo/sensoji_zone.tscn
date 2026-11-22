@@ -645,7 +645,8 @@ react_to_explorer = true
 ground_exclusions = Array[NodePath]([NodePath("../TempleWalk"),NodePath("../ToShibuya"),NodePath("../Hozomon"),NodePath("../MainHall"),NodePath("../Pagoda")])
 
 [node name="Fragment" parent="."]
-position = Vector3(0,0.49,3.3125)
+position = Vector3(0, 0.49, 3.8725)
+float_height = 0.88
 note_title = "Through the red gate"
 notes = PackedStringArray("Placeholder: add your memory of Sensō-ji — the lantern gate, temple courtyard, and being there together.")
 

@@ -94,4 +94,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0, -16)
 [node name="CrowdedRoom" parent="Zones" index="3" unique_id=1945283847 instance=ExtResource("crowded")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5, 0, -16)
 ambience_stream = ExtResource("10_ejsuo")
-ambience_volume_db = -7.0
+ambience_volume_db = 2.5

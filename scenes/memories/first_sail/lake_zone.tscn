@@ -545,5 +545,6 @@ recall_anchor = NodePath("../DockReveal")
 
 [node name="Fragment" parent="."]
 position = Vector3(-0.6,0.62,-3.2)
+orb_radius = 0.28
 note_title = "Our first sail"
 notes = PackedStringArray("Placeholder: add your own words about your first sail on the Pearson Ensign.")

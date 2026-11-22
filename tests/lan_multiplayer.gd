@@ -2,7 +2,8 @@ extends SceneTree
 ## Run with -- host and -- guest in two processes on the same machine.
 const MAIN := "res://UI/main_menu/main_menu.tscn"
 const TIMELINE := "res://UI/memory_lane/memory_lane.tscn"
-const WORLDS := ["res://scenes/world/first_meeting_world.tscn", "res://scenes/world/snowy_stadium_world.tscn", "res://scenes/world/art_museum_world.tscn", "res://scenes/world/christmas_market_world.tscn"]
+const WORLDS := ["res://scenes/world/first_meeting_world.tscn", "res://scenes/world/snowy_stadium_world.tscn", "res://scenes/world/art_museum_world.tscn", "res://scenes/world/christmas_market_world.tscn", "res://scenes/world/bean_bear_world.tscn"]
+const CAMPFIRE := "Memory/Zones/Campsite/Scenery/FirePit"
 const RemoteMotion := preload("res://scripts/network/remote_motion.gd")
 var failures := 0
 var session: Node
@@ -11,12 +12,16 @@ var sync: TestSync
 class TestSync extends Node:
 	var phase := 0
 	var acknowledged := 0
+	var guest_scores := Vector2i(-1, -1)
 	@rpc("any_peer", "reliable")
 	func command(value: int) -> void:
 		phase = value
 	@rpc("any_peer", "reliable")
 	func acknowledge(value: int) -> void:
 		acknowledged = value
+	@rpc("any_peer", "reliable")
+	func report_scores(value: Vector2i) -> void:
+		guest_scores = value
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -104,6 +109,29 @@ func guest_phase(value: int) -> void:
 func ack(value: int) -> void:
 	sync.acknowledge.rpc_id(1, value)
 
+func tap_at(target: Node3D, point: Vector3) -> bool:
+	var player := current_scene.get_node("Explorer") as MemoryExplorer
+	player.global_position = point
+	player.reset_physics_interpolation()
+	return current_scene.get_node("InteractionController").request_interaction(target)
+
+func arcade_interactions(host: bool) -> Vector2i:
+	var machines := current_scene.get_node("Memory/Zones/Arcade/Scenery/Machines")
+	var pinball := machines.get_node("Pinball") as Node3D
+	var bag := machines.get_node("PunchingBag") as Node3D
+	var fragment := current_scene.get_node("Memory/Zones/Arcade/Fragment") as MemoryFragment
+	if host:
+		check(tap_at(pinball, pinball.get_anchor(&"Play").global_position), "Host must be able to launch pinball")
+		check(tap_at(fragment, fragment.global_position), "Host must be able to open a private fragment")
+	else:
+		check(await wait_for(func(): return pinball.is_playing()), "Pinball launch must reach the guest at a distance")
+		check(not fragment.collected and not fragment._reading, "Host fragment must remain private")
+		check(tap_at(bag, bag.get_anchor(&"Punch").global_position), "Guest must be able to start the punching bag")
+	check(await wait_for(func(): return bag.is_playing()), "Guest punch must start on both devices")
+	check(await wait_for(func(): return not bag.is_playing() and not pinball.is_playing()),
+		"Both synchronized arcade runs must finish")
+	return Vector2i(pinball.last_score, bag.last_score)
+
 func run() -> void:
 	session = root.get_node("LanSession")
 	sync = TestSync.new()
@@ -152,17 +180,21 @@ func host_checks() -> void:
 	command(2)
 	await acknowledged(2)
 	await shared()
+	var scores := await arcade_interactions(true)
+	check(await wait_for(func(): return sync.guest_scores.x >= 0), "Guest must report both arcade results")
+	check(scores == sync.guest_scores, "Both devices must finish with identical pinball and punch scores")
 	command(3)
 	await acknowledged(3)
 	await solo()
 	await create_timer(0.25).timeout
 	check(current_scene.get_node_or_null("Partner") == null, "Delayed old-visit poses must not resurrect a partner who left")
 	command(4)
-	await enter(1)
 	await acknowledged(4)
+	check(session.partner_memory == "snowy_stadium", "The guest must be able to enter the next memory first")
 	await solo()
 	check(session.state == session.State.HOSTING, "Independent memory changes must keep hosting")
 	command(5)
+	await enter(1)
 	await acknowledged(5)
 	await shared()
 	command(6)
@@ -177,12 +209,22 @@ func host_checks() -> void:
 	await acknowledged(7)
 	check(session.partner_id != previous_id, "Reconnect must use a fresh peer identity")
 	command(8)
-	await enter(2)
 	await acknowledged(8)
-	await shared()
 	command(9)
-	await moving_partner()
+	await enter(4)
+	await shared()
+	var fire := current_scene.get_node(CAMPFIRE) as Node3D
+	check(await wait_for(func(): return fire.shared_interaction_state()), "Guest's pre-join fire state must reach the arriving host")
+	fire.get_recall_controller().seek(1.0)
+	check(tap_at(fire, fire.global_position + Vector3.RIGHT), "Host must be able to turn the shared fire off")
 	await acknowledged(9)
+	command(10)
+	await enter(2)
+	await acknowledged(10)
+	await shared()
+	command(11)
+	await moving_partner()
+	await acknowledged(11)
 	var position: Vector3 = current_scene.get_node("Explorer").global_position
 	session.leave()
 	await solo()
@@ -197,6 +239,7 @@ func guest_checks() -> void:
 	await enter(0)
 	await shared()
 	ack(2)
+	sync.report_scores.rpc_id(1, await arcade_interactions(false))
 	await guest_phase(3)
 	var old_visit: int = session.local_visit
 	var old_host_visit: int = session.partner_visit
@@ -206,12 +249,10 @@ func guest_checks() -> void:
 	check(session.state == session.State.GUEST and session.local_memory.is_empty(), "Menus must retain the connection and clear memory presence")
 	ack(3)
 	await guest_phase(4)
-	await enter(0)
-	check(await wait_for(func(): return session.partner_memory == "snowy_stadium"), "Guest must receive the host's independent location")
+	await enter(1)
 	await solo()
 	ack(4)
 	await guest_phase(5)
-	await enter(1)
 	await shared()
 	ack(5)
 	await guest_phase(6)
@@ -230,13 +271,32 @@ func guest_checks() -> void:
 	check(in_scene(MAIN), "Reconnect must not force a scene change")
 	ack(7)
 	await guest_phase(8)
+	await enter(4)
+	var fire := current_scene.get_node(CAMPFIRE) as Node3D
+	fire.get_recall_controller().seek(1.0)
+	check(tap_at(fire, fire.global_position + Vector3.RIGHT) and fire.shared_interaction_state(),
+		"Guest must be able to light the campfire before the host arrives")
+	var saw_fire_commit := [false]
+	var fire_path: NodePath = current_scene.memory.get_path_to(fire)
+	var observe_fire := func(path: NodePath, _seed: int):
+		if path == fire_path:
+			saw_fire_commit[0] = true
+	session.interaction_started.connect(observe_fire)
+	ack(8)
+	await guest_phase(9)
+	await shared()
+	check(await wait_for(func(): return saw_fire_commit[0] and not fire.shared_interaction_state()),
+		"Host's fire switch must reach the guest")
+	session.interaction_started.disconnect(observe_fire)
+	ack(9)
+	await guest_phase(10)
 	await enter(2)
 	await shared()
 	check(session.partner_avatar == MemoryExplorer.Avatar.SOREN, "Main-menu character changes must be reflected after reconnect")
-	ack(8)
-	await guest_phase(9)
+	ack(10)
+	await guest_phase(11)
 	await moving_partner()
-	ack(9)
+	ack(11)
 	check(await wait_for(func(): return session.state == session.State.OFFLINE), "Host loss must fall back to solo")
 	await solo()
 	check(in_scene(WORLDS[2]), "Host loss must leave the guest in the museum memory")

@@ -296,6 +296,7 @@ position = Vector3(0, 0, 7.35)
 
 [node name="Fragment" parent="."]
 position = Vector3(0,0.88,0.85)
+contrast = 1
 note_title = "At the university"
 notes = PackedStringArray("Placeholder: add your memory of the University of Minnesota portico on May 14, 2026.")
 

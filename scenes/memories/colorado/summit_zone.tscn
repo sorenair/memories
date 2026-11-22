@@ -33,7 +33,7 @@ point_count = 6
 zone_id = &"colorado_quandary"
 display_name = "Quandary Peak · Summit"
 ambience_stream = ExtResource("bed")
-ambience_volume_db = -25
+ambience_volume_db = -16.0
 ambience_size = Vector2(29, 34)
 ambience_blend_distance = 5.7
 

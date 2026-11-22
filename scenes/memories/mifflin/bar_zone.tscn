@@ -37,6 +37,7 @@ recall_enabled = true
 
 [node name="Fragment" parent="."]
 position = Vector3(2.4,0.08,1.4)
+contrast = 1
 note_title = "A quieter corner"
 notes = PackedStringArray("[Placeholder] A quieter corner after the party, with the pool table and music nearby. Replace this with our memory of the bar.")
 

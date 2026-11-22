@@ -12,7 +12,10 @@ func can_interact(actor: Node3D) -> bool:
 	return is_instance_valid(band) and band.can_play(instrument, actor)
 
 func try_activate(actor: Node3D) -> bool:
-	return can_interact(actor) and band.play_instrument(instrument)
+	return can_interact(actor) and play_shared_interaction(0)
+
+func play_shared_interaction(_seed_value: int) -> bool:
+	return is_instance_valid(band) and band.play_instrument(instrument)
 
 func interaction_outline_selected_only() -> bool:
 	return true

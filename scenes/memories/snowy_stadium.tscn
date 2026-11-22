@@ -19,5 +19,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 10.54, 11.5)
 fragment_sound = ExtResource("chime")
 
 [node name="Stadium" parent="Zones" index="0" unique_id=87467524 instance=ExtResource("zone")]
+ambience_volume_db = -22.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.5, 12)
 ambience_stream = ExtResource("4_3vujn")

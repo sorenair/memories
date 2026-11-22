@@ -3,12 +3,15 @@ extends Node
 signal status_changed
 signal presence_changed
 signal snapshot_received(time: float, position: Vector3, heading: float, walking: bool)
+signal interaction_requested(path: NodePath)
+signal interaction_started(path: NodePath, seed_value: int)
+signal interaction_state_received(path: NodePath, value: bool)
 
 enum State { OFFLINE, HOSTING, JOINING, GUEST }
 enum MenuMode { HOST, JOIN }
 const PORT := 24680
 const SERVER_ID := 1
-const PROTOCOL_VERSION := 4
+const PROTOCOL_VERSION := 5
 const JOIN_TIMEOUT_MS := 10000
 
 var state := State.OFFLINE
@@ -137,6 +140,37 @@ func send_snapshot(position: Vector3, heading: float, walking: bool) -> void:
 		_receive_snapshot.rpc_id(partner_id, local_memory, local_visit, partner_visit,
 			Time.get_ticks_usec() * 0.000001, position, heading, walking)
 
+func request_interaction(path: NodePath) -> void:
+	if shares_memory() and state == State.GUEST:
+		_request_interaction.rpc_id(SERVER_ID, local_memory, local_visit, partner_visit, path)
+
+func send_interaction(path: NodePath, seed_value: int) -> void:
+	if shares_memory() and state == State.HOSTING:
+		_start_interaction.rpc_id(partner_id, local_memory, local_visit, partner_visit, path, seed_value)
+
+func send_interaction_state(path: NodePath, value: bool) -> void:
+	if shares_memory():
+		_interaction_state.rpc_id(partner_id, local_memory, local_visit, partner_visit, path, value)
+
+func _matching_visit(memory: String, source_visit: int, recipient_visit: int) -> bool:
+	return shares_memory() and multiplayer.get_remote_sender_id() == partner_id \
+		and memory == local_memory and source_visit == partner_visit and recipient_visit == local_visit
+
+@rpc("any_peer", "reliable")
+func _request_interaction(memory: String, source_visit: int, recipient_visit: int, path: NodePath) -> void:
+	if state == State.HOSTING and _matching_visit(memory, source_visit, recipient_visit):
+		interaction_requested.emit(path)
+
+@rpc("authority", "reliable")
+func _start_interaction(memory: String, source_visit: int, recipient_visit: int, path: NodePath, seed_value: int) -> void:
+	if state == State.GUEST and _matching_visit(memory, source_visit, recipient_visit):
+		interaction_started.emit(path, seed_value)
+
+@rpc("any_peer", "reliable")
+func _interaction_state(memory: String, source_visit: int, recipient_visit: int, path: NodePath, value: bool) -> void:
+	if _matching_visit(memory, source_visit, recipient_visit):
+		interaction_state_received.emit(path, value)
+
 func _on_connected_to_server() -> void:
 	if state == State.JOINING:
 		_hello.rpc_id(SERVER_ID, PROTOCOL_VERSION, int(local_avatar), local_memory, local_visit)
@@ -204,9 +238,7 @@ func _presence(memory: String, visit: int, avatar: int) -> void:
 
 @rpc("any_peer", "unreliable_ordered")
 func _receive_snapshot(memory: String, source_visit: int, recipient_visit: int, time: float, position: Vector3, heading: float, walking: bool) -> void:
-	if not shares_memory() or multiplayer.get_remote_sender_id() != partner_id:
-		return
-	if memory != local_memory or source_visit != partner_visit or recipient_visit != local_visit:
+	if not _matching_visit(memory, source_visit, recipient_visit):
 		return
 	if not is_finite(time) or not position.is_finite() or not is_finite(heading):
 		return

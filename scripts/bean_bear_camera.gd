@@ -10,7 +10,7 @@ extends "res://scripts/follow_camera.gd"
 @export var overlook_focus := Vector3(-6.35,1.4,-6.95)
 
 @onready var _camp_scenery := camp_zone.get_node_or_null("Scenery") as Node3D if camp_zone else null
-@onready var _camp_orb := camp_zone.get_node_or_null("Fragment/Orb") as Node3D if camp_zone else null
+@onready var _camp_fragment := camp_zone.get_node_or_null("Fragment") as MemoryFragment if camp_zone else null
 
 func _ready() -> void:
 	framing_offset = Vector3(0,0.8,-0.6)
@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 		if is_instance_valid(camp_zone):
 			# Keep the destination available to guidance while hiding its rendered props.
 			if is_instance_valid(_camp_scenery): _camp_scenery.visible = not looking_at_lake
-			if is_instance_valid(_camp_orb): _camp_orb.visible = not looking_at_lake
+			if is_instance_valid(_camp_fragment): _camp_fragment.set_presentation_visible(not looking_at_lake)
 			var p := camp_zone.to_local(at)
 			var camp := (1.0-smoothstep(5.0,10.0,Vector2(p.x,p.z).length()))*(1.0-smoothstep(0.8,2.0,p.y))
 			var shore := smoothstep(2.6, 3.35, p.z) * smoothstep(1.7, 2.6, -p.x)

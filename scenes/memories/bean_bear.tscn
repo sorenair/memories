@@ -58,14 +58,14 @@ fragment_sound = ExtResource("chime")
 [node name="Trailhead" parent="Zones" index="0" unique_id=861803363 instance=ExtResource("Trailhead")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18)
 ambience_stream = ExtResource("8_xb1u7")
-ambience_volume_db = -10.0
+ambience_volume_db = -17.0
 
 [node name="Overlook" parent="Zones" index="1" unique_id=1627022688 instance=ExtResource("Overlook")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, -8)
 ambience_stream = ExtResource("8_xb1u7")
-ambience_volume_db = -10.0
+ambience_volume_db = -17.0
 
 [node name="Campsite" parent="Zones" index="2" unique_id=1838070522 instance=ExtResource("Campsite")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, -24)
 ambience_stream = ExtResource("8_xb1u7")
-ambience_volume_db = -10.0
+ambience_volume_db = -17.0

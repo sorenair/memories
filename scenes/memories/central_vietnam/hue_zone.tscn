@@ -763,6 +763,8 @@ trim_color = Color(0.55, 0.495, 0.31, 1)
 recall_enabled = true
 
 [node name="Fragment" parent="."]
-position = Vector3(0,0.07,-7)
+position = Vector3(0, 0.07, -5.85)
+orb_radius = 0.26
+float_height = 1.02
 note_title = "Within the imperial walls"
 notes = PackedStringArray("Placeholder: add your own words about visiting Hue’s Imperial City.")

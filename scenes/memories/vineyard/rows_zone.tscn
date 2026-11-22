@@ -20,7 +20,7 @@ point_count = 5
 zone_id = &"grape_rows"
 display_name = "Between the grape rows"
 ambience_stream = ExtResource("wind")
-ambience_volume_db = -25.0
+ambience_volume_db = -11.5
 ambience_size = Vector2(24,27)
 ambience_blend_distance = 4.0
 

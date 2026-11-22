@@ -52,7 +52,7 @@ recall_anchor = NodePath("../Arrival")
 [node name="Crackle" type="AudioStreamPlayer3D" parent="Scenery/FirePit" index="1" unique_id=268405724]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 stream = ExtResource("crackle")
-volume_db = -5.0
+volume_db = -12.5
 unit_size = 12.0
 max_distance = 36.0
 bus = &"Ambience"
@@ -617,6 +617,7 @@ grass_height = 0.22
 
 [node name="Fragment" parent="." index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.04, 2.2)
+contrast = 1
 fragment_seed = 21027
 note_title = "A warm place in the woods"
 notes = Array[String](["Placeholder: Write your memory of the cabin, snowy clearing, and fire together here."])

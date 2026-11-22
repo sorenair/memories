@@ -6,7 +6,8 @@ extends Node3D
 @export var display_name := "A remembered place"
 @export_group("Ambience")
 @export var ambience_stream: AudioStream
-@export_range(-60.0, 0.0, 0.5, "suffix:dB") var ambience_volume_db := -18.0
+## Per-bed gain at full zone weight. A quiet source may need a small boost.
+@export_range(-60.0, 6.0, 0.5, "suffix:dB") var ambience_volume_db := -18.0
 @export var ambience_loop := true
 ## Full-volume rectangle centered on the zone origin, in local X/Z meters.
 @export var ambience_size := Vector2(12.0, 12.0)

@@ -32,7 +32,12 @@ func can_interact(actor: Node3D) -> bool:
 	return Vector2(offset.x, offset.z).length_squared() <= 2.8 * 2.8 and absf(offset.y + STRIKER_PIVOT.y) < 1.35
 
 func try_activate(actor: Node3D) -> bool:
-	if not can_interact(actor) or not is_instance_valid(_striker):
+	if not can_interact(actor):
+		return false
+	return play_shared_interaction(0)
+
+func play_shared_interaction(_seed_value: int) -> bool:
+	if not is_instance_valid(_striker) or (_swing != null and _swing.is_running()):
 		return false
 	_swing = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_swing.tween_property(_striker, "rotation:z", 0.32, 0.43)

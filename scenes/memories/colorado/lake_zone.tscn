@@ -57,7 +57,7 @@ point_count = 27
 zone_id = &"colorado_rmnp"
 display_name = "Rocky Mountain National Park · Forest lake"
 ambience_stream = ExtResource("bed")
-ambience_volume_db = -26
+ambience_volume_db = -11.5
 ambience_size = Vector2(35, 31)
 ambience_blend_distance = 5.5
 

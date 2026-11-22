@@ -133,7 +133,7 @@ fragment_sound = ExtResource("chime")
 
 [node name="BlockParty" parent="Zones" index="0" unique_id=197451176 instance=ExtResource("zone")]
 ambience_stream = ExtResource("11_thwgk")
-ambience_volume_db = -7.0
+ambience_volume_db = -5.0
 
 [node name="Bar" parent="Zones" index="1" unique_id=829719371 instance=ExtResource("bar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -31.5)

@@ -65,6 +65,7 @@ var _material: ShaderMaterial
 var _time: float = 0.0
 var _cooldown: float = 0.0
 var _tap_feedback: float = 0.0
+var _decay_finished := false
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
@@ -76,6 +77,9 @@ func _ready() -> void:
 	add_child(_visual)
 	_material = ShaderMaterial.new()
 	_material.shader = PAINT
+	# Faded paths and paving are transparent. Draw the orb over their color pass
+	# while keeping normal depth testing against opaque scenery.
+	_material.render_priority = 2
 	var core := MeshInstance3D.new()
 	core.name = "LightAndVeils"
 	core.mesh = preload("res://components/interactables/fragments/fragment_geometry.gd").create()
@@ -90,6 +94,7 @@ func _ready() -> void:
 	halo.mesh = quad
 	var halo_material := ShaderMaterial.new()
 	halo_material.shader = preload("res://components/interactables/fragments/fragment_halo.gdshader")
+	halo_material.render_priority = 1
 	halo.material_override = halo_material
 	halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	_visual.add_child(halo)
@@ -143,6 +148,11 @@ func _set_state(value: State) -> void:
 func get_orb_position() -> Vector3:
 	return _visual.global_position if is_instance_valid(_visual) else global_position + Vector3.UP * float_height
 
+## Hide the rendered orb for a scenic reveal while leaving it available to guidance.
+func set_presentation_visible(value: bool) -> void:
+	if is_instance_valid(_visual):
+		_visual.visible = value and not _decay_finished
+
 func get_interaction_tap_position() -> Vector3:
 	return get_orb_position()
 
@@ -157,6 +167,8 @@ func set_interaction_outline(amount: float, selected: bool) -> void:
 
 func can_interact(explorer: Node3D) -> bool:
 	if not is_instance_valid(explorer) or not is_visible_in_tree() or collected or _reading or state == State.DECAYING or _cooldown > 0.0:
+		return false
+	if is_instance_valid(_visual) and not _visual.visible:
 		return false
 	return global_position.distance_to(explorer.global_position) <= interaction_range
 
@@ -219,7 +231,8 @@ func _set_decay(amount: float) -> void:
 
 func _finish_decay() -> void:
 	if once_per_visit:
-		_visual.hide()
+		_decay_finished = true
+		set_presentation_visible(false)
 		set_process(false)
 	else:
 		_set_decay(0.0)

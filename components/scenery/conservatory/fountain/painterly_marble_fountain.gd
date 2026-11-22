@@ -54,6 +54,11 @@ func can_interact(actor: Node3D) -> bool:
 func try_activate(actor: Node3D) -> bool:
 	if not can_interact(actor):
 		return false
+	return play_shared_interaction(0)
+
+func play_shared_interaction(_seed_value: int) -> bool:
+	if not water_surge_enabled or not water_enabled or (_surge != null and _surge.is_running()):
+		return false
 	_surge = create_tween().set_trans(Tween.TRANS_SINE)
 	_surge.tween_method(_set_surge, 0.0, 1.0, 0.65)
 	_surge.tween_interval(0.85)

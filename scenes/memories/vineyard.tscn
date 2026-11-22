@@ -17,7 +17,7 @@ point_count = 21
 
 [node name="Memory" unique_id=1345461761 instance=ExtResource("base")]
 script = ExtResource("route")
-rows_fragment_ratio = 0.46
+rows_fragment_ratio = 0.51
 memory_id = &"vineyard"
 display_name = "Vineyard"
 
@@ -55,4 +55,4 @@ fragment_sound = ExtResource("chime")
 [node name="Overlook" parent="Zones" index="1" unique_id=1883957808 instance=ExtResource("overlook")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
 ambience_stream = ExtResource("8_1smpp")
-ambience_volume_db = -9.0
+ambience_volume_db = 2.5

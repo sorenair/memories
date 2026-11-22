@@ -64,14 +64,14 @@ fragment_sound = ExtResource("chime")
 [node name="Meiji" parent="Zones" index="0" unique_id=1443248386 instance=ExtResource("meiji")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 12)
 ambience_stream = ExtResource("7_qebte")
-ambience_volume_db = -12.0
+ambience_volume_db = -17.0
 
 [node name="Sensoji" parent="Zones" index="1" unique_id=1857751067 instance=ExtResource("sensoji")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -10)
 ambience_stream = ExtResource("9_g40j2")
-ambience_volume_db = -10.0
+ambience_volume_db = -6.0
 
 [node name="Shibuya" parent="Zones" index="2" unique_id=1165888698 instance=ExtResource("shibuya")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, -29)
 ambience_stream = ExtResource("11_g40j2")
-ambience_volume_db = -10.0
+ambience_volume_db = -12.0

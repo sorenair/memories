@@ -476,6 +476,8 @@ recall_enabled = true
 
 [node name="Fragment" parent="."]
 position = Vector3(0.6, 0.04, -2.5)
+float_height = 0.92
+contrast = 1
 fragment_seed = 140127
 note_title = "A little world of green"
 notes = Array[String](["Placeholder: Write your memory of the warm jungle room and being surrounded by green here."])

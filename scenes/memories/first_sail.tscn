@@ -46,4 +46,4 @@ fragment_sound = ExtResource("chime")
 
 [node name="Lakeside" parent="Zones" index="0" unique_id=728152051 instance=ExtResource("lake")]
 ambience_stream = ExtResource("7_23wdd")
-ambience_volume_db = -10.0
+ambience_volume_db = -5.5

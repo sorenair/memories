@@ -53,8 +53,19 @@ func can_interact(actor: Node3D) -> bool:
 func try_activate(actor: Node3D) -> bool:
 	if not can_interact(actor):
 		return false
+	return play_shared_interaction(0)
+
+func play_shared_interaction(_seed_value: int) -> bool:
+	if not tap_to_toggle or not is_instance_valid(_fire):
+		return false
 	_set_lit(not _lit)
 	return true
+
+func shared_interaction_state() -> bool:
+	return _lit
+
+func restore_shared_interaction_state(lit: bool) -> void:
+	_set_lit(lit)
 
 func get_interaction_outline_meshes() -> Array[MeshInstance3D]:
 	return [get_node_or_null("Visual") as MeshInstance3D]

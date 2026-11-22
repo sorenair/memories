@@ -101,7 +101,7 @@ paint_seed = 21026
 [node name="Crackle" type="AudioStreamPlayer3D" parent="Scenery/FirePit"]
 position = Vector3(0, 0.25, 0)
 stream = ExtResource("crackle")
-volume_db = -5.0
+volume_db = -12.5
 unit_size = 12.0
 max_distance = 36.0
 bus = &"Ambience"
@@ -1604,6 +1604,7 @@ recall_enabled = true
 recall_anchor = NodePath("../CampRecall")
 
 [node name="Fragment" parent="."]
-position = Vector3(-2.65, 0.075, 2.55)
+position = Vector3(-0.7, 0.075, 1.55)
+float_height = 1.08
 note_title = "Camp beside the lake"
 notes = PackedStringArray("Placeholder: add your own words about the tent, camp stove and fire beside the lake.")

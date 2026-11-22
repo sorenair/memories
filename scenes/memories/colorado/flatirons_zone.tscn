@@ -40,7 +40,7 @@ point_count = 3
 zone_id = &"colorado_flatirons"
 display_name = "Boulder · The Flatirons"
 ambience_stream = ExtResource("bed")
-ambience_volume_db = -27
+ambience_volume_db = -10.0
 ambience_size = Vector2(31, 32)
 ambience_blend_distance = 5.0
 
@@ -913,5 +913,6 @@ recall_anchor = NodePath("../MeadowReveal")
 
 [node name="Fragment" parent="."]
 position = Vector3(0.3,0.075,-1.3)
+orb_radius = 0.30
 note_title = "Beneath the Flatirons"
 notes = PackedStringArray("Placeholder: add your own words about the yellow grass and the Flatirons near Boulder.")

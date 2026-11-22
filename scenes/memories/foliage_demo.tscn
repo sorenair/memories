@@ -764,6 +764,7 @@ flutter = 0.35
 
 [node name="WinterFragment" parent="Environment/Winter" index="20" instance=ExtResource("14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, -1.2)
+contrast = 1
 fragment_seed = 37
 note_title = "A quiet trace"
 notes = Array[String](["For a little while, our footsteps were the only marks in the snow."])

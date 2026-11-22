@@ -60,14 +60,14 @@ fragment_sound = ExtResource("chime")
 [node name="Trail" parent="Zones" index="0" unique_id=1008465716 instance=ExtResource("Trail")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
 ambience_stream = ExtResource("8_ntlci")
-ambience_volume_db = -10.0
+ambience_volume_db = -17.0
 
 [node name="Lighthouse" parent="Zones" index="1" unique_id=416868132 instance=ExtResource("Lighthouse")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, -8)
 ambience_stream = ExtResource("10_hiaxc")
-ambience_volume_db = -10.0
+ambience_volume_db = -5.5
 
 [node name="Garden" parent="Zones" index="2" unique_id=1791695655 instance=ExtResource("Garden")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 0, -36)
 ambience_stream = ExtResource("12_l5685")
-ambience_volume_db = -12.0
+ambience_volume_db = 2.5

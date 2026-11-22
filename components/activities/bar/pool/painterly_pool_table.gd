@@ -153,9 +153,17 @@ func can_interact(actor: Node3D) -> bool:
 func try_activate(actor: Node3D) -> bool:
 	return start_interaction() if can_interact(actor) else false
 
+func play_shared_interaction(seed_value: int) -> bool:
+	return _start_break(seed_value)
+
 ## Direct signal/Inspector hook; shared controller taps use try_activate(actor).
 func start_interaction(seed_value: int = -1) -> bool:
-	if _playing or not is_inside_tree() or not is_instance_valid(_balls) or not _recalled():
+	if not _recalled():
+		return false
+	return _start_break(seed_value)
+
+func _start_break(seed_value: int) -> bool:
+	if _playing or not is_inside_tree() or not is_instance_valid(_balls):
 		return false
 	_reset_board()
 	_pending_seed = _random.randi() if seed_value < 0 else seed_value

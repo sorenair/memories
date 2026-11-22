@@ -147,6 +147,10 @@ func run() -> void:
 	check(zones[2].get_node("Scenery/Stove").burner_on and zones[2].get_node("Scenery/Stove").steam_enabled,"The existing camp stove should feel alive beside the fire")
 	await read_fragment(world,zones[2].get_fragment())
 	check(world.get_node("GuidanceController").get_next_fragment()==null,"All three notes should finish without automatic hints")
+	var camp_fragment := zones[2].get_fragment()
+	await create_timer(camp_fragment.decay_duration + 0.15).timeout
+	check(not camp_fragment.get_node("Orb").visible,
+		"The campsite camera must keep the orb hidden after its final puff")
 	var fire: PainterlyFirePit = zones[2].get_node("Scenery/FirePit")
 	check(not fire.is_lit() and not fire.get_node("Fire").visible,"The sculpted campfire must start unlit")
 	check(await walk_to(player,zones[2].to_global(Vector3(-1.60, 0, 0.22))),"The campfire needs a clear approach")

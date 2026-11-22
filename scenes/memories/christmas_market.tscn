@@ -108,9 +108,9 @@ fragment_sound = ExtResource("chime")
 
 [node name="MarketLane" parent="Zones" index="0" unique_id=1581044329 instance=ExtResource("lane")]
 ambience_stream = ExtResource("10_377gx")
-ambience_volume_db = -14.0
+ambience_volume_db = -10.0
 
 [node name="MusicGathering" parent="Zones" index="1" unique_id=1665031159 instance=ExtResource("plaza")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -15)
 ambience_stream = ExtResource("12_18jsi")
-ambience_volume_db = -9.0
+ambience_volume_db = 2.5

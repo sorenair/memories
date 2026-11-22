@@ -60,4 +60,5 @@ music_volume_db = -8.0
 fragment_sound = ExtResource("chime")
 
 [node name="Concert" parent="Zones" index="0" unique_id=8815874 instance=ExtResource("concert")]
+ambience_volume_db = -22.0
 ambience_stream = ExtResource("8_8vjjb")

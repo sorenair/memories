@@ -1976,5 +1976,6 @@ ground_exclusions = Array[NodePath]([NodePath("../NearLake")])
 
 [node name="Fragment" parent="."]
 position = Vector3(1.4,3.28,-1)
+orb_radius = 0.29
 note_title = "Above the lake"
 notes = PackedStringArray("Placeholder: add your own words about the cliff overlook and the lake nestled in the forest.")
